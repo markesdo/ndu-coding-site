@@ -7,6 +7,7 @@ import Scrum from '../pages/innolab/methoden/scrum.astro';
 import Tag4 from '../pages/innolab/tag-4.astro';
 import { bloeckeAus } from './begleiter';
 import { AGIL_SCRUM_FOLIEN, FOLIENSATZ_URL } from './foliensatz';
+import { MIRO_FRAMES } from '../components/miro-frames';
 
 // Entscheidung Markus 26.11.2026: Agil & Scrum an Tag 4 nach Variante B – 20 Folien aus dem Foliensatz, dann auf der
 // Site „Wo wir abweichen“, die Übung „Kaffeebar auf der Scrum-Karte“ (4 + 3 min) und das Beispiel als Auflösung.
@@ -88,6 +89,22 @@ describe('Scrum-Seite: Zeiger auf den Foliensatz und Übung vor dem Beispiel', (
     expect([...q.matchAll(/<li data-schritt>[^]*?<Timer minuten=\{(\d+)\} \/><\/li>/g)].map((m) => Number(m[1]))).toStrictEqual([4, 3]);
     expect(q).toContain('Still sortieren');
     for (const n of [1, 2, 3]) expect(q).toContain(`Produkt ${n}`);
-    expect(q).toContain('T4 · Scrum · Kaffeebar · Lösung');
+    for (const n of [1, 2, 3]) expect(q).toContain(`<MiroLink name="T4 · 3 · Scrum · Kaffeebar sortieren · Produkt ${n}">Produkt ${n}</MiroLink>`);
+    // Die Lösung ist auf dem Board bis zur Auflösung versteckt: kein Link aus der Übung, sondern erst auf „Am Beispiel“.
+    expect(q).not.toContain('Kaffeebar · Lösung');
+    const beispiel = QUELLE_SCRUM.slice(QUELLE_SCRUM.indexOf('<h2 id="beispiel">'), QUELLE_SCRUM.indexOf('</Folie>', QUELLE_SCRUM.indexOf('<h2 id="beispiel">')));
+    expect(beispiel).toContain('<MiroLink name="T4 · 3 · Scrum · Kaffeebar · Lösung">');
   }, 60_000);
+});
+
+describe('Miro: Frames der Übung „Kaffeebar auf der Scrum-Karte“', () => {
+  it('drei Frames je Person und der Lösungs-Frame stehen mit ihren IDs in MIRO_FRAMES', () => {
+    const t4 = Object.fromEntries(Object.entries(MIRO_FRAMES).filter(([k]) => k.startsWith('T4 · 3 · Scrum')));
+    expect(t4).toStrictEqual({
+      'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 1': '3458764691686327549',
+      'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 2': '3458764691686327550',
+      'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 3': '3458764691686327551',
+      'T4 · 3 · Scrum · Kaffeebar · Lösung': '3458764691686327552',
+    });
+  });
 });

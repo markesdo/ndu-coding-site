@@ -15,6 +15,7 @@ import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import SprintKreislauf from '../../../components/bild/SprintKreislauf.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
+import MiroLink from '../../../components/MiroLink.astro';
 import { Eye, MessagesSquare, RefreshCw, Target } from '@lucide/astro';
 import { AGIL_SCRUM_FOLIEN, FOLIENSATZ_TITEL, FOLIENSATZ_URL } from '../../../lib/foliensatz';
 
@@ -198,9 +199,9 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
       <li data-schritt><strong>Still sortieren, jede*r im eigenen Frame:</strong> die acht Karten an die Stelle der Scrum-Grafik, an die sie gehören. <Timer minuten={4} /></li>
       <li data-schritt><strong>Auflösung:</strong> Markus blendet die Lösung ein; besprochen werden nur die Karten, die bei euch verschieden liegen. <Timer minuten={3} /></li>
     </ol>
-    <p class="small">Miro: T4 · Scrum · Kaffeebar sortieren · Produkt 1 · Produkt 2 · Produkt 3 <span class="muted">(= eure Spalten von links)</span></p>
+    <p class="small">Miro, T4 · 3 · Scrum · Kaffeebar sortieren: <MiroLink name="T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 3">Produkt 3</MiroLink> <span class="muted">(= eure Spalten von links)</span></p>
     <div class="nur-handout">
-      <p>Die Karten stammen aus dem Beispiel auf der nächsten Folie, ohne den Begriff davor: Sätze, Issues, Personen und Regeln der Kaffeebar „Gleis-1-Express“. Ihr sortiert allein, gleichzeitig und ohne Absprache. So zeigt die Auflösung, wo eure Bilder von Scrum auseinandergehen. Die Lösung liegt auf Miro in einem eigenen Frame (T4 · Scrum · Kaffeebar · Lösung), den Markus erst nach den vier Minuten einblendet; die nächste Folie geht sie Begriff für Begriff durch.</p>
+      <p>Die Karten stammen aus dem Beispiel auf der nächsten Folie, ohne den Begriff davor: Sätze, Issues, Personen und Regeln der Kaffeebar „Gleis-1-Express“. Je eine Karte gehört zu Produktziel, Product Backlog, Sprint-Ziel, Inkrement, Definition of Done, Daily Scrum, Stakeholdern im Sprint Review und Product Owner; Sprint Planning, Sprint Backlog und Retrospektive bekommen absichtlich keine. Ihr sortiert allein, gleichzeitig und ohne Absprache. So zeigt die Auflösung, wo eure Bilder von Scrum auseinandergehen. Die Lösung liegt auf Miro in einem eigenen Frame, den Markus erst nach den vier Minuten einblendet; die nächste Folie geht sie Begriff für Begriff durch.</p>
     </div>
   </Folie>
 
@@ -213,6 +214,7 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
       <li data-schritt><strong>Sprint-Ziel:</strong> „Pendler*innen bestellen im Gehen und sehen, ob ihr Kaffee vor dem Zug fertig ist.“</li>
       <li data-schritt><strong>Inkrement:</strong> Bestellseite live am Handy, die Bar sieht die Bestellungen nach Abfahrt sortiert.</li>
     </ul>
+    <p class="small">Miro, Auflösung der Übung: <MiroLink name="T4 · 3 · Scrum · Kaffeebar · Lösung">T4 · 3 · Scrum · Kaffeebar · Lösung</MiroLink></p>
     <div class="nur-handout">
       <p><strong>Produktziel</strong> im Wortlaut des Briefs: „Wir glauben, dass Pendler*innen morgens Kaffee bekommen, ohne ihren Zug zu riskieren. Wir merken es, wenn mehr von ihnen mit Kaffee in den Zug steigen.“</p>
       <p><strong>Produkt:</strong> Im Gehen bestellen, mit Abfahrtszeit, abholen an der Express-Ausgabe (Value Map, Tag 3). <strong>Produktziel:</strong> der Outcome-Satz aus dem Produkt-Brief (<a href="/innolab/methoden/problem-rahmen">Problem-Rahmen</a>) – er beschreibt, wie es nach dem Produkt sein soll, und daran misst sich jeder Sprint. <strong>Product Owner:</strong> die Product Ownerin der Kaffeebar; Developers sind alle drei. <strong>Product Backlog:</strong> 1 Getränk wählen und bestellen · 2 Abfahrtszeit angeben und Fertig-Zeit sehen · 3 Bar sieht Bestellungen nach Abfahrt sortiert · 4 Zug aus einer Liste der nächsten Abfahrten wählen (U2) · 5 Abholnummer am Bildschirm der Ausgabe · 6 Bar markiert Bestellung als abgeholt, das Ereignis wird gespeichert (aus der Definition of Done, Tag 5). Wie die Issues entstehen, kommt an Tag 5 in <a href="/innolab/methoden/backlog">Backlog aus Issues</a>. <strong>Stakeholder im Review:</strong> Markus und Louis, dazu die Testpersonen aus den Usability-Tests an Tag 6. <strong>Sprint-Ziel:</strong> ein Satz, der sagt, was danach jemand kann – nicht die Liste der Issues. <strong>Definition of Done:</strong> siehe <a href="#dod">unten</a>.</p>
