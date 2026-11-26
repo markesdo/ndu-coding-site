@@ -14,6 +14,7 @@ import { NOTIZEN_ZIEL_CHANCE } from './ziel-chance';
 import { NOTIZEN_HMW } from './hmw';
 import { NOTIZEN_IDEATION } from './ideation';
 import { NOTIZEN_KUNDENPROFIL } from './kundenprofil';
+import { NOTIZEN_TAG_4 } from './tag-4';
 import { NOTIZEN_VALUE_MAP } from './value-map';
 import { NOTIZEN_CONCEPT_STORY } from './concept-story';
 import { NOTIZEN_GESCHAEFTSMODELL } from './geschaeftsmodell';
@@ -44,6 +45,8 @@ export const NOTIZEN: Record<string, Record<string, Notiz>> = {
   '/innolab/methoden/hmw': NOTIZEN_HMW,
   '/innolab/tag-2/abschluss': NOTIZEN_TAG_2_ABSCHLUSS,
   '/innolab/methoden/ideation': NOTIZEN_IDEATION,
+  // Tag 4 beginnt auf der Tagesseite (9:00 #arbeitsfluss); deren Folien von 9:35 und 17:15 findet der Begleiter über die Beamer-Position.
+  '/innolab/tag-4': NOTIZEN_TAG_4,
   '/innolab/methoden/value-map': NOTIZEN_VALUE_MAP,
   '/innolab/methoden/concept-story': NOTIZEN_CONCEPT_STORY,
   '/innolab/methoden/geschaeftsmodell': NOTIZEN_GESCHAEFTSMODELL,

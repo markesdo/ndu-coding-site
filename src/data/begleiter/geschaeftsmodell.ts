@@ -166,7 +166,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Zeit: Übung 10 min, vier Timer: 4, 2, 2, 2.',
-      'Timer 4 min: Wie? und Wert? in docs/GESCHAEFTSMODELL.md.',
+      'Timer 4 min: Wie? und Wert? auf Miro im eigenen Frame.',
       '1:1 ab Minute 2: Wer zahlt bei dir wofür?',
       'Nach 4 min: Linie, dann Annahme, je 2 min.',
       'Nach 8 min: Annahme in die Werkstatt, Art wirtschaftlich.',
@@ -175,7 +175,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
     ueberleitung: 'Zum Schluss eine Frage, die ihr mitnehmt.',
     ablauf: {
       schritte: [
-        'Schritt 1 (4 min): Vorlage nach docs/GESCHAEFTSMODELL.md; Wer? und Was? nur verweisen, Wie? und Wert? neu, Kosten als Posten.',
+        'Schritt 1 (4 min): auf Miro in „T4 · 2 · Geschäftsmodell · Produkt n“ (Name folgt); Wer? und Was? nur verweisen, Wie? und Wert? neu, Kosten als Posten.',
         'Schritt 2 (2 min): Linie „[Outcome] führt zu [Impact], weil …“ aus dem eigenen Problem-Rahmen.',
         'Schritt 3 (2 min): Annahme „Wir glauben, dass …“ – Ertrag über den Kosten.',
         'Schritt 4 (2 min): Annahme in die Annahmen-Map der Werkstatt, Art „wirtschaftlich“, Wichtigkeit, Beleg.',

@@ -38,10 +38,10 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     <Block time="09:00–09:05" type="plenum" title="Arbeitsfluss – ihr seid hier" href="#arbeitsfluss">Was ihr von Tag 1 bis 3 mitbringt und was heute daraus wird.</Block>
     <Block time="09:05–09:35" type="uebung" title="Value Map & Fit (Nachholen von Tag 3)" href="/innolab/methoden/value-map#vorgehen">Den Vorschlag in T3 · 4 bestätigen oder ändern – Was davon ist die Website, die ihr baut – und trifft sie allein noch P1? Dann füllen, ordnen, Fit, festhalten; zum Schluss die drei Ideen als Lösungen in euren Baum, der Spitzenreiter markiert.</Block>
     <Block time="09:35–09:40" type="plenum" title="Was bauen wir?" href="#was-bauen-wir">Slice 1 und der Baum: Was ihr heute baut, hängt am Spitzenreiter, den ihr gerade markiert habt.</Block>
-    <Block time="09:40–10:20" type="uebung" title="Story-Bogen + Concept Story" href="/innolab/methoden/concept-story#story-bogen">10 min Theorie: sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben: sieben Stationen in <code>docs/STORYS.md</code>, Flach-Probe, festhalten.</Block>
+    <Block time="09:40–10:20" type="uebung" title="Story-Bogen + Concept Story" href="/innolab/methoden/concept-story#story-bogen">Theorie, alle Folien (etwa 20 min): sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben, allein, auf Miro in „T4 · 0 · Concept Story · Produkt n“: sieben Stationen, Flach-Probe, festhalten.</Block>
     <Block time="10:20–10:30" type="pause" title="Pause" />
-    <Block time="10:30–10:50" type="uebung" title="Geschäftsmodell-Karten" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; eine Runde Muster; die wirtschaftliche Annahme.</Block>
-    <Block time="10:50–11:00" type="plenum" title="Claude Pro und Claude Code, gemeinsam" href="/innolab/methoden/experiment#claude-pro-jetzt">Alle zugleich: Claude Pro mit demselben Konto neu abschließen und gleich kündigen, Claude Code im Repo starten und anmelden, ein Testprompt.</Block>
+    <Block time="10:30–10:50" type="uebung" title="Geschäftsmodell" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; die Linie vom Outcome zum Geld; die wirtschaftliche Annahme für die Map.</Block>
+    <Block time="10:50–11:00" type="plenum" title="Claude Pro und Claude Code, gemeinsam" href="/innolab/methoden/experiment#claude-pro-jetzt">Alle zugleich: Claude Pro mit demselben Konto neu abschließen und gleich kündigen, Claude Code starten und anmelden, mit Opus (<code>/model opus</code>). Testprompt: Screenshot eures Concept-Story-Frames einfügen – „Sag mir in einem Satz, worum es in meiner Concept Story geht.“</Block>
     <Block time="11:00–11:30" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment#annahmen-der-idee">Schritte der Idee, Annahmen, Map, Karte E1 mit Schwelle; Annahme und E1 in den Baum.</Block>
     <Block time="11:30–12:35" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Slice 1 nach Outcome und Lernziel.</Block>
     <Block time="12:35–13:35" type="pause" title="Mittagspause" />
@@ -50,7 +50,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     <Block time="15:35–15:45" type="pause" title="Pause" />
     <Block time="15:45–16:25" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#foliensatz">Theorie aus dem <a href={FOLIENSATZ_URL} target="_blank" rel="noopener noreferrer">Foliensatz</a>: Wasserfall, Agiles Manifest, Scrum nach dem Guide. Dann hier: wo wir abweichen, Kaffeebar auf der Scrum-Karte (Miro), Auflösung am Gleis-1-Express.</Block>
     <Block time="16:25–17:15" type="uebung" title="Prototyp weiterbauen / Puffer">Was im Spike offen blieb: Höhepunkt-Bildschirm, Karte E2, Trockenlauf – oder nachholen, was vom Tag fehlt.</Block>
-    <Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie jemand den Wert zum ersten Mal sieht; E1 laufen lassen, fünf Usability-Tests.</Block>
+    <Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie jemand den Wert zum ersten Mal sieht; Origin Story, E1 laufen lassen, Usability-Tests, wenn Zeit bleibt.</Block>
   </div>
 
   {/* 9:00: Im Beamer kommt nach dem Ablauf der Arbeitsfluss (dieselbe Folie wie auf /innolab/arbeitsfluss), dann → zur Value Map
@@ -66,8 +66,15 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
   {/* 9:35, nach der Value Map: ← führt zurück zu ihrer letzten Folie, nicht zum Arbeitsfluss von 9:00. */}
   <Folie zurueck="/innolab/methoden/value-map#uebertrag">
     <h2 id="was-bauen-wir">Was bauen wir?</h2>
-    <p class="folie-satz">Slice 1 – und was die Tests davon übrig lassen.</p>
-    <WasBauenWir schritte={false}>Heute Mittag steht euer Slice 1. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>
+    <p class="folie-satz">Bis 15:35 einen klickbaren Prototyp von Slice 1 – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.</p>
+    {/* Die drei Zuläufe konkret für heute (Durchsicht 26.11.): woher jede Linie kommt und was daraus wird. Auf
+        /innolab/arbeitsfluss bleiben sie tagneutral (Vorgaben in WasBauenWir.astro). */}
+    <WasBauenWir
+      schritte={false}
+      beleg="liefert den Inhalt: den Weg eurer Person – aus Interviews und Experience Map."
+      outcome="liefert das Maß: was Menschen danach anders tun – aus eurem Brief."
+      annahme="liefert das Lernziel: was der Slice zeigen muss – daraus wird Test E1."
+    >Heute Mittag steht Slice 1 auf eurer Story Map, um 15:35 als Prototyp. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>
   </Folie>
 
   {/* Letzte Folie des Morgens: → am Ende führt zur Concept Story (9:40); die Folien des Abschlusses weiter unten kommen erst
@@ -87,7 +94,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
-  <p>Heute werden aus der <strong>Lösung</strong> <strong>Experimente</strong>. Zuerst holt ihr nach, was von Tag 3 offen ist: Value Map und Fit eures Spitzenreiters. Dann schreibt ihr eure Concept Story – warum jemand in Sekunden versteht, dass euer Spitzenreiter besser ist als das, was er heute tut; die Theorie dazu kennt ihr von Tag 3. Das Geschäftsmodell zeigt, wer dafür zahlt; die Experiment-Karte, an welcher Annahme er hängt – daraus wird E1. Die Story Map zeigt, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das nach dem Kurstag mit echten Menschen, und E1 läuft daneben. Am Nachmittag beginnt der Schritt vom Entdecken zum Liefern: Ihr lernt Scrum kennen, so wie Produktteams in Unternehmen arbeiten. Als Team für eure drei Produkte stellt ihr euch zu Beginn von Tag 5 auf. Das Entdecken hört dabei nicht auf: Euer Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
+  <p>Heute werden aus der <strong>Lösung</strong> <strong>Experimente</strong>. Zuerst holt ihr nach, was von Tag 3 offen ist: Value Map und Fit eures Spitzenreiters. Dann schreibt ihr eure Concept Story – warum jemand in Sekunden versteht, dass euer Spitzenreiter besser ist als das, was er heute tut. Das Geschäftsmodell zeigt, wer dafür zahlt; die Experiment-Karte, an welcher Annahme er hängt – daraus wird E1. Die Story Map zeigt, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Der Prototyp prüft das nach dem Kurstag mit echten Menschen, und E1 läuft daneben. Am Nachmittag beginnt der Schritt vom Entdecken zum Liefern: Ihr lernt Scrum kennen, so wie Produktteams in Unternehmen arbeiten. Als Team für eure drei Produkte stellt ihr euch zu Beginn von Tag 5 auf. Das Entdecken hört dabei nicht auf: Euer Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
   <p class="small">Den Plan mit „Ihr seid hier“ zeigt die Folie <a href="#arbeitsfluss">Arbeitsfluss</a> oben, um 9:00 im Beamer gleich nach dem Ablauf.</p>
   <p><strong>Der Baum wächst heute um Lösungen und Tests.</strong> Euer Baum auf Miro („Baum · Produkt n“) endet bisher bei der Ziel-Chance mit Stern. Nach der Value Map hängt ihr eure drei Ideen als Lösungen darunter und markiert den Spitzenreiter; nach der Experiment-Karte kommen unter ihn die riskanteste Annahme und E1, nach dem Spike E2. Je etwa zwei Minuten. So steht der Baum, wie Teresa Torres ihn zeichnet: Outcome, Chancen, mehrere Lösungen unter einer Chance und darunter die Annahmen-Tests, die zeigen, ob eine Lösung trägt ({TORRES}, S. 25–27).</p>
   <Baum knoten={KAFFEEBAR_BAUM_TAG_4} label="Baum der Kaffeebar ab Tag 4: Outcome, darunter die Ziel-Chance „Geht sich ein Kaffee noch aus?“, darunter drei Lösungen – Wartezeit-Anzeige, Im Gehen bestellen als Spitzenreiter, Kaffeewagen am Bahnsteig –, unter dem Spitzenreiter A5 mit dem Test E1" />
@@ -98,8 +105,8 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
   <h2 id="methoden">Die Methoden von heute</h2>
   <ul>
     <li><a href="/innolab/methoden/value-map">Value Map & Fit</a> – Nachholen von Tag 3: Spitzenreiter bestätigen, Value Map ordnen, Fit prüfen</li>
-    <li><a href="/innolab/methoden/concept-story">Concept Story</a> – warum euer Spitzenreiter besser ist als das, was Menschen heute tun; sieben Stationen in <code>docs/STORYS.md</code></li>
-    <li><a href="/innolab/methoden/geschaeftsmodell">Geschäftsmodell-Karten</a> – wer zahlt wofür, und welche Annahme dahintersteckt</li>
+    <li><a href="/innolab/methoden/concept-story">Concept Story</a> – warum euer Spitzenreiter besser ist als das, was Menschen heute tun; sieben Stationen auf Miro</li>
+    <li><a href="/innolab/methoden/geschaeftsmodell">Geschäftsmodell</a> – wer zahlt wofür, die Linie vom Outcome zum Geld und welche Annahme dahintersteckt</li>
     <li><a href="/innolab/methoden/experiment">Experiment-Karte & Origin Story</a> – Annahmen testen, nicht Ideen; die Origin Story folgt im <a href="#abschluss">Abschluss</a></li>
     <li><a href="/innolab/methoden/story-map">Story Map</a> – der Plan, nach Outcome geschnitten</li>
     <li><a href="/innolab/methoden/usage-story">Usage Story</a> – der Kernablauf mit Höhepunkt</li>
@@ -107,12 +114,12 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Agil und Scrum, die Theorie aus dem Foliensatz (Lego4Scrum ist dieses Kursjahr nicht dabei); Teamaufstellung und Definition of Done folgen an Tag 5</li>
   </ul>
 
-  {/* 17:15: Hierher führt → von der letzten Tag-4-Folie auf scrum (#weiter-tag-4). Drei Folien: Origin Story, Hausaufgabe,
-      Ende – → bleibt auf „Ende Tag 4“ stehen (Folie.astro, ende). */}
+  {/* 17:15: Hierher führt → von der letzten Tag-4-Folie auf scrum (#weiter-tag-4). Vier Folien: Origin Story, ihr Beispiel
+      (#origin-beispiel), Hausaufgabe, Ende – → bleibt auf „Ende Tag 4“ stehen (Folie.astro, ende). */}
   {/* ← führt zurück zur letzten Tag-4-Folie auf scrum, nicht zu „Was bauen wir?“ von 9:35 (nach der Value Map). */}
   <Folie zurueck="/innolab/methoden/scrum#weiter-tag-4">
     <h2 id="abschluss">Abschluss: die Origin Story</h2>
-    <p class="folie-satz">Wie jemand euren Wert zum ersten Mal sieht – und was er dann tut.</p>
+    <p class="folie-satz">Wie jemand euren Wert zum ersten Mal sieht – und was sie dann tut. Ergebnis: der Text für euren Test E1.</p>
     <BildText>
       <BuchAbbildung src="/quellen/lichaw/origin-story.jpg" alt="Grüner Bogen: Current State, Problem, Find out about product mit Wegweiser (Search, Marketing, Word of mouth), Impediments Competition als Hürde, See value / solution mit Glühbirne (Landing page, Touchpoints, Content), Take action Experience value, Goal(s) met" quelle={`Die Origin Story. ${LICHAW}, Abb. 4.3.`} />
       <ul>
@@ -123,54 +130,74 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>Im Abschluss gibt es zehn Minuten Input zur Origin Story – sie ist der Text für euren Aufsteller oder eure Landingpage und führt zur Handlung, die E1 misst. Die <a href="/innolab/methoden/experiment#vorlage-origin-story">Vorlage für <code>docs/STORYS.md</code></a> steht bei der Experiment-Karte.</p>
+      {/* TODO Miro-ID: „T4 · 6 · Origin Story · Produkt n“ (Fable baut den Frame; Name kann sich ändern) – dann als MiroLink. */}
+      <p>Im Abschluss gibt es zehn Minuten Input zur Origin Story – sie ist der Text für euren Aufsteller oder eure Landingpage und führt zur Handlung, die E1 misst. Ihr schreibt sie auf Miro, in eurem Frame „T4 · 6 · Origin Story · Produkt n“.</p>
       <p>„An origin story is the story of how someone becomes your customer for the first time“; sie ist die Brücke zwischen Concept Story und Usage Story ({LICHAW}, Kap. 4). Die Krise kennt vier Formen: Konkurrenz, andere Lösungen (selbst machen, analog), Widerstand gegen Neues, Sorgen um Sicherheit. Der Höhepunkt liegt dort, wo jemand den Wert sieht – Startseite, Landingpage, Laden, Telefon. Danach kommt genau eine Handlung, und am Ende steht, wie ihr sie messt: „you call your main character to action and determine how to measure that action“. Die Handlung soll das Ziel der Person benennen: „start training“ statt „sign up“ (Kap. 4, FitCounter).</p>
-      <p>Bei der Kaffeebar ist das der Aufsteller aus E1. Seine Handlung heißt „Trag deinen Zug ein“, nicht „E-Mail hinterlassen“ – sie benennt das Ziel der Person und ist zugleich die Messgröße der Karte:</p>
-      <Prompt label="Beispiel · Origin Story als Aufstellertext">Zug in 8 Minuten, Schlange bis zur Tür?
+      <p>Wie das für die Kaffeebar aussieht, zeigt die nächste Folie.</p>
+    </div>
+  </Folie>
+
+  {/* 17:15, zweite Folie der Origin Story (Durchsicht 26.11.): Das Beispiel stand nur im Handout; im Beamer fehlte, was
+      Studierende hier schreiben. Der Aufstellertext ist Beispiel, kein Prompt zum Übernehmen – darum ohne Kopieren. */}
+  <Folie>
+    <h2 id="origin-beispiel">Am Beispiel: der Aufsteller der Kaffeebar</h2>
+    <p class="folie-satz">Erst der Pain, dann das Produkt, dann die Antwort auf die Hürde.</p>
+    <Prompt label="Beispiel · Origin Story als Aufstellertext" kopieren={false}>Zug in 8 Minuten, Schlange bis zur Tür?
 Bestell im Gehen. Scan den Code, gib deine Abfahrtszeit ein –
 wir sagen dir sofort, ob dein Kaffee vor der Abfahrt fertig ist.
 Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
+    <ul class="gross">
+      <li data-schritt><strong>Die eine Handlung:</strong> „Trag deinen Zug ein“ – nicht „E-Mail hinterlassen“.</li>
+      <li data-schritt><strong>Sie ist die Messgröße von E1.</strong></li>
+    </ul>
+    <div class="nur-handout">
+      <p>Bei der Kaffeebar ist das der Aufsteller aus E1. Seine Handlung heißt „Trag deinen Zug ein“, nicht „E-Mail hinterlassen“ – sie benennt das Ziel der Person und ist zugleich die Messgröße der Karte.</p>
       <p>Erst der Pain, dann das Produkt, dann die Antwort auf die Hürde – dieselbe Reihenfolge empfiehlt Bland für eine Landingpage: Wertversprechen, Handlung, darunter Pains, Lösung, Gains ({BLAND}, S. 261).</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="hausaufgabe">Hausaufgabe bis Tag 5</h2>
-    <p class="folie-satz">Bis Tag 5 sind es zwei Wochen: Lasst E1 laufen und testet euren Prototyp mit fünf Menschen.</p>
-    {/* Die Schritte nur im Beamer; im Handout steht die Checkliste, aus der sie stammen. */}
+    <p class="folie-satz">Bis Tag 5 am 12. Dezember: Origin Story, dann E1 mit echten Menschen – Usability-Tests, wenn ihr Zeit habt.</p>
+    {/* Die Schritte nur im Beamer; im Handout steht die Checkliste, aus der sie stammen. Reihenfolge (Markus, 26.11. abends):
+        Origin Story → Aufsteller/Landingpage → E1 → Lernkarte E1; Usability-Tests optional; am Ende das Aufräumen. */}
     <ol class="gross dicht nur-beamer">
-      <li data-schritt><strong>Fertig machen, was heute offen blieb:</strong> Value Map und Fit, Concept Story, Baum, Geschäftsmodell und Karte E1, Story Map und Usage Story (ganze Liste im Handout).</li>
-      <li data-schritt><strong>Origin Story</strong> als Text für Aufsteller oder Landingpage in <code>docs/STORYS.md</code>.</li>
-      <li data-schritt><strong>E1 laufen lassen</strong> – an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe; Lernkarte in <code>docs/EXPERIMENTE.md</code>.</li>
-      <li data-schritt><strong>Fünf Usability-Tests</strong> mit Karte E2, Befunde und Lernkarte in <code>docs/TESTS.md</code>.</li>
-      <li data-schritt><strong>Je Lernkarte die Entscheidung:</strong> Befund → Handlung, in der Zeile „Beleg: … → darum: …“.</li>
-      <li data-schritt><strong>Linear einrichten,</strong> die anderen beiden als Collaborator ins Repo; committet und gepusht.</li>
+      {/* TODO Miro-ID: Origin-Story-, Lernkarten- und Prototyp-Frames „T4 · 5/6 · … · Produkt n“ – dann als MiroLink. */}
+      <li data-schritt><strong>Origin Story</strong> als Text für Aufsteller oder Landingpage, auf Miro in „T4 · 6 · Origin Story · Produkt n“.</li>
+      <li data-schritt><strong>Daraus der Aufsteller oder die Landingpage</strong> für E1.</li>
+      <li data-schritt><strong>E1 laufen lassen</strong> bis drei Werktage vor Tag 5 – an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe.</li>
+      <li data-schritt><strong>Lernkarte E1</strong> auf Miro in „T4 · 6 · Lernkarten · Produkt n“, mit der Entscheidung: Befund → Handlung.</li>
+      <li data-schritt><strong>Wer Zeit hat: Usability-Tests</strong> mit Karte E2, Befunde in „T4 · 5 · Prototyp · Produkt n“ – fünf sind ideal, auch zwei, drei helfen.</li>
+      <li data-schritt><strong>Fertig machen, was heute offen blieb</strong> (ganze Liste im Handout).</li>
+      <li data-schritt><strong>Linear einrichten,</strong> die anderen beiden als Collaborator ins Repo; der Spike bleibt in seinem Branch.</li>
     </ol>
     <div class="nur-handout">
       <p>Zum Abhaken:</p>
-    {/* -v4: Häkchen je Position; seit 12.11.2026 mit Geschäftsmodell und Karte E1, ohne docs/TEAM.md (-v2); seit 25.11.2026
-        mit Value Map, Concept Story und Baum (-v3) und ohne Lego-Zettel (-v4, NDU-72) – alte Häkchen sollen nicht an
-        verschobenen Punkten hängen. */}
-    <Checklist id="il-tag4-hausaufgabe-5-v4" items={[
+    {/* -v6: Häkchen je Position; seit 12.11.2026 mit Geschäftsmodell und Karte E1, ohne docs/TEAM.md (-v2); seit 25.11.2026
+        mit Value Map, Concept Story und Baum (-v3) und ohne Lego-Zettel (-v4, NDU-72); seit 26.11.2026 abends ohne docs/*.md
+        (-v5) und in der Reihenfolge Origin Story → E1 → Lernkarte, Usability-Tests optional (-v6) – alte Häkchen sollen nicht
+        an verschobenen Punkten hängen. */}
+    <Checklist id="il-tag4-hausaufgabe-5-v6" items={[
+      'Origin Story als Text für Aufsteller oder Landingpage auf Miro in „T4 · 6 · Origin Story · Produkt n“',
+      'Daraus der Aufsteller oder die Landingpage für E1; eine Landingpage baut ihr nur, wenn E1 sie braucht',
+      'E1 gelaufen, bis drei Werktage vor Tag 5 – an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe',
+      'Lernkarte E1 mit Verlässlichkeit auf Miro in „T4 · 6 · Lernkarten · Produkt n“, mit der Entscheidung als Befund → Handlung (gestützt, widerlegt, unklar oder neue Einsicht → weitermachen, umschwenken oder verwerfen) in der Zeile „Beleg: … → darum: …“',
+      'Optional, wer Zeit hat: Usability-Tests mit Karte E2, Befunde als U1, U2 … auf Miro in „T4 · 5 · Prototyp · Produkt n“ – fünf sind ideal, auch zwei, drei helfen',
       'Value Map und Fit des Spitzenreiters im Canvas auf Miro (T3 · 4 · Canvas · Produkt n), jedes „?“ mit Frage',
-      '<code>docs/STORYS.md</code> mit der Concept Story (sieben Stationen und Flach-Probe); der Satz daraus in Abschnitt 3 des Produkt-Briefs in der Werkstatt, die fallende Handlung als Annahme in der Annahmen-Map',
-      'Euer Baum auf Miro: drei Ideen als Lösungen unter der Ziel-Chance, der Spitzenreiter markiert, darunter die riskanteste Annahme mit E1 und E2',
-      '<code>docs/GESCHAEFTSMODELL.md</code> und <code>EXPERIMENTE.md</code> (Karte E1) im Repo; die neuen Annahmen der Idee in der Annahmen-Map der Werkstatt',
-      '<code>docs/STORY-MAP.md</code>, die Usage Story in <code>STORYS.md</code> und <code>TESTS.md</code> im Repo; Slice 1 steht als Stichworte in <code>docs/STORY-MAP.md</code>',
-      'Origin Story als Text für Aufsteller oder Landingpage in <code>docs/STORYS.md</code>; eine Landingpage baut ihr nur, wenn E1 sie braucht',
-      'E1 gelaufen – an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe –, Lernkarte mit Verlässlichkeit in <code>docs/EXPERIMENTE.md</code>',
-      'Fünf Usability-Tests mit Karte E2, Befunde als U1, U2 … und Lernkarte mit Verlässlichkeit in <code>docs/TESTS.md</code>',
-      'Je Lernkarte die Entscheidung als Befund → Handlung (gestützt, widerlegt, unklar oder neue Einsicht → weitermachen, umschwenken oder verwerfen) und was ihr ändert, in der Zeile „Beleg: … → darum: …“ der Lernkarte',
-      'Linear eingerichtet: ein Team, ein Projekt pro Produkt, Verweis in <code>docs/BACKLOG.md</code> (<a href="/innolab/methoden/scrum#team">wie</a>); Rollen und Definition of Done folgen an Tag 5',
+      'Concept Story auf Miro in „T4 · 0 · Concept Story · Produkt n“ (sieben Stationen und Flach-Probe); der Satz daraus in Abschnitt 3 des Produkt-Briefs in der Werkstatt, die fallende Handlung als Annahme in der Annahmen-Map',
+      'Euer Baum auf Miro: drei Ideen als Lösungen unter der Ziel-Chance, der Spitzenreiter markiert, darunter die riskanteste Annahme mit E1 (und E2, wenn ihr testet)',
+      'Geschäftsmodell auf Miro in „T4 · 2 · Geschäftsmodell · Produkt n“, Karte E1 im Frame „T4 · 0 · Annahmen der Idee“; die neuen Annahmen der Idee in der Annahmen-Map der Werkstatt',
+      'Story Map mit Slice 1 auf Miro in „T4 · 1 · Story Map“, die Usage Story in „T4 · 4 · Usage Story · Produkt n“',
+      'Linear eingerichtet: ein Team, ein Projekt pro Produkt (<a href="/innolab/methoden/scrum#team">wie</a>); Rollen und Definition of Done folgen an Tag 5',
       'Die anderen beiden als Collaborator in eurem GitHub-Repo',
-      'Committet und gepusht (der Spike bleibt in seinem Branch)',
+      'Der Spike liegt in seinem eigenen Branch auf GitHub',
     ]} />
     </div>
   </Folie>
 
   <Folie ende>
     <h2 id="ende-tag-4">Ende Tag 4</h2>
-    <p class="folie-satz">E1 läuft, und fünf Menschen testen euren Prototyp.</p>
+    <p class="folie-satz">E1 läuft – und wer Zeit hat, testet den Prototyp mit Menschen.</p>
     <p class="nur-beamer">Tag 5 beginnt am 12. Dezember mit dem <a href="/innolab/tag-5#debrief">Test-Debrief</a>: Was haben E1 und eure Tests gezeigt?</p>
     <p class="nur-handout"><a href="/innolab/tag-5">Tag 5</a> am 12. Dezember beginnt mit dem Test-Debrief: Was haben E1 und eure Tests gezeigt? Danach stellt ihr euch als Team auf und schreibt eure Definition of Done. Aus euren Story Maps entstehen drei Backlogs in Linear, und ihr plant den Sprint. Am Nachmittag wird gebaut.</p>
   </Folie>

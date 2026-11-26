@@ -9,7 +9,9 @@ import { folienAus, quellenAusGlob } from './begleiter';
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 
 const SEITEN: Record<string, number> = {
-  '/innolab/methoden/experiment': 15,
+  // Tagesseite: 9:00 Arbeitsfluss, 9:35 Was bauen wir? und Slice 1 im Baum, 17:15 Abschluss mit Beispiel, Hausaufgabe, Ende.
+  '/innolab/tag-4': 7,
+  '/innolab/methoden/experiment': 18,
   // Story Map seit 26.11.2026 abends: Warm-up in sechs Schritten, Begriffe, Theorie, Kaffeebar, Übung in elf Schritt-Folien.
   '/innolab/methoden/story-map': 31,
   '/innolab/methoden/usage-story': 5,

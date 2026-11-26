@@ -5,7 +5,7 @@ import type { Notiz } from './typen';
 // alle 16 Folien von story-bogen bis drei-storys, in dieser Reihenfolge (Fable-Durchsicht 26.11.: concept-story vor flach,
 // hoehepunkt darin aufgegangen, flach – hoch – hoch-lehre – baut-mit als iPhone-Strang, drei-storys als Ausblick am Ende).
 // Danach 30 min Übung (vorgehen): sieben Stationen auf Miro in „T4 · 0 · Concept Story · Produkt n“, Flach-Probe,
-// festhalten – allein, Markus 1:1, keine Erzählrunde. docs/STORYS.md kommt erst um 10:50 (Block Claude Code).
+// festhalten – allein, Markus 1:1, keine Erzählrunde. Die Story bleibt auf Miro – keine Datei (Entscheidung 26.11. abends).
 // Zeit: Die Sprechzeiten in den live-Stichworten ergeben zusammen rund 22 min; die Uhrzeiten des Blocks stehen in tag-4.astro.
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
 // selbst kommt bei der Usage Story, hier geht es um den Bogen dahinter.
@@ -569,7 +569,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       schritte: [
         'Schritt 1 (20 min, allein): die Stickies unter den sieben Stationen in „T4 · 0 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person.',
         'Schritt 2 (5 min, Kursregel – Flach-Probe): die einfache Lösung als eine Zeile ins Feld „Flach-Probe (Kursregel)“ unten links – Problem, Produkt, Ende.',
-        'Schritt 3 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map. docs/STORYS.md kommt bei Claude Code um 10:50 (erster Schritt, Übertrag von Miro).',
+        'Schritt 3 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map. Die Story bleibt auf Miro; geprüft wird mit Text oder Screenshot des Frames in Claude (Opus).',
       ],
       achten: [
         'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',

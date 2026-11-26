@@ -369,20 +369,37 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const z = anzeige(folgt, { art: 'position', index: folieZu(folien, pfad, anker) });
     return { z, karte: fremdeSeite(z, pfad, karten) };
   };
-  it('Beamer auf experiment#sagen-tun: diese Folie mit ihren live-Stichworten, keine Karte', () => {
-    const { z, karte } = beamer('/innolab/methoden/experiment', 'sagen-tun');
+  it('Beamer auf experiment#ergebnis-gilt: diese Folie mit ihren live-Stichworten, keine Karte', () => {
+    const { z, karte } = beamer('/innolab/methoden/experiment', 'ergebnis-gilt');
     expect(karte).toBeNull();
     expect(z.meldung).toBe('ok');
     const f = folien[z.index];
-    expect(`${f.pfad}#${f.id}`).toBe('/innolab/methoden/experiment#sagen-tun');
-    expect(NOTIZEN[f.pfad][f.id].live).toStrictEqual(NOTIZEN['/innolab/methoden/experiment']['sagen-tun'].live);
+    expect(`${f.pfad}#${f.id}`).toBe('/innolab/methoden/experiment#ergebnis-gilt');
+    expect(NOTIZEN[f.pfad][f.id].live).toStrictEqual(NOTIZEN['/innolab/methoden/experiment']['ergebnis-gilt'].live);
   });
-  it('folgt Folie für Folie, auch auf Folien der Seite ohne eigene Notiz', () => {
-    const a = beamer('/innolab/methoden/experiment', 'vorher-entscheiden').z.index;
+  it('folgt Folie für Folie auf den echten Seiten', () => {
+    // Seit 26.11.2026 steht „Gegen den Beleg“ direkt nach der Lernkarte, die sie voraussetzt.
+    const a = beamer('/innolab/methoden/experiment', 'lernkarte').z.index;
     expect(beamer('/innolab/methoden/experiment', 'gegen-den-beleg').z.index).toBe(a + 1);
     // Die Origin Story steht seit dem 26.11.2026 im Abschluss von Tag 4, nicht mehr auf der Experiment-Seite.
     expect(folien[beamer('/innolab/methoden/experiment', 'lernkarte').z.index].id).toBe('lernkarte');
     expect(folien[beamer('/innolab/tag-5', 'debrief').z.index].id).toBe('debrief');
+  });
+  // Alle echten Seiten mit Notizen haben inzwischen eine Notiz je Folie (begleiter-tag-4.test.ts u. a.); den Fall
+  // „Folie ohne eigene Notiz“ prüft darum eine kleine Seite als Fixture: Die Folie zählt mit, der Begleiter folgt.
+  it('folgt Folie für Folie, auch auf einer Folie der Seite ohne eigene Notiz (Fixture)', () => {
+    const pfad = '/innolab/methoden/fixture';
+    const q = { [pfad]: '<Folie><h2 id="a">A</h2></Folie>\n<Folie><h2 id="b">B</h2></Folie>\n<Folie><h2 id="c">C</h2></Folie>' };
+    const n = { [pfad]: { a: { live: ['x'] }, c: { live: ['z'] } } };
+    const fs = begleiterFolien(q, n).filter((f) => f.pfad === pfad);
+    expect(fs.map((f) => f.id)).toStrictEqual(['a', 'b', 'c']);
+    expect(n[pfad]).not.toHaveProperty('b');
+    const alle = begleiterFolien(q, n);
+    const i = folieZu(alle, pfad, 'b');
+    expect(i).toBe(folieZu(alle, pfad, 'a')! + 1);
+    const z = anzeige(folgt, { art: 'position', index: i });
+    expect(z.meldung).toBe('ok');
+    expect(alle[z.index].id).toBe('b');
   });
   // Seit 26.11.2026 hat story-map Notizen (begleiter/story-map.ts); als Seite ohne Notizen dient jetzt backlog.
   it('Seite ohne Notizen (backlog): weiter die Karte, die letzte Folie bleibt stehen', () => {
