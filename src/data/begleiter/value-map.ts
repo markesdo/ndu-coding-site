@@ -347,7 +347,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
       'Aufdecken: Fit auf Papier ist kein Beweis – getestet wird ab Tag 4.',
-      'Ausblick: gleich der Story-Bogen – und eure Concept Story.',
+      'Ausblick: gleich „Was bauen wir?“ – und Slice 1 im Baum.',
     ],
     kern: [
       {

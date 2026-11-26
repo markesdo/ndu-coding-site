@@ -241,8 +241,11 @@ describe('Tag 4: Folie „Slice 1 im Baum“', () => {
   });
 
   it('das Bild zeigt die drei Linien, Ziel-Chance, Spitzenreiter und Slice 1 – ohne data-schritt', () => {
-    const bild = readFileSync(new URL('../components/bild/SliceImBaum.astro', import.meta.url), 'utf8');
+    const roh = readFileSync(new URL('../components/bild/SliceImBaum.astro', import.meta.url), 'utf8');
+    // Ohne Frontmatter und Kommentare: dort darf „data-schritt“ als Wort stehen.
+    const bild = roh.replace(/^---[\s\S]*?\n---/, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '');
+    expect(bild).toContain('<figure class="slice-baum"');
     for (const w of ['LINIE.outcome.name', 'LINIE.beleg.name', 'LINIE.annahme.name', 'Ziel-Chance', 'Spitzenreiter', '<strong>Slice 1</strong>', '(A5)']) expect(bild, w).toContain(w);
-    expect(bild).not.toMatch(/data-schritt=/);
+    expect(bild).not.toMatch(/\bdata-schritt\b/);
   });
 });
