@@ -363,7 +363,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
-    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 75,
+    slug: 'story-map', name: 'Story Map', tag: 4, dauer: 65,
     frage: 'Was tun Menschen mit eurem Produkt, von Anfang bis Ende – und was baut ihr zuerst, um welchen Outcome zu erreichen?',
     braucht: ['brief', 'profil', 'valuemap', 'journey', 'annahmen'], ergibt: ['storymap'],
     pruefliste: [

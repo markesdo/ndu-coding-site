@@ -34,9 +34,9 @@ describe('Ab Tag 4 online (NDU-72)', () => {
     expect(texte.flatMap((x) => x.match(raum) ?? [])).toStrictEqual([]);
   });
 
-  it('vor Tag 4: Claude Code vorher installieren und anmelden – auf Tag 4 vor dem Ablauf und in der Tag-3-Hausaufgabe', () => {
+  it('vor Tag 4: Claude Code vorher installieren (anmelden um 10:50) – auf Tag 4 vor dem Ablauf und in der Tag-3-Hausaufgabe', () => {
     const t4 = seite('/innolab/tag-4');
-    const hinweis = t4.indexOf('<Callout type="warn" title="Vor Tag 4: Claude Code installieren und anmelden">');
+    const hinweis = t4.indexOf('<Callout type="warn" title="Vor Tag 4: Claude Code installieren">');
     expect(hinweis).toBeGreaterThan(0);
     expect(hinweis).toBeLessThan(t4.indexOf('<h2 id="ablauf">'));
     for (const q of [t4, seite('/innolab/tag-3')]) {

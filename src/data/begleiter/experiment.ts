@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, seit 25.11. 10:50–11:20; bis 12.11. für Tag 3 geplant) – vorerst nur die Folien aus Thomke und die,
+// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, seit 26.11. 11:00–11:30, davor 10:50–11:00 Claude Pro gemeinsam; bis 12.11. für Tag 3 geplant) – vorerst nur die Folien aus Thomke und die,
 // die sich dafür geändert haben. Der Begleiter zeigt bisher nur Tag 1; die Notizen stehen bereit, der Test prüft die ids.
 // Thomke: gedruckte Seiten aus quellen/thomke/text.txt (=====PAGE n=====).
 const THOMKE = 'Stefan H. Thomke, The Scientific Mindset';
@@ -187,6 +187,17 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Dann entscheidet ihr offen dagegen: Auf der Lernkarte stehen der Beleg und der Grund (Folie „Gegen den Beleg entscheiden“). Die Zeile „Wir entscheiden vorher“ auf der Karte bleibt stehen.',
       },
     ],
+  },
+
+  'claude-pro-jetzt': {
+    live: [
+      'Timer 10 min starten, sobald alle die Folie sehen.',
+      'Nach 5 min: Steht bei allen „Claude Pro“ im Startbild?',
+      'Falle: Erstattung statt Kündigung – beendet Pro sofort.',
+      'Wer hängt: 11:00 trotzdem Theorie, Hilfe vor 11:30.',
+    ],
+    uebung: { dauer: '10 min', form: 'alle zugleich, jede*r am eigenen Laptop' },
+    ueberleitung: 'Claude Code läuft – jetzt die Annahmen eurer Idee.',
   },
 
   vorgehen: {

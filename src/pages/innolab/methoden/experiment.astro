@@ -31,6 +31,31 @@ const PRE_MORTEM = `Lies docs/EXPERIMENTE.md und aus der Werkstatt meine Annahme
   <Uebergang station="experiment" />
   <MethodenKarte slug="experiment" />
 
+  {/* Tag 4, 10:50–11:00 (Entscheidung Markus 26.11.2026): Claude Pro schließen alle gemeinsam ab, bevor die Experiment-Karte
+      um 11:00 beginnt. Gebraucht wird Claude Code zum ersten Mal in der Story Map ab 11:30 (Prompt „Annahmen hinter
+      Slice 1“), dann im Prototyp-Spike um 14:05; das Pre-Mortem der Karte folgt erst am Ende des Tages. Nicht vorher allein. Eigener Block im
+      Ablauf von Tag 4, darum die erste Folie der Seite. Schritte wie /setup#claude-pro und #lokal-starten. */}
+  <Folie>
+    <h2 id="claude-pro-jetzt">Jetzt: Claude Pro abschließen und Claude Code starten</h2>
+    <p class="folie-satz">Ab der Story Map braucht ihr Claude Code – alle zugleich, 10 Minuten.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Claude Pro neu abschließen,</strong> mit demselben Konto: <em>Monthly</em>, 21,60 € im Monat, die NDU erstattet ihn (<a href="/setup#claude-pro">wie</a>). Wer Pro oder Max hat: nichts abschließen, nichts kündigen.</li>
+      <li data-schritt><strong>Gleich wieder kündigen:</strong> Settings → Billing. Pro läuft trotzdem bis etwa 28. Dezember.</li>
+      <li data-schritt><strong>Claude Code starten:</strong> in VS Code, in eurem Repo, <code>claude</code>; fragt es, mit demselben Konto anmelden (<a href="/setup#claude-code-browser">wie</a>).</li>
+      <li data-schritt><strong>Kurzer Test:</strong> Im Startbild steht „Claude Pro“, ein Prompt bekommt eine Antwort.</li>
+      <li data-schritt><strong>Wer hängt,</strong> sagt es sofort – laut, in der Teams-Besprechung. <Timer minuten={10} /></li>
+    </ol>
+    <div class="nur-handout">
+      <p><strong>Warum jetzt:</strong> Claude Code braucht ihr heute zum ersten Mal in der <a href="/innolab/methoden/story-map#pruefen">Story Map</a> ab 11:30, für den Prompt „Annahmen hinter Slice 1“; danach im Prototyp-Spike um 14:05 und am Ende des Tages für das Pre-Mortem eurer Karte E1 (<a href="#pruefen">Prüfen</a>). Richten es alle jetzt zugleich ein, bleibt bis 11:30 Zeit, falls etwas hängt. Der bezahlte Monat reicht bis etwa 28. Dezember: über Tag 5 am 12. Dezember und Tag 6, den Bautag am 19. Dezember. Wer schon Pro oder Max hat, schließt nichts ab und kündigt nichts.</p>
+      <p><strong>Pro abschließen</strong> (<a href="/setup#claude-pro">Setup, Schritt 2</a>): auf claude.ai mit demselben Konto anmelden wie im Oktober – Chats und Einstellungen bleiben. Bei Pro ist die jährliche Zahlung vorausgewählt: auf <em>Monthly</em> klicken, dann <em>Get Pro plan</em>. Auf der Bezahlseite muss <em>Pro · Monthly</em> stehen; mit Steuer sind es 21,60 €. Die Rechnung aus der E-Mail aufheben, die NDU erstattet sie.</p>
+      <p><strong>Kündigen:</strong> unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Nur kündigen, keine Erstattung anfordern: Eine Erstattung beendet Pro sofort, und Claude Code meldet sich ab.</p>
+      <p><strong>Claude Code starten:</strong> VS Code mit eurem Repo öffnen (<em>File → Open Recent</em>), <em>Terminal → New Terminal</em>, <code>claude</code> eintippen (<a href="/setup#lokal-starten">wie</a>). Fragt Claude nach der Anmeldung: <em>Claude account with subscription</em>, im Browser mit demselben Konto anmelden, <em>Authorize</em> (<a href="/setup#claude-code-browser">wie</a>). Am Mac springt der Browser danach von selbst zurück, einen Code kopieren müsst ihr nicht. Fehlt Claude Code noch auf eurem Mac, startet sofort das <a href="/setup#lokal-schnellweg">Setup-Skript</a> (15–25 Minuten) und sagt es.</p>
+      <p><strong>Kurzer Test:</strong> Im Startbild von Claude Code steht „Claude Pro“. Dann dieser Prompt; kommt eine Antwort, seid ihr fertig.</p>
+      <Prompt label="Test · Claude Code">Lies docs/STORYS.md und sag mir in einem Satz, worum es in meiner Concept Story geht. Ändere keine Datei.</Prompt>
+      <p><strong>Wer hängt,</strong> sagt es sofort laut in der Teams-Besprechung, nicht erst nach dem Timer; Markus hilft vor 11:30. Die Experiment-Karte auf Miro beginnt ihr um 11:00 trotzdem – Claude Code braucht ihr erst ab der Story Map.</p>
+    </div>
+  </Folie>
+
   <Folie>
     <h2 id="annahmen-der-idee">Annahmen testen, nicht Ideen</h2>
     <p class="folie-satz">Ideen zu testen dauert Wochen – Annahmen gehen in Tagen.</p>
