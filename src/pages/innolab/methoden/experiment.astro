@@ -372,6 +372,8 @@ Text (Überschrift · Wertversprechen aus der Value Map · Handlung · Antwort a
   .band-unter { border-style: dashed !important; }
   .band-ueber { border-color: var(--accent) !important; background: color-mix(in srgb, var(--accent) 12%, transparent); }
   :global(html[data-beamer]) .baender li { font-size: 1.15rem; }
+  /* Folie „karte-e1“: die ganze Karte ohne Scrollen bei 1280 × 720 – etwas engere Zeilen. */
+  :global(html[data-beamer] .folie:has(> h2#karte-e1) .prompt pre) { line-height: 1.4; }
   @media (max-width: 700px) {
     .sagen-tun, .baender { grid-template-columns: 1fr; }
     :global(.sagen-tun-pfeil) { transform: rotate(90deg); justify-self: center; }

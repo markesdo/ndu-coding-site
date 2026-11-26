@@ -1,11 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { aktuelleFolie, restText, tasteSteuertFolien, tastenZiel, timerFuerT, weiter, zurueck } from './folien';
+import { aktuelleFolie, lageZurFolie, restText, runterUm, tasteSteuertFolien, tastenZiel, timerFuerT, weiter, zurueck } from './folien';
 
 describe('weiter (→ im Beamer)', () => {
   const folie = { versteckteSchritte: 0, offeneAufloesung: false, naechsteFolie: true };
 
-  it('springt erst zur Folie, wenn man noch im Seitenkopf darüber steht', () => {
-    expect(weiter({ ...folie, vorDerFolie: true, versteckteSchritte: 2 })).toBe('hierhin');
+  it('springt erst zur Folie, wenn man noch im Seitenkopf darüber steht und sie schon im Bildschirm beginnt', () => {
+    expect(weiter({ ...folie, lage: 'vor', versteckteSchritte: 2 })).toBe('hierhin');
+  });
+
+  // Audit 26.11.: Auf Tag 4 übersprang das erste → den ganzen Ablauf (y 1093–2783) und beide Hinweise.
+  it('liest einen langen Seitenkopf erst zu Ende: Beginnt die Folie unter dem Bildschirm, einen Bildschirm weiter', () => {
+    expect(weiter({ ...folie, lage: 'vor', zielUnterhalb: true, versteckteSchritte: 2 })).toBe('runter');
   });
 
   it('deckt dann den nächsten Schritt der Folie auf', () => {
@@ -27,6 +32,61 @@ describe('weiter (→ im Beamer)', () => {
   it('nach der letzten Folie die nächste Seite', () => {
     expect(weiter({ ...folie, naechsteFolie: false })).toBe('seite');
   });
+
+  it('data-weiter: am Ende der Folie dorthin statt zur nächsten Folie oder Seite – erst nach Schritten und Rest', () => {
+    expect(weiter({ ...folie, sprung: true })).toBe('sprung');
+    expect(weiter({ ...folie, naechsteFolie: false, sprung: true })).toBe('sprung');
+    expect(weiter({ ...folie, sprung: true, versteckteSchritte: 1 })).toBe('schritt');
+    expect(weiter({ ...folie, sprung: true, restUnten: true })).toBe('runter');
+  });
+
+  it('data-ende: am Ende der Folie nichts mehr, auch wenn danach noch Folien oder Seiten kämen', () => {
+    expect(weiter({ ...folie, ende: true })).toBe('ende');
+    expect(weiter({ ...folie, naechsteFolie: false, ende: true })).toBe('ende');
+    expect(weiter({ ...folie, ende: true, versteckteSchritte: 1 })).toBe('schritt');
+  });
+
+  // Audit 26.11. (NDU-75-Klasse): Unter der letzten Folie von Tag 4 (#abschluss) ging → zur nächsten Seite – die Folie
+  // über dem Bildschirm galt als aktuell. Unter einer Folie handelt → nie für sie (keine Schritte, kein data-weiter).
+  describe('unter einer Folie (Handout-Text nach ihr)', () => {
+    const unter = { ...folie, lage: 'unter' as const, versteckteSchritte: 2, offeneAufloesung: true, sprung: true };
+
+    it('zur nächsten Folie, sobald sie im Bildschirm beginnt – Schritte und data-weiter der Folie darüber zählen nicht', () => {
+      expect(weiter(unter)).toBe('folie');
+    });
+
+    it('beginnt die nächste Folie erst unter dem Bildschirm: einen Bildschirm weiter', () => {
+      expect(weiter({ ...unter, zielUnterhalb: true })).toBe('runter');
+    });
+
+    it('nach der letzten Folie bis zum Seitenende, dann gilt ihr Ende', () => {
+      expect(weiter({ ...unter, naechsteFolie: false, seiteRestUnten: true })).toBe('runter');
+      expect(weiter({ ...unter, naechsteFolie: false, sprung: false })).toBe('seite');
+      expect(weiter({ ...unter, naechsteFolie: false })).toBe('sprung');
+      expect(weiter({ ...unter, naechsteFolie: false, sprung: false, ende: true })).toBe('ende');
+    });
+  });
+});
+
+describe('runterUm (Bildschirm weiter)', () => {
+  it('einen Bildschirm unter der Kopfleiste, 48 px überlappend', () => {
+    expect(runterUm({ fensterHoehe: 720, kopfleiste: 47, rest: 5000 })).toBe(625);
+  });
+
+  // Ragte die Folie ein Stück in den Bildschirm, zöge scroll-snap (proximity) sie hoch: Text davor wäre übersprungen.
+  it('nie über den nächsten Halt hinaus: der steht dann genau am unteren Rand', () => {
+    expect(runterUm({ fensterHoehe: 720, kopfleiste: 47, rest: 300 })).toBe(300);
+    expect(runterUm({ fensterHoehe: 720, kopfleiste: 47, rest: -10 })).toBe(0);
+  });
+});
+
+describe('lageZurFolie', () => {
+  it('auf der Folie, davor (Seitenkopf) oder darunter (ganz über dem Bildschirm)', () => {
+    expect(lageZurFolie({ top: 47, bottom: 720 }, 47)).toBe('auf');
+    expect(lageZurFolie({ top: -600, bottom: 300 }, 47)).toBe('auf');
+    expect(lageZurFolie({ top: 900, bottom: 1573 }, 47)).toBe('vor');
+    expect(lageZurFolie({ top: -1400, bottom: 40 }, 47)).toBe('unter');
+  });
 });
 
 describe('zurueck (← im Beamer)', () => {
@@ -36,6 +96,15 @@ describe('zurueck (← im Beamer)', () => {
 
   it('dann die vorige Folie', () => {
     expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true })).toBe('folie');
+  });
+
+  // Audit 26.11.: Von tag-4#abschluss sprang ← auf #arbeitsfluss und übersprang #was-bauen-wir.
+  it('unter einer Folie zurück auf sie selbst, nicht auf die davor – auch mit gezeigten Schritten', () => {
+    expect(zurueck({ gezeigteSchritte: 2, vorherigeFolie: true, kopfDarueber: true, lage: 'unter' })).toBe('hierhin');
+  });
+
+  it('im Seitenkopf vor der ersten Folie zählen deren Schritte nicht: an den Seitenanfang', () => {
+    expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: false, kopfDarueber: true, lage: 'vor' })).toBe('anfang');
   });
 
   it('vor der ersten Folie an den Seitenanfang, danach die vorige Seite', () => {

@@ -5,6 +5,9 @@
 /* Schrift folgt der Bildschirmhöhe: 720p ≈ 20px, 1080p ≈ 27.5px. rem-Größen und Abstände wachsen mit. */
 html[data-beamer] { font-size: clamp(20px, 2.55vh, 30px); --max: 52rem; }
 html[data-beamer] body { font-size: 1rem; line-height: 1.45; }
+/* Kein weiches Scrollen (global.css): Ein Sprung per #anker flöge sonst sichtbar über viele Folien, und ein → während
+   des Flugs mäße die Folie mitten im Scrollen. ← / → springen ohnehin sofort (Layout.astro). */
+html[data-beamer] { scroll-behavior: auto; }
 
 /* Nur Kursseiten (.content/.shell): /start bindet beamer.css auch ein und hat eigene Größen.
    Typografie: Überschriften kleiner als am Desktop gerechnet (sonst frisst h1 bei 720p die halbe Höhe),
@@ -105,6 +108,15 @@ html[data-beamer] .folie[data-schritte]::after {
   border: 1px solid var(--border); border-radius: 999px; padding: .15rem .65rem;
 }
 html[data-beamer] .folie[data-schritte-offen]::after {
+  color: var(--fg); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, transparent);
+}
+/* Letzte Folie eines Kurstags (Folie.astro, ende): „Ende“ unten rechts; ein → dort leuchtet ihn kurz auf (Layout.astro). */
+html[data-beamer] .folie[data-ende]:not([data-schritte])::after {
+  content: 'Ende'; position: absolute; right: 0; bottom: .9rem;
+  font-family: var(--mono); font-size: .9rem; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 999px; padding: .15rem .65rem; transition: background .3s, border-color .3s;
+}
+html[data-beamer] .folie[data-ende][data-ende-gedrueckt]:not([data-schritte])::after {
   color: var(--fg); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 html[data-beamer] .timer { font-size: 1.2rem; }

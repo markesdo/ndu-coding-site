@@ -1,25 +1,62 @@
 // Folien im Beamer: Was ← / → (und T) als Nächstes tun. Ohne DOM, damit testbar (Handler in Layout.astro).
-// Reihenfolge vorwärts: zur Folie, falls noch davor → Rest einer zu langen Folie → Schritte aufdecken →
-// Auflösung zeigen → nächste Folie → nächste Seite. Rückwärts: Schritte verdecken → vorige Folie →
-// Seitenanfang (Titel, Ablauf) → vorige Seite.
+// Reihenfolge vorwärts: Seitenkopf zu Ende lesen, dann zur Folie → Schritte aufdecken → Auflösung zeigen → Rest einer zu
+// langen Folie → nächste Folie (oder data-weiter / data-ende der Folie) → nächste Seite. Rückwärts: Schritte verdecken →
+// vorige Folie → Seitenanfang (Titel, Ablauf) → vorige Seite.
+//
+// Wo man steht (lage), misst Layout.astro an der aktuellen Folie (aktuelleFolie):
+// - 'vor':   ihre Oberkante liegt noch unter der Kopfleiste – man liest den Seitenkopf (Titel, Ablauf, Hinweise).
+// - 'auf':   sie füllt den Bildschirm (oder ein Teil von ihr).
+// - 'unter': sie liegt ganz über dem Bildschirm – man liest Handout-Text nach ihr (etwa #faden auf Tag 4).
+// Regel für 'vor' und 'unter': → handelt nie für eine Folie, die man nicht sieht (keine Schritte, kein data-weiter). Es
+// geht zur nächsten Folie, sobald deren Oberkante im Bildschirm liegt; sonst einen Bildschirm weiter, damit kein Text
+// übersprungen wird. Nach der letzten Folie bis zum Seitenende, dann gilt das Ende der letzten Folie. ← springt von
+// 'unter' auf diese Folie selbst (nicht auf die davor).
 
-export type Weiter = 'hierhin' | 'runter' | 'schritt' | 'aufloesung' | 'folie' | 'seite';
-export type Zurueck = 'schritt' | 'folie' | 'anfang' | 'seite';
+export type Weiter = 'hierhin' | 'runter' | 'schritt' | 'aufloesung' | 'folie' | 'sprung' | 'ende' | 'seite';
+export type Zurueck = 'schritt' | 'hierhin' | 'folie' | 'anfang' | 'seite';
+export type Lage = 'vor' | 'auf' | 'unter';
 
 export function weiter(z: {
-  /** Die Folie liegt noch unterhalb (man steht im Seitenkopf darüber). */
-  vorDerFolie?: boolean;
+  /** Fehlt: 'auf'. */
+  lage?: Lage;
+  /** 'vor': Oberkante dieser Folie, 'unter': Oberkante der nächsten liegt noch unter dem Bildschirm. */
+  zielUnterhalb?: boolean;
+  /** Unter dem Bildschirm kommt noch Seite (zählt für 'unter' ohne nächste Folie). */
+  seiteRestUnten?: boolean;
   /** Die Folie ist höher als der Bildschirm und reicht noch unter ihn. */
   restUnten?: boolean;
   versteckteSchritte: number;
   offeneAufloesung: boolean;
   naechsteFolie: boolean;
+  /** Folie mit data-weiter: an ihrem Ende dorthin statt zur nächsten Folie oder Seite. */
+  sprung?: boolean;
+  /** Folie mit data-ende: an ihrem Ende passiert nichts mehr (Ende des Kurstags). */
+  ende?: boolean;
 }): Weiter {
-  if (z.vorDerFolie) return 'hierhin';
+  const lage = z.lage ?? 'auf';
+  const amEnde = (): Weiter => (z.ende ? 'ende' : z.sprung ? 'sprung' : 'seite');
+  if (lage === 'vor') return z.zielUnterhalb ? 'runter' : 'hierhin';
+  if (lage === 'unter') {
+    if (z.naechsteFolie) return z.zielUnterhalb ? 'runter' : 'folie';
+    return z.seiteRestUnten ? 'runter' : amEnde();
+  }
   if (z.versteckteSchritte > 0) return 'schritt';
   if (z.offeneAufloesung) return 'aufloesung';
   if (z.restUnten) return 'runter';
+  if (z.ende) return 'ende';
+  if (z.sprung) return 'sprung';
   return z.naechsteFolie ? 'folie' : 'seite';
+}
+
+/**
+ * Wie weit „runter“ scrollt (px): ein Bildschirm unter der Kopfleiste, mit 48 px Überlappung – aber nie weiter als bis
+ * zum nächsten Halt (rest: Abstand vom unteren Bildschirmrand bis zur Oberkante der nächsten Folie, zum Ende einer zu
+ * langen Folie oder zum Seitenende). Dort steht der Halt genau am unteren Rand: Alles davor war zu sehen, und Chrome
+ * rastet nicht ein (beamer.css, scroll-snap proximity) – ragte die Folie ein Stück in den Bildschirm, zöge das Einrasten
+ * sie hoch und der Text darüber wäre übersprungen.
+ */
+export function runterUm({ fensterHoehe, kopfleiste, rest }: { fensterHoehe: number; kopfleiste: number; rest: number }): number {
+  return Math.max(0, Math.min(fensterHoehe - kopfleiste - 48, rest));
 }
 
 /** Was am fokussierten Element für „wird hier getippt?“ zählt: Tag klein ('' ohne Element), bei <input> der type. */
@@ -54,11 +91,21 @@ export function tasteSteuertFolien(z: {
 }
 const KEIN_TEXT = new Set(['checkbox', 'button', 'submit', 'reset', 'image', 'file', 'color', 'hidden']);
 
-/** Rückwärts verdeckt nur Schritte wieder; eine gezeigte Auflösung bleibt offen. */
-export function zurueck(z: { gezeigteSchritte: number; vorherigeFolie: boolean; kopfDarueber?: boolean }): Zurueck {
-  if (z.gezeigteSchritte > 0) return 'schritt';
-  if (z.vorherigeFolie) return 'folie';
+/** Rückwärts verdeckt nur Schritte wieder; eine gezeigte Auflösung bleibt offen. Unter der Folie (lage 'unter'): zurück
+ *  auf sie selbst – nicht auf die davor, sonst fehlte sie beim Zurückblättern. Im Seitenkopf ('vor') zählen ihre Schritte nicht. */
+export function zurueck(z: { gezeigteSchritte: number; vorherigeFolie: boolean; kopfDarueber?: boolean; lage?: Lage }): Zurueck {
+  if (z.lage === 'unter') return 'hierhin';
+  if (z.lage !== 'vor' && z.gezeigteSchritte > 0) return 'schritt';
+  if (z.lage !== 'vor' && z.vorherigeFolie) return 'folie';
   return z.kopfDarueber ? 'anfang' : 'seite';
+}
+
+/** Lage zur aktuellen Folie aus ihrem Rand (px im Viewport): darunter, wenn ihre Unterkante die Kopfleiste nicht mehr
+ *  erreicht; davor, wenn ihre Oberkante noch darunter liegt. 4 px Spiel für Rundung. */
+export function lageZurFolie(rand: { top: number; bottom: number }, kopfleiste: number): Lage {
+  if (rand.bottom <= kopfleiste + 4) return 'unter';
+  if (rand.top > kopfleiste + 4) return 'vor';
+  return 'auf';
 }
 
 /**
