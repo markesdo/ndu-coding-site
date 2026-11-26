@@ -32,6 +32,11 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T3 · 4 · Canvas · Produkt 1': '3458764691039197393',
   'T3 · 4 · Canvas · Produkt 2': '3458764691039197394',
   'T3 · 4 · Canvas · Produkt 3': '3458764691039197395',
+  // Anleitung „Value Map füllen“ (seit 25.11.2026), je ein Frame links neben dem Canvas der Kaffeebar und jeder Person.
+  'T3 · 4 · Anleitung Value Map · Kaffeebar': '3458764691611513900',
+  'T3 · 4 · Anleitung Value Map · Produkt 1': '3458764691611802580',
+  'T3 · 4 · Anleitung Value Map · Produkt 2': '3458764691611859842',
+  'T3 · 4 · Anleitung Value Map · Produkt 3': '3458764691611859843',
   // Bis 19.11.2026 „T3 · 5 · Annahmen der Idee“; genutzt wird der Frame an Tag 4 (experiment.astro), darum T4 · 0.
   'T4 · 0 · Annahmen der Idee': '3458764687894872786',
   'T4 · 1 · Story Map': '3458764687894872787',
