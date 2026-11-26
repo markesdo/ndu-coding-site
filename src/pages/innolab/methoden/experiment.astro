@@ -47,48 +47,6 @@ const KAFFEEBAR_ANNAHMEN = [
   <Uebergang station="experiment" />
   <MethodenKarte slug="experiment" />
 
-  {/* Tag 4, 11:00–11:10 (Entscheidung Markus 26.11.2026; Zeiten seit 27.11.): Claude Pro schließen alle gemeinsam ab, bevor die Experiment-Karte
-      um 11:10 beginnt. Gebraucht wird Claude Code zum ersten Mal in der Story Map ab 11:50 (Prompt „Annahmen hinter
-      Slice 1“), dann im Prototyp-Spike um 14:45. Nicht vorher allein. Seit dem Nachtrag 26.11. abends schreiben die
-      Studierenden keine docs-Dateien: Der Test-Prompt bekommt einen Screenshot des Concept-Story-Frames von Miro, und
-      Claude Code läuft mit Opus (/model opus). Zwei Folien, damit jede bei 1280 × 720 passt; eigener Block im Ablauf von
-      Tag 4, darum die ersten Folien der Seite. Schritte wie /setup#claude-pro und #lokal-starten. */}
-  <Folie>
-    <h2 id="claude-pro-jetzt">Jetzt: Claude Pro abschließen und Claude Code starten</h2>
-    <p class="folie-satz">Alle zugleich, 10 Minuten – ab der Story Map braucht ihr Claude Code.</p>
-    <p class="schon-pro"><strong>Ihr habt schon Pro oder Max?</strong> Dann nichts abschließen, nichts kündigen: nur Schritt 3 bis 5.</p>
-    <ol class="gross">
-      <li data-schritt><strong>Claude Pro neu abschließen,</strong> mit demselben Konto: <em>Monthly</em>, 21,60 €; die NDU erstattet ihn (<a href="/setup#claude-pro">wie</a>). <Timer minuten={10} /></li>
-      <li data-schritt><strong>Gleich wieder kündigen:</strong> Settings → Billing. Pro läuft trotzdem bis etwa 28. Dezember.</li>
-      <li data-schritt><strong>Claude Code starten:</strong> im Terminal eures Repos <code>claude</code>; fragt es, mit demselben Konto anmelden (<a href="/setup#claude-code-browser">wie</a>).</li>
-    </ol>
-    <p class="nur-beamer small">Weiter: Opus wählen und testen.</p>
-    <div class="nur-handout">
-      <p><strong>Warum jetzt:</strong> Claude Code braucht ihr heute zum ersten Mal in der <a href="/innolab/methoden/story-map#pruefen">Story Map</a>, für den Prompt „Annahmen hinter Slice 1“; danach zum Bauen im Prototyp-Spike nach der Mittagspause. Richten es alle jetzt zugleich ein, bleibt bis zur Story Map Zeit, falls etwas hängt. Der bezahlte Monat reicht bis etwa 28. Dezember: über Tag 5 am 12. Dezember und Tag 6, den Bautag am 19. Dezember. Wer schon Pro oder Max hat, schließt nichts ab und kündigt nichts – nur starten, Opus wählen, testen.</p>
-      <p><strong>Pro abschließen</strong> (<a href="/setup#claude-pro">Setup, Schritt 2</a>): auf claude.ai mit demselben Konto anmelden wie im Oktober – Chats und Einstellungen bleiben. Bei Pro ist die jährliche Zahlung vorausgewählt: auf <em>Monthly</em> klicken, dann <em>Get Pro plan</em>. Auf der Bezahlseite muss <em>Pro · Monthly</em> stehen; mit Steuer sind es 21,60 €. Die Rechnung aus der E-Mail aufheben, die NDU erstattet sie.</p>
-      <p><strong>Kündigen:</strong> unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Nur kündigen, keine Erstattung anfordern: Eine Erstattung beendet Pro sofort, und Claude Code meldet sich ab.</p>
-      <p><strong>Claude Code starten:</strong> wie im Setup – VS Code mit eurem Repo öffnen (<em>File → Open Recent</em>), <em>Terminal → New Terminal</em>, <code>claude</code> eintippen (<a href="/setup#lokal-starten">wie</a>). Dateien schreibt ihr dort nicht; Claude Code braucht ihr zum Bauen. Fragt Claude nach der Anmeldung: <em>Claude account with subscription</em>, im Browser mit demselben Konto anmelden, <em>Authorize</em> (<a href="/setup#claude-code-browser">wie</a>). Am Mac springt der Browser danach von selbst zurück, einen Code kopieren müsst ihr nicht. Fehlt Claude Code noch auf eurem Mac, startet sofort das <a href="/setup#lokal-schnellweg">Setup-Skript</a> (15–25 Minuten) und sagt es.</p>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="claude-code-opus">Dann: Opus wählen und kurz testen</h2>
-    <p class="folie-satz">Ein Screenshot, ein Satz – dann läuft Claude Code.</p>
-    <ol class="gross" start="4">
-      <li data-schritt><strong>Modell auf Opus stellen:</strong> in Claude Code <code>/model opus</code>. In der Claude-App: im Modellmenü Opus wählen.</li>
-      <li data-schritt><strong>Kurzer Test:</strong> Screenshot eures Frames „T4 · 0 · Concept Story · Produkt n“ einfügen, dazu: „Sag mir in einem Satz, worum es in meiner Concept Story geht.“</li>
-      <li data-schritt><strong>Wer hängt,</strong> sagt es sofort – laut, in der Teams-Besprechung.</li>
-    </ol>
-    <p class="small">Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.</p>
-    <p class="nur-beamer small">Gleich weiter: die Annahmen eures Spitzenreiters.</p>
-    <div class="nur-handout">
-      <p><strong>Opus:</strong> Wo ihr in diesem Kurs Claude oder Claude Code benutzt, nehmt das Modell Opus. In Claude Code einmal <code>/model opus</code> eintippen; mit <code>/model</code> seht ihr, welches Modell läuft. In der Claude-App und auf claude.ai wählt ihr Opus im Modellmenü am Eingabefeld. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> eintippen (in der App: das Modellmenü) und das vorgeschlagene Standardmodell wählen, dann weiter.</p>
-      <p><strong>Kurzer Test:</strong> Im Startbild von Claude Code steht „Claude Pro“. Dann macht ihr einen Screenshot eures Frames auf Miro: <MiroLink name="T4 · 0 · Concept Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 3">Produkt 3</MiroLink>. Am Mac mit <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>Ctrl</kbd> <kbd>4</kbd> in die Zwischenablage, in Claude Code mit <kbd>Ctrl</kbd> <kbd>V</kbd> einfügen (oder die Bilddatei ins Terminal ziehen), dann dieser Prompt. Kommt ein Satz, der zu eurer Story passt, seid ihr fertig.</p>
-      <Prompt label="Test · Claude Code, mit Opus">Sag mir in einem Satz, worum es in meiner Concept Story geht.</Prompt>
-      <p><strong>Wer hängt,</strong> sagt es sofort laut in der Teams-Besprechung, nicht erst nach dem Timer; Markus hilft vor der Story Map. Die Experiment-Karte auf Miro beginnt ihr trotzdem gleich – Claude Code braucht ihr erst ab der Story Map.</p>
-    </div>
-  </Folie>
-
   <Folie>
     <h2 id="annahmen-der-idee">Annahmen testen, nicht Ideen</h2>
     <p class="folie-satz">Euer Spitzenreiter steht auf Papier. Jetzt: An welcher Annahme hängt er – und wie würdet ihr sie prüfen?</p>
@@ -364,7 +322,7 @@ Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt 
     <div class="nur-handout">
       <p>Dazu Theorie und Beispiel vorab. Die Schritte kommen aus Lückensatz und Value Map des Spitzenreiters. Erste Kandidaten für Annahmen sind die „?“ aus Value Map und Fit (heute Morgen) auf Miro: am Satz im Feld „Ideen vergleichen und wählen“ (T3 · 4), aus dem Ideen-Vergleich aller drei Ideen, und am Zettel in eurem Canvas, aus dem Fit. Bei den Annahmen markiert ihr, welche auch für eure anderen beiden Ideen gelten – geteilte Annahmen sind oft die schnellsten Tests. Das Pre-Mortem ist die Frage von vorhin: „{PRE_MORTEM_FRAGE}“ Die neuen Annahmen tragt ihr mit den nächsten freien IDs in der Werkstatt in eure Annahmen-Map ein, mit Art, Wichtigkeit und Beleg. Unter die Karte kommt je eine Zeile für die anderen beiden Ideen: deren riskanteste Annahme.</p>
       <p>Die Karte steht danach auf Miro, im Frame „T4 · 0 · Annahmen der Idee“, Feld „Karte E1 für die oberste rechts“ (<a href="#vorlage">so sieht sie aus</a>). Prüfen mit Claude am Ende des Tages, wenn auch die Origin Story steht.</p>
-      <p><strong>Euer Baum – Tests:</strong> In eurem Baum auf Miro („Baum · Produkt n“) hängen seit der Value Map die drei Ideen unter der Ziel-Chance. Unter den Spitzenreiter kommen jetzt die riskanteste Annahme und die Karte E1; nach dem Prototyp-Spike kommt E2 dazu. Bei Torres hängen unter jeder Lösung die Annahmen-Tests, die zeigen, ob sie trägt ({TORRES}, S. 25–27). Scheitert der Spitzenreiter, sind die beiden Geschwister-Ideen noch da – mit der Zeile „Falls E1 scheitert“ unter eurer Karte.</p>
+      <p><strong>Euer Baum – Tests:</strong> In eurem Baum auf Miro („Baum · Produkt n“) hängen seit der Value Map die drei Ideen unter der Ziel-Chance. Unter den Spitzenreiter kommen jetzt die riskanteste Annahme und die Karte E1; nach dem Papier-Prototyp kommt E2 dazu. Bei Torres hängen unter jeder Lösung die Annahmen-Tests, die zeigen, ob sie trägt ({TORRES}, S. 25–27). Scheitert der Spitzenreiter, sind die beiden Geschwister-Ideen noch da – mit der Zeile „Falls E1 scheitert“ unter eurer Karte.</p>
     </div>
   </Folie>
 
@@ -390,10 +348,10 @@ Weicht ab von „Wir entscheiden vorher“? Grund: …
 Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]`} />
 
   <h2 id="pruefen">Prüfen</h2>
-  <p>Karte E1 und Origin Story liegen nur auf Miro: die Karte in eurer Spalte im Frame „T4 · 0 · Annahmen der Idee“, die Origin Story in „T4 · 6 · Origin Story · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>
+  <p>Karte E1 und Origin Story liegen nur auf Miro: die Karte in eurer Spalte im Frame „T4 · 0 · Annahmen der Idee“, die Origin Story in „T4 · 6 · Origin Story · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.</p>
   <ClaudePruefung slug="experiment" />
-  <p>Am Ende des Tages, wenn auch die Origin Story steht: die Gegenprobe zu E1. Claude sucht Gründe, warum E1 euch in die Irre führen könnte – das ist nicht das Pre-Mortem vom Morgen, das Annahmen sammelt, sondern ein Blick auf den Test selbst. In der Claude-App, mit der Werkstatt verbunden und im Modellmenü auf Opus: einen Screenshot eurer Karte E1 von Miro einfügen, dann dieser Prompt. Meldet Claude ein Limit oder gibt es Opus nicht: im Modellmenü das vorgeschlagene Standardmodell wählen, dann weiter.</p>
-  <Prompt label="Gegenprobe zu E1 · Claude-App, mit Opus">{GEGENPROBE}</Prompt>
+  <p>Am Ende des Tages, wenn auch die Origin Story steht: die Gegenprobe zu E1. Claude sucht Gründe, warum E1 euch in die Irre führen könnte – das ist nicht das Pre-Mortem vom Morgen, das Annahmen sammelt, sondern ein Blick auf den Test selbst. Zu Hause, in claude.ai oder der Claude-App, mit der Werkstatt verbunden und im Modellmenü auf dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus: einen Screenshot eurer Karte E1 von Miro einfügen, dann dieser Prompt. Meldet Claude ein Limit oder gibt es Opus nicht: im Modellmenü das vorgeschlagene Standardmodell wählen, dann weiter.</p>
+  <Prompt label="Gegenprobe zu E1 · zu Hause, in claude.ai">{GEGENPROBE}</Prompt>
   </div>
 
   {/* Die Folie zur Origin Story steht im Abschluss von Tag 4 (tag-4#abschluss, 17:15) – nicht hier im Fluss der
@@ -514,7 +472,6 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
   :global(html[data-beamer]) .fuenf-bsp { margin: .15rem 0; font-size: .95rem; }
   :global(html[data-beamer] .annahmen-map .am-flaeche) { aspect-ratio: 2 / 1; }
   :global(html[data-beamer] .folie:has(> h2#vorgehen) ol.gross > li) { font-size: .95rem; line-height: 1.35; margin-bottom: .25rem; }
-  .schon-pro { margin: .25rem 0 .5rem; }
   .fluss-titel { margin: .5rem 0 -.75rem; }
   /* Fluss-Folien (ergebnis-gilt, gegen-den-beleg): etwas weniger Rand, damit Fluss und drei Zeilen bei 1280 × 720 passen. */
   :global(html[data-beamer] .folie:has(> h2#ergebnis-gilt) .fluss), :global(html[data-beamer] .folie:has(> h2#gegen-den-beleg) .fluss) { margin: .75rem 0; }
