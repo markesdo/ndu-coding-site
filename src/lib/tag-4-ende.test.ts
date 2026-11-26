@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { ohneAbgeschaltet } from '../components/abgeschaltet';
 import { station } from '../components/arbeitsfluss';
 import { bloeckeAus, folienAus, quellenAusGlob } from './begleiter';
@@ -27,27 +27,30 @@ const naechsteSeite = (p: string) => seite(p).match(/<FooterNav\b[^>]*\bnext=\{\
  * sonst nächste Folie der Seite, nach der letzten die nächste Seite (FooterNav). Ankunft per #anker auf der Folie
  * mit diesem h2 (oder der ersten Folie der Seite).
  */
-function route(start: string, max = 400): string[] {
+function route(start: string, max = 60): string[] {
   const weg: string[] = [];
   let [pfad, anker] = start.split('#');
   for (let n = 0; n < max; n++) {
     const fs = folienMit(pfad);
     let i = anker ? fs.findIndex((f) => f.id === anker) : 0;
-    if (i < 0) throw new Error(`${pfad}#${anker}: keine Folie`);
+    if (i < 0) return [...weg, `${pfad}#${anker} (keine Folie)`];
     for (;;) {
       const f = fs[i];
       weg.push(`${pfad}#${f.id}`);
       if (f.ende) return weg;
       const ziel = f.weiter ?? (i + 1 < fs.length ? undefined : naechsteSeite(pfad));
       if (ziel) { [pfad, anker] = ziel.split('#'); break; }
+      if (i + 1 >= fs.length) return [...weg, `${pfad} (Seitenende ohne Weiter)`];
       i++;
     }
   }
-  throw new Error('kein Ende');
+  return [...weg, '(kein Ende)'];
 }
 
 describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
-  const weg = route('/innolab/tag-4');
+  // Im Test berechnet, nicht beim Sammeln: Ein kaputter Weg soll an einer Assertion rot werden, nicht beim Laden der Datei.
+  let weg: string[] = [];
+  beforeAll(() => { weg = route('/innolab/tag-4'); });
 
   it('läuft Tag 4 in der Reihenfolge des Ablaufs und endet auf „Ende Tag 4“', () => {
     const seiten = weg.map((w) => w.split('#')[0]).filter((p, i, a) => p !== a[i - 1]);
