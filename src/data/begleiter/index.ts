@@ -16,6 +16,7 @@ import { NOTIZEN_IDEATION } from './ideation';
 import { NOTIZEN_KUNDENPROFIL } from './kundenprofil';
 import { NOTIZEN_VALUE_MAP } from './value-map';
 import { NOTIZEN_CONCEPT_STORY } from './concept-story';
+import { NOTIZEN_GESCHAEFTSMODELL } from './geschaeftsmodell';
 import { NOTIZEN_EXPERIMENT } from './experiment';
 import { NOTIZEN_PITCH } from './pitch';
 import { NOTIZEN_TAG_5 } from './tag-5';
@@ -41,6 +42,7 @@ export const NOTIZEN: Record<string, Record<string, Notiz>> = {
   '/innolab/methoden/ideation': NOTIZEN_IDEATION,
   '/innolab/methoden/value-map': NOTIZEN_VALUE_MAP,
   '/innolab/methoden/concept-story': NOTIZEN_CONCEPT_STORY,
+  '/innolab/methoden/geschaeftsmodell': NOTIZEN_GESCHAEFTSMODELL,
   '/innolab/methoden/experiment': NOTIZEN_EXPERIMENT,
   '/innolab/methoden/pitch': NOTIZEN_PITCH,
   '/innolab/tag-5': NOTIZEN_TAG_5,
