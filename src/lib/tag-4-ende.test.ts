@@ -31,6 +31,7 @@ const vorigeSeite = (p: string) => seite(p).match(/<FooterNav\b[^>]*\bprev=\{\{ 
 function zurueckVon(pfad: string, id: string): string {
   const fs = folienMit(pfad);
   const i = fs.findIndex((f) => f.id === id);
+  expect(i, `${pfad}#${id}: keine Folie`).toBeGreaterThanOrEqual(0);
   if (fs[i].zurueck) return fs[i].zurueck!;
   return i > 0 ? `${pfad}#${fs[i - 1].id}` : (vorigeSeite(pfad) ?? '(keine)');
 }
@@ -45,6 +46,7 @@ function route(start: string, max = 60, bis?: string): string[] {
   let [pfad, anker] = start.split('#');
   for (let n = 0; n < max; n++) {
     const fs = folienMit(pfad);
+    if (fs.length === 0) return [...weg, `${pfad} (keine Folien)`];
     let i = anker ? fs.findIndex((f) => f.id === anker) : 0;
     if (i < 0) return [...weg, `${pfad}#${anker} (keine Folie)`];
     for (;;) {
@@ -138,7 +140,7 @@ describe('Tag 4: Folien des Abschlusses', () => {
     const erster = bloeckeAus(seite('/innolab/tag-5'))[0];
     expect(erster.titel).toBe('Test-Debrief');
     const f = folie('/innolab/tag-4', 'ende-tag-4');
-    expect(f).toContain(`<p>Tag 5 beginnt am 12. Dezember mit dem <a href="/innolab/tag-5${erster.href}">${erster.titel}</a>: Was haben E1 und eure Tests gezeigt?</p>`);
+    expect(f).toContain(`<p class="nur-beamer">Tag 5 beginnt am 12. Dezember mit dem <a href="/innolab/tag-5${erster.href}">${erster.titel}</a>: Was haben E1 und eure Tests gezeigt?</p>`);
     expect(seite('/innolab/tag-5')).toContain('Samstag, 12. Dezember 2026');
   });
 });
@@ -158,7 +160,9 @@ describe('Tag 5 im Beamer: rund um scrum#team keine Tag-4-Folie', () => {
     expect(zurueckVon('/innolab/methoden/scrum', 'team')).toBe('/innolab/tag-5#debrief-ablauf');
     // Gegenprobe: Ohne zurueck wäre es die Tag-4-Folie darüber.
     const fs = folienMit('/innolab/methoden/scrum');
-    expect(fs[fs.findIndex((f) => f.id === 'team') - 1].id).toBe('weiter-tag-4');
+    const team = fs.findIndex((f) => f.id === 'team');
+    expect(team).toBeGreaterThanOrEqual(1);
+    expect(fs[team - 1].id).toBe('weiter-tag-4');
     // Der Debrief ist die letzte Folie auf tag-5; dessen → führt nach scrum#team.
     expect(folienMit('/innolab/tag-5').at(-1)?.id).toBe('debrief-ablauf');
   });
@@ -171,5 +175,20 @@ describe('Hilfen des Tests', () => {
     expect(hatEnde(' zurueck="/a" ende')).toBe(true);
     const q = '<Folie weiter="/x"><p>ohne Überschrift</p></Folie>\n<h2 id="draussen">D</h2>';
     expect([...q.matchAll(/<Folie\b([^>]*)>(?:(?!<\/Folie>)[\s\S])*?<h2 id="([^"]+)"/g)]).toHaveLength(0);
+  });
+});
+
+// Review 2 #448: Was nur zur Uhrzeit am Beamer stimmt, steht nicht im Handout (dort lesen es alle auch an Tag 5).
+describe('Handout ohne Beamer-Sätze', () => {
+  it('„Heute … bis 17:15“, der Tag-5-Satz und die Hausaufgaben-Schritte nur im Beamer; das Handout behält Hinweis und Checkliste', () => {
+    const weiter = folie('/innolab/methoden/scrum', 'weiter-tag-4');
+    expect(weiter).toMatch(/<p class="nur-beamer">Heute: weiter am Prototyp bis 17:15/);
+    expect(weiter).toMatch(/<p class="nur-handout">Teamaufstellung und Definition of Done folgen an <a href="\/innolab\/tag-5">Tag 5<\/a>/);
+    // „folgen an Tag 5“ steht genau einmal außerhalb von .nur-beamer.
+    const ohneBeamer = weiter.replace(/<p class="[^"]*\bnur-beamer\b[^"]*">[\s\S]*?<\/p>/g, '');
+    expect(ohneBeamer.match(/folgen an/g)).toHaveLength(1);
+    const ende = folie('/innolab/tag-4', 'ende-tag-4').replace(/<p class="[^"]*\bnur-beamer\b[^"]*">[\s\S]*?<\/p>/g, '');
+    expect(ende.match(/beginnt mit dem Test-Debrief/g)).toHaveLength(1);
+    expect(folie('/innolab/tag-4', 'hausaufgabe')).toContain('<ol class="gross dicht nur-beamer">');
   });
 });
