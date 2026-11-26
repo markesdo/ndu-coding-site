@@ -380,7 +380,8 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
   it('folgt Folie für Folie, auch auf Folien der Seite ohne eigene Notiz', () => {
     const a = beamer('/innolab/methoden/experiment', 'vorher-entscheiden').z.index;
     expect(beamer('/innolab/methoden/experiment', 'gegen-den-beleg').z.index).toBe(a + 1);
-    expect(folien[beamer('/innolab/methoden/experiment', 'origin-story').z.index].id).toBe('origin-story');
+    // Die Origin Story steht seit dem 26.11.2026 im Abschluss von Tag 4, nicht mehr auf der Experiment-Seite.
+    expect(folien[beamer('/innolab/methoden/experiment', 'lernkarte').z.index].id).toBe('lernkarte');
     expect(folien[beamer('/innolab/tag-5', 'debrief').z.index].id).toBe('debrief');
   });
   it('Seite ohne Notizen (story-map): weiter die Karte, die letzte Folie bleibt stehen', () => {

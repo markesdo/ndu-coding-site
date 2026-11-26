@@ -223,7 +223,7 @@ const ROH: Omit<Station, 'zeile'>[] = [
   },
   {
     id: 'origin-story', methode: 'experiment', kurz: 'Origin Story', linien: ['annahme'], spalte: 4, ergebnis: ['origin'],
-    href: '/innolab/methoden/experiment#origin-story',
+    href: '/innolab/tag-4#abschluss',
     // Sonst erbte sie die fünf Quellen der Methode experiment. Die Rückkante zum Text von E1 wird nicht gezeichnet:
     // Im Plan zeigen Quellen immer nach vorn in der Zeit (NDU-74, Entscheidung 6).
     kommtAus: ['Concept Story', 'Value Map', 'Karte E1'], von: ['concept-story', 'value-map', 'experiment'], jetzt: 'Sehen – und eine Handlung',

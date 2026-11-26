@@ -392,11 +392,17 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
   </Folie>
   </>)}
 
-  <Callout type="info" title="Ab hier: Tag 5">
-    <p>Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief (09:25–10:05). An Tag 4 geht es von hier weiter mit <a href="/innolab/tag-4#ablauf">Prototyp weiterbauen / Puffer</a>; um 17:15 folgt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.</p>
-  </Callout>
+  {/* Letzte Tag-4-Folie dieser Seite: → führt um 17:15 in den Abschluss von Tag 4, nicht in die Tag-5-Folien darunter. */}
+  <Folie weiter="/innolab/tag-4#abschluss" weiterTitel="Abschluss Tag 4">
+    <h2 id="weiter-tag-4">Weiter heute: Prototyp bis 17:15</h2>
+    {/* Satz und Uhrzeit nur im Beamer (Tag 4); im Handout steht darunter derselbe Hinweis mit Links. */}
+    <p class="folie-satz nur-beamer">Teamaufstellung und Definition of Done folgen an Tag 5.</p>
+    <p class="nur-beamer">Heute: weiter am Prototyp bis 17:15, dann Origin Story und Hausaufgabe.</p>
+    <p class="nur-handout">Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief (09:25–10:05). An Tag 4 geht es von hier weiter mit <a href="/innolab/tag-4#ablauf">Prototyp weiterbauen / Puffer</a>; um 17:15 folgt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>.</p>
+  </Folie>
 
-  <Folie>
+  {/* Tag 5 beginnt hier (von tag-5 per →): ← führt zurück zum Debrief, nicht in die Tag-4-Folie „Weiter heute“ darüber. */}
+  <Folie zurueck="/innolab/tag-5#debrief-ablauf">
     <h2 id="team">Euer Team aufstellen</h2>
     <p class="folie-satz">Je Produkt ein Product Owner und ein Produktziel – alle drei sind überall Developers.</p>
     <MiroFrame name="T4 · 2 · Teamaufstellung & DoD" />
