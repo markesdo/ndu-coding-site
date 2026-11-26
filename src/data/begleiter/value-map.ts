@@ -114,9 +114,9 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
 
   'pr-finden': {
     live: [
-      'Nachschlage-Folie: Pains von oben, P1 zuerst.',
+      'Nachschlage-Folie: Pains von oben, P1 zuerst – Vorgehen des Kurses.',
       'Fragen: Spart euer Angebot Zeit, Geld, Aufwand – nimmt es ein Risiko?',
-      '„Zu einem Pain keinen Zettel zu haben ist erlaubt – das wird beim Fit ein ✗.“',
+      '„Kein Zettel zu einem Pain ist erlaubt. Trifft ihn auch kein anderer, bekommt er beim Fit rechts ein ✗.“',
       'Kaffeebar: P2 → in 20 Sekunden im Gehen bestellen; P4 kein Zettel.',
     ],
     kern: [
@@ -128,7 +128,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
 
   'gc-finden': {
     live: [
-      'Nachschlage-Folie: Gains von oben, G1 zuerst.',
+      'Nachschlage-Folie: Gains von oben, G1 zuerst – Vorgehen des Kurses.',
       'Alle vier Arten: erforderlich, erwartet, gewünscht, unerwartet.',
       'Kaffeebar: G1 → Kaffee steht bereit; G2, G3 kein Zettel.',
       'Überschneidung erlaubt: ein Zettel darf Pain und Gain treffen.',
@@ -157,7 +157,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   fit: {
     live: [
       'Abbildung: Quadrat = Value Map, jeder Zettel geprüft, auch Produkte. Kreis = Profil.',
-      'Klick 1: Zettel vorlesen, offen fragen: Was trifft er? (→ P1).',
+      'Klick 1: Zettel vorlesen. Was trifft er? P1 – also (→ P1).',
       '„Ein Zettel, eine ID, zwei Haken – links und rechts.“',
       'Klick 2: Rest rechts – Kreuz, oder Fragezeichen mit Frage.',
       'Klick 3: von oben lesen. Nicht Haken zählen.',
@@ -279,6 +279,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Timer 3 min: wählen oder bestätigen.',
       'Fragen: Was davon ist die Website – trifft sie allein noch P1?',
       'Nach 3 min: Satz-Sticky mitnehmen, Quadrat füllen – Timer 11 min.',
+      'Check beim Füllen: Welcher gelbe Zettel ist die Website?',
       '1:1 ab Minute 5, je 3 min: Produkt 3, 2, 1.',
       'Frage: ✗ des Spitzenreiters oben bewusst? Sonst: Was bleibt oben offen?',
       'Nach 14 min: ordnen auf den Skalen – Timer 4 min.',
@@ -300,9 +301,9 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Wählen (3 min): wer zu Hause gewählt hat, bestätigt nur – mit der Frage: Was davon ist die Website, die ihr baut, und trifft sie allein noch P1? (Der Kurs baut eine Website; der Spitzenreiter darf hybrid sein, die Website ist der Teil, den ihr prototypt.) Sonst jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – Idee → Products & Services, Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung mit (→ P…) oder (→ G…), kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID (VPD S. 99–101, 105). Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – Idee → Products & Services (wird ersetzt durch die Produkte, in die ihr sie zerlegt), Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator; b) Profil von oben: ein Zettel je Wirkung (VPD S. 100–101) mit (→ P…) oder (→ G…), auch (→ J…), kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID. IDs, „Profil von oben“ und „Produkte ohne ID“ sind Regeln dieses Kurses. Check: Welcher gelbe Zettel ist die Website – trifft sie allein noch P1? Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Ordnen (4 min): alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (VPD S. 102).',
-        'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID dazu, ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
+        'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID mit Pfeil dazu, etwa (→ P1), ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
         'Festhalten und prüfen (2 min): rechts ein Zeichen je Zettel, links jeder ✓ mit ID, jedes ? mit Frage. Die ? bleiben, wo sie stehen – am Satz in T3 · 4, am Zettel im Canvas; an der Experiment-Karte werden sie Annahmen. Claude-Prüfung nach dem Kurstag.',
         'Euer Baum – Lösungen (2 min): die drei Ideen als Lösungen unter den Stern an der Ziel-Chance („Baum · Produkt n“), den Spitzenreiter markieren (Torres, Continuous Discovery Habits, S. 25–27).',
       ],

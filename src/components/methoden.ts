@@ -300,7 +300,12 @@ export const METHODEN: Methode[] = [
       { id: 'value-map-segment', text: 'Unter Products and Services steht nur, was für dieses Segment gedacht ist.' },
       { id: 'value-map-fit-vergleich', text: 'Der Ideen-Vergleich hakt die drei Lückensätze gegen die obersten Einträge des Profils ab (✓, ✗ oder ?).' },
       { id: 'value-map-wahl', text: 'Der Spitzenreiter auf Papier ist gewählt, mit einem Satz warum; die anderen beiden bleiben offen.' },
-      { id: 'value-map-wirkung', text: 'Bei Pain Relievers und Gain Creators stehen keine Produkte, sondern was sie bewirken – mit der ID des Pains oder Gains, auf den sie zielen: (→ P1), (→ G1); die ältere Schreibweise (P1) zählt genauso.' },
+      {
+        id: 'value-map-wirkung',
+        text: 'Bei Pain Relievers und Gain Creators stehen keine Produkte, sondern was sich für die Kundschaft ändert – mit der ID dessen, was der Zettel trifft: (→ P1), (→ G1), auch (→ J1) oder zwei IDs wie (→ P2, G1).',
+        // Entscheidung 26.11.2026: Pfeil-Schreibweise; auf Miro stehen teils noch IDs ohne Pfeil – nur Claude toleriert sie.
+        frage: 'Eine ID ohne Pfeil wie „(P1)“ ist die ältere Schreibweise und kein Befund; frag nur nach, wenn unklar ist, was der Zettel trifft.',
+      },
       { id: 'value-map-geordnet', text: 'Products and Services, Pain Relievers und Gain Creators sind je für sich geordnet: das Unverzichtbare oben.' },
       { id: 'value-map-adressiert', text: 'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was offen bleibt, trägt im Fit ein ✗ oder ?.' },
       { id: 'value-map-fragezeichen', text: 'Jedes „?“ aller drei Ideen steht mit Frage, wo es entstanden ist – am Satz im Feld „Ideen vergleichen und wählen“, am Zettel im Canvas; an Tag 4 werden sie Annahmen.' },

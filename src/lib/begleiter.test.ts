@@ -1154,7 +1154,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const vorgehen = q.slice(a, q.indexOf('</Folie>', a));
     const schritte = vorgehen.slice(vorgehen.indexOf('<ol'), vorgehen.indexOf('</ol>'));
     const fuellen = schritte.slice(schritte.indexOf('Euer Canvas, Quadrat'), schritte.indexOf('Skalen links'));
-    expect(fuellen).toContain('Gain Creators mit (→&nbsp;G…). <strong>Schritt für Schritt: Anleitung links neben eurem Canvas.</strong> <em class="vm-bsp">');
+    expect(fuellen).toContain('Gain Creators mit (→&nbsp;G…). <strong>Schritt für Schritt: Anleitung links neben eurem Canvas.</strong> <strong>Check:</strong> Welcher gelbe Zettel ist die Website – trifft sie allein noch P1? <em class="vm-bsp">');
     const handout = vorgehen.slice(vorgehen.indexOf('<p class="nur-handout">'));
     for (const id of neu) expect(handout, id).toContain(`<a href="#${id}">`);
     expect(handout).toContain('zwei Minuten für die drei Zettel aus dem Satz, zwei für Products &amp; Services, vier für Pain Relievers, zwei für Gain Creators, eine für die Gegenprobe.');
@@ -1168,7 +1168,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folie('vm-fehler')).toContain('<td>Steht seine ID im Profil rechts?</td>');
     const neuTexte = [...neu.map((id) => folie(id)), ...neu.map((id) => JSON.stringify(n[id] ?? {}))];
     expect(neuTexte.flatMap((x) => x.match(/lindert nichts|auf euren Skalen|auf den Skalen|(?<![Hh]ell)grün|(?<!Hell)Grün/g) ?? [])).toStrictEqual([]);
-    expect(n['pr-finden']?.live).toContain('„Zu einem Pain keinen Zettel zu haben ist erlaubt – das wird beim Fit ein ✗.“');
+    expect(n['pr-finden']?.live).toContain('„Kein Zettel zu einem Pain ist erlaubt. Trifft ihn auch kein anderer, bekommt er beim Fit rechts ein ✗.“');
   });
   // Entscheidungen 58–61 (21.11.): Brücke vom Lückensatz zur Value Map, Lückensatz mit ID-Slots, korrigierte Kaffeebar-Sätze,
   // ideation#beispiel ohne „18 Ideen“ und ohne Express-Kasse.
