@@ -133,22 +133,24 @@ describe('Tag 4: Folien des Abschlusses', () => {
     const f = folie('/innolab/tag-4', 'hausaufgabe');
     const schritte = [...f.matchAll(/<li data-schritt>([\s\S]*?)<\/li>/g)].map((m) => m[1]);
     expect(schritte.length).toBeGreaterThanOrEqual(4);
-    expect(schritte.length).toBeLessThanOrEqual(6);
+    expect(schritte.length).toBeLessThanOrEqual(7);
     const liste = f.slice(f.indexOf('<div class="nur-handout">'));
-    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v5" items={[');
+    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v6" items={[');
     // Je Schritt der Teil, der wörtlich aus einem Punkt der Liste kommt.
-    // Review #448: Die Folie zeigte nur die Punkte 6–12; der erste Schritt nennt die Punkte 1–5.
-    // Seit der Durchsicht 26.11.: zuerst, was andere Menschen und Vorlauf braucht (E1, fünf Tests); „Fertig machen“ an fünfter Stelle.
+    // Markus 26.11. abends: Origin Story → Aufsteller/Landingpage → E1 → Lernkarte E1; Usability-Tests optional; dann Aufräumen.
     expect(schritte.map((x) => x.match(/^<strong>([^<]+)<\/strong>/)?.[1])).toStrictEqual([
-      'E1 laufen lassen', 'Fünf Usability-Tests', 'Je Lernkarte die Entscheidung:', 'Origin Story', 'Fertig machen, was heute offen blieb:', 'Linear einrichten,',
+      'Origin Story', 'Daraus der Aufsteller oder die Landingpage', 'E1 laufen lassen', 'Lernkarte E1', 'Wer Zeit hat: Usability-Tests', 'Fertig machen, was heute offen blieb', 'Linear einrichten,',
     ]);
-    expect(schritte[0]).toContain('bis drei Werktage vor Tag 5');
-    expect(schritte[4]).toBe('<strong>Fertig machen, was heute offen blieb:</strong> Value Map und Fit, Concept Story, Baum, Geschäftsmodell und Karte E1, Story Map und Usage Story (ganze Liste im Handout).');
+    expect(schritte[2]).toContain('bis drei Werktage vor Tag 5');
+    expect(schritte[4]).toContain('fünf sind ideal, auch zwei, drei helfen');
     for (const aus of ['Value Map und Fit', 'Concept Story', 'Euer Baum', 'Geschäftsmodell auf Miro', 'Karte E1', 'Story Map mit Slice 1', 'Usage Story']) expect(liste, aus).toContain(aus);
+    // Die Liste in derselben Reihenfolge: Origin Story, Aufsteller, E1, Lernkarte, optionale Tests vor dem Rest.
+    const pos = ['Origin Story als Text', 'Daraus der Aufsteller', 'E1 gelaufen', 'Lernkarte E1', 'Optional, wer Zeit hat: Usability-Tests', 'Value Map und Fit'].map((w) => liste.indexOf(w));
+    expect(pos.every((x, k) => x > 0 && (k === 0 || x > pos[k - 1]))).toBe(true);
     for (const aus of [
       'als Text für Aufsteller oder Landingpage',
       'an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe',
-      'Fünf Usability-Tests</strong> mit Karte E2',
+      'Usability-Tests</strong> mit Karte E2',
       'Befund → Handlung',
       'als Collaborator',
     ]) {

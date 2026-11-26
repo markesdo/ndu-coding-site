@@ -106,12 +106,12 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 261`,
       },
     ],
-    ueberleitung: 'Und das ist eure Hausaufgabe – zuerst die beiden Tests.',
+    ueberleitung: 'Und das ist eure Hausaufgabe – sie beginnt mit genau diesem Text.',
   },
 
   hausaufgabe: {
     live: [
-      'Zuerst E1 und fünf Tests: brauchen andere Menschen und Vorlauf.',
+      'Reihenfolge: Origin Story, Aufsteller, E1, Lernkarte; Tests optional.',
       'E1 läuft bis drei Werktage vor Tag 5.',
       'Ganze Liste: Checkliste im Handout der Seite.',
       'Alles auf Miro oder in der Werkstatt – keine Dateien schreiben.',

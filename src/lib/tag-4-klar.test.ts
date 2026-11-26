@@ -61,7 +61,7 @@ describe('Tag 4: Origin Story im Beamer', () => {
 
 describe('Tag 4: Hausaufgabe mit Datum', () => {
   it('Satz nennt Tag 5 mit Datum und die zwei Tests zuerst', () => {
-    expect(folie(T4, 'hausaufgabe')).toContain('<p class="folie-satz">Bis Tag 5 am 12. Dezember: zwei Tests mit echten Menschen – fangt damit an.</p>');
+    expect(folie(T4, 'hausaufgabe')).toContain('<p class="folie-satz">Bis Tag 5 am 12. Dezember: Origin Story, dann E1 mit echten Menschen – Usability-Tests, wenn ihr Zeit habt.</p>');
   });
 });
 
@@ -111,7 +111,7 @@ const SEITEN_MIT_FRAMES = [T4, '/innolab/methoden/concept-story', '/innolab/meth
 const OFFEN = [
   'T4 · 2 · Geschäftsmodell · Produkt n',
   'T4 · 4 · Usage Story · Produkt n',
-  'T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n',
+  'T4 · 5 · Prototyp · Produkt n',
   'T4 · 6 · Origin Story · Produkt n',
   'T4 · 6 · Lernkarten · Produkt n',
 ];
@@ -126,10 +126,10 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
     for (const p of [T4, '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell']) expect(JSON.stringify(NOTIZEN[p] ?? {}), p).not.toMatch(/docs\//);
   });
 
-  it('Hausaufgabe: Checkliste -v5 nennt Miro-Frames, der Spike bleibt in seinem Branch', () => {
+  it('Hausaufgabe: Checkliste -v6 nennt Miro-Frames, der Spike bleibt in seinem Branch', () => {
     const f = folie(T4, 'hausaufgabe');
-    expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v5" items={[');
-    for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 2 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“', 'Der Spike liegt in seinem eigenen Branch auf GitHub']) expect(f, w).toContain(w);
+    expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v6" items={[');
+    for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 2 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Produkt n“', 'Der Spike liegt in seinem eigenen Branch auf GitHub']) expect(f, w).toContain(w);
   });
 
   // Jeder Frame-Name „T4 · …“ auf diesen Seiten steht in miro-frames.ts (bei „Produkt n“: mit Produkt 1) – oder in OFFEN, solange
