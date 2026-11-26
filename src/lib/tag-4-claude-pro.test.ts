@@ -79,9 +79,9 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(vorher).toContain('das machen wir gemeinsam um 10:50');
   });
 
-  it('Setup, Tag 3 und Tag 4 schicken niemanden mehr „am Morgen“ von Tag 4 zum Abschluss', () => {
+  it('Setup, Tag-2-Abschluss, Tag 3 und Tag 4 schicken niemanden mehr „am Morgen“ von Tag 4 zum Abschluss', () => {
     const s = setup();
-    const texte = [s, seite('/innolab/tag-3'), seite('/innolab/tag-4')];
+    const texte = [s, seite('/innolab/tag-2/abschluss'), seite('/innolab/tag-3'), seite('/innolab/tag-4')];
     expect(texte.every((x) => x.length > 1000)).toBe(true);
     // Sätze mit Pro und „Morgen“ oder „vor 9:00“, nicht nach Ziffern getrennt („28. November“); die Concept Story schreibt ihr weiterhin am Morgen von Tag 4.
     const saetze = texte.flatMap((x) => x.split(/(?<=\D[.!?])\s+/)).filter((satz) => /Pro\b/.test(satz) && /Morgen|vor 9:00/.test(satz));
