@@ -42,6 +42,24 @@ describe('Folie: weiter und ende', () => {
   });
 });
 
+describe('nur im Beamer', () => {
+  // Review 2 #448: Sätze zur Uhrzeit auf einer Folie („Heute: … bis 17:15“) lesen sich im Handout an Tag 5 falsch.
+  it('.nur-beamer fehlt außerhalb des Beamers und steht im Beamer', () => {
+    expect(BEAMER_CSS).toContain('.nur-beamer { display: none; }\nhtml[data-beamer] .nur-beamer { display: revert; }');
+  });
+});
+
+// Review 2 #447, im Browser gemessen: Von scrum#team ging ← per scrollBy auf die Stelle mit dem Hinweis davor, dann zog
+// scroll-snap (proximity, in Scrollrichtung) #planen an den Rand – der Hinweis war übersprungen. Abhilfe: beim Blättern
+// mit ← / → kein Einrasten, bis wieder mit Rad, Finger oder Bildtasten gescrollt wird.
+describe('kein Einrasten beim Blättern', () => {
+  it('beamer.css schaltet scroll-snap mit data-ohne-einrasten ab; Layout setzt es bei ← / → und nimmt es beim Scrollen weg', () => {
+    expect(BEAMER_CSS).toContain('html[data-beamer][data-ohne-einrasten]:has(.folie) { scroll-snap-type: none; }');
+    expect(LAYOUT).toMatch(/if \(i < 0\) return false;\n\s*ohneEinrasten\(\);/);
+    expect(LAYOUT).toContain("for (const t of ['wheel', 'touchstart']) addEventListener(t, einrasten, { passive: true });");
+  });
+});
+
 describe('Beamer ohne weiches Scrollen', () => {
   // global.css: html { scroll-behavior: smooth } – im Beamer flog value-map#vorgehen 1,5 s über elf Folien.
   it('beamer.css schaltet scroll-behavior im Beamer ab', () => {
