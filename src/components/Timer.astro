@@ -1,12 +1,14 @@
 ---
 // Zeitbox einer Übung. Studierende sehen „5 min“; der Präsentator startet und pausiert den Countdown
 // per Klick oder Taste T (aktuelle Folie, Layout.astro). Nach Ablauf setzt ein Klick zurück.
+// gruppe: Timer mit demselben Namen (auf verschiedenen Folien) sind eine Uhr – Start, Pause und Restzeit gelten für alle,
+// z. B. ein 40-min-Schritt, der sich über zwei Folien erstreckt.
 import { Timer as Uhr } from '@lucide/astro';
 import { restText } from './folien';
-const { minuten } = Astro.props as { minuten: number };
+const { minuten, gruppe } = Astro.props as { minuten: number; gruppe?: string };
 if (!(minuten > 0)) throw new Error(`Timer: minuten muss größer als 0 sein, war ${minuten}`);
 ---
-<span class="timer" data-timer={minuten * 60_000}>
+<span class="timer" data-timer={minuten * 60_000} data-timer-gruppe={gruppe}>
   <span class="timer-fest"><Uhr size={18} aria-hidden="true" /> {minuten} min</span>
   <button type="button" class="timer-knopf" data-timer-knopf data-nur-praesentator aria-label={`Timer ${minuten} Minuten starten oder pausieren`}><Uhr size={18} aria-hidden="true" /> <span data-timer-rest>{restText(minuten * 60_000)}</span></button>
 </span>
@@ -25,12 +27,26 @@ if (!(minuten > 0)) throw new Error(`Timer: minuten muss größer als 0 sein, wa
       box.classList.toggle('abgelaufen', rest <= 0);
     };
     const anhalten = () => { clearInterval(uhr); uhr = 0; };
-    knopf.addEventListener('click', () => {
-      if (rest <= 0) { rest = dauer; zeigen(); return; }
-      if (uhr) { rest = ende - Date.now(); anhalten(); zeigen(); return; }
-      ende = Date.now() + rest;
-      uhr = window.setInterval(() => { rest = ende - Date.now(); if (rest <= 0) anhalten(); zeigen(); }, 250);
+    const starten = () => { uhr = window.setInterval(() => { rest = ende - Date.now(); if (rest <= 0) anhalten(); zeigen(); }, 250); };
+    // Gruppe: jede Änderung an die anderen Timer derselben Gruppe melden; sie übernehmen Restzeit, Ende und Lauf.
+    const gruppe = box.dataset.timerGruppe;
+    const melden = () => {
+      if (gruppe) document.dispatchEvent(new CustomEvent('timer-gruppe', { detail: { gruppe, quelle: box, rest, ende, laeuft: uhr !== 0 } }));
+    };
+    if (gruppe) document.addEventListener('timer-gruppe', (e) => {
+      const d = (e as CustomEvent<{ gruppe: string; quelle: HTMLElement; rest: number; ende: number; laeuft: boolean }>).detail;
+      if (d.gruppe !== gruppe || d.quelle === box) return;
+      anhalten(); rest = d.rest; ende = d.ende;
+      if (d.laeuft) starten();
       zeigen();
+    });
+    knopf.addEventListener('click', () => {
+      if (rest <= 0) { rest = dauer; zeigen(); melden(); return; }
+      if (uhr) { rest = ende - Date.now(); anhalten(); zeigen(); melden(); return; }
+      ende = Date.now() + rest;
+      starten();
+      zeigen();
+      melden();
     });
   });
 </script>

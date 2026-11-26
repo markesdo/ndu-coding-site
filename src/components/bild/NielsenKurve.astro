@@ -8,7 +8,9 @@ const x = (n: number) => L + (n / MAX) * (B - L - R);
 const y = (a: number) => O + (1 - a) * (H - O - U);
 const punkte = Array.from({ length: MAX + 1 }, (_, n) => `${x(n).toFixed(1)},${y(gefundenAnteil(n)).toFixed(1)}`).join(' ');
 const fuenf = { x: x(5), y: y(gefundenAnteil(5)) };
-const prozent = Math.round(gefundenAnteil(5) * 100);
+// Beschriftet wird Nielsens eigene Angabe („found 85% of the usability problems“); die Formel mit L = 31 % ergibt 84,4 %.
+// So stimmt das Bild mit dem Folientext überein.
+const prozent = 85;
 ---
 <figure class="nielsen">
   <svg viewBox={`0 0 ${B} ${H}`} role="img" aria-label={`Kurve: Anteil gefundener Usability-Probleme steigt mit der Zahl der Testpersonen steil an und flacht ab; bei fünf Personen ${prozent} Prozent`}>
@@ -22,7 +24,7 @@ const prozent = Math.round(gefundenAnteil(5) * 100);
     <circle cx={fuenf.x} cy={fuenf.y} r="6" class="punkt" />
     <text x={fuenf.x + 12} y={fuenf.y + 26} class="beschriftung stark">5 Personen: {prozent} %</text>
   </svg>
-  <figcaption class="small muted">N(1 − (1 − L)ⁿ), L ≈ 31 %. Nach Jakob Nielsen, NN/g (2000).</figcaption>
+  <figcaption class="small muted">Nach Jakob Nielsen, NN/g (2000).</figcaption>
 </figure>
 
 <style>
