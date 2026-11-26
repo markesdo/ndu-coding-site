@@ -2,22 +2,24 @@
 // Vier Arten von Annahmen (Cagan: Wert, Machbarkeit, Wirtschaftlichkeit, Bedienbarkeit) als vier Kacheln um eine
 // Idee in der Mitte. Jede Art hat eine feste Farbe – dieselbe wie die Stickies auf dem Miro-Board.
 // Genau vier Arten (2 × 2). arten[].beispiel: kurze Annahme, davor beispielVor (z. B. „Kaffeebar“);
-// schritt: Kacheln werden im Beamer per → aufgedeckt.
+// schritt: Kacheln werden im Beamer per → aufgedeckt. hervor: Index einer Kachel, die betont wird; die anderen treten zurück
+// (z. B. „Wirtschaftlich“ auf der Geschäftsmodell-Seite).
 type Farbe = 'yellow' | 'blue' | 'green' | 'purple';
 type Art = { t: string; frage: string; beispiel?: string; farbe: Farbe };
-const { label, mitte, arten, beispielVor = 'Kaffeebar', schritt = false } = Astro.props as {
+const { label, mitte, arten, beispielVor = 'Kaffeebar', schritt = false, hervor } = Astro.props as {
   label: string;
   mitte: string;
   arten: [Art, Art, Art, Art];
   beispielVor?: string;
   schritt?: boolean;
+  hervor?: number;
 };
 ---
 <figure class="arten" aria-label={label}>
   <span class="arten-mitte"><span class="sr-only">Idee: </span>{mitte}</span>
   <ul class="arten-kacheln">
-    {arten.map((a) => (
-      <li class={`arten-kachel ${a.farbe}`} data-schritt={schritt ? '' : undefined}>
+    {arten.map((a, i) => (
+      <li class:list={['arten-kachel', a.farbe, { hervor: hervor === i, blass: hervor !== undefined && hervor !== i }]} data-schritt={schritt ? '' : undefined}>
         <strong>{a.t}</strong>
         <span class="arten-frage">{a.frage}</span>
         {a.beispiel && <span class="arten-beispiel"><b>{beispielVor}:</b> {a.beispiel}</span>}
@@ -34,6 +36,8 @@ const { label, mitte, arten, beispielVor = 'Kaffeebar', schritt = false } = Astr
   .arten-kachel.blue { --c: var(--blue); --c-soft: var(--blue-soft); }
   .arten-kachel.green { --c: var(--green); --c-soft: var(--green-soft); }
   .arten-kachel.purple { --c: var(--purple); --c-soft: var(--purple-soft); }
+  .arten-kachel.blass { opacity: .45; }
+  .arten-kachel.hervor { outline: 3px solid var(--c); outline-offset: 2px; }
   /* Die Kacheln rechts lehnen sich an die Mitte: rechtsbündig, damit die Idee frei in der Mitte steht. */
   .arten-kachel:nth-child(even) { text-align: right; align-items: flex-end; }
   .arten-kachel strong { font-size: 1rem; }

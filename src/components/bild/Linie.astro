@@ -1,0 +1,55 @@
+---
+// Eine Linie durch den Baum (Torres, „Walk the Lines“): Kästen von der Lösung bis zum Impact, dazwischen Pfeile.
+// weil: Index des Pfeils (0 = zwischen Kasten 0 und 1), der betont und mit „weil …“ beschriftet wird – dort steckt die
+// Annahme. Nebeneinander, in schmalen Spalten untereinander (Container-Query wie Fluss.astro).
+// Pfeile sind role=presentation: Für Screenreader enthält die Liste nur die Kästen; „weil …“ wird als Text mitgelesen.
+const { knoten, label, weil, weilText = 'weil …' } = Astro.props as {
+  knoten: { art: string; t: string }[];
+  label: string;
+  weil: number;
+  weilText?: string;
+};
+---
+<figure class="linie" aria-label={label}>
+  <ol class="linie-reihe">
+    {knoten.map((k, i) => (
+      <>
+        {i > 0 && (
+          <li role="presentation" class:list={['linie-pfeil', { weil: weil === i - 1 }]} aria-hidden={weil === i - 1 ? undefined : 'true'}>
+            <span class="linie-spitze" aria-hidden="true">→</span>
+            {weil === i - 1 && <span class="linie-weil">{weilText}</span>}
+          </li>
+        )}
+        <li class:list={['linie-kasten', { ziel: weil === i - 1 }]}>
+          <span class="linie-art">{k.art}</span>
+          <strong>{k.t}</strong>
+        </li>
+      </>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .linie { margin: 1.5rem 0; container: linie / inline-size; }
+  .linie-reihe { list-style: none; margin: 0; padding: 0; display: flex; align-items: stretch; gap: .4rem; }
+  .linie-kasten { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: .3rem; justify-content: center; text-align: center; padding: .8rem .7rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+  .linie-kasten.ziel { border-color: var(--accent); }
+  .linie-art { font-size: .8rem; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
+  .linie-kasten strong { font-size: .95rem; line-height: 1.3; }
+  .linie-pfeil { flex: none; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: .1rem; color: var(--muted); min-width: 1.6rem; }
+  .linie-spitze { font-size: 1.3rem; line-height: 1; }
+  .linie-pfeil.weil { color: var(--accent); min-width: 4.5rem; }
+  .linie-pfeil.weil .linie-spitze { font-size: 2rem; font-weight: 700; }
+  .linie-weil { font-weight: 700; font-size: .95rem; white-space: nowrap; }
+  :global(html[data-beamer]) .linie { margin: 1rem 0; }
+  :global(html[data-beamer]) .linie-kasten { padding: .55rem .6rem; }
+  :global(html[data-beamer]) .linie-kasten strong { font-size: 1.05rem; }
+  :global(html[data-beamer]) .linie-art { font-size: .9rem; }
+  :global(html[data-beamer]) .linie-weil { font-size: 1.15rem; }
+  @container linie (max-width: 640px) {
+    .linie-reihe { flex-direction: column; }
+    .linie-kasten { flex: none; text-align: left; padding: .55rem .8rem; }
+    .linie-pfeil { flex-direction: row; gap: .5rem; min-width: 0; padding-left: 1rem; }
+    .linie-spitze { transform: rotate(90deg); }
+  }
+</style>

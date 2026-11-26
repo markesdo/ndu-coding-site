@@ -332,19 +332,18 @@ export const METHODEN: Methode[] = [
     quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 1–4, 6–8',
   },
   {
-    slug: 'geschaeftsmodell', name: 'Geschäftsmodell-Karten', tag: 4, dauer: 20,
+    slug: 'geschaeftsmodell', name: 'Geschäftsmodell', tag: 4, dauer: 20,
     frage: 'Wer zahlt wofür – und welche Annahme steckt dahinter?',
     braucht: ['profil', 'valuemap', 'concept', 'annahmen', 'brief'], ergibt: ['geschaeftsmodell'],
     pruefliste: [
       { id: 'geschaeftsmodell-verweise', text: 'Wer? und Was? verweisen auf Kundenprofil und Value Map; Wie? und Wert? stehen neu da.' },
       { id: 'geschaeftsmodell-wert', text: 'Bei Wert? steht, wer wofür zahlt – und wie die Kundschaft heute bezahlt.' },
       { id: 'geschaeftsmodell-kosten', text: 'Die wichtigsten Kosten sind als Posten genannt, nicht als „gering“.' },
-      { id: 'geschaeftsmodell-muster', text: 'Das gewählte Muster ist benannt, und für jede andere Karte steht, warum sie verworfen wurde.' },
       { id: 'geschaeftsmodell-annahme', text: 'Die Annahme, an der das Modell hängt, steht in der Annahmen-Map, Art „wirtschaftlich“, mit Wichtigkeit und Beleg – sie sagt, dass der Ertrag die Kosten deckt, nicht bloß, dass Umsatz entsteht.' },
       { id: 'geschaeftsmodell-widerspruch', text: 'Nichts im Modell widerspricht der Krise der Concept Story oder einem Pain im Kundenprofil.' },
     ],
-    ki: 'Prüft, ob Wer, Was, Wie und Wert zusammenpassen; schlägt keine Muster vor.',
-    quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 115–118; Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128',
+    ki: 'Prüft, ob Wer, Was, Wie und Wert zusammenpassen und die Annahme den Ertrag gegen die Kosten stellt; schreibt Modell und Annahme nicht um.',
+    quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 27–28, 115–118 (PDF); Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128; Bland & Osterwalder, Testing Business Ideas, S. 34–35, 39',
   },
   {
     slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 4, dauer: 40, prueflisteStand: 2,
