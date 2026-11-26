@@ -113,13 +113,15 @@ const SEITEN_MIT_FRAMES = [T4, '/innolab/tag-5', ...['concept-story', 'geschaeft
 const OFFEN: string[] = [];
 // NACHTRAG 26.11. abends: Studierende schreiben keine docs/*.md mehr – alles auf Miro oder in der Werkstatt.
 describe('Tag 4 ohne docs-Dateien für Studierende', () => {
-  it('Tagesseite, Concept Story und Geschäftsmodell nennen außerhalb von Kommentaren keine docs-Datei', () => {
+  // Seit 27.11.2026 alle Seiten des Tages bis auf Scrum (dessen docs/TEAM.md gehört zu Tag 5) und ihre Begleiter-Notizen.
+  it('Tagesseite und die Methoden von Tag 4 nennen außerhalb von Kommentaren keine docs-Datei', () => {
     const ohneKommentar = (q: string) => q.replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/\/\/.*$/gm, '');
-    for (const p of [T4, '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell']) {
+    const seiten = [T4, ...['value-map', 'concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike'].map((x) => `/innolab/methoden/${x}`)];
+    for (const p of seiten) {
       expect(seite(p).length, p).toBeGreaterThan(1000);
       expect(ohneKommentar(seite(p)).match(/docs\/[A-Z-]+\.md|committet und gepusht/g) ?? [], p).toStrictEqual([]);
+      expect(JSON.stringify(NOTIZEN[p] ?? {}), p).not.toMatch(/docs\//);
     }
-    for (const p of [T4, '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell']) expect(JSON.stringify(NOTIZEN[p] ?? {}), p).not.toMatch(/docs\//);
   });
 
   it('Hausaufgabe: Checkliste -v6 nennt Miro-Frames, der Spike bleibt in seinem Branch', () => {

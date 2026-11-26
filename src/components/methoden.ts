@@ -693,7 +693,7 @@ const regeln = (m: Methode, schluss: string) => [REGELN_ANFANG, ...pruefFragen(m
 export const pruefChecklisteId = (m: Methode): string => (m.prueflisteStand ? `il-${m.slug}-${m.prueflisteStand}` : `il-${m.slug}`);
 
 /** Was Claude zum Abgleich liest: die Dateien der Vorarbeit (ohne die schon gelesenen) und die Werkstatt-Artefakte,
- *  z. B. ["docs/STORYS.md, docs/TESTS.md", "aus der Werkstatt meinen Produkt-Brief (Werkzeug artefakt_lesen)"].
+ *  z. B. ["docs/SPRINTS.md", "aus der Werkstatt meinen Produkt-Brief (Werkzeug artefakt_lesen)"]; Vorarbeit auf Miro kommt als Bild.
  *  Für Prompts, die dieselbe Vorarbeit lesen sollen wie die Prüfung (etwa die skeptische Investorin beim Pitch). */
 export function vorarbeitLesen(m: Methode, schonGelesen: (string | undefined)[] = []): string[] {
   const gelesen = new Set(schonGelesen);
@@ -702,8 +702,8 @@ export function vorarbeitLesen(m: Methode, schonGelesen: (string | undefined)[] 
   return [dateien.join(', '), werkstatt.length ? `aus der Werkstatt ${ausWerkstatt(werkstatt)}` : ''].filter(Boolean);
 }
 
-// So nennt der Prompt, was eingefügt wird: je Datei einmal, mit allen Artefakten darin („Concept Story und Usage Story des
-// Kernablaufs (docs/STORYS.md)“). Nur Dateien im Repo; Werkstatt-Artefakte haben keine, Linear-Artefakte stehen in linear.
+// So nennt der Prompt, was eingefügt wird: je Datei einmal, mit allen Artefakten darin (bis 26.11.2026 etwa „Concept Story
+// und Usage Story des Kernablaufs (docs/STORYS.md)“; seit dem Nachtrag liegen sie auf Miro). Nur Dateien im Repo; Werkstatt-Artefakte haben keine, Linear-Artefakte stehen in linear.
 function einzufuegen(ids: readonly string[], ausser: readonly (string | undefined)[] = []): { dateien: string[]; linear: string[] } {
   const pfade = new Map<string, string[]>();
   const linear: string[] = [];
@@ -734,7 +734,7 @@ export function einfuegenMoeglich(m: Methode, pfad?: string): boolean {
 const dateiListe = (dateien: string[]) => dateien.join('; ');
 
 /** Was beim Ausweichweg „einfuegen“ als Ergebnis eingefügt wird. Vorarbeit in derselben Datei wie das Ergebnis (Concept
- *  und Usage Story in docs/STORYS.md) steht beim Ergebnis. ausMiro: das Ergebnis liegt auch auf Miro (nicht bei pfad). */
+ *  und Usage Story lagen bis 26.11.2026 zusammen in docs/STORYS.md) steht beim Ergebnis. ausMiro: das Ergebnis liegt auch auf Miro (nicht bei pfad). */
 function einfuegenErgebnis(m: Methode, pfad?: string) {
   const ergebnisPfade = pfad ? [pfad] : m.ergibt.map((id) => artefakt(id)!.pfad);
   const dateien = pfad ? [pfad] : einzufuegen([...m.ergibt, ...m.braucht.filter((id) => ergebnisPfade.includes(artefakt(id)!.pfad))]).dateien;
