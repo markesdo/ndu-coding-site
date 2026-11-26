@@ -32,6 +32,10 @@ const MANIFEST = 'Manifesto for Agile Software Development (2001), agilemanifest
 // (zuletzt geplant: Beginn, Review 1 nach Minute 43, Nachbesprechung fünf Minuten vor Schluss). Bis dahin liegen sie
 // hinter dem Kursende (Tag 7, 16.01.2027), damit die Auflösungen nie von selbst aufspringen.
 const LEGO4SCRUM_AKTIV = false;
+// „Euer Produkt in einem Satz“ ist an Tag 4 abgeschaltet (Entscheidung Markus 26.11.2026, Variante B): Das Produktziel
+// schreibt ihr an Tag 5 in der Teamaufstellung (Schritt 2). Die Folie bleibt im Quelltext; wie bei Lego4Scrum lassen
+// Inhaltsverzeichnis und Begleiter den Block weg (ohneAbgeschaltet).
+const PRODUKTSATZ_AN_TAG_4 = false;
 const LEGO_NICHT_DIESES_JAHR = '2027-12-31T23:59';
 const AB_LEGO = LEGO_NICHT_DIESES_JAHR;
 const NACH_REVIEW_1 = LEGO_NICHT_DIESES_JAHR;
@@ -239,6 +243,7 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
     </div>
   </Folie>
 
+  {PRODUKTSATZ_AN_TAG_4 && (<>
   <Folie>
     <h2 id="produktziel">Euer Produkt in einem Satz</h2>
     <p class="folie-satz">Jede*r: euer Produktziel – und ein Stakeholder, der nicht im Team ist.</p>
@@ -249,6 +254,7 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
     </ul>
     <p class="nur-handout">Das Produktziel ist die Verpflichtung des Product Backlogs ({GUIDE}, S. 10–11). Euer Outcome aus Tag 1 hat genau diese Form: ein künftiger Zustand, an dem sich der Backlog ausrichtet. Wer keinen Stakeholder außerhalb des Teams findet, hat für das Review an Tag 6 niemanden, der das Inkrement mit frischen Augen sieht.</p>
   </Folie>
+  </>)}
 
   {LEGO4SCRUM_AKTIV && (<>
   <Folie>

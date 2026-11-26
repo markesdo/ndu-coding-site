@@ -8,6 +8,8 @@ import Tag4 from '../pages/innolab/tag-4.astro';
 import { bloeckeAus } from './begleiter';
 import { AGIL_SCRUM_FOLIEN, FOLIENSATZ_URL } from './foliensatz';
 import { MIRO_FRAMES } from '../components/miro-frames';
+import { gliederung } from '../components/gliederung';
+import { folienAus } from './begleiter';
 
 // Entscheidung Markus 26.11.2026: Agil & Scrum an Tag 4 nach Variante B – 20 Folien aus dem Foliensatz, dann auf der
 // Site „Wo wir abweichen“, die Übung „Kaffeebar auf der Scrum-Karte“ (4 + 3 min) und das Beispiel als Auflösung.
@@ -116,4 +118,27 @@ describe('Miro: Frames der Übung „Kaffeebar auf der Scrum-Karte“', () => {
       'T4 · 3 · Scrum · Kaffeebar · Lösung': '3458764691686327552',
     });
   });
+});
+
+// Entscheidung Markus 26.11.2026: „Euer Produkt in einem Satz“ wandert in die Teamaufstellung an Tag 5. Die Folie bleibt im
+// Quelltext, abgeschaltet mit PRODUKTSATZ_AN_TAG_4 = false – weder Beamer noch Handout, Inhaltsverzeichnis oder Begleiter.
+describe('Scrum-Seite: „Euer Produkt in einem Satz“ abgeschaltet', () => {
+  it('im Quelltext steht die Folie im abgeschalteten Block', () => {
+    expect(QUELLE_SCRUM).toMatch(/^const PRODUKTSATZ_AN_TAG_4 = false;$/m);
+    const von = QUELLE_SCRUM.indexOf('{PRODUKTSATZ_AN_TAG_4 && (<>');
+    expect(von).toBeGreaterThan(0);
+    expect(QUELLE_SCRUM.slice(von, QUELLE_SCRUM.indexOf('</>)}', von))).toContain('<h2 id="produktziel">Euer Produkt in einem Satz</h2>');
+  });
+
+  it('gerendert, im Inhaltsverzeichnis und im Begleiter: keine Folie „produktziel“; nach dem Beispiel Planen, dann Tag 5', async () => {
+    const html = await (await AstroContainer.create()).renderToString(Scrum);
+    expect(html).not.toContain('Euer Produkt in einem Satz</h2>');
+    const ids = [...html.matchAll(/<h2[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
+    expect(ids).not.toContain('produktziel');
+    expect(ids.slice(ids.indexOf('beispiel'), ids.indexOf('beispiel') + 3)).toStrictEqual(['beispiel', 'planen', 'team']);
+    expect(gliederung(QUELLE_SCRUM).map((a) => a.id)).not.toContain('produktziel');
+    expect(folienAus('/innolab/methoden/scrum', QUELLE_SCRUM).flatMap((f) => [f.id, ...f.unterIds])).not.toContain('produktziel');
+    // Außerhalb des Blocks verweist nichts auf den Anker.
+    expect(html).not.toContain('href="#produktziel"');
+  }, 60_000);
 });
