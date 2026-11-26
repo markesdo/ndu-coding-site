@@ -9,8 +9,10 @@ import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
+import Fluss from '../../../components/Fluss.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import NielsenKurve from '../../../components/bild/NielsenKurve.astro';
+import { BookOpen, Code, PenLine, Users } from '@lucide/astro';
 
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
@@ -24,34 +26,71 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <MethodenKarte slug="prototyp-spike" />
 
   <Folie>
-    <h2 id="worum">Papier, dann klickbar – beides ist ein Experiment</h2>
+    <h2 id="worum">Vom Höhepunkt zum Prototyp</h2>
     <p class="folie-satz">Ein Spike ist Code zum Lernen, nicht zum Behalten.</p>
+    <Fluss label="Von der Usage Story über Papier und Spike zu fünf Tests" hervor={[2]} knoten={[
+      { t: 'Usage Story', sub: 'Stationen 2 bis 6', icon: BookOpen },
+      { t: 'Papier', sub: 'eine Skizze je Bildschirm', icon: PenLine },
+      { t: 'Spike', sub: 'Claude Code baut ihn, in einem eigenen Branch', icon: Code },
+      { t: 'Fünf Tests', sub: 'bis Tag 5 – dann wird er weggeworfen', icon: Users },
+    ]} />
     <ul class="gross">
-      <li data-schritt><strong>Papier zuerst:</strong> Jeden Bildschirm entscheidet ihr selbst, dann erst Claude.</li>
-      <li data-schritt><strong>Wie ein Spike gebaut:</strong> Abnahmekriterien, Zeitbox, danach weggeworfen.</li>
-      <li data-schritt><strong>Belege:</strong> Aufgabe geschafft, Zeit, wo gehangen, wo gestrahlt.</li>
-      <li data-schritt><strong>Er zeigt,</strong> ob sie zurechtkommen – nicht, ob sie es wollen.</li>
+      <li data-schritt><strong>Kursregel – Papier vor Claude:</strong> Jeden Bildschirm entscheidet ihr selbst. Sonst testet ihr Claudes Vorstellung von eurem Produkt.</li>
+      <li data-schritt><strong>Abnahmekriterien:</strong> drei Sätze, was der Prototyp zeigen muss – und was er nicht hat.</li>
+      <li data-schritt><strong>Zeitbox:</strong> 40 Minuten. Ist die Zeit um, ist Schluss.</li>
     </ul>
     <div class="nur-handout">
-      <p>Bland führt Papier- und Klick-Prototyp als Paar: erst Papier, dann klickbar (Pairing, {BLAND}, S. 185, 239). Ein Clickable Prototype ist „ideal for rapidly testing the concept of your product quickly with customers at a higher fidelity than paper“, aber „not ideal as a replacement for proper usability with customers“; die Belege sind geschaffte Aufgaben und die Zeit dafür, „a bit stronger than using paper“ (S. 236–239). Gebaut wird er bei euch wie ein Extreme-Programming-Spike: „Define your acceptance criteria. Define your time box“ – und er wird „typically thrown away and re-created afterwards“ (S. 306–309).</p>
-      <p>Was er belegt: In einer Testsituation, nicht im echten Leben, zeigt er, ob Menschen mit dem Ablauf zurechtkommen. Ob sie es wollen, zeigt euer E1 (S. 52). Die Kursregel „Papier vor Claude“ hat einen einfachen Grund: Wer direkt bauen lässt, testet Claudes Vorstellung von eurem Produkt.</p>
+      <p>Bland führt Papier- und Klick-Prototyp als Paar: erst Papier, dann klickbar (Pairing, {BLAND}, S. 185, 239). Gebaut wird der Klick-Prototyp bei euch wie ein Extreme-Programming-Spike: „Define your acceptance criteria. Define your time box“ – und er wird „typically thrown away and re-created afterwards“ (S. 306–309). Abnahmekriterien sagen, wann der Spike fertig ist; die Zeitbox sagt, wann ihr aufhört, auch wenn er es nicht ist.</p>
+      <p>Die Kursregel „Papier vor Claude“ hat einen einfachen Grund: Wer direkt bauen lässt, testet Claudes Vorstellung von eurem Produkt.</p>
     </div>
   </Folie>
 
   <Folie>
-    <h2 id="fuenf">Fünf Menschen, laut denken, Aufgabe als Ziel</h2>
+    <h2 id="was-er-zeigt">Was der Prototyp zeigt – und was nicht</h2>
+    <p class="folie-satz">Auch dieser Test ist ein Experiment, mit eigener Karte.</p>
+    <div class="paar">
+      <div class="nebenan"><b>E1 · Aufsteller</b><span class="frage">Wollen sie es?</span><span>echte Situation</span></div>
+      <div class="hier"><b>E2 · Prototyp</b><span class="frage">Kommen sie zurecht?</span><span>Testsituation</span></div>
+    </div>
+    <ul class="gross">
+      <li data-schritt><strong>Ihr beobachtet:</strong> Aufgabe geschafft? Wie lange? Wo gehangen? Wo gelächelt?</li>
+      <li data-schritt><strong>Kein Ersatz</strong> für E1: Wer zurechtkommt, will es noch nicht.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Ein Clickable Prototype ist „ideal for rapidly testing the concept of your product quickly with customers at a higher fidelity than paper“, aber „not ideal as a replacement for proper usability with customers“; die Belege sind geschaffte Aufgaben und die Zeit dafür, „a bit stronger than using paper“ ({BLAND}, S. 236–239).</p>
+      <p>Was er belegt: In einer Testsituation, nicht im echten Leben, zeigt er, ob Menschen mit dem Ablauf zurechtkommen. Ob sie es wollen, zeigt euer E1 (S. 52).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="fuenf">Warum fünf Testpersonen?</h2>
     <p class="folie-satz">Nach fünf Personen seht ihr dieselben Probleme immer wieder.</p>
     <BildText>
       <NielsenKurve />
       <ul>
-        <li data-schritt><strong>Fünf finden rund 85 %</strong> – dreimal fünf schlägt einmal fünfzehn.</li>
-        <li data-schritt><strong>Aufgabe als Situation und Ziel,</strong> ohne Bedienschritte.</li>
-        <li data-schritt><strong>Laut denken lassen</strong> – und schweigen.</li>
-        <li data-schritt><strong>Wenn möglich zu zweit:</strong> eine*r führt, eine*r schreibt mit.</li>
+        <li data-schritt><strong>Fünf Personen</strong> finden rund 85 % der Bedienprobleme.</li>
+        <li data-schritt><strong>Die Kurve flacht ab:</strong> Die sechste zeigt fast nur, was ihr schon wisst.</li>
+        <li data-schritt><strong>Besser dreimal fünf als einmal fünfzehn:</strong> testen, verbessern, wieder testen – bei euch jetzt und an Tag 6.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>Jakob Nielsen: Fünf Testpersonen finden etwa 85 % der Usability-Probleme; „After the fifth user, you are wasting your time by observing the same findings repeatedly but not learning much new.“ Besser drei Runden mit je fünf als eine mit fünfzehn – bei euch: jetzt, dann an Tag 6 über Kreuz („Why You Only Need to Test with 5 Users“, NN/g 2000).</p>
+      <p>Jakob Nielsen: Fünf Testpersonen finden etwa 85 % der Usability-Probleme; „After the fifth user, you are wasting your time by observing the same findings repeatedly but not learning much new.“ Besser drei Runden mit je fünf als eine mit fünfzehn – bei euch: jetzt, dann an Tag 6 über Kreuz („Why You Only Need to Test with 5 Users“, NN/g 2000). Die Kurve folgt Nielsens Formel N(1 − (1 − L)ⁿ): N Probleme insgesamt, n Testpersonen, L der Anteil, den eine Person im Schnitt findet – rund 31 %.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="test-ablauf">So läuft ein Test</h2>
+    <p class="folie-satz">Ihr gebt ein Ziel – und haltet dann den Mund.</p>
+    <div class="paar">
+      <div class="hier"><b>So</b><span>„Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“</span></div>
+      <div class="nebenan"><b>Nicht so</b><span>„Scanne den Code und tippe auf Bestellen.“</span></div>
+    </div>
+    <ul class="gross">
+      <li data-schritt><strong>Aufgabe:</strong> Situation und Ziel, keine Bedienschritte, keine Wörter aus der Oberfläche.</li>
+      <li data-schritt><strong>Laut denken lassen</strong> – ihr schweigt. Höchstens: „Was würdest du jetzt tun?“</li>
+      <li data-schritt><strong>Wenn möglich zu zweit:</strong> eine*r führt, eine*r schreibt mit.</li>
+    </ul>
+    <div class="nur-handout">
       <p>Laut denken: „Recruit representative users. Give them representative tasks to perform. Shut up and let the users do the talking“ (Nielsen, „Thinking Aloud: The #1 Usability Tool“, NN/g 2012). Die Aufgabe beschreibt eine Situation und ein Ziel, gibt alle nötigen Informationen und verrät nicht, wo man klickt (Marieke McCloskey, „Turn User Goals into Task Scenarios for Usability Testing“, NN/g 2014): „Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“ – nicht „Scanne den Code und tippe auf Bestellen“.</p>
       <p>Bland für den Papier-Test: Erklärt, dass ihr Feedback zum Prototyp sucht; eine Person führt, eine schreibt mit; vorher intern testen, ob der Ablauf funktioniert („Test it internally to make sure the flow works“); danach: „Where did they get stuck or confused? What did they get excited about?“ ({BLAND}, S. 183–184).</p>
     </div>
@@ -59,43 +98,70 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 
   <Folie>
     <h2 id="karte-e2">Auch dieser Test hat eine Karte</h2>
-    <p class="folie-satz">Annahme, Messgröße, Schwelle – bevor die erste Person testet.</p>
+    <p class="folie-satz">Annahme, Messgröße, Schwelle, Entscheidung – bevor die erste Person testet.</p>
     <Prompt label="Beispiel · Experiment-Karte E2">E2 · A3 (bedienbar) · läuft bis Tag 5
-Wir glauben, dass Pendler*innen im Gehen innerhalb von 20 Sekunden bestellen können.
+Wir glauben, dass Pendler*innen im Gehen ohne Hilfe bis zur Fertig-Zeit bestellen können.
 Um das zu prüfen, geben wir fünf Pendler*innen den Klick-Prototyp am Handy mit der Aufgabe:
   „Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“
-Wir messen: Höhepunkt „Fertig 7:31“ ohne Hilfe erreicht (ja/nein), Zeit bis dahin, wo sie hängen, was sie beim Höhepunkt sagen oder zeigen.
-Wir haben recht, wenn 4 von 5 den Höhepunkt ohne Hilfe erreichen.</Prompt>
+Wir messen: Höhepunkt „Fertig 7:31“ ohne Hilfe erreicht (ja/nein), Zeit bis dahin (Richtwert aus A3: 20 Sekunden), wo sie hängen, was sie beim Höhepunkt sagen oder zeigen.
+Wir haben recht, wenn 4 von 5 den Höhepunkt ohne Hilfe erreichen.
+Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen</Prompt>
     <div class="nur-handout">
-      <p>Die Zeit notiert ihr; 20 Sekunden sind der Richtwert aus A3, nicht die Schwelle. Testpersonen sind Menschen mit dem Pain, nicht die bequemsten: „make sure that your participants experience the need, pain point, or desire … Remember to recruit for variation“ ({TORRES}, S. 145). Was ihr beim Höhepunkt beobachtet, ist Lichaws Smile Test: Lächelt die Person dort, wo eure Usage Story den Höhepunkt hat?</p>
+      <p>Die Zeit notiert ihr; 20 Sekunden sind der Richtwert aus A3, nicht die Schwelle. Die Zeile „Wir entscheiden vorher“ steht hier wie auf Karte E1 (<a href="/innolab/methoden/experiment#vorher-entscheiden">Vorher entscheiden</a>); die drei Bänder für E2 sind eine Setzung der Kaffeebar. Testpersonen sind Menschen mit dem Pain, nicht die bequemsten: „make sure that your participants experience the need, pain point, or desire … Remember to recruit for variation“ ({TORRES}, S. 145). Was ihr beim Höhepunkt beobachtet, ist Lichaws Smile Test: Lächelt die Person dort, wo eure Usage Story den Höhepunkt hat? Die Reaktion notiert ihr neben „Höhepunkt erreicht“; für die Schwelle zählt nur, ob sie ohne Hilfe dort ankommt.</p>
     </div>
   </Folie>
 
   <Folie>
-    <h2 id="beispiel">Am Beispiel: „Gleis-1-Express“</h2>
-    <p class="folie-satz">Fünf Papierbildschirme, ein Spike, fünf Tests.</p>
-    <ul>
+    <h2 id="beispiel">Am Beispiel: der Spike der Kaffeebar</h2>
+    <p class="folie-satz">Fünf Papierbildschirme, drei Abnahmekriterien, 40 Minuten.</p>
+    <ul class="gross">
       <li data-schritt><strong>Papier:</strong> Getränk · Zug · „Fertig 7:31. Dein Zug fährt 7:38.“ · Abholnummer · Bar-Ansicht.</li>
-      <li data-schritt><strong>Abnahmekriterien:</strong> Höhepunkt in drei Tipps erreichbar, läuft am Handy, „Prototyp – nicht echt“ oben. Zeitbox 40 min.</li>
-      <li data-schritt><strong>U1:</strong> Höhepunkt ohne Hilfe erreicht – 4 von 5. E2 bestanden.</li>
-      <li data-schritt><strong>U2:</strong> Zug eintippen dauert; alle fünf suchten eine Liste der nächsten Abfahrten.</li>
-      <li data-schritt><strong>U3:</strong> Unklar, wo die Express-Ausgabe ist – 3 von 5.</li>
+      <li data-schritt><strong>Der Prototyp muss:</strong> den Höhepunkt in drei Tipps erreichbar machen, am Handy laufen, oben „Prototyp – nicht echt“ zeigen.</li>
+      <li data-schritt><strong>Er hat nicht:</strong> Login, Zahlung, Datenbank.</li>
     </ul>
-    <p class="nur-handout">Die Befunde sind ausgedacht – an der Form erkennt ihr, wie eure aussehen sollten. U2 schiebt „Zug aus der Liste“ von Slice 2 in Slice 1: Das steht in der Spalte „Folge“ und auf der Lernkarte, Beleg U2. Torres beschreibt genau das: Fällt eine Annahme, entwickelt man die Idee so weiter, dass sie nicht mehr davon abhängt ({TORRES}, S. 140).</p>
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (75 min)</h2>
-    <p class="folie-satz">Papier, Kriterien, bauen, Karte, Trockenlauf.</p>
+    <h2 id="beispiel-befunde">Nach fünf Tests: die Befunde</h2>
+    <p class="folie-satz">Ausgedacht – an der Form erkennt ihr, wie eure aussehen sollen.</p>
+    <table class="befunde">
+      <thead><tr><th>ID</th><th>Befund</th><th>Wie oft</th><th>Folge</th></tr></thead>
+      <tbody>
+        <tr data-schritt><th>U1</th><td>Höhepunkt ohne Hilfe erreicht</td><td>4 von 5</td><td>E2 bestanden</td></tr>
+        <tr data-schritt><th>U2</th><td>Zug eintippen dauert; alle suchen eine Liste der nächsten Abfahrten</td><td>5 von 5</td><td>„Zug aus der Liste“ wandert von Slice 2 in Slice 1</td></tr>
+        <tr data-schritt><th>U3</th><td>Unklar, wo die Express-Ausgabe ist</td><td>3 von 5</td><td>Hinweis auf dem Höhepunkt-Bildschirm</td></tr>
+      </tbody>
+    </table>
+    <p data-schritt><strong>Jeder Befund</strong> bekommt eine ID (U1, U2 …), eine Zahl und eine Folge.</p>
+    <p class="nur-handout">Die Befunde sind ausgedacht – an der Form erkennt ihr, wie eure aussehen sollten. U2 schiebt „Zug aus der Liste“ von Slice 2 in Slice 1: Das steht in der Spalte „Folge“ und auf der Lernkarte, Beleg U2. Torres beschreibt genau das: Fällt eine Annahme, entwickelt man die Idee so weiter, dass sie nicht mehr davon abhängt ({TORRES}, S. 140). Die Folge von U3 ist eine Setzung der Kaffeebar.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen">So geht ihr vor (75 min) – 1: bauen</h2>
+    <p class="folie-satz">Papier, Kriterien, dann Claude Code.</p>
     <ol class="gross">
-      <li data-schritt><strong>Papier, allein:</strong> eine Skizze je Bildschirm der Usage Story; Foto. <Timer minuten={10} /></li>
-      <li data-schritt><strong>Abnahmekriterien und Zeitbox</strong> in docs/TESTS.md. <Timer minuten={5} /></li>
-      <li data-schritt><strong>Bauen:</strong> Branch, Prompt, Foto; am Handy prüfen. Stopp bei null. <Timer minuten={40} /></li>
-      <li data-schritt><strong>Karte E2 und Aufgabe.</strong> <Timer minuten={10} /></li>
-      <li data-schritt><strong>Trockenlauf über Kreuz:</strong> drei Runden – testen, mitschreiben, Rollen tauschen. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Papier, allein:</strong> eine Skizze je Bildschirm der Usage Story, der Höhepunkt als eigener; Foto. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Abnahmekriterien und Zeitbox</strong> in <code>docs/TESTS.md</code>: was er zeigen muss, bis wann, was er nicht hat. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Bauen:</strong> Prompt „Spike · Claude Code“ aus dem Handout, mit eurem Foto. Reicht die Zeit nicht: zuerst der Höhepunkt-Bildschirm. Ist der Timer bei null, hört ihr auf. <Timer minuten={40} /></li>
+      <li data-schritt><strong>Am Handy ansehen:</strong> als Vercel-Vorschau. Der Spike bleibt im Branch.</li>
     </ol>
     <div class="nur-handout">
-      <p>Dazu 15 Minuten Theorie und Beispiel. Zu 1: vier bis sechs Bildschirme; der Höhepunkt ist ein eigener. Zu 2: drei Sätze – was der Prototyp zeigen muss, bis wann, was er nicht hat (Login, Zahlung, Datenbank). Zu 3: Reicht die Zeit nicht, baut zuerst den Höhepunkt-Bildschirm; was fehlt, steht in <code>docs/TESTS.md</code>. Zu 5: Drei Runden à gut drei Minuten – A testet den Prototyp von B, C schreibt mit; dann B den von C, A schreibt; dann C den von A, B schreibt. Ergebnis: Ist die Aufgabe verständlich, ist der Höhepunkt da? Online teilt, wessen Prototyp getestet wird, den Bildschirm; die Testperson sagt laut, was sie tun will, und die Besitzerin klickt – mehr nicht. Das ist eine Online-Form dieses Kurses. Der Trockenlauf zählt nicht als Testperson ({BLAND}, S. 183).</p>
+      <p>Dazu 15 Minuten Theorie und Beispiel. Zu 1: vier bis sechs Bildschirme; der Höhepunkt ist ein eigener. Zu 2: drei Sätze – was der Prototyp zeigen muss, bis wann, was er nicht hat (Login, Zahlung, Datenbank). Zu 3: Der Prompt steht unten; was in 40 Minuten fehlt, steht in <code>docs/TESTS.md</code>. Zu 4: Für Tests am Handy deployt ihr den Branch als Vercel-Vorschau.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="vorgehen-test">So geht ihr vor – 2: Karte und Trockenlauf</h2>
+    <p class="folie-satz">Ein Testlauf, keine Kritik.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Karte E2 und Aufgabe</strong> in <code>docs/TESTS.md</code>, mit „Wir entscheiden vorher“. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Trockenlauf, drei Runden:</strong> A testet den Prototyp von B, C schreibt mit – dann wechseln. <Timer minuten={10} /></li>
+      <li data-schritt><strong>Online:</strong> Wem der Prototyp gehört, teilt den Bildschirm und klickt. Die Testperson sagt nur laut, was sie tun will.</li>
+      <li data-schritt><strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Ihr notiert nur: Aufgabe verständlich? Höhepunkt erreicht?</li>
+    </ol>
+    <div class="nur-handout">
+      <p>Zu 2: Drei Runden à gut drei Minuten – A testet den Prototyp von B, C schreibt mit; dann B den von C, A schreibt; dann C den von A, B schreibt. Ergebnis: Ist die Aufgabe verständlich, ist der Höhepunkt da? Online teilt, wessen Prototyp getestet wird, den Bildschirm; die Testperson sagt laut, was sie tun will, und wem der Prototyp gehört, klickt – mehr nicht. Das ist eine Online-Form dieses Kurses. Der Trockenlauf zählt nicht als Testperson ({BLAND}, S. 183).</p>
+      <p>Der Trockenlauf ist keine Runde über Kreuz, in der ihr die Arbeit der anderen beurteilt: Die Testperson erfüllt eine Aufgabe und denkt laut, besprochen wird nichts. Bland verlangt genau das vor dem ersten echten Test: „Test it internally to make sure the flow works“ (S. 183).</p>
     </div>
   </Folie>
 
@@ -117,6 +183,7 @@ Um das zu prüfen, geben wir fünf [Zielgruppe] den Prototyp am Handy mit der Au
   „[Situation, Ziel – ohne Bedienschritte]“
 Wir messen: Höhepunkt ohne Hilfe erreicht, Zeit bis dahin, wo gehangen, Reaktion am Höhepunkt.
 Wir haben recht, wenn [x] von 5 den Höhepunkt ohne Hilfe erreichen.
+Wir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [...]
 
 Ablauf je Test (15–20 min): Einwilligung (Notizen, KI) · „Wir testen den Prototyp, nicht dich; sag, was dir durch den Kopf geht“ ·
   Aufgabe vorlesen · schweigen, höchstens „Was würdest du jetzt tun?“ · danach: „Was hat dich überrascht?“
@@ -137,6 +204,7 @@ Wir haben beobachtet: [x von 5, Zeiten, U-IDs]
 Verlässlichkeit: schwach / mittel / stark – weil [...]
 Daraus lernen wir: [...]
 Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: [...]
+Weicht ab von „Wir entscheiden vorher“? Grund: [...]
 Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
@@ -145,7 +213,9 @@ Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
 
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
-    <p class="folie-satz">Was wird euer U2 – der Befund, den alle fünf haben?</p>
+    <p class="folie-satz">Welchen Befund werden alle fünf haben – euer U2?</p>
+    <p class="nur-beamer">Ihr findet ihn nur, wenn ihr beim Test schweigt.</p>
+    <p class="nur-beamer"><strong>Bis Tag 5:</strong> fünf Tests mit Menschen, die den Pain haben. <strong>Nach der Pause:</strong> Agil und Scrum.</p>
     <p class="nur-handout">Ihr findet ihn nur, wenn ihr beim Test den Mund haltet. Und er sagt euch, wie ihr zurechtkommt – ob jemand euer Produkt will, sagt euch E1.</p>
   </Folie>
 
@@ -153,3 +223,18 @@ Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
 
   <FooterNav prev={{ href: '/innolab/methoden/usage-story', t: 'Usage Story' }} next={{ href: '/innolab/methoden/scrum', t: 'Scrum im Team' }} />
 </Layout>
+
+<style>
+  /* Folien „was-er-zeigt“ und „test-ablauf“: zwei Kästen nebeneinander; hervorgehoben, worum es hier geht. */
+  .paar { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: .75rem 0; }
+  .paar > div { display: flex; flex-direction: column; gap: .25rem; border-radius: 8px; padding: .6rem .9rem; }
+  .paar .nebenan { border: 1px dashed var(--border); color: var(--muted); }
+  .paar .hier { border: 1px solid var(--accent); background: color-mix(in srgb, var(--accent) 12%, transparent); }
+  .paar b { color: var(--fg); }
+  .paar .frage { font-size: 1.3rem; font-weight: 600; color: var(--fg); }
+  :global(html[data-beamer]) .paar > div { font-size: 1.1rem; }
+  .befunde th, .befunde td { vertical-align: top; }
+  @media (max-width: 700px) {
+    .paar { grid-template-columns: 1fr; }
+  }
+</style>

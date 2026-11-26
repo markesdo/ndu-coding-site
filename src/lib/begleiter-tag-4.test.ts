@@ -10,8 +10,8 @@ const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro',
 
 const SEITEN: Record<string, number> = {
   '/innolab/methoden/experiment': 15,
-  '/innolab/methoden/usage-story': 5,
-  '/innolab/methoden/prototyp-spike': 6,
+  '/innolab/methoden/usage-story': 6,
+  '/innolab/methoden/prototyp-spike': 10,
   '/innolab/methoden/scrum': 16,
 };
 
