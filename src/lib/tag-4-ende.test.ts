@@ -135,7 +135,7 @@ describe('Tag 4: Folien des Abschlusses', () => {
     expect(schritte.length).toBeGreaterThanOrEqual(4);
     expect(schritte.length).toBeLessThanOrEqual(6);
     const liste = f.slice(f.indexOf('<div class="nur-handout">'));
-    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v4" items={[');
+    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v5" items={[');
     // Je Schritt der Teil, der wörtlich aus einem Punkt der Liste kommt.
     // Review #448: Die Folie zeigte nur die Punkte 6–12; der erste Schritt nennt die Punkte 1–5.
     // Seit der Durchsicht 26.11.: zuerst, was andere Menschen und Vorlauf braucht (E1, fünf Tests); „Fertig machen“ an fünfter Stelle.
@@ -144,9 +144,9 @@ describe('Tag 4: Folien des Abschlusses', () => {
     ]);
     expect(schritte[0]).toContain('bis drei Werktage vor Tag 5');
     expect(schritte[4]).toBe('<strong>Fertig machen, was heute offen blieb:</strong> Value Map und Fit, Concept Story, Baum, Geschäftsmodell und Karte E1, Story Map und Usage Story (ganze Liste im Handout).');
-    for (const aus of ['Value Map und Fit', 'Concept Story', 'Euer Baum', 'GESCHAEFTSMODELL.md', 'Karte E1', 'STORY-MAP.md', 'Usage Story']) expect(liste, aus).toContain(aus);
+    for (const aus of ['Value Map und Fit', 'Concept Story', 'Euer Baum', 'Geschäftsmodell auf Miro', 'Karte E1', 'Story Map mit Slice 1', 'Usage Story']) expect(liste, aus).toContain(aus);
     for (const aus of [
-      'als Text für Aufsteller oder Landingpage in <code>docs/STORYS.md</code>',
+      'als Text für Aufsteller oder Landingpage',
       'an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe',
       'Fünf Usability-Tests</strong> mit Karte E2',
       'Befund → Handlung',
@@ -219,9 +219,10 @@ describe('Handout ohne Beamer-Sätze', () => {
 
 // Review 3 #448: Der Handout-Link führt auf die Vorlage selbst, nicht nur auf die Seite.
 describe('Origin Story: Vorlage verlinkt', () => {
-  it('tag-4#abschluss verlinkt experiment#vorlage-origin-story, und dort steht die Überschrift mit dieser id', () => {
-    expect(folie('/innolab/tag-4', 'abschluss')).toContain('href="/innolab/methoden/experiment#vorlage-origin-story"');
-    expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">Vorlage · Origin Story in docs/STORYS.md</h3>');
+  // Seit 26.11. abends: keine docs-Vorlage mehr – die Origin Story steht auf Miro im eigenen Frame.
+  it('tag-4#abschluss nennt den Miro-Frame der Origin Story statt einer docs-Vorlage', () => {
+    expect(folie('/innolab/tag-4', 'abschluss')).toContain('Ihr schreibt sie auf Miro, in eurem Frame „T4 · 6 · Origin Story · Produkt n“.');
+    expect(folie('/innolab/tag-4', 'abschluss')).not.toContain('vorlage-origin-story');
   });
 });
 

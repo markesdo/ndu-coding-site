@@ -78,8 +78,12 @@ describe('Tag 4: Ablauf-Texte und Namen (Durchsicht 26.11.)', () => {
     expect(bloecke.map((b) => b.titel)).toContain('Geschäftsmodell');
     expect(text('Geschäftsmodell')).toBe('Wer, Was, Wie, Wert; die Linie vom Outcome zum Geld; die wirtschaftliche Annahme für die Map.');
   });
-  it('10:50: zuerst die Concept Story von Miro in docs/STORYS.md', () => {
-    expect(text('Claude Pro und Claude Code, gemeinsam')).toMatch(/^Zuerst die Concept Story von Miro in <code>docs\/STORYS\.md<\/code> übertragen\./);
+  // Seit 26.11. abends: kein Übertrag in docs/STORYS.md; der Testprompt liest einen Screenshot des Frames, mit Opus.
+  it('10:50: Claude Pro und Claude Code mit Opus, Testprompt mit Screenshot des Concept-Story-Frames', () => {
+    const t = text('Claude Pro und Claude Code, gemeinsam');
+    expect(t).toContain('mit Opus (<code>/model opus</code>)');
+    expect(t).toContain('Screenshot eures Concept-Story-Frames einfügen – „Sag mir in einem Satz, worum es in meiner Concept Story geht.“');
+    expect(t).not.toContain('docs/');
   });
   it('kein „Geschäftsmodell-Karten“ mehr auf Tag 4, Concept Story und Value Map; Pitch ohne Gebäck', () => {
     for (const p of [T4, '/innolab/methoden/concept-story', '/innolab/methoden/value-map']) {
@@ -98,5 +102,31 @@ describe('Begleiter: Notizen zur Tagesseite Tag 4', () => {
     expect(Object.keys(n)).toStrictEqual(['arbeitsfluss', 'was-bauen-wir', 'slice-im-baum', 'abschluss', 'origin-beispiel', 'hausaufgabe', 'ende-tag-4']);
     const seiten = Object.keys(NOTIZEN);
     expect(seiten.indexOf(T4)).toBe(seiten.indexOf('/innolab/methoden/value-map') - 1);
+  });
+});
+
+// NACHTRAG 26.11. abends: Studierende schreiben keine docs/*.md mehr – alles auf Miro oder in der Werkstatt.
+describe('Tag 4 ohne docs-Dateien für Studierende', () => {
+  it('Tagesseite, Concept Story und Geschäftsmodell nennen außerhalb von Kommentaren keine docs-Datei', () => {
+    const ohneKommentar = (q: string) => q.replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/\/\/.*$/gm, '');
+    for (const p of [T4, '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell']) {
+      expect(seite(p).length, p).toBeGreaterThan(1000);
+      expect(ohneKommentar(seite(p)).match(/docs\/[A-Z-]+\.md|committet und gepusht/g) ?? [], p).toStrictEqual([]);
+    }
+    for (const p of [T4, '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell']) expect(JSON.stringify(NOTIZEN[p] ?? {}), p).not.toMatch(/docs\//);
+  });
+
+  it('Hausaufgabe: Checkliste -v5 nennt Miro-Frames, der Spike bleibt in seinem Branch', () => {
+    const f = folie(T4, 'hausaufgabe');
+    expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v5" items={[');
+    for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 2 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“', 'Der Spike liegt in seinem eigenen Branch auf GitHub']) expect(f, w).toContain(w);
+  });
+
+  // Frame-Namen ohne Miro-ID (Fable baut sie noch) stehen als Text mit Kommentar „TODO Miro-ID“. Am Kurstag darf keiner mehr offen
+  // sein: dann müssen sie in miro-frames.ts und als MiroLink auf der Seite stehen.
+  it('am Kurstag (28.11., 7 Uhr) kein „TODO Miro-ID“ mehr auf Tagesseite, Concept Story und Geschäftsmodell', () => {
+    const offen = [T4, '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell'].flatMap((p) => (seite(p).match(/TODO Miro-ID[^*]*/g) ?? []).map((t) => `${p}: ${t.trim()}`));
+    if (Date.now() < Date.parse('2026-11-28T07:00:00+01:00')) return;
+    expect(offen).toStrictEqual([]);
   });
 });

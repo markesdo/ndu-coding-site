@@ -114,6 +114,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
       'Zuerst E1 und fünf Tests: brauchen andere Menschen und Vorlauf.',
       'E1 läuft bis drei Werktage vor Tag 5.',
       'Ganze Liste: Checkliste im Handout der Seite.',
+      'Alles auf Miro oder in der Werkstatt – keine Dateien schreiben.',
       'Fragen: Wo steht bei jeder*m der Aufsteller oder die Landingpage?',
     ],
     ueberleitung: 'Tag 5 beginnt mit dem, was eure Tests gezeigt haben.',
