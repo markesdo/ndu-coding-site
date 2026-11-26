@@ -453,32 +453,38 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `Kurs: methoden.ts, Prüfliste „experiment“; ${THOMKE}, S. 86`,
       },
     ],
-    ueberleitung: 'Und wenn E1 gelaufen ist? Dann schreibt ihr die Lernkarte.',
+    ueberleitung: 'Wie E1 laufen würde – Schritt für Schritt.',
+  },
+
+  'so-liefe-e1': {
+    live: [
+      'Klarstellen: E1 läuft bei uns nicht – so sähe es aus.',
+      'Fünf Schritte einzeln aufdecken, je mit Kaffeebar.',
+      'Zählen statt überreden: auch die Gegenseite (Strichliste).',
+      'Ehrlich sagen, dass es das noch nicht gibt.',
+      'Zeit: Sprechzeit ~2 min.',
+    ],
+    fragen: [
+      {
+        frage: 'Wer wären die Testpersonen für E1, und wo?',
+        antwort: 'Menschen aus der Zielgruppe in der Situation, um die es geht – bei der Kaffeebar Pendler*innen morgens in der Halle, drei Morgen. Ohne echten Ort: ein simulierter Moment mit zehn Menschen aus der Zielgruppe, Bild am Handy.',
+      },
+    ],
+    kern: [
+      {
+        text: 'Die fünf Schritte sind eine Kurszusammenfassung aus Blands Test Card (S. 46) und Simple Landing Page (S. 260) und Torres’ simuliertem Moment: „A strong assumption test simulates an experience, giving your participant the opportunity to behave either in accordance with your assumption or not.“',
+        quelle: `${BLAND}, S. 46, 260; ${TORRES}, S. 135, 142–144; Kurszusammenfassung`,
+      },
+    ],
+    ueberleitung: 'Und so sähe die Lernkarte danach aus – am Beispiel der Kaffeebar.',
   },
 
   lernkarte: {
     live: [
-      'Zeitstrahl von links: Karte heute, Origin Story am Ende des Tages.',
-      'Bis Tag 5: E1 mit Menschen aus der Zielgruppe am echten Ort.',
-      'Kein Ort? Simulierter Moment mit zehn aus der Zielgruppe.',
-      'Danach Lernkarte E1 auf Miro, an Tag 5 vorlesen.',
-      'E2 nur, wer testet – eigene Lernkarte im selben Frame.',
-    ],
-    fragen: [
-      {
-        frage: 'Wer sind die Testpersonen für E1, und wann?',
-        antwort: 'Menschen aus der Zielgruppe in der Situation, um die es geht (Kaffeebar: Pendler*innen morgens in der Halle), zwischen heute und drei Werktagen vor Tag 5. Geht kein echter Ort: ein simulierter Moment mit zehn Menschen aus der Zielgruppe.',
-      },
-    ],
-    ueberleitung: 'Was auf der Lernkarte steht – vier Zeilen und eine für Abweichungen.',
-  },
-
-  'lernkarte-zeilen': {
-    live: [
       'Learning Card zeigen: geglaubt, beobachtet, gelernt, darum.',
+      'Kaffeebar: 8 von 30 – Band 5–9 – wiederholen, eine Sache ändern.',
       'Erst der Beleg (gestützt, widerlegt, unklar, neu), dann die Handlung.',
-      'Verlässlichkeit dazuschreiben: schwach, mittel oder stark – und warum.',
-      'Darum: das Band, das auf der Karte E1 vorher steht.',
+      'E1 läuft nicht: an Tag 5 besprechen, was die Karte gezeigt hätte.',
     ],
     verstaendnis: {
       frage: 'E1 ist widerlegt, ihr schwenkt auf die Wartezeit-Anzeige um. Was müsst ihr mit euren alten Belegen tun?',
@@ -494,19 +500,20 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 61`,
       },
       {
-        text: 'Neue Zeile der Vorlage: „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ – macht die Ausnahme prüfbar.',
-        quelle: 'Kurs (Entscheidung Markus 26.11.2026)',
+        text: 'Zeile „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ – macht die Ausnahme prüfbar. E1 läuft in diesem Kurs nicht (Entscheidung 27.11.); eine Lernkarte schreibt nur, wer E2 mit dem Prototyp testet.',
+        quelle: 'Kurs (Entscheidungen Markus 26. und 27.11.2026)',
       },
     ],
-    ueberleitung: 'Und wenn ihr nach dem Test anders entscheiden wollt, als die Karte sagt? Das geht – aber offen.',
+    ueberleitung: 'Und wenn man nach dem Test anders entscheiden will, als die Karte sagt? Das geht – aber offen.',
   },
 
   'gegen-den-beleg': {
     live: [
+      'Erst erklären: Serie, zwei Stars, Netflix testet Vorschaubilder.',
       'Netflix in drei Schritten erzählen, Fluss links nach rechts.',
       'Regel, Ausnahme, Nie – einzeln aufdecken.',
       '„Ihr dürft gegen einen Beleg entscheiden – aber nicht so tun, als gäbe es ihn nicht.“',
-      'Bezug: die Zeile „Weicht ab …? Grund“ auf der Lernkarte.',
+      'Bezug: die Zeile „Weicht ab …? Grund“ unter der Karte.',
     ],
     verstaendnis: {
       frage: 'Was hat der Test Netflix gebracht, obwohl die Entscheidung gegen die Daten ging?',
@@ -514,6 +521,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       falsch: '„Nichts, der Test war umsonst“ – ohne ihn hätte man die Entscheidung mit erfundenen Kundenwünschen begründen können.',
     },
     kern: [
+      {
+        text: 'Hintergrund (nicht bei Thomke): „Grace and Frankie“ ist eine Comedyserie auf Netflix (2015–2022); Jane Fonda und Lily Tomlin spielen die beiden Titelrollen. Netflix zeigt zu jedem Titel ein Vorschaubild und testet Bilder darauf, welches mehr Menschen zum Ansehen bringt.',
+        quelle: 'https://en.wikipedia.org/wiki/Grace_and_Frankie; Netflix, „The Power of a Picture“ (3.5.2016), https://about.netflix.com/en/news/the-power-of-a-picture',
+      },
       {
         text: 'Netflix: Tests zeigten, dass eine Werbung nur mit Lily Tomlin („Grace and Frankie“) mehr Klicks brachte als Werbung mit Tomlin und Jane Fonda. Das Content-Team fürchtete, Fonda vor den Kopf zu stoßen und womöglich ihren Vertrag zu verletzen. Nach heftigen Debatten – Belege gegen „strategic considerations“ – nahm Netflix Bilder mit beiden, „even though customer data didn’t support the decision. However, the experimental evidence made the decision more transparent. Nobody could argue that Fonda should remain in the promotion because customers preferred it.“',
         quelle: `${THOMKE}, S. 127`,
@@ -534,7 +545,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Wann ist es legitim, gegen den Beleg zu entscheiden?',
-        antwort: 'Ausnahmsweise, wenn es einen Grund gibt, den der Test nicht misst – bei Netflix die Sorge um Fonda und ihren Vertrag. Der Grund steht auf der Lernkarte, der Beleg bleibt sichtbar.',
+        antwort: 'Ausnahmsweise, wenn es einen Grund gibt, den der Test nicht misst – bei Netflix die Sorge um Fonda und ihren Vertrag. Der Grund wird offen festgehalten, der Beleg bleibt sichtbar.',
       },
       {
         frage: 'Muss so eine Zeile anders aussehen als die anderen?',
@@ -547,8 +558,8 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Folien-Satz vorlesen: Wo kommt eure Zielgruppe ohnehin vorbei?',
-      'Kein echter Ort: E1 als simulierter Moment, zehn Menschen, Bild am Handy.',
-      'Schwelle und Bänder dafür vorher neu schreiben, z. B. 4 von 10.',
+      'Theorie: ohne echten Ort liefe E1 als simulierter Moment.',
+      'Weiter: Story Map – aus dem Spitzenreiter wird Slice 1.',
     ],
     kern: [
       {

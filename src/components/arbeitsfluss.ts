@@ -183,7 +183,7 @@ const ROH: Omit<Station, 'zeile'>[] = [
     von: ['annahmen', 'belege', 'ideation', 'value-map', 'offene-fragen', 'concept-story', 'geschaeftsmodell'],
     jetzt: 'Schritte, Annahmen, Map – Karte E1 mit Schwelle',
     satz: 'Ihr geht die Idee Schritt für Schritt durch, findet, was dafür stimmen muss, und legt für die riskanteste Annahme Test und Schwelle fest.',
-    gebrauchtIn: 'Baum: Lösungen und Tests · E1 läuft bis Tag 5 · Lernkarte · Backlog',
+    gebrauchtIn: 'Baum: Lösungen und Tests · E1 als Gedankenexperiment · Lernkarte, falls getestet · Backlog',
   },
   {
     id: 'story-map', methode: 'story-map', kurz: 'Story Map: Slice 1', linien: ['beleg', 'outcome'], spalte: 4, stern: true,

@@ -84,7 +84,7 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
     expect(stoer).toContain('Störungen mit Absicht einzubauen, stammt von Alexey Krivitsky');
     expect(stoer).not.toMatch(/scrum#nachbesprechung|Markus hat/);
     const ablauf = t5.slice(t5.indexOf('<h2 id="debrief-ablauf">'), t5.indexOf('</Folie>', t5.indexOf('<h2 id="debrief-ablauf">')));
-    expect(ablauf).toContain('<li data-schritt><strong>Euer Baum:</strong> E1 (und E2, falls getestet) mit ✓, ✗, „unklar“ oder „neue Einsicht“ markieren – bleiben, zur Geschwister-Idee wechseln oder verwerfen. <Timer minuten={2} /></li>');
+    expect(ablauf).toContain('<li data-schritt><strong>Euer Baum:</strong> E1 als „nicht gelaufen“ markieren, E2 (falls getestet) mit ✓, ✗, „unklar“ oder „neue Einsicht“ – bleiben, zur Geschwister-Idee wechseln oder verwerfen. <Timer minuten={2} /></li>');
     // Drei Product Ownerinnen à 6 min plus die übrigen Schritte = die 25 min des Blocks.
     const timer = [...ablauf.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((x) => Number(x[1]));
     expect(timer).toStrictEqual([2, 6, 3, 2]);

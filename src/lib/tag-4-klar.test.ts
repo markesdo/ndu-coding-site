@@ -61,8 +61,9 @@ describe('Tag 4: Origin Story im Beamer', () => {
 });
 
 describe('Tag 4: Hausaufgabe mit Datum', () => {
-  it('Satz nennt Tag 5 mit Datum und die zwei Tests zuerst', () => {
-    expect(folie(T4, 'hausaufgabe')).toContain('<p class="folie-satz">Bis Tag 5 am 12. Dezember: Origin Story, dann E1 mit echten Menschen – Usability-Tests, wenn ihr Zeit habt.</p>');
+  // Dozent 27.11.2026: E1 läuft nicht; Tests mit Menschen sind freiwillig.
+  it('Satz nennt Origin Story und Karte E1, Tests freiwillig', () => {
+    expect(folie(T4, 'hausaufgabe')).toContain('<p class="folie-satz">Bis Tag 5: Origin Story und eure Karte E1 fertig – Tests mit Menschen sind freiwillig.</p>');
   });
 });
 
@@ -125,9 +126,9 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
     }
   });
 
-  it('Hausaufgabe: Checkliste -v6 nennt Miro-Frames, der Spike bleibt in seinem Branch', () => {
+  it('Hausaufgabe: Checkliste -v7 nennt Miro-Frames, der Spike bleibt in seinem Branch', () => {
     const f = folie(T4, 'hausaufgabe');
-    expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v6" items={[');
+    expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v7" items={[');
     for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 7 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Produkt n“', 'Der Spike liegt in seinem eigenen Branch auf GitHub']) expect(f, w).toContain(w);
   });
 
@@ -179,7 +180,7 @@ describe('Tag 5 liest Tag 4 von Miro', () => {
     expect(seite('/innolab/methoden/backlog')).toContain('Unter dieser Nachricht stehen Bilder aus Miro: meine Spalte im Frame „T4 · 1 · Story Map“ mit Slice 1 und, falls ich getestet habe, die Befunde aus meinem Frame „T4 · 5 · Prototyp · Produkt n“.');
     expect(seite('/innolab/methoden/schneiden')).toContain('Unter dieser Nachricht steht ein Bild meiner Story Map von Miro (meine Spalte im Frame „T4 · 1 · Story Map“, Slice 1).');
     const t5 = seite('/innolab/tag-5');
-    expect(t5).toContain('<strong>Je Product Ownerin:</strong> E1, E2 (falls getestet), Empfehlung');
+    expect(t5).toContain('<strong>Je Product Ownerin:</strong> Karte E1 und die zwei Fragen, E2 (falls getestet), Empfehlung');
     expect(t5).toContain('E2 und U1–U3 stehen auf der Seite <a href="/innolab/methoden/prototyp-spike#beispiel-befunde">');
     expect(seite('/innolab/methoden/prototyp-spike')).toContain('<h2 id="beispiel-befunde">');
   });
@@ -201,7 +202,7 @@ describe('So geht ihr vor: Frames, Anleitung und Werkstatt verlinkt', () => {
     { p: M('story-map'), id: 'vorgehen', produkt: [], frames: ['T4 · 1 · Story Map', 'T4 · 1 · Anleitung Story Map'] },
     { p: M('usage-story'), id: 'vorgehen', produkt: ['T4 · 4 · Usage Story'], frames: ['T4 · 4 · Usage Story · Kaffeebar', 'T4 · 4 · Anleitung Usage Story'] },
     ...PS.map((id) => ({ p: M('prototyp-spike'), id, produkt: ['T4 · 5 · Prototyp'], frames: id === 'vorgehen' ? ['T4 · 5 · Prototyp · Kaffeebar', 'T4 · 5 · Anleitung Prototyp'] : [] })),
-    { p: T4, id: 'hausaufgabe', produkt: ['T4 · 6 · Origin Story', 'T4 · 6 · Lernkarten', 'T4 · 5 · Prototyp'], frames: ['T4 · 6 · Anleitung Origin Story', 'T4 · 6 · Anleitung Lernkarten'] },
+    { p: T4, id: 'hausaufgabe', produkt: ['T4 · 6 · Origin Story', 'T4 · 5 · Prototyp'], frames: ['T4 · 6 · Anleitung Origin Story', 'T4 · 0 · Annahmen der Idee'] },
   ];
   const ohne = (f: string, klasse: string) => f
     .replace(new RegExp(`<div class="${klasse}">[\\s\\S]*$`), '')

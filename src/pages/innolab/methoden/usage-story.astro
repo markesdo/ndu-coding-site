@@ -153,6 +153,9 @@ Smile: Im Test erwarten wir das Lächeln bei Station 5 → Testaufgabe auf Karte
 </Layout>
 
 <style>
+  :global(html[data-beamer] .folie:has(> h2#drei-storys) .fluss) { margin: .4rem 0; }
+  :global(html[data-beamer] .folie:has(> h2#usage-story) .buch-abbildung img) { max-height: calc(100vh - 24rem) !important; }
+  :global(html[data-beamer] .folie:has(> h2#usage-story) ul > li) { font-size: 1rem; }
   /* Folie „usage-story“: Bild und alle sieben Stationen passen bei 1280 × 720 nur mit etwas weniger Abstand über dem Bild. */
   :global(html[data-beamer] .folie:has(> h2#usage-story) .bild-text) { margin-top: .5rem; }
   :global(html[data-beamer] .folie:has(> h2#usage-story) .buch-abbildung img) { max-height: calc(100vh - 21rem); }

@@ -154,7 +154,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(folie('/innolab/tag-4', 'arbeitsfluss')).toContain('<Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />');
     // Letzte Folie ohne Schritte: Von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar ihre Schritte auf.
     expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('schritte={false}');
-    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, am Nachmittag als Prototyp. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>');
+    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, am Nachmittag als Prototyp. An Tag 5 besprecht ihr, ob er hält.</WasBauenWir>');
     // „Heute Mittag“ nur auf Tag 4; der Arbeitsfluss ist tagneutral.
     expect(folie('/innolab/arbeitsfluss', 'was-bauen-wir')).toContain('<WasBauenWir>An Tag 4 entsteht euer Slice 1.');
     expect(seite('/innolab/arbeitsfluss')).not.toContain('Heute Mittag');

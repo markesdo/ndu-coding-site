@@ -22,10 +22,10 @@ const folie = (id: string) => {
 const sichtbar = (id: string) => folie(id).replace(/<div class="nur-handout">[\s\S]*?<\/div>\s*(?=<\/?[A-Za-z]|$)/g, '').replace(/<p class="nur-handout">[\s\S]*?<\/p>/g, '');
 
 describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
-  it('20 Folien (seit 27.11. mit annahmen-finden und lernkarte-zeilen) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
+  it('20 Folien (seit 27.11. mit annahmen-finden und so-liefe-e1) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
     expect(folienAus(EX, seite(EX)).map((f) => f.id)).toStrictEqual([
       'claude-pro-jetzt', 'claude-code-opus', 'annahmen-der-idee', 'schritte-der-idee', 'spitzenreiter', 'map', 'karte', 'ergebnis-gilt',
-      'vorher-entscheiden', 'welcher-test', 'test-arten', 'annahmen-finden', 'beispiel', 'beispiel-map', 'karte-e1', 'vorgehen', 'lernkarte', 'lernkarte-zeilen',
+      'vorher-entscheiden', 'welcher-test', 'test-arten', 'annahmen-finden', 'beispiel', 'beispiel-map', 'karte-e1', 'vorgehen', 'so-liefe-e1', 'lernkarte',
       'gegen-den-beleg', 'uebertrag',
     ]);
     expect(seite(EX)).not.toMatch(/id="sagen-tun|NACH_INTUIT|<Aufloesung/);
@@ -37,8 +37,9 @@ describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
     expect(Object.keys(n).sort()).toStrictEqual(folienAus(EX, seite(EX)).map((f) => f.id).sort());
     expect(n.karte.ueberleitung).toContain('Ergebnis nicht passt');
     expect(n['vorher-entscheiden'].ueberleitung).toContain('Vier Faustregeln');
-    expect(n['lernkarte-zeilen'].ueberleitung).toContain('aber offen');
-    expect(n.lernkarte.ueberleitung).toBe('Was auf der Lernkarte steht – vier Zeilen und eine für Abweichungen.');
+    expect(n.lernkarte.ueberleitung).toContain('aber offen');
+    expect(n['so-liefe-e1'].ueberleitung).toBe('Und so sähe die Lernkarte danach aus – am Beispiel der Kaffeebar.');
+    expect(n.vorgehen.ueberleitung).toBe('Wie E1 laufen würde – Schritt für Schritt.');
     expect(n['gegen-den-beleg'].ueberleitung).toContain('Aufsteller');
     expect(JSON.stringify(n['gegen-den-beleg'])).not.toContain('gewonnen');
   });
@@ -52,7 +53,9 @@ describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
   it('erste Folie des Blocks sagt, wo wir stehen; letzte übergibt an die Story Map', () => {
     expect(sichtbar('annahmen-der-idee')).toContain('Euer Spitzenreiter steht auf Papier.');
     expect(sichtbar('uebertrag')).toContain('<p class="nur-beamer"><strong>Weiter:</strong> Story Map – aus dem Spitzenreiter wird Slice 1.</p>');
-    expect(sichtbar('uebertrag')).toContain('<strong>Kein Ort?</strong> Dann ein simulierter Moment');
+    // Seit 27.11.2026 läuft E1 nicht: „Kein Ort?“ ist keine Anweisung mehr, nur noch Theorie im Handout.
+    expect(sichtbar('uebertrag')).not.toContain('<strong>Kein Ort?</strong>');
+    expect(folie('uebertrag')).toContain('Theorie, denn bei uns läuft E1 nicht');
   });
 });
 
@@ -116,7 +119,7 @@ describe('Pre-Mortem und Gegenprobe', () => {
   it('keine docs-Dateien mehr für Studierende (Nachtrag 26.11. abends)', () => {
     expect(seite(EX)).not.toMatch(/docs\/[A-Z-]+\.md/);
     expect(seite(EX)).toContain('<h2 id="vorlage">So sieht die Karte auf Miro aus</h2>');
-    expect(seite(EX)).toContain('<Karte label="Lernkarte E1 · Miro, T4 · 6 · Lernkarten · Produkt n" text={`Lernkarte E1 · A[n]');
+    expect(seite(EX)).toContain('<Karte label="Lernkarte (freiwillig, für E2) · Miro, T4 · 6 · Lernkarten · Produkt n" text={`Lernkarte E[n] · A[n]');
     // Seit 27.11.: Karten als Karte (kein Kopieren-Knopf), nicht als Prompt.
     expect(seite(EX)).not.toMatch(/<Prompt label="(Beispiel · Experiment-Karte E1|Feld „Karte E1|Lernkarte E1|Origin Story · Miro)/);
     expect(seite('/innolab/tag-5')).not.toContain('docs/EXPERIMENTE.md');
@@ -162,17 +165,37 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     for (const [z, links] of marken) expect(links, String(z)).toBeCloseTo((z / 30) * 100, 2);
   });
 
-  it('Tag 5: Lernkarte E1 auf Miro, E2 nur falls getestet im Prototyp-Frame (Review #456)', () => {
+  // Dozent 27.11.2026: E1 läuft nicht. Tag 5 bespricht die Karte E1 als Gedankenexperiment; Lernkarte nur für E2, falls getestet.
+  it('Tag 5: Karte E1 als Gedankenexperiment, Lernkarte nur für E2, falls getestet', () => {
     const t5 = seite('/innolab/tag-5');
-    expect(t5).toContain('Die Lernkarte E1 habt ihr zu Hause auf Miro gefüllt, in eurem Frame „T4 · 6 · Lernkarten · Produkt n“; die Lernkarte E2, falls ihr getestet habt, im Frame „T4 · 5 · Prototyp · Produkt n“.');
-    expect(t5).toContain('(E1: „T4 · 6 · Lernkarten · Produkt n“; E2, falls ihr getestet habt: „T4 · 5 · Prototyp · Produkt n“)');
-    expect(t5).not.toContain('Die Lernkarten E1 und E2 habt ihr zu Hause');
+    const fragen = 'Was hätte euch umstimmen können? Welches Band hättet ihr erwartet – und was hättet ihr dann getan?';
+    expect(t5).toContain(`<li data-schritt><strong>Karte E1 vorstellen:</strong> ${fragen}</li>`);
+    expect(t5).toContain('Eure Karte E1 auf Miro, im Frame „T4 · 0 · Annahmen der Idee“ – E1 ist in diesem Kurs nicht gelaufen');
+    expect(t5).not.toMatch(/Lernkarte E1 habt ihr|Lernkarte vorlesen|Lernkarten zu Beginn vor/);
+    expect(t5).toContain('Wer mit dem Prototyp getestet hat (freiwillig), bringt die Lernkarte E2 mit');
+  });
+
+  it('experiment#so-liefe-e1: fünf Schritte mit Kaffeebar, Lernkarte als Theorie; Karte E1 ohne Laufzeit', () => {
+    const v = sichtbar('so-liefe-e1');
+    expect(v).toContain('<p class="folie-satz">Ihr lauft E1 nicht – aber so sähe es aus, Schritt für Schritt.</p>');
+    expect([...v.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Vorbereiten:', 'Menschen aus der Zielgruppe, in der echten Situation', 'Zählen, nicht überreden:', 'Erst danach fragen:', 'Lernkarte:']);
+    expect(v).toContain('Eure Karte E1 beschreibt genau das – an Tag 5 besprecht ihr, was sie gezeigt hätte.');
+    expect(folie('so-liefe-e1')).toContain('<strong>Kurszusammenfassung</strong>');
+    expect(sichtbar('lernkarte')).toContain('<h2 id="lernkarte">So sähe die Lernkarte aus</h2>');
+    expect(sichtbar('lernkarte')).toContain('<strong>Bei uns läuft E1 nicht</strong> – an Tag 5 besprecht ihr, was eure Karte gezeigt hätte und was ihr dann entschieden hättet.');
+    expect(seite(EX)).not.toMatch(/läuft bis|E1 laufen lassen|sobald E1 gelaufen/);
+    expect(seite(EX)).toContain('<Karte label="Beispiel · Experiment-Karte E1" text={`E1 · A5 (wünschenswert)\n');
+    expect(sichtbar('vorgehen')).toContain('„Um das zu prüfen“ beschreibt, wie E1 laufen würde');
   });
 
   it('Lernkarten-Vorlage hat die Zeile für die Abweichung; #gegen-den-beleg steht danach, Regel – Ausnahme – Nie', () => {
     expect(seite(EX)).toContain('Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: [...]\nWeicht ab von „Wir entscheiden vorher“? Grund: …\n');
     const g = sichtbar('gegen-den-beleg');
-    expect(g).toContain('Netflix, Serie „Grace and Frankie“: Welches Werbebild?');
+    expect(g).toContain('<p class="folie-satz">Netflix testet Vorschaubilder: Welches Bild bringt mehr Klicks auf die Serie „Grace and Frankie“?</p>');
+    expect(g).toContain('Die Serie hat zwei Hauptdarstellerinnen: Jane Fonda und Lily Tomlin.');
+    expect(g).toContain('<strong>Die Ausnahme:</strong> bewusst dagegen entscheiden – und den Beleg und euren Grund offen festhalten.');
+    expect(NOTIZEN[EX]['gegen-den-beleg'].kern?.[0].text).toMatch(/^Hintergrund \(nicht bei Thomke\):/);
+    expect(NOTIZEN[EX]['gegen-den-beleg'].live[0]).toBe('Erst erklären: Serie, zwei Stars, Netflix testet Vorschaubilder.');
     expect([...g.matchAll(/\{ t: '([^']+)'/g)].map((x) => x[1])).toStrictEqual(['Test', 'Entscheidung', 'Offen']);
     expect(g).not.toContain('Gewonnen');
     expect([...g.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Die Regel:', 'Die Ausnahme:', 'Nie:']);

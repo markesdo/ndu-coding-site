@@ -111,19 +111,19 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
 
   hausaufgabe: {
     live: [
-      'Reihenfolge: Origin Story, Aufsteller, E1, Lernkarte; Tests optional.',
-      'E1 läuft bis drei Werktage vor Tag 5.',
+      'Reihenfolge: Origin Story, Karte E1 fertig; Tests freiwillig.',
+      'E1 läuft nicht – an Tag 5 besprechen, was die Karte gezeigt hätte.',
       'Ganze Liste: Checkliste im Handout der Seite.',
       'Alles auf Miro oder in der Werkstatt – keine Dateien schreiben.',
-      'Fragen: Wo steht bei jeder*m der Aufsteller oder die Landingpage?',
+      'Fragen: Steht bei allen „Wir entscheiden vorher“ auf der Karte E1?',
     ],
-    ueberleitung: 'Tag 5 beginnt mit dem, was eure Tests gezeigt haben.',
+    ueberleitung: 'Tag 5 beginnt mit eurer Karte E1 – und mit euren Tests, falls ihr getestet habt.',
   },
 
   // Letzte Folie des Tages: → bleibt stehen (Folie ende).
   'ende-tag-4': {
     live: [
-      '„Tag 5 am 12. Dezember beginnt mit dem Test-Debrief: Was haben E1 und eure Tests gezeigt?“',
+      '„Tag 5 beginnt mit dem Test-Debrief: Was hätte E1 gezeigt – und was eure Tests?“',
       'Offene Fragen sammeln, dann Besprechung beenden.',
       'Pfeil → bleibt hier stehen.',
     ],
