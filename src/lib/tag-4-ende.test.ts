@@ -13,21 +13,34 @@ const folie = (p: string, id: string) => {
   return a < 0 ? '' : q.slice(q.lastIndexOf('<Folie', a), q.indexOf('</Folie>', a));
 };
 
-type F = { id: string; weiter?: string; ende: boolean };
-/** Folien einer Seite mit weiter / ende aus dem Tag <Folie …> (so liest Layout.astro sie als data-weiter / data-ende). */
+type F = { id: string; weiter?: string; zurueck?: string; ende: boolean };
+/** ende als nacktes Attribut – nicht „ende“ in einem Wert wie weiter="…#ende-tag-4". */
+const hatEnde = (attr: string) => /(?:^|\s)ende(?=\s|\/?$)/.test(attr.replace(/="[^"]*"/g, '=""'));
+/** Folien einer Seite mit weiter / zurueck / ende aus dem Tag <Folie …> (so liest Layout.astro sie als data-…). Die
+ *  Überschrift muss in derselben Folie stehen: Der Ausdruck läuft nicht über </Folie> hinaus. */
 function folienMit(p: string): F[] {
-  return [...seite(p).matchAll(/<Folie\b([^>]*)>[\s\S]*?<h2 id="([^"]+)"/g)].map(([, attr, id]) => ({
-    id, weiter: attr.match(/\bweiter="([^"]+)"/)?.[1], ende: /\bende\b/.test(attr),
+  return [...seite(p).matchAll(/<Folie\b([^>]*)>(?:(?!<\/Folie>)[\s\S])*?<h2 id="([^"]+)"/g)].map(([, attr, id]) => ({
+    id, weiter: attr.match(/\bweiter="([^"]+)"/)?.[1], zurueck: attr.match(/\bzurueck="([^"]+)"/)?.[1], ende: hatEnde(attr),
   }));
 }
 const naechsteSeite = (p: string) => seite(p).match(/<FooterNav\b[^>]*\bnext=\{\{ href: '([^']+)'/)?.[1];
+const vorigeSeite = (p: string) => seite(p).match(/<FooterNav\b[^>]*\bprev=\{\{ href: '([^']+)'/)?.[1];
+
+/** Was ← am Anfang einer Folie (keine Schritte gezeigt) tut: zurueck → dorthin, sonst die Folie davor, auf der ersten
+ *  Folie die vorige Seite (FooterNav; dort landet man auf deren Anker bzw. Seitenanfang). */
+function zurueckVon(pfad: string, id: string): string {
+  const fs = folienMit(pfad);
+  const i = fs.findIndex((f) => f.id === id);
+  if (fs[i].zurueck) return fs[i].zurueck!;
+  return i > 0 ? `${pfad}#${fs[i - 1].id}` : (vorigeSeite(pfad) ?? '(keine)');
+}
 
 /**
  * Was → im Beamer von Folie zu Folie tut (folien.ts, Ende einer Folie): ende → stehen bleiben; weiter → dorthin;
  * sonst nächste Folie der Seite, nach der letzten die nächste Seite (FooterNav). Ankunft per #anker auf der Folie
  * mit diesem h2 (oder der ersten Folie der Seite).
  */
-function route(start: string, max = 60): string[] {
+function route(start: string, max = 60, bis?: string): string[] {
   const weg: string[] = [];
   let [pfad, anker] = start.split('#');
   for (let n = 0; n < max; n++) {
@@ -39,7 +52,7 @@ function route(start: string, max = 60): string[] {
       weg.push(`${pfad}#${f.id}`);
       if (f.ende) return weg;
       const ziel = f.weiter ?? (i + 1 < fs.length ? undefined : naechsteSeite(pfad));
-      if (ziel) { [pfad, anker] = ziel.split('#'); break; }
+      if (ziel) { [pfad, anker] = ziel.split('#'); if (pfad === bis) return [...weg, pfad]; break; }
       if (i + 1 >= fs.length) return [...weg, `${pfad} (Seitenende ohne Weiter)`];
       i++;
     }
@@ -81,7 +94,12 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
 
 describe('Tag 4: Folien des Abschlusses', () => {
   it('„Was bauen wir?“ führt per → zur Value Map, nicht in den Abschluss darunter', () => {
-    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toMatch(/^<Folie weiter="\/innolab\/methoden\/value-map#vorgehen">/);
+    expect(folienMit('/innolab/tag-4').find((f) => f.id === 'was-bauen-wir')?.weiter).toBe('/innolab/methoden/value-map#vorgehen');
+  });
+
+  // Review #448: ← auf tag-4#abschluss ging zu „Was bauen wir?“ (9:00) statt zurück auf scrum.
+  it('← am Anfang des Abschlusses führt zurück zur letzten Tag-4-Folie auf scrum', () => {
+    expect(zurueckVon('/innolab/tag-4', 'abschluss')).toBe('/innolab/methoden/scrum#weiter-tag-4');
   });
 
   it('der Block 17:15 im Ablauf und alle Links auf die Origin Story zeigen auf die Folie im Abschluss', () => {
@@ -94,10 +112,13 @@ describe('Tag 4: Folien des Abschlusses', () => {
     const f = folie('/innolab/tag-4', 'hausaufgabe');
     const schritte = [...f.matchAll(/<li data-schritt>([\s\S]*?)<\/li>/g)].map((m) => m[1]);
     expect(schritte.length).toBeGreaterThanOrEqual(4);
-    expect(schritte.length).toBeLessThanOrEqual(5);
+    expect(schritte.length).toBeLessThanOrEqual(6);
     const liste = f.slice(f.indexOf('<div class="nur-handout">'));
     expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v4" items={[');
     // Je Schritt der Teil, der wörtlich aus einem Punkt der Liste kommt.
+    // Review #448: Die Folie zeigte nur die Punkte 6–12; der erste Schritt nennt die Punkte 1–5.
+    expect(schritte[0]).toBe('<strong>Fertig machen, was heute offen blieb:</strong> Value Map und Fit, Concept Story, Baum, Geschäftsmodell und Karte E1, Story Map und Usage Story (ganze Liste im Handout).');
+    for (const aus of ['Value Map und Fit', 'Concept Story', 'Euer Baum', 'GESCHAEFTSMODELL.md', 'Karte E1', 'STORY-MAP.md', 'Usage Story']) expect(liste, aus).toContain(aus);
     for (const aus of [
       'als Text für Aufsteller oder Landingpage in <code>docs/STORYS.md</code>',
       'an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe',
@@ -112,12 +133,43 @@ describe('Tag 4: Folien des Abschlusses', () => {
 
   it('„Ende Tag 4“ ist die letzte Folie, mit ende; Tag 5 beginnt mit dem ersten Block von Tag 5', () => {
     const fs = folienMit('/innolab/tag-4');
-    expect(fs.at(-1)).toStrictEqual({ id: 'ende-tag-4', weiter: undefined, ende: true });
+    expect(fs.at(-1)).toStrictEqual({ id: 'ende-tag-4', weiter: undefined, zurueck: undefined, ende: true });
     expect(fs.filter((f) => f.ende).map((f) => f.id)).toStrictEqual(['ende-tag-4']);
     const erster = bloeckeAus(seite('/innolab/tag-5'))[0];
     expect(erster.titel).toBe('Test-Debrief');
     const f = folie('/innolab/tag-4', 'ende-tag-4');
     expect(f).toContain(`<p>Tag 5 beginnt am 12. Dezember mit dem <a href="/innolab/tag-5${erster.href}">${erster.titel}</a>: Was haben E1 und eure Tests gezeigt?</p>`);
     expect(seite('/innolab/tag-5')).toContain('Samstag, 12. Dezember 2026');
+  });
+});
+
+// Review #448: An Tag 5 zeigte ← von scrum#team die Tag-4-Folie „Ab hier: Tag 5“ („Heute: weiter am Prototyp bis 17:15“),
+// und → von dort sprang in den Abschluss von Tag 4.
+describe('Tag 5 im Beamer: rund um scrum#team keine Tag-4-Folie', () => {
+  it('→ von Tag 5 über den Debrief nach scrum#team und weiter bis zum Backlog – ohne #weiter-tag-4', () => {
+    const weg = route('/innolab/tag-5', 60, '/innolab/methoden/backlog');
+    expect(weg.at(-1)).toBe('/innolab/methoden/backlog');
+    expect(weg).toContain('/innolab/methoden/scrum#team');
+    expect(weg.filter((w) => w.startsWith('/innolab/methoden/scrum'))[0]).toBe('/innolab/methoden/scrum#team');
+    expect(weg.some((w) => w.endsWith('#weiter-tag-4') || w.startsWith('/innolab/tag-4'))).toBe(false);
+  });
+
+  it('← am Anfang von scrum#team führt zurück zum Debrief von Tag 5, nicht auf #weiter-tag-4', () => {
+    expect(zurueckVon('/innolab/methoden/scrum', 'team')).toBe('/innolab/tag-5#debrief-ablauf');
+    // Gegenprobe: Ohne zurueck wäre es die Tag-4-Folie darüber.
+    const fs = folienMit('/innolab/methoden/scrum');
+    expect(fs[fs.findIndex((f) => f.id === 'team') - 1].id).toBe('weiter-tag-4');
+    // Der Debrief ist die letzte Folie auf tag-5; dessen → führt nach scrum#team.
+    expect(folienMit('/innolab/tag-5').at(-1)?.id).toBe('debrief-ablauf');
+  });
+});
+
+describe('Hilfen des Tests', () => {
+  it('ende nur als nacktes Attribut; der Ausdruck für Folien läuft nicht über </Folie> hinaus', () => {
+    expect(hatEnde(' ende')).toBe(true);
+    expect(hatEnde(' weiter="/innolab/tag-4#ende-tag-4" weiterTitel="x"')).toBe(false);
+    expect(hatEnde(' zurueck="/a" ende')).toBe(true);
+    const q = '<Folie weiter="/x"><p>ohne Überschrift</p></Folie>\n<h2 id="draussen">D</h2>';
+    expect([...q.matchAll(/<Folie\b([^>]*)>(?:(?!<\/Folie>)[\s\S])*?<h2 id="([^"]+)"/g)]).toHaveLength(0);
   });
 });

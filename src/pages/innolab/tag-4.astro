@@ -60,7 +60,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
   </Folie>
 
   {/* → am Ende führt zur Value Map (9:10); die Folien des Abschlusses weiter unten kommen erst um 17:15, über scrum#weiter-tag-4. */}
-  <Folie weiter="/innolab/methoden/value-map#vorgehen">
+  <Folie weiter="/innolab/methoden/value-map#vorgehen" weiterTitel="Value Map & Fit (Nachholen)">
     <h2 id="was-bauen-wir">Was bauen wir?</h2>
     <p class="folie-satz">Slice 1 – und was die Tests davon übrig lassen.</p>
     <WasBauenWir schritte={false}>Heute Mittag steht euer Slice 1. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>
@@ -90,7 +90,8 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 
   {/* 17:15: Hierher führt → von der letzten Tag-4-Folie auf scrum (#weiter-tag-4). Drei Folien: Origin Story, Hausaufgabe,
       Ende – → bleibt auf „Ende Tag 4“ stehen (Folie.astro, ende). */}
-  <Folie>
+  {/* ← führt zurück zur letzten Tag-4-Folie auf scrum, nicht zu „Was bauen wir?“ von 9:00. */}
+  <Folie zurueck="/innolab/methoden/scrum#weiter-tag-4">
     <h2 id="abschluss">Abschluss: die Origin Story</h2>
     <p class="folie-satz">Wie jemand euren Wert zum ersten Mal sieht – und was er dann tut.</p>
     <BildText>
@@ -118,6 +119,7 @@ Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
     <h2 id="hausaufgabe">Hausaufgabe bis Tag 5</h2>
     <p class="folie-satz">Bis Tag 5 sind es zwei Wochen: Lasst E1 laufen und testet euren Prototyp mit fünf Menschen.</p>
     <ol class="gross dicht">
+      <li data-schritt><strong>Fertig machen, was heute offen blieb:</strong> Value Map und Fit, Concept Story, Baum, Geschäftsmodell und Karte E1, Story Map und Usage Story (ganze Liste im Handout).</li>
       <li data-schritt><strong>Origin Story</strong> als Text für Aufsteller oder Landingpage in <code>docs/STORYS.md</code>.</li>
       <li data-schritt><strong>E1 laufen lassen</strong> – an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe; Lernkarte in <code>docs/EXPERIMENTE.md</code>.</li>
       <li data-schritt><strong>Fünf Usability-Tests</strong> mit Karte E2, Befunde und Lernkarte in <code>docs/TESTS.md</code>.</li>
