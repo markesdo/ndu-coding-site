@@ -276,23 +276,19 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Wozu vorlesen: wissen, was ihr heute ausarbeitet – und was offen bleibt.',
-      'Timer 3 min: wählen oder bestätigen.',
+      'Timer 3 min: Vorschlag prüfen, bestätigen oder ändern.',
       'Fragen: Was davon ist die Website – trifft sie allein noch P1?',
       'Nach 3 min: Satz-Sticky mitnehmen, Quadrat füllen – Timer 11 min.',
       'Check beim Füllen: Welcher gelbe Zettel ist die Website?',
       '1:1 ab Minute 5, je 3 min: Produkt 3, 2, 1.',
       'Frage: ✗ des Spitzenreiters oben bewusst? Sonst: Was bleibt oben offen?',
-      'Nach 14 min: ordnen auf den Skalen – Timer 4 min.',
-      'Nach 18 min: Fit in drei Schritten – Timer 8 min.',
-      'Nach 26 min: festhalten und prüfen – jedes ? mit Frage?',
-      'Nach 28 min: drei Ideen unter den Stern im Baum.',
       'Wenn hinten: Value Map nur mit einem Pain Reliever, einem Gain Creator.',
     ],
     uebung: { dauer: '30 min (3 + 11 + 4 + 8 + 2 + 2)', form: 'allein; Markus fragt je nach dem ✗ des Spitzenreiters: bewusst in Kauf – warum? Ohne ✗ oben: Was bleibt oben offen?' },
     miro: {
       frame: 'T3 · 4 · Kundenprofil & Value Map',
       schritte: [
-        'Wählen – T3 · 4, eigene Spalte, Feld „Ideen vergleichen und wählen“: die drei Lückensätze aus der Ideation gegen die obersten Einträge des Profils; jedes ? mit Frage bleibt am Satz.',
+        'Bestätigen – T3 · 4, eigene Spalte, Feld „Ideen vergleichen und wählen“: Lückensätze, Vergleich (✓ ✗ ?) und Spitzenreiter liegen als Vorschlag da („Markus · Vorschlag“, cyan); prüfen, bestätigen oder ändern; jedes ? mit Frage bleibt am Satz.',
         'Füllen – Canvas-Frame „T3 · 4 · Canvas · Produkt n“: den Sticky mit dem Satz des Spitzenreiters links neben das Quadrat kopieren, dann die Value Map ins Quadrat (die drei Platzhalter überschreiben).',
         'Ordnen – alle Zettel auf die drei Skalen links unten, Unverzichtbares oben.',
         'Fit prüfen – auf den Skalen: Links, Zettel für Zettel: ID mit Pfeil, ✓ auf Zettel und Eintrag; Rechts, was übrig ist: ✗ oder ? mit Frage, als letzte Zeile im Sticky; Von oben lesen.',
@@ -300,7 +296,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     },
     ablauf: {
       schritte: [
-        'Wählen (3 min): wer zu Hause gewählt hat, bestätigt nur – mit der Frage: Was davon ist die Website, die ihr baut, und trifft sie allein noch P1? (Der Kurs baut eine Website; der Spitzenreiter darf hybrid sein, die Website ist der Teil, den ihr prototypt.) Sonst jeden Lückensatz aus der Ideation gegen die obersten Einträge – ✓, ✗ oder ?; dann den Spitzenreiter auf Papier wählen, ein Satz warum. Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
+        'Bestätigen (3 min): Lückensätze, Vergleich (✓, ✗ oder ? je Satz gegen die obersten Einträge) und ein Spitzenreiter liegen in T3 · 4 als Vorschlag da (cyan, „Markus · Vorschlag“); alle prüfen und bestätigen oder ändern, den Vergleich füllt niemand mehr selbst. Dazu die Frage: Was davon ist die Website, die ihr baut, und trifft sie allein noch P1? (Der Kurs baut eine Website; der Spitzenreiter darf hybrid sein, die Website ist der Teil, den ihr prototypt.) Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
         'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – die Idee wird zu Products & Services (ersetzt durch die Produkte, in die ihr sie zerlegt), der Halbsatz vor (P…) zum Pain Reliever, der Halbsatz vor (G…) zum Gain Creator; b) Profil von oben: ein Zettel je Wirkung (VPD S. 100–101) mit (→ P…) oder (→ G…), auch (→ J…), kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID. IDs, „Profil von oben“ und „Produkte ohne ID“ sind Regeln dieses Kurses. Check: Welcher gelbe Zettel ist die Website – trifft sie allein noch P1? Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Ordnen (4 min): alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (VPD S. 102).',
         'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID mit Pfeil dazu, etwa (→ P1), ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
@@ -330,6 +326,17 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         text: 'Wählen vor dem Test ist im Buch vorgesehen: „choose among several alternatives before you test them in the real world“ – auch wenn am Ende die Kundschaft urteilt. Torres würde dagegen drei Ideen in die Annahmentests nehmen: „we will use prototyping and assumption testing to whittle our set down from three to one“.',
         quelle: `${VPD}, S. 347–348; Torres, Continuous Discovery Habits, S. 113`,
       },
+    ],
+    ueberleitung: 'Nach dem Füllen: ordnen, Fit prüfen, festhalten, Baum.',
+  },
+
+  // Seit 26.11.: Schritte 3–6 auf eigener Folie; die Übung (30 min) und der ganze Ablauf stehen bei vorgehen.
+  'vorgehen-fit': {
+    live: [
+      'Nach 14 min: ordnen auf den Skalen – Timer 4 min.',
+      'Nach 18 min: Fit in drei Schritten – Timer 8 min.',
+      'Nach 26 min: festhalten und prüfen – jedes ? mit Frage?',
+      'Nach 28 min: drei Ideen unter den Stern im Baum.',
     ],
     ueberleitung: 'Zum Schluss ein Blick auf eure Wahl.',
   },

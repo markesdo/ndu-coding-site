@@ -40,7 +40,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
   it('der Baum wächst um Lösungen (Value Map) und Tests (Experiment-Karte), je 2 min im Block', () => {
     expect(seite('/innolab/tag-4')).toContain('<strong>Der Baum wächst heute um Lösungen und Tests.</strong>');
     // Je ein eigener Schritt (data-schritt) in der Vorgehen-Folie.
-    expect(folie('/innolab/methoden/value-map', 'vorgehen')).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
+    expect(folie('/innolab/methoden/value-map', 'vorgehen-fit')).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
     const ex = folie('/innolab/methoden/experiment', 'vorgehen');
     expect(ex).toContain('<li data-schritt><strong>Euer Baum – Tests:</strong> Hängt die riskanteste Annahme und E1 unter den Spitzenreiter in eurem Baum; nach dem Spike kommt E2 dazu. <Timer minuten={2} /></li>');
     // 18 min Übung plus 12 min Theorie füllen den 30-Minuten-Block; der Titel ist die Summe der Timer.

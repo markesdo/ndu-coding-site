@@ -46,7 +46,9 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(folie('produkt-wirkung')).toContain('<strong>B:</strong> Pain Reliever (→ P2)</p>');
     expect(folie('pr-finden')).toContain('meist mit Verb; (→ P…) dahinter.</li>');
     expect(folie('gc-finden')).toContain('meist mit Verb; (→ G…) dahinter.</li>');
-    expect(folie('vorgehen')).toContain('Products & Services ohne ID · Pain Relievers mit (→ P…) · Gain Creators mit (→ G…).');
+    // Seit 26.11. steht die Regel nur noch im Handout von vorgehen (Folie: „nach der Anleitung links neben eurem Canvas“).
+    expect(folie('vorgehen')).toContain('Wo euer Angebot etwas bewirkt, schreibt ihr einen Zettel mit (→ P…) oder (→ G…)');
+    expect(folie('vorgehen')).toContain('Produkte bekommen im Quadrat keine ID');
     expect(vm).toContain('- Pain Relievers: [was sich für die Kundschaft ändert] (→ P…; auch → J… oder → G…) (unverzichtbarste oben)');
     expect(vm).toContain('- Gain Creators: [was sich für die Kundschaft ändert] (→ G…; auch → J… oder → P…) (unverzichtbarste oben)');
   });
@@ -124,9 +126,9 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(JSON.stringify(NOTIZEN['/innolab/methoden/value-map']?.vorgehen ?? {})).toContain('die Idee wird zu Products & Services (ersetzt durch die Produkte, in die ihr sie zerlegt)');
     // A4: Website-Frage entscheidet beim Wählen und kommt beim Füllen als Check wieder.
     const schritte = folie('vorgehen').slice(folie('vorgehen').indexOf('<ol'), folie('vorgehen').indexOf('</ol>'));
-    const fuellen = schritte.slice(schritte.indexOf('Euer Canvas, Quadrat'), schritte.indexOf('Skalen links'));
-    expect(schritte.slice(0, schritte.indexOf('Euer Canvas, Quadrat'))).toContain('Was davon ist die Website, die ihr baut – und trifft sie allein noch P1?');
-    expect(fuellen).toContain('<strong>Check:</strong> Welcher gelbe Zettel ist die Website – trifft sie allein noch P1?');
+    expect(schritte.slice(0, schritte.indexOf('Euer Canvas –'))).toContain('Was davon ist die Website, die ihr baut – und trifft sie allein noch P1?');
+    // Der Check beim Füllen steht seit 26.11. im Handout (Folie entlastet).
+    expect(folie('vorgehen')).toContain('Zum Schluss wiederholt ihr die Website-Frage als Check: Welcher gelbe Zettel ist die Website, und trifft sie allein noch P1?');
     expect(NOTIZEN['/innolab/methoden/value-map']?.vorgehen?.ablauf?.schritte?.[1]).toContain('Check: Welcher gelbe Zettel ist die Website – trifft sie allein noch P1?');
   });
 
@@ -171,8 +173,8 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect([vm, nj].flatMap((x) => x.match(/rechts ein ✗(?! – oder)|rechts ✗(?! – oder)/g) ?? [])).toStrictEqual([]);
     // 3: Festhalten – links jeder ✓ mit Pfeil.
     expect([vm, nj].flatMap((x) => x.match(/✓ mit ID(?! mit Pfeil)|✓ eine ID(?! mit Pfeil)/g) ?? [])).toStrictEqual([]);
-    expect(folie('vorgehen')).toContain('er selbst ein ✓ mit (→ …);');
-    expect(folie('vorgehen')).toContain('rechts ein Zeichen je Zettel · links jeder ✓ mit (→ …) · jedes ? mit Frage.');
+    expect(folie('vorgehen-fit')).toContain('er selbst ein ✓ mit (→ …);');
+    expect(folie('vorgehen-fit')).toContain('rechts ein Zeichen je Zettel · links jeder ✓ mit (→ …) · jedes ? mit Frage.');
     expect(n.vorgehen?.ablauf?.schritte?.[4]).toContain('links jeder ✓ mit (→ …)');
     // 4: Ein Pfeil steht nur noch vor einer ID („zielt auf“) – nicht für „wird zu“ oder „führt zu“.
     const ohneLueckensatz = (x: string) => x.replace(LUECKENSATZ, '');
