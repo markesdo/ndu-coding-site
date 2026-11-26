@@ -7,7 +7,9 @@ import { NOTIZEN } from '../data/begleiter';
 // auf den Profil-Eintrag, den sie treffen – „(→ P1)“ heißt „lindert P1“, nicht „ist P1“. Profil-Einträge rechts behalten
 // ihre eigene ID („P1 Nicht wissen, ob es sich ausgeht“); die Lückensätze aus der Ideation behalten „(J1) … (P1) … (G1)“.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
-const vm = quellen['/innolab/methoden/value-map'] ?? '';
+// Auf der Seite steht nach dem Pfeil ein &nbsp;, damit „(→ P1)“ im Beamer nicht umbricht; hier wie ein Leerzeichen gelesen.
+const vmRoh = quellen['/innolab/methoden/value-map'] ?? '';
+const vm = vmRoh.replaceAll('→&nbsp;', '→ ');
 const folie = (id: string) => {
   const a = vm.indexOf(`id="${id}"`);
   return vm.slice(a, vm.indexOf('</Folie>', a));
@@ -44,6 +46,14 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(folie('vorgehen')).toContain('Products & Services ohne ID · Pain Relievers mit (→ P…) · Gain Creators mit (→ G…).');
     expect(vm).toContain('- Pain Relievers: [wie genau] (→ P…) (unverzichtbarste oben)');
     expect(vm).toContain('- Gain Creators: [wie genau] (→ G…) (unverzichtbarste oben)');
+  });
+
+  it('nach dem Pfeil ein &nbsp; auf der Seite – außer in der Vorlage (Prompt zum Kopieren)', () => {
+    const vorlage = vmRoh.slice(vmRoh.indexOf('<Prompt label="Vorlage'), vmRoh.indexOf('</Prompt>', vmRoh.indexOf('<Prompt label="Vorlage')));
+    const ohneVorlage = vmRoh.replace(vorlage, '');
+    expect(ohneVorlage.match(/\(→ [JPG]|→ [JPG](?:\d|…)/g) ?? []).toStrictEqual([]);
+    expect(ohneVorlage.match(/→&nbsp;[JPG]/g)?.length).toBeGreaterThan(20);
+    expect(vorlage.match(/&nbsp;/g) ?? []).toStrictEqual([]);
   });
 
   it('Profil-Einträge rechts behalten ihre eigene ID, ohne Pfeil', () => {
