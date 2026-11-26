@@ -84,9 +84,10 @@ const KAFFEEBAR_ANNAHMEN = [
       <li data-schritt><strong>Kurzer Test:</strong> Screenshot eures Frames „T4 · 0 · Concept Story · Produkt n“ einfügen, dazu: „Sag mir in einem Satz, worum es in meiner Concept Story geht.“</li>
       <li data-schritt><strong>Wer hängt,</strong> sagt es sofort – laut, in der Teams-Besprechung.</li>
     </ol>
+    <p class="small">Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.</p>
     <p class="nur-beamer small">Um 11:00 weiter: die Annahmen eures Spitzenreiters.</p>
     <div class="nur-handout">
-      <p><strong>Opus:</strong> Wo ihr in diesem Kurs Claude oder Claude Code benutzt, nehmt das Modell Opus. In Claude Code einmal <code>/model opus</code> eintippen; mit <code>/model</code> seht ihr, welches Modell läuft. In der Claude-App und auf claude.ai wählt ihr Opus im Modellmenü am Eingabefeld.</p>
+      <p><strong>Opus:</strong> Wo ihr in diesem Kurs Claude oder Claude Code benutzt, nehmt das Modell Opus. In Claude Code einmal <code>/model opus</code> eintippen; mit <code>/model</code> seht ihr, welches Modell läuft. In der Claude-App und auf claude.ai wählt ihr Opus im Modellmenü am Eingabefeld. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> eintippen (in der App: das Modellmenü) und das vorgeschlagene Standardmodell wählen, dann weiter.</p>
       <p><strong>Kurzer Test:</strong> Im Startbild von Claude Code steht „Claude Pro“. Dann macht ihr einen Screenshot eures Frames auf Miro: <MiroLink name="T4 · 0 · Concept Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 3">Produkt 3</MiroLink>. Am Mac mit <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>Ctrl</kbd> <kbd>4</kbd> in die Zwischenablage, in Claude Code mit <kbd>Ctrl</kbd> <kbd>V</kbd> einfügen (oder die Bilddatei ins Terminal ziehen), dann dieser Prompt. Kommt ein Satz, der zu eurer Story passt, seid ihr fertig.</p>
       <Prompt label="Test · Claude Code, mit Opus">Sag mir in einem Satz, worum es in meiner Concept Story geht.</Prompt>
       <p><strong>Wer hängt,</strong> sagt es sofort laut in der Teams-Besprechung, nicht erst nach dem Timer; Markus hilft vor 11:30. Die Experiment-Karte auf Miro beginnt ihr um 11:00 trotzdem – Claude Code braucht ihr erst ab der Story Map.</p>
@@ -218,10 +219,10 @@ const KAFFEEBAR_ANNAHMEN = [
     <p class="setup-zeile">Kaffeebar, E1: Recht haben wir ab 10 von 30 Einträgen.</p>
     <figure class="skala" aria-label="Skala von 0 bis 30 Einträgen, Marken bei 5 und 10: unter 5 deutlich darunter, 5 bis 9 knapp darunter, ab 10 Schwelle erreicht">
       <div class="skala-balken" aria-hidden="true">
-        <span class="sk-unter" style="flex: 5"></span><span class="sk-mitte" style="flex: 5"></span><span class="sk-ueber" style="flex: 21"></span>
+        <span class="sk-unter" style="flex: 5"></span><span class="sk-mitte" style="flex: 5"></span><span class="sk-ueber" style="flex: 20"></span>
       </div>
       <div class="skala-marken" aria-hidden="true">
-        <span style="left: 0%">0</span><span style="left: 16.1%">5</span><span style="left: 32.3%">10</span><span style="left: 100%">30</span>
+        <span style="left: 0%">0</span><span style="left: 16.667%">5</span><span style="left: 33.333%">10</span><span style="left: 100%">30</span>
       </div>
     </figure>
     <ol class="baender" aria-label="Drei Ergebnisse, je mit der Handlung, die vor dem Test feststeht – aufgedeckt erst ab 10, dann unter 5, zuletzt 5 bis 9">
@@ -383,7 +384,7 @@ Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
   <ClaudePruefung slug="experiment" />
-  <p>Am Ende des Tages, wenn auch die Origin Story steht: die Gegenprobe zu E1. Claude sucht Gründe, warum E1 euch in die Irre führen könnte – das ist nicht das Pre-Mortem vom Morgen, das Annahmen sammelt, sondern ein Blick auf den Test selbst. In der Claude-App, mit der Werkstatt verbunden und im Modellmenü auf Opus: einen Screenshot eurer Karte E1 von Miro einfügen, dann dieser Prompt.</p>
+  <p>Am Ende des Tages, wenn auch die Origin Story steht: die Gegenprobe zu E1. Claude sucht Gründe, warum E1 euch in die Irre führen könnte – das ist nicht das Pre-Mortem vom Morgen, das Annahmen sammelt, sondern ein Blick auf den Test selbst. In der Claude-App, mit der Werkstatt verbunden und im Modellmenü auf Opus: einen Screenshot eurer Karte E1 von Miro einfügen, dann dieser Prompt. Meldet Claude ein Limit oder gibt es Opus nicht: im Modellmenü das vorgeschlagene Standardmodell wählen, dann weiter.</p>
   <Prompt label="Gegenprobe zu E1 · Claude-App, mit Opus">{GEGENPROBE}</Prompt>
   </div>
 
@@ -473,7 +474,7 @@ Text (Überschrift · Wertversprechen aus der Value Map · Handlung · Antwort a
   .am-chip.hervor { border-color: var(--accent); background: var(--accent); color: var(--bg); }
   .annahmen-map figcaption { margin-top: .4rem; font-size: .95rem; color: var(--muted); }
 
-  /* Folie „vorher-entscheiden“: Skala 0–30 mit Marken 5 und 10, darunter drei Bänder (Aufdecken: ab 10, unter 5, 5–9). */
+  /* Folie „vorher-entscheiden“: Skala 0–30 in 30 gleichen Teilen (Bänder 5/5/20), Marken bei 5/30 und 10/30, darunter drei Bänder (Aufdecken: ab 10, unter 5, 5–9). */
   .skala { margin: .5rem 0 0; }
   .skala-balken { display: flex; height: .7rem; border-radius: 4px; overflow: hidden; }
   .sk-unter { background: color-mix(in srgb, var(--muted) 25%, transparent); }

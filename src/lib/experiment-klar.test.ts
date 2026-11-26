@@ -143,6 +143,23 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect(t5).not.toContain('Darum „unklar“.');
   });
 
+  it('Skala 0–30 in 30 gleichen Teilen: Bänder 5/5/20, Marken bei 5/30 und 10/30, 30 am Ende (Review #456)', () => {
+    const v = folie('vorher-entscheiden');
+    const flex = [...v.matchAll(/<span class="sk-[a-z]+" style="flex: (\d+)"><\/span>/g)].map((x) => Number(x[1]));
+    expect(flex).toStrictEqual([5, 5, 20]);
+    expect(flex.reduce((a, b) => a + b)).toBe(30);
+    const marken = [...v.matchAll(/<span style="left: ([\d.]+)%">(\d+)<\/span>/g)].map((x) => [Number(x[2]), Number(x[1])]);
+    expect(marken.map(([z]) => z)).toStrictEqual([0, 5, 10, 30]);
+    for (const [z, links] of marken) expect(links, String(z)).toBeCloseTo((z / 30) * 100, 2);
+  });
+
+  it('Tag 5: Lernkarte E1 auf Miro, E2 nur falls getestet im Prototyp-Frame (Review #456)', () => {
+    const t5 = seite('/innolab/tag-5');
+    expect(t5).toContain('Die Lernkarte E1 habt ihr zu Hause auf Miro gefüllt, in eurem Frame „T4 · 6 · Lernkarten · Produkt n“; die Lernkarte E2, falls ihr getestet habt, im Frame „T4 · 5 · Prototyp · Produkt n“.');
+    expect(t5).toContain('(E1: „T4 · 6 · Lernkarten · Produkt n“; E2, falls ihr getestet habt: „T4 · 5 · Prototyp · Produkt n“)');
+    expect(t5).not.toContain('Die Lernkarten E1 und E2 habt ihr zu Hause');
+  });
+
   it('Lernkarten-Vorlage hat die Zeile für die Abweichung; #gegen-den-beleg steht danach, Regel – Ausnahme – Nie', () => {
     expect(seite(EX)).toContain('Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: [...]\nWeicht ab von „Wir entscheiden vorher“? Grund: …\n');
     const g = sichtbar('gegen-den-beleg');
@@ -180,6 +197,15 @@ describe('10:50: Opus und ein Test mit Screenshot', () => {
     const f = folie('claude-code-opus');
     expect(f).toContain('<Prompt label="Test · Claude Code, mit Opus">Sag mir in einem Satz, worum es in meiner Concept Story geht.</Prompt>');
     for (const n of [1, 2, 3]) expect(f).toContain(`<MiroLink name="T4 · 0 · Concept Story · Produkt ${n}">`);
+  });
+
+  it('Rückfall, wenn Opus nicht geht: auf der Folie und überall im Handout, wo Opus steht (Review #456)', () => {
+    const rueckfall = 'Meldet Claude ein Limit oder gibt es Opus nicht:';
+    expect(sichtbar('claude-code-opus')).toContain(`<p class="small">${rueckfall} <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.</p>`);
+    // Jeder Handout-Absatz, der sagt, wie man Opus wählt (Modellmenü, /model opus), nennt auch den Rückfall.
+    const absaetze = (seite(EX).match(/<p>[^]*?<\/p>/g) ?? []).filter((p) => /Opus/.test(p) && /Modellmenü|\/model opus/.test(p));
+    expect(absaetze.length).toBeGreaterThanOrEqual(2);
+    expect(absaetze.filter((p) => !p.includes(rueckfall))).toStrictEqual([]);
   });
 
   it('FooterNav: zurück zum Geschäftsmodell', () => {

@@ -45,6 +45,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       ],
       achten: [
         'Keine Versionsnummer nennen – nur „Opus“.',
+        'Limit oder kein Opus: /model, das vorgeschlagene Standardmodell wählen, weiter.',
         'Bild kommt nicht an: die Screenshot-Datei ins Terminal ziehen.',
       ],
     },
