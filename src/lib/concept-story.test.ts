@@ -156,3 +156,23 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(NOTIZEN_CONCEPT_STORY.vorgehen.miro?.frame).toBe('T4 · 0 · Concept Story · Produkt 1');
   });
 });
+
+// Wünsche des Dozenten (27.11.2026): #ein-satz sagt im Beamer, wohin der Satz kommt; die Notiz zu baut-mit erklärt, welches
+// iPhone gemeint ist und warum Kopieren und Einfügen fehlte – Hintergrund außerhalb von Lichaw klar markiert.
+describe('Concept Story: Satz im Brief, iPhone-Hintergrund', () => {
+  it('#ein-satz: sichtbare Zeile, wohin der Satz kommt und was daraus wird', () => {
+    const f = folie('ein-satz');
+    const sichtbar = f.slice(0, f.indexOf('<p class="nur-handout">'));
+    expect(sichtbar).toContain('<p data-schritt><strong>Der Satz kommt in Abschnitt 3 eures Produkt-Briefs (Werkstatt)</strong> – offen seit Tag 1. Daraus wird euer Pitch an Tag 7.</p>');
+    expect(NOTIZEN_CONCEPT_STORY['ein-satz'].live).toContain('Zeit: Sprechzeit ~1 min; Satz → Brief, Abschnitt 3; Pitch an Tag 7.');
+  });
+  it('baut-mit: Frage nach Kopieren und Einfügen, Hintergrund als „nicht bei Lichaw“ markiert', () => {
+    const n = NOTIZEN_CONCEPT_STORY['baut-mit'];
+    expect(n.verstaendnis?.frage).toBe('Warum fehlte Kopieren und Einfügen?');
+    expect(n.verstaendnis?.antwort).toContain('Lichaw nennt keinen weiteren Grund.');
+    expect(n.zusatz?.[0].titel).toBe('Hintergrund (nicht bei Lichaw): das erste iPhone');
+    expect(n.zusatz?.[0].text).toContain('es kam erst 2009 mit iPhone OS 3.0');
+    expect(JSON.stringify(n.kern)).toContain('There was a good reason why the iPhone launched with fancy animation but no cut-and-paste functionality.');
+    expect(JSON.stringify(NOTIZEN_CONCEPT_STORY.hoch.kern)).toContain('Blackberrys and Palm Treos');
+  });
+});

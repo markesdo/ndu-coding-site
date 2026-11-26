@@ -331,7 +331,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 3, How Concept Stories Work, S. 25–26`,
       },
       {
-        text: 'Krise: schon iPod oder Handy, der Preis, der Touchscreen – „Wouldn’t a touchscreen make the iPhone difficult to use?“ Höhepunkt: „what they get with the iPhone was the best way to communicate“, mit Internet, Karten, E-Mail; „the iPhone worked like magic. It was easy to use.“ Fallende Handlung: überzeugt, neugierig oder skeptisch – „in the realm of thought, rather than action“.',
+        text: 'Krise: schon iPod oder Handy, der Preis, der Touchscreen – „Wouldn’t a touchscreen make the iPhone difficult to use? And no keyboard? Typing would be impossible. At least that’s what the few people who owned Blackberrys and Palm Treos thought at the time.“ Der alte Weg war also Tastatur oder Stift. Höhepunkt: „what they get with the iPhone was the best way to communicate“, mit Internet, Karten, E-Mail; „the iPhone worked like magic. It was easy to use.“ Fallende Handlung: überzeugt, neugierig oder skeptisch – „in the realm of thought, rather than action“.',
         quelle: `${LICHAW}, Kap. 3, Crisis, S. 27; Climax/Resolution, S. 28; Falling Action, S. 28–29; Abb. 3.4, S. 30`,
       },
     ],
@@ -377,14 +377,18 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Kursregel nennen: Was die Story nicht stützt, kommt nicht in den Prototyp.',
     ],
     verstaendnis: {
-      frage: 'Warum Animation vor Kopieren und Einfügen?',
-      antwort: 'Die Krise war die Angst vor dem Touchscreen; der Höhepunkt versprach „works like magic“. Damit der Touchscreen „user-friendly“ war, setzte Apple auf Animation und Technik, mit der man tippt statt mit Stift (Kap. 3, S. 27–28, 33). Warum Kopieren und Einfügen nicht dazugehörte, sagt Lichaw nicht – nur, dass es die Story nicht stützte.',
-      falsch: '„Weil es schöner aussah“ – sie löste die Krise auf, die der Höhepunkt versprach.',
+      frage: 'Warum fehlte Kopieren und Einfügen?',
+      antwort: 'Weil es die Story – „works like magic“, leicht mit dem Finger – nicht stützte: „Animation supported the story. Cut-and-paste did not.“ (Kap. 3, S. 33). Die Krise war die Angst vor dem Touchscreen; Animation und Technik zum Tippen statt Stift lösten sie auf. Lichaw nennt keinen weiteren Grund.',
+      falsch: '„Weil Apple es nicht konnte“ – das sagt Lichaw nicht; der Palm Treo hatte es längst (Kap. 7, S. 129).',
     },
     kern: [
       {
         text: '„in order for the touchscreen to be user-friendly (which Palm Treo touchscreens were not), Apple’s strategy was to employ animation and cutting-edge technology that enabled people to tap, rather than to interact with their device using a stylus.“ – „Animation supported the story. Cut-and-paste did not.“',
         quelle: `${LICHAW}, Kap. 3, Supporting the Story, S. 33`,
+      },
+      {
+        text: '„There was a good reason why the iPhone launched with fancy animation but no cut-and-paste functionality.“ Gemeint ist das erste iPhone (2007), und gefehlt hat Kopieren und Einfügen auf dem iPhone selbst. Welche Animation, nennt Lichaw nicht, auch nicht, wann Kopieren und Einfügen kam. Zum Vergleich: „The Palm Treo, which was the best-selling smartphone the year before, not only had features like cut-and-paste, but it also let you install apps and games. The iPhone did neither.“',
+        quelle: `${LICHAW}, Kap. 3, Supporting the Story, S. 33; Kap. 7, S. 129`,
       },
       {
         text: 'Die Story „wasn’t just a marketing pitch or shiny packaging—it drove everything from what the product requirements were to how the iPhone worked“; „concept stories don’t just help you figure out how to talk about a product, but how to build the product.“ Zur Krise: Frühe Touchscreens ohne Stift „simply weren’t easy to use, and that wasn’t a very good story“.',
@@ -393,6 +397,13 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       {
         text: '„Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out.“ Die Kursregel auf der Folie und der Bezug zur Story Map (erster Slice) sind ein Übertrag des Kurses.',
         quelle: `${LICHAW}, Kap. 8, Stories Are Character-Driven, S. 134; Kursregel`,
+      },
+    ],
+    zusatz: [
+      {
+        titel: 'Hintergrund (nicht bei Lichaw): das erste iPhone',
+        text: 'Vorgestellt am 9. Januar 2007, in den USA verkauft ab 29. Juni 2007. Zu den Gesten von iPhone OS 1.0 gehörten Zoomen mit zwei Fingern (Pinch) und Scrollen mit Schwung. Kopieren und Einfügen fehlte zum Start; es kam erst 2009 mit iPhone OS 3.0. Welche Animationen Lichaw meint, ist damit nicht gesagt – nur, was es gab.',
+        quelle: 'Apple Newsroom, 9.1.2007: https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/; Wikipedia, „IPhone (1st generation)“ und „IPhone OS 1“ (abgerufen 27.11.2026)',
       },
     ],
     ueberleitung: 'Lichaw füllt den Bogen einmal ganz aus – für Slack.',
@@ -508,7 +519,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       '„Fallende Handlung und Ende stehen nicht im Satz – die erzählt die Story.“',
       'Kaffeebar-Satz vorlesen.',
       'Falle: mit dem Satz anfangen – erst die sieben Stationen.',
-      'Zeit: Sprechzeit ~1 min; Satz kommt in Abschnitt 3 des Produkt-Briefs.',
+      'Zeit: Sprechzeit ~1 min; Satz → Brief, Abschnitt 3; Pitch an Tag 7.',
     ],
     kern: [
       {
