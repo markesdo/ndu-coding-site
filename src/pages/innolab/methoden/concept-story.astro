@@ -11,6 +11,8 @@ import Folie from '../../../components/Folie.astro';
 import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import Fluss from '../../../components/Fluss.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
+import MiroLink from '../../../components/MiroLink.astro';
 
 const LICHAW = 'Donna Lichaw, „The User’s Journey: Storymapping Products That People Love“ (Rosenfeld 2016)';
 const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
@@ -31,16 +33,13 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
       <ul>
         <li data-schritt><strong>Warum für euch:</strong> Ihr wisst nicht, ob eure Idee gut ist? „That’s a story.“</li>
         <li data-schritt><strong>Drei Fragen:</strong> Was ist die Geschichte? Wer ist die Hauptfigur? Was ist ihr Ziel?</li>
-        <li data-schritt><strong>Figur, Ziel, Konflikt</strong> – das braucht jede Geschichte.</li>
-        <li data-schritt><strong>Anfang, Mitte, Ende</strong> – die Mitte ist am längsten.</li>
-        <li data-schritt><strong>Die Spannung steigt</strong> bis zum Gipfel und klingt dann ab.</li>
-        <li data-schritt><strong>Endet sie am Gipfel:</strong> ein Cliffhanger.</li>
-        <li data-schritt><strong>Danach:</strong> Am Bogen prüft ihr, was in euren Prototyp kommt.</li>
+        <li data-schritt><strong>Anfang, Mitte, Ende:</strong> Die Spannung steigt bis zum Gipfel und klingt dann ab. Endet sie am Gipfel: ein Cliffhanger.</li>
+        <li data-schritt><strong>Kursregel:</strong> Am Bogen prüft ihr danach, was in euren Prototyp kommt.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
       <p>Warum überhaupt Geschichten? Lichaw: „Whether you plan for it or not, your customers use their story-driven brains to understand your product and what it’s like to use your product.“ Mit denselben Geschichten erzählen sie anderen davon: „The better the story, the better the experience, the better the word of mouth.“ Wer etwas mit einer Geschichte als Fundament erlebt, erinnert sich eher daran, sieht eher Wert und Nutzen darin, tut sich leichter und will es eher wiederholen ({LICHAW}, Kap. 1, Why Story?). Lichaw kennt die Gegenprobe aus dem Studium: Nach ihrem Dokumentarfilm zum Jahresende im Master meldete sich ein Kommilitone – „I can’t believe you made me sit through that. What was the point?“ Dem Film fehlte, was ihn zusammenhält: „no conflict, no climax, and no resolution—ergo, no story“ (Kap. 1, S. 2).</p>
-      <p>Warum für euer Produkt? Lichaw beginnt das Buch mit genau eurer Lage: „Let’s say that you want to build a new product, but aren’t sure if it’s a good idea? That’s a story.“ Ebenso, wenn ihr herausfinden wollt, wie das Produkt funktionieren soll, oder wenn Menschen es ausprobieren und nicht wiederkommen. Vor jedem neuen Projekt stellt sie drei Fragen: „What’s the story? Who is the hero? What is the hero’s goal?“ ({LICHAW}, Introduction vor Kap. 1, S. xiii–xiv). Die Hauptfigur und ihr Ziel habt ihr heute im Kundenprofil festgehalten: Segment und Jobs. Offen ist die erste Frage. Der Bogen hilft euch danach zu entscheiden, was in euren Prototyp kommt und was nicht (siehe „Die Story entscheidet, was ihr baut“).</p>
+      <p>Warum für euer Produkt? Lichaw beginnt das Buch mit genau eurer Lage: „Let’s say that you want to build a new product, but aren’t sure if it’s a good idea? That’s a story.“ Ebenso, wenn ihr herausfinden wollt, wie das Produkt funktionieren soll, oder wenn Menschen es ausprobieren und nicht wiederkommen. Vor jedem neuen Projekt stellt sie drei Fragen: „What’s the story? Who is the hero? What is the hero’s goal?“ ({LICHAW}, Introduction vor Kap. 1, S. xiii–xiv). Die Hauptfigur und ihr Ziel habt ihr an Tag 3 im Kundenprofil festgehalten: Segment und Jobs. Offen ist die erste Frage. Dass ihr am Bogen entscheidet, was in euren Prototyp kommt, ist eine Kursregel; sie folgt aus Lichaws iPhone-Beispiel (siehe „Die Story entscheidet, was ihr baut“).</p>
       <p>Donna Lichaw beginnt mit Aristoteles: Jede Geschichte braucht Figuren, Ziele und Konflikt, verbunden durch eine Struktur. Die Form hat Anfang, Mitte und Ende; trägt man die Spannung über die Zeit auf, steigt sie bis zu einem Hochpunkt und klingt danach ab. Hört eine Geschichte auf, während die Spannung noch steigt oder am Gipfel steht, ist sie ein Cliffhanger ({LICHAW}, Kap. 2).</p>
       <p>Für Produkte heißt das: Die Geschichte läuft durch alles, wie Menschen euer Produkt finden, darüber denken, es nutzen und weiterempfehlen. Mit Kathy Sierra: Es geht nicht um Funktionen, sondern darum, wie fähig sich die Menschen damit fühlen. „People don’t care about your product or brand. They care about themselves“ (Kap. 2, Building Products with Story).</p>
     </div>
@@ -89,7 +88,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
         <li data-schritt><strong>Jede Figur, jeder Weg:</strong> eine eigene Story.</li>
       </ul>
     </BildText>
-    <p class="nur-handout">„Stories Are Character-Driven“: Die Hauptfigur ist immer die Person, die euer Produkt nutzt. Figuren sind keine erfundenen Traumkund*innen, sondern beruhen auf echten Menschen, echten Zielen, echtem Verhalten; wer keinen Zugang zu echten Daten hat, darf erfinden – „as long as you validate it later“. Systeme verzweigen, das Erleben ist linear: Jede Figur und jeder wichtige Weg bekommt eine eigene Story ({LICHAW}, Kap. 8). Ihr habt Interviews; eure Figuren kommen von dort.</p>
+    <p class="nur-handout">„Stories Are Character-Driven“: Die Hauptfigur ist immer die Person, die euer Produkt nutzt. Figuren sind keine erfundenen Traumkund*innen, sondern beruhen auf echten Menschen, echten Zielen, echtem Verhalten; wer keinen Zugang zu echten Daten hat, darf erfinden – „as long as you validate it later“ ({LICHAW}, Kap. 8, Stories Are Character-Driven, S. 134). Systeme verzweigen, das Erleben ist linear: Jede Figur und jeder wichtige Weg bekommt eine eigene Story (Kap. 8, Choose Your Own Adventure, S. 137–138, Abb. 8.2). Ihr habt Interviews; eure Figuren kommen von dort.</p>
   </Folie>
 
   <Folie>
@@ -105,7 +104,7 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
       <li data-schritt><strong>Figur und Ziel</strong> sind da – nichts steht dazwischen.</li>
       <li data-schritt><strong>Ohne Konflikt:</strong> keine Geschichte, nur Dinge, die passieren.</li>
     </ul>
-    <p class="nur-handout">Lichaws Gegenprobe: „Once upon a time, there was a wooden doll named Pinocchio. He wanted to become a real human boy. So he went out, bought some magic, and transformed into a boy. The end.“ Figur und Ziel sind da, trotzdem ist es keine Geschichte: „Stories wouldn’t be stories without conflict. They would be a series of events—stuff happening.“ Jede Figur und jedes Ziel braucht eine Kraft, die dagegen wirkt; erst sie macht das Ende lohnend ({LICHAW}, Kap. 8, Conflict Is Key). Für eine Concept Story zu eurem Produkt heißt das: Die Kraft dagegen müsst ihr nicht erfinden. Sie steht in euren Interviews.</p>
+    <p class="nur-handout">Lichaws Gegenprobe: „Once upon a time, there was a wooden doll named Pinocchio. He wanted to become a real human boy. So he went out, bought some magic, and transformed into a boy. The end.“ Figur und Ziel sind da, trotzdem ist es keine Geschichte: „Stories wouldn’t be stories without conflict. They would be a series of events—stuff happening.“ Jede Figur und jedes Ziel braucht eine Kraft, die dagegen wirkt; erst sie macht das Ende lohnend ({LICHAW}, Kap. 8, Conflict Is Key, S. 136). Übertrag des Kurses (Kursregel): Die Kraft dagegen müsst ihr für eure Concept Story nicht erfinden. Sie steht in euren Interviews.</p>
   </Folie>
 
   <Folie>
@@ -119,12 +118,33 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
         <li data-schritt><strong>C:</strong> der Höhepunkt, in dem euer Produkt beides auflöst.</li>
       </ul>
     </BildText>
-    <p class="nur-handout">„A represents forward momentum, which is the force that a character exerts to meet his or her goal with your product or service. B is the force or forces that act against your character“; beide zusammen ergeben C, den Höhepunkt. Lichaws iPhone-Beispiel: A – ihr wollt ein Gerät, das zwei kann, um besser zu kommunizieren; B – ihr wollt kein neues Gerät kaufen oder fürchtet, es sei schwer zu bedienen; „Then C is what wins: a 3-in-1 device that works like magic and is easy to use.“ Konflikt ist der Kern: Ohne ihn ist eine Geschichte nur eine Folge von Ereignissen. Eure Aufgabe ist nicht, Hürden aufzustellen, sondern sie einzuplanen und der Figur darüber zu helfen ({LICHAW}, Kap. 8).</p>
+    <p class="nur-handout">„A represents forward momentum, which is the force that a character exerts to meet his or her goal with your product or service. B is the force or forces that act against your character“; beide zusammen ergeben C, den Höhepunkt. Lichaws iPhone-Beispiel: A – ihr wollt ein Gerät, das zwei kann, um besser zu kommunizieren; B – ihr wollt kein neues Gerät kaufen oder fürchtet, es sei schwer zu bedienen; „Then C is what wins: a 3-in-1 device that works like magic and is easy to use.“ ({LICHAW}, Kap. 8, Math Is Fun, S. 136–137, Abb. 8.1). Die Beschreibung von B auf der Folie – Alternativen, Zweifel, Aufwand – ist eine Formulierung des Kurses; Lichaw sagt nur „the force or forces that act against your character“. Konflikt ist der Kern: Ohne ihn ist eine Geschichte nur eine Folge von Ereignissen. Eure Aufgabe ist nicht, Hürden aufzustellen, sondern sie einzuplanen und der Figur darüber zu helfen (Kap. 8, Conflict Is Key, S. 136).</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="concept-story">So funktioniert eine Concept Story</h2>
+    <p class="folie-satz">Was jemand in Sekunden zusammenrechnet, wenn er zum ersten Mal von eurem Produkt hört.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/lichaw/concept-story.jpg" alt="Bogen: Current State als Foto, Problem mit erschrockenem Gesicht, Your product als Schachtel mit Product Name und Description, Competition als Hürde, Value proposition und Competitive advantage als Glühbirne am Gipfel, Takeaway als Pfeil nach unten, Goal(s) met mit lächelndem Gesicht" quelle={`Die Concept Story. ${LICHAW_KURZ}, Abb. 3.1.`} />
+      <ul>
+        <li data-schritt><strong>Anfang</strong> (Exposition, Auslöser, steigende Handlung): die Welt heute und das Ziel – der Pain – Name und Art des Produkts.</li>
+        <li data-schritt><strong>Krise = die Konkurrenz:</strong> ein anderes Produkt, die heutige Lösung, Widerstand gegen Neues.</li>
+        <li data-schritt><strong>Höhepunkt = euer Wertversprechen:</strong> löst Pain und Krise – anders und besser.</li>
+        <li data-schritt><strong>Schluss</strong> (fallende Handlung, Ende): was die Person danach denkt – und ihr Ziel ist erreicht.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Die Concept Story ist das konzeptuelle Modell eures Produkts: was es ist und wie Kund*innen darüber denken. „Think of them as the mental calculation that someone makes when they first hear about your product. The story might only last a few seconds“ ({LICHAW}, Kap. 3, How Concept Stories Work, S. 24). Sie dient dazu, eine gemeinsame Vision zu vermitteln, das Team darauf auszurichten und daran zu priorisieren (Kap. 3, What Is a Concept Story?, S. 23). Lichaw nennt sie auch einen sichtbaren Elevator Pitch („Concept Story: A Visual Elevator Pitch“, Kap. 3, Rising Action, S. 27) – deshalb steht am Ende ein Satz.</p>
+      <p>Die Beschriftungen in Abb. 3.1 und die sieben Stationen: Current State = Exposition, Problem = Auslöser, Your product = steigende Handlung, Competition = Krise, Value proposition / Competitive advantage = Höhepunkt, Takeaway = fallende Handlung, Goal(s) met = Ende (Kap. 3, How Concept Stories Work, S. 24–25, Abb. 3.1).</p>
+      <p><strong>Krise:</strong> „Think of the crisis as the competition.“ Sie hat drei Formen: ein anderes Produkt oder ein anderer Service; eine abstrakte Alternative, „an alternative way that people currently solve their problems“; oder etwas Emotionales, „resistance to change or people not wanting to adopt something new“ (Kap. 3, Crisis, S. 27). Bei euch steht das schon da: im „anders als [Alternative]“ eures Lückensatzes und in den Interviews.</p>
+      <p><strong>Höhepunkt:</strong> Das Produkt löst das Problem und die Hürden der Krise: „The way that your product enables users to resolve these problems becomes its value proposition. Implicit in the value proposition is that it’s not only different, but also better than the alternative ways your customer has to solve this problem“ (Kap. 3, Climax/Resolution, S. 28).</p>
+      <p><strong>Schluss:</strong> Die fallende Handlung ist der „Takeaway“ – „then what?“; bei der Concept Story bleibt sie im Denken: „Falling action for concept stories should still remain in the realm of thought, rather than action“ (Kap. 3, Falling Action, S. 28–29). Was ihr dort hinschreibt, wisst ihr noch nicht: „If you posit this falling action as a hypothesis, you should test it with real people“ (S. 29). Am Ende sehen Kund*innen sich ihr Ziel erreichen, und das Ziel des Geschäfts muss dazu passen (Kap. 3, End, S. 29). Was ihr daraus für eure Unterlagen macht, steht als Kursregel in der Tabelle <a href="#woher">„Woher kommt jede Station?“</a>.</p>
+    </div>
   </Folie>
 
   <Folie>
     <h2 id="flach">Was fehlt dieser Geschichte?</h2>
-    <p class="folie-satz">Apples Patent vor dem iPhone – als Geschichte.</p>
+    <p class="folie-satz">Das Patent vor dem iPhone: iPod und Telefon – 2-in-1.</p>
     <BildText>
       <BuchAbbildung src="/quellen/lichaw/iphone-flach.jpg" alt="Flache Linie von „I love my iPod and my mobile phone“ über das iPhone „Make phone calls and play music from the same device“ zu „I can communicate, listen to music, and make phone calls on the go“; gestrichelt darüber ein hoher Bogen" quelle={`Die flache Version. ${LICHAW_KURZ}, Abb. 3.6.`} />
       <ul>
@@ -134,82 +154,68 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
         <li data-schritt><strong>Und dazwischen?</strong></li>
       </ul>
     </BildText>
-    <p class="nur-handout">Sechs Monate vor der Vorstellung des iPhones meldete Apple ein anderes Gerät zum Patent an: im Grunde einen iPod, mit dem man telefonieren kann. In Lichaws Text lautet die Geschichte: „I love my iPod; I love my mobile phone“ – „I don’t love carrying two devices“ – „iPhone to the rescue!“ – „I now have a way to have my iPod and phone in one device.“ Die gestrichelte Linie in der Abbildung zeigt, wie hoch der Bogen sein könnte. Lichaw: Die Geschichte hat eine Struktur, aber „the structure isn’t very tall“ – ihr fehlen die beiden Stationen, die einer Geschichte Höhe geben: Krise und Höhepunkt. „Our brains don’t like flat“ ({LICHAW}, Kap. 3, Avoiding the Anticlimactic). Ratet erst, dann die nächste Folie.</p>
+    <div class="nur-handout">
+      <p>Sechs Monate vor der Vorstellung des iPhones meldete Apple ein anderes Gerät zum Patent an: „The device was essentially an iPod that made phone calls“ ({LICHAW}, Kap. 3, Avoiding the Anticlimactic, S. 31, Abb. 3.5). Abb. 3.6 nennt auch dieses Gerät „iPhone“; gemeint ist das Gerät aus dem Patent, nicht das iPhone von 2007. In Lichaws Text lautet die Geschichte: „I love my iPod; I love my mobile phone.“ – „I don’t love carrying two devices, and I wish I could have my iPod and phone all in one.“ – „iPhone to the rescue!“ – „I now have a way to have my iPod and phone in one device.“ (S. 31–32). Den Auslöser nennt der Text, die Abbildung zeichnet ihn nicht: Sie hat nur Exposition, Produkt und Ende.</p>
+      <p>Lichaw: Die Geschichte hat eine Struktur, aber „the structure isn’t very tall“ (S. 32). Die gestrichelte Linie in der Abbildung erklärt sie nicht; wir lesen sie als den Bogen, den die Geschichte haben könnte. Ratet erst, dann die nächsten Folien.</p>
+    </div>
   </Folie>
 
   <Folie>
-    <h2 id="hoch">Krise und Höhepunkt geben Höhe</h2>
-    <p class="folie-satz">2-in-1 war eine Linie. 3-in-1 war der Gipfel.</p>
+    <h2 id="hoch">Dieselbe Figur, jetzt mit Bogen</h2>
+    <p class="folie-satz">Das iPhone von 2007: iPod, Telefon, Internet – 3-in-1.</p>
     <BildText>
-      <BuchAbbildung src="/quellen/lichaw/iphone-concept.jpg" alt="Hoher Bogen: Problem „It sucks to carry two devices. Oh, and smartphones suck.“, Krise als Hürde mit iPod, Mobile phones, Smartphones, Cost, Usability, Höhepunkt mit Glühbirne „The best way to communicate, Better than 2-in-1, Internet at fingertips, Works like magic“, danach „I want an iPhone!“" quelle={`Die Concept Story des iPhones. ${LICHAW_KURZ}, Abb. 3.4.`} hochkant />
+      <BuchAbbildung src="/quellen/lichaw/iphone-concept.jpg" alt="Hoher Bogen: Problem „It sucks to carry two devices. Oh, and smartphones suck.“, Krise als Hürde mit iPod, Mobile phones, Smartphones, Cost, Usability, Höhepunkt mit Glühbirne „The best way to communicate, Better than 2-in-1, Internet at fingertips, Works like magic“, danach „I want an iPhone!“" quelle={`Die Concept Story des iPhones. ${LICHAW_KURZ}, Abb. 3.4.`} />
       <ul>
-        <li data-schritt><strong>Krise:</strong> iPod, Handys, Smartphones, Preis, Bedienung.</li>
-        <li data-schritt><strong>Höhepunkt:</strong> löst Problem und Krise – anders und besser.</li>
-        <li data-schritt><strong>Probe:</strong> die einfache Lösung neben die großartige.</li>
-        <li data-schritt><strong>Niemand hatte danach gefragt:</strong> Ein iPod, der telefoniert, hätte den meisten gereicht.</li>
+        <li data-schritt><strong>Anfang wie zuvor</strong> – neu im Auslöser: „Smartphones taugen nichts.“</li>
+        <li data-schritt><strong>Krise:</strong> iPod und Handy habt ihr schon; Preis; Touchscreen – schwer zu bedienen?</li>
+        <li data-schritt><strong>Höhepunkt:</strong> der beste Weg zu kommunizieren, mit Internet – „works like magic“.</li>
+        <li data-schritt><strong>Danach:</strong> „Ich will ein iPhone!“ – nur gedacht, noch nicht gekauft.</li>
       </ul>
     </BildText>
     <div class="nur-handout">
-      <p>„No one had asked for a three-in-one communication device.“ Die meisten iPod-Besitzer*innen wären 2007 mit einem iPod zufrieden gewesen, der telefonieren kann ({LICHAW}, Kap. 3, Einleitung). Die Version, die Apple 2007 vorstellte, hat beides. Das Problem: zwei Geräte tragen – und Smartphones taugen nichts. Die Krise: Man hat schon iPod und Handy, es gibt Smartphones, dazu Preis und Bedienung. Der Höhepunkt: das beste Gerät zum Kommunizieren, besser als 2-in-1, das Internet an den Fingerspitzen, „works like magic“. Lichaw: „A simple solution, an iPhone that made phone calls, was flat. A climactic solution, an iPhone that did everything, worked like ‚magic.‘ One was a 2-in-1 device, the other 3-in-1.“ Und allgemein: „A concept without a conflict and a resulting climax is a flat story—literally just a line“ ({LICHAW}, Kap. 3).</p>
-      <p>Zwei Fragen aus Lichaws Liste machen das zur Probe: „What is the straightforward solution to the problem? What is the awesome solution to the problem?“ (Kap. 3, What Is a Concept Story?). Lichaws Warnung zu „Easy to use“ steht beim Slack-Beispiel weiter unten.</p>
+      <p>Jobs stellte 2007 nicht ein Gerät vor, sondern drei: „A widescreen touchscreen iPod / A revolutionary new mobile phone / An Internet communicator“ – und dann ein einziges, das alles kann ({LICHAW}, Kap. 3, Einleitung, S. 22). Lichaw legt diese Version Station für Station auf den Bogen (Kap. 3, How Concept Stories Work, S. 25–29; Abb. 3.4, S. 30):</p>
+      <p><strong>Exposition:</strong> dieselbe Figur wie in der flachen Version – sie liebt iPod und Handy und will unterwegs Musik hören und telefonieren. Fragt man nach dem Warum, geht es ums Kommunizieren: „Your character doesn’t want a two-in-one device, per se, but just needs to communicate with the world.“ (S. 25). <strong>Auslöser:</strong> „the problem that the user knew she had was that it sucked to carry two devices“; gelöst hat das iPhone ein breiteres Problem, mobil zu kommunizieren: „Apple solved a problem that people didn’t know they had.“ (S. 26). In der Abbildung steht dazu „Oh, and smartphones suck.“; in der Keynote nannte Jobs das Problem „smartphones are no good“ (S. 22). <strong>Steigende Handlung:</strong> „the iPhone is a smartphone, specifically, and a mobile communication device, more broadly“ (S. 26).</p>
+      <p><strong>Krise:</strong> „Think of the crisis as the competition.“ Beim iPhone: Viele hatten schon einen iPod, ein Handy oder beides und wollten kein neues Gerät kaufen; wer kaufen wollte, wollte nicht viel zahlen; und wer schon einmal einen Touchscreen benutzt hatte, für den war er „a huge crisis“ – „Wouldn’t a touchscreen make the iPhone difficult to use? And no keyboard? Typing would be impossible.“ (S. 27). Das ist das B aus <a href="#a-mal-b">A × B = C</a>: die Kraft, die gegen die Figur wirkt.</p>
+      <p><strong>Höhepunkt:</strong> „if the character wanted a two-in-one device to communicate, what they get with the iPhone was the best way to communicate. With the iPhone, not only could they listen to music and make calls, but they could also access the Internet, maps, and email.“ Und: „the iPhone worked like magic. It was easy to use.“ (S. 28). <strong>Fallende Handlung:</strong> überzeugt, neugierig oder skeptisch – ein Gedanke, keine Handlung: „Falling action for concept stories should still remain in the realm of thought, rather than action“ (S. 28–29). Die Abbildung zeigt ihn als „I want an iPhone!“. <strong>Ende:</strong> Die Figur weiß, dass sie Musik und Telefon an einem Ort hat und mit der Welt kommunizieren kann; Apple hilft Menschen, besser zu kommunizieren (S. 29).</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="hoch-lehre">Krise und Höhepunkt geben Höhe</h2>
+    <p class="folie-satz">2-in-1 war eine Linie. 3-in-1 war der Gipfel.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/lichaw/iphone-flach.jpg" alt="Die flache Linie des Patent-Geräts, darüber gestrichelt ein hoher Bogen" quelle={`Die Linie – gestrichelt der Bogen. ${LICHAW_KURZ}, Abb. 3.6.`} schmal />
+      <ul>
+        <li data-schritt><strong>Niemand hatte 3-in-1 verlangt:</strong> Den meisten iPod-Besitzer*innen hätte ein iPod gereicht, der telefoniert.</li>
+        <li data-schritt><strong>Der Linie fehlen zwei Stationen:</strong> Krise und Höhepunkt. „Our brains don’t like flat.“</li>
+        <li data-schritt><strong>Zwei Fragen von Lichaw:</strong> Was ist die naheliegende Lösung? Was ist die großartige?</li>
+        <li data-schritt><strong>Kursregel:</strong> Schreibt beide auf. Ist eure Story die Linie, fehlt die Krise.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>„No one had asked for a three-in-one communication device. Actually, most iPod owners in 2007 would have been content with an iPod that let them make phone calls.“ ({LICHAW}, Kap. 3, Einleitung, S. 22). Diagramm und Konzept der flachen Version „lack two key plot points that give stories their height: crisis and climax“; „Our brains don’t like flat.“ (Kap. 3, Avoiding the Anticlimactic, S. 32). Der Vergleich der beiden Versionen: „A simple solution, an iPhone that made phone calls, was flat. A climactic solution, an iPhone that did everything, worked like ‚magic.‘ One was a 2-in-1 device, the other 3-in-1.“ (S. 33). Und allgemein: „A concept without a conflict and a resulting climax is a flat story—literally just a line.“ (Kap. 3, Climax/Resolution, S. 28). Der Höhepunkt der Version von 2007 war der beste Weg zu kommunizieren, nicht ein Gerät mit mehr Funktionen.</p>
+      <p>Die zwei Fragen stehen in Lichaws Liste zur Concept Story: „What is the straightforward solution to the problem? What is the awesome solution to the problem?“ (Kap. 3, What Is a Concept Story?, S. 23). Dass ihr beide nebeneinanderlegt, ist eine Kursregel; Lichaw führt sie als zwei ihrer Fragen. Lichaws Warnung zu „easy to use“ steht beim Slack-Beispiel weiter unten.</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="baut-mit">Die Story entscheidet, was ihr baut</h2>
-    <p class="folie-satz">Animation stützte die Story. Kopieren und Einfügen nicht.</p>
-    <Fluss label="Was die Concept Story des ersten iPhones verlangte" hervor={[1]} knoten={[
-      { t: 'Story', sub: 'Kommunizieren – „works like magic“' },
-      { t: 'Stützt die Story', sub: 'Touchscreen, Animation: gebaut' },
-      { t: 'Stützt sie nicht', sub: 'Kopieren und Einfügen: fehlte' },
+    <p class="folie-satz">Das erste iPhone kam mit aufwendiger Animation – und ohne Kopieren und Einfügen.</p>
+    <Fluss label="Von der Krise zur Anforderung, nach Lichaw" hervor={[3]} knoten={[
+      { t: 'Krise', sub: 'Touchscreen: schwer zu bedienen?' },
+      { t: 'Höhepunkt', sub: '„works like magic“' },
+      { t: 'Anforderung', sub: 'Tippen muss leicht sein' },
+      { t: 'Gebaut', sub: 'Animation, Finger statt Stift' },
     ]} />
     <ul class="gross">
+      <li data-schritt><strong>Animation stützte die Story.</strong> Kopieren und Einfügen nicht – es fehlte.</li>
       <li data-schritt><strong>Nicht nur Pitch:</strong> Die Story sagt, was das Produkt können muss.</li>
-      <li data-schritt><strong>Für euch:</strong> Was eine Concept Story nicht stützt, gehört nicht in den Prototyp.</li>
-    </ul>
-    <p class="nur-handout">Die Concept Story ist kein Werbetext. Beim ersten iPhone bestimmte sie die Anforderungen: Das Gerät kam mit aufwendiger Animation, aber ohne Kopieren und Einfügen. Der Touchscreen musste sich leicht bedienen lassen, sonst wäre der Höhepunkt („works like magic“) nicht eingelöst worden; dafür brauchte es die Animation. „Animation supported the story. Cut-and-paste did not.“ Lichaws Schluss: „concept stories don’t just help you figure out how to talk about a product, but how to build the product“ ({LICHAW}, Kap. 3, Supporting the Story). Als Faustregel: „Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out“ (Kap. 8, Stories Are Character-Driven). Übertrag des Kurses: Wenn ihr mit der Story Map den ersten Slice schneidet, ist eure Concept Story dafür der Maßstab.</p>
-  </Folie>
-
-  <Folie>
-    <h2 id="drei-storys">Drei Storys, ein Bogen</h2>
-    <p class="folie-satz">Verstehen, sehen, erleben.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Concept Story:</strong> wie jemand den Wert <em>versteht</em> – jetzt.</li>
-      <li data-schritt><strong>Origin Story:</strong> wie jemand ihn zum ersten Mal <em>sieht</em> – am Ende von <a href="/innolab/tag-4#abschluss">Tag 4</a>.</li>
-      <li data-schritt><strong>Usage Story:</strong> wie jemand ihn Schritt für Schritt <em>erlebt</em> – an <a href="/innolab/methoden/usage-story">Tag 4</a>.</li>
-      <li data-schritt><strong>Exposition</strong> ist in allen dreien gleich.</li>
-    </ul>
-    <p class="nur-handout">„In a concept story, the climax occurs when your customer understands the value of a product; in an origin story, it happens when the user sees the value … the climax of a usage story is where the user experiences the value“ ({LICHAW}, Kap. 4). Und: „The material in the exposition is the same in all three stories“ (Kap. 4, How Origin Stories Work, Exposition) – ihr schreibt die Exposition einmal.</p>
-  </Folie>
-
-  <Folie>
-    <h2 id="concept-story">So funktioniert eine Concept Story</h2>
-    <p class="folie-satz">Die Rechnung, die jemand in Sekunden macht, wenn er zum ersten Mal von eurem Produkt hört.</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/lichaw/concept-story.jpg" alt="Bogen: Current State als Foto, Problem mit erschrockenem Gesicht, Your product als Schachtel mit Product Name und Description, Competition als Hürde, Value proposition und Competitive advantage als Glühbirne am Gipfel, Takeaway als Pfeil nach unten, Goal(s) met mit lächelndem Gesicht" quelle={`Die Concept Story. ${LICHAW_KURZ}, Abb. 3.1.`} />
-      <ul>
-        <li data-schritt><strong>Exposition:</strong> die Welt heute, was darin gut ist, das große Ziel.</li>
-        <li data-schritt><strong>Auslöser:</strong> der Pain. <strong>Steigende Handlung:</strong> Name und Art des Produkts.</li>
-        <li data-schritt><strong>Krise:</strong> die Konkurrenz – ein Produkt, die heutige Lösung, Widerstand gegen Neues.</li>
-      </ul>
-    </BildText>
-    <div class="nur-handout">
-      <p>Die Concept Story ist das konzeptuelle Modell eures Produkts: was es ist und wie Kund*innen darüber denken – „the mental calculation that someone makes when they first hear about your product“; sie dauert nur Sekunden. Sie dient dazu, eine gemeinsame Vision zu vermitteln, das Team darauf auszurichten und daran zu priorisieren ({LICHAW}, Kap. 3). Lichaw nennt sie auch einen sichtbaren Elevator Pitch („Concept Story: A Visual Elevator Pitch“, Kap. 3, Rising Action) – deshalb steht am Ende ein Satz.</p>
-      <p>Die Krise ist die Konkurrenz in drei Formen: ein anderes Produkt oder ein anderer Service; eine abstrakte Alternative, „an alternative way that people currently solve their problems“; oder etwas Emotionales, „resistance to change or people not wanting to adopt something new“ (Kap. 3, Crisis). Bei euch steht das schon da: im „anders als [Alternative]“ eures Lückensatzes und in den Interviews.</p>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="hoehepunkt">Höhepunkt, Takeaway, Ende</h2>
-    <p class="folie-satz">Anders – und besser als das, was Menschen heute tun.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Höhepunkt:</strong> löst Pain und Krise auf – euer Wertversprechen.</li>
-      <li data-schritt><strong>Fallende Handlung:</strong> was die Person danach denkt – nur denkt, noch nicht tut.</li>
-      <li data-schritt><strong>Sie ist eine Hypothese:</strong> in die Annahmen-Map, für die Experiment-Karte.</li>
-      <li data-schritt><strong>Ende:</strong> das Ziel der Person und ein messbares Ziel des Geschäfts.</li>
+      <li data-schritt><strong>Kursregel:</strong> Was eure Concept Story nicht stützt, kommt nicht in den Prototyp.</li>
     </ul>
     <div class="nur-handout">
-      <p>Am Höhepunkt löst das Produkt das Problem und die Hürden der Krise: „The way that your product enables users to resolve these problems becomes its value proposition. Implicit in the value proposition is that it’s not only different, but also better than the alternative ways“ ({LICHAW}, Kap. 3). Die fallende Handlung ist der „Takeaway“ – „then what?“; bei der Concept Story bleibt sie im Denken: „Falling action for concept stories should still remain in the realm of thought, rather than action“ (Kap. 3, Falling Action). „If you posit this falling action as a hypothesis, you should test it with real people“ (Kap. 3). Am Ende sehen Kund*innen sich ihr Ziel erreichen, und das Ziel des Geschäfts schwingt mit; Ziele sollen messbar sein (Kap. 3, Kap. 8).</p>
+      <p>Die Kette auf der Folie, Schritt für Schritt bei Lichaw: <strong>Krise</strong> – wer schon einen Touchscreen kannte, fürchtete ihn: „Wouldn’t a touchscreen make the iPhone difficult to use?“ ({LICHAW}, Kap. 3, Crisis, S. 27). <strong>Höhepunkt</strong> – „the iPhone worked like magic. It was easy to use.“ (Kap. 3, Climax/Resolution, S. 28). <strong>Anforderung und Gebaut</strong> – „in order for the touchscreen to be user-friendly (which Palm Treo touchscreens were not), Apple’s strategy was to employ animation and cutting-edge technology that enabled people to tap, rather than to interact with their device using a stylus.“ (Kap. 3, Supporting the Story, S. 33). Lichaws Notiz dazu: Frühe Touchscreens ohne Stift waren schwer zu treffen und reagierten verzögert – „They simply weren’t easy to use, and that wasn’t a very good story.“ (Note „The Early Touchscreens Flopped“, S. 34).</p>
+      <p>Daraus Lichaws Schluss: „There was a good reason why the iPhone launched with fancy animation but no cut-and-paste functionality.“ – „Animation supported the story. Cut-and-paste did not.“ (S. 33). Warum Kopieren und Einfügen die Story nicht stützte, führt Lichaw nicht aus. Die Story „wasn’t just a marketing pitch or shiny packaging—it drove everything from what the product requirements were to how the iPhone worked“, und: „concept stories don’t just help you figure out how to talk about a product, but how to build the product“ (S. 33). Als Faustregel: „Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out“ (Kap. 8, Stories Are Character-Driven, S. 134).</p>
+      <p>Die Kursregel auf der Folie ist ein Übertrag des Kurses: Wenn ihr mit der Story Map den ersten Slice schneidet, ist eure Concept Story dafür der Maßstab.</p>
     </div>
   </Folie>
 
@@ -228,18 +234,19 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
         <li data-schritt><strong>Fallende Handlung:</strong> nie mehr E-Mail?</li>
         <li data-schritt><strong>Ende:</strong> Team und Geschäft am Ziel.</li>
       </ol>
-      <p data-schritt><strong>Die Linie daneben:</strong> „leichter als E-Mail“ – langweilig, wenn Schwierigkeit nicht das Problem ist.</p>
+      <p data-schritt><strong>Die Linie daneben:</strong> eine Plattform, „easier to use“ als E-Mail – langweilig, wenn Schwierigkeit nicht das Problem ist.</p>
       </div>
     </BildText>
     <div class="nur-handout">
-      <p>Lichaw beantwortet ihre Fragen einmal vollständig für Slack ({LICHAW}, Kap. 3, Mapping a Concept Story, An Example: Slack; Abb. 3.7). <strong>Exposition:</strong> Zielkundschaft sind „Busy professionals“. Gut in ihrer Welt: Kommunizieren und Zusammenarbeiten ist leichter als je zuvor, mit E-Mail, Twitter, Facebook, SMS, Chat, Videochat und Projektsoftware. Ziel: mit einer Gruppe kommunizieren und zusammenarbeiten. <strong>Auslöser:</strong> Es ist trotzdem mühsam – alles im Blick und an einem Ort zu behalten ist schwer und kostet Zeit und Geld. <strong>Steigende Handlung:</strong> Slack, „An online collaboration tool.“ <strong>Krise:</strong> kostenlose Dienste wie Gmail oder Chat, bezahlte wie Basecamp; als innere Hürde: „What, sign up for another online service? Ack. No.“ <strong>Höhepunkt:</strong> „Unlike the competition, Slack is a one-stop solution.“ Alles an einem Ort, erreichbar von Desktop, Browser, Telefon und Tablet. <strong>Fallende Handlung:</strong> Sie stellen sich vor, Slack mit ihrem Team zu nutzen – „…and maybe never using email again.“ <strong>Ende:</strong> Die Nutzer*innen erreichen ihr Ziel; das Geschäft seines: Menschen helfen, in einer Gruppe besser zu kommunizieren und zusammenzuarbeiten. Die Stichpunkte auf der Folie folgen Lichaws Text; die Beschriftungen in Abb. 3.7 weichen davon ab (in der Krise etwa Email, IM, Product-management tools, Travel).</p>
-      <p>Die Linie daneben: „there is always a simple solution to every story, which can look like a straight line“ – ein besseres Werkzeug zum Kommunizieren. Slack hätte eine Plattform bauen können, die „leichter zu bedienen“ ist als E-Mail. Lichaw: „But ‚easy to use‘ is a pretty boring story when difficulty isn’t really the problem“ (Kap. 3, Mapping a Concept Story). Beachtet, was die Krise enthält: nicht nur andere Produkte, auch den Widerwillen, sich schon wieder irgendwo anzumelden.</p>
+      <p>Lichaw beantwortet ihre Fragen einmal vollständig für Slack ({LICHAW}, Kap. 3, Mapping a Concept Story, An Example: Slack, S. 36–37; Abb. 3.7). <strong>Exposition:</strong> Zielkundschaft sind „Busy professionals“. Gut in ihrer Welt: Kommunizieren und Zusammenarbeiten ist leichter als je zuvor, mit E-Mail, Twitter, Facebook, SMS, Chat, Videochat und Projektsoftware. Ziel: mit einer Gruppe kommunizieren und zusammenarbeiten. <strong>Auslöser:</strong> Es ist trotzdem mühsam – alles im Blick und an einem Ort zu behalten ist schwer und kostet Zeit und Geld. <strong>Steigende Handlung:</strong> Slack, „An online collaboration tool.“ <strong>Krise:</strong> kostenlose Dienste wie Gmail oder Chat, bezahlte wie Basecamp; als innere Hürde: „What, sign up for another online service? Ack. No.“ <strong>Höhepunkt:</strong> „Unlike the competition, Slack is a one-stop solution.“ Alles an einem Ort, erreichbar von Desktop, Browser, Telefon und Tablet. <strong>Fallende Handlung:</strong> Sie stellen sich vor, Slack mit ihrem Team zu nutzen – „…and maybe never using email again.“ <strong>Ende:</strong> Die Nutzer*innen erreichen ihr Ziel; das Geschäft seines: Menschen helfen, in einer Gruppe besser zu kommunizieren und zusammenzuarbeiten. Die Stichpunkte auf der Folie folgen Lichaws Text; die Beschriftungen in Abb. 3.7 weichen davon ab (in der Krise etwa Email, IM, Product-management tools, Travel).</p>
+      <p>Die Linie daneben: „there is always a simple solution to every story, which can look like a straight line“ – ein besseres Werkzeug zum Kommunizieren. Slack hätte stattdessen eine Plattform bauen können, die „easier to use“ ist als E-Mail. Lichaw: „But ‚easy to use‘ is a pretty boring story when difficulty isn’t really the problem“ (Kap. 3, Mapping a Concept Story, S. 35). Beachtet, was die Krise enthält: nicht nur andere Produkte, auch den Widerwillen, sich schon wieder irgendwo anzumelden.</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="beispiel">Am Beispiel: die Kaffeebar</h2>
     <p class="folie-satz">Sieben Stationen für „Im Gehen bestellen“.</p>
+    <MiroFrame name="T4 · 0 · Concept Story · Kaffeebar" />
     <ol>
       <li data-schritt><strong>Exposition:</strong> Pendler*innen, 7:15–7:45; die Bar ist gut, die Barista kennt sie (G3). Ziel: Kaffee auf dem Weg zum Zug (J1).</li>
       <li data-schritt><strong>Auslöser:</strong> Geht sich das bis zur Abfahrt aus? (P1, P2)</li>
@@ -247,20 +254,21 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
       <li data-schritt><strong>Krise:</strong> der Automat – Notlösung, aber schnell (I1-3) – oder verzichten (I3-4). Und: im Gehen tippen?</li>
       <li data-schritt><strong>Höhepunkt:</strong> „Fertig 7:31. Dein Zug fährt 7:38.“ – Gewissheit statt Glücksspiel.</li>
       <li data-schritt><strong>Fallende Handlung:</strong> „Ich muss nicht mehr auf die Uhr schauen.“ (Annahme)</li>
-      <li data-schritt><strong>Ende:</strong> Kaffee in der Hand vor dem Zug (G1); mehr Pendler*innen steigen morgens mit Kaffee in den Zug.</li>
+      <li data-schritt><strong>Ende:</strong> Kaffee in der Hand vor dem Zug (G1); mehr Pendler*innen mit Kaffee im Zug.</li>
     </ol>
-    <p data-schritt><strong>Flach-Probe:</strong> „Geht sich ein Kaffee noch aus?“ → Wartezeit-Anzeige an der Tür → Kaffee in der Hand vor dem Zug (G1). Eine Linie – ohne Krise, ohne Gipfel.</p>
+    <p data-schritt><strong>Kursregel – Flach-Probe:</strong> „Geht sich ein Kaffee aus?“ → Wartezeit-Anzeige an der Tür → Kaffee vor dem Zug. Eine Linie, ohne Krise und Gipfel.</p>
     <div class="nur-handout">
+      <p>Auf Miro hängt diese Story als ausgefülltes Beispiel neben euren Frames (Frame „T4 · 0 · Concept Story · Kaffeebar“, Link oben).</p>
       <p><strong>Exposition:</strong> Pendler*innen, werktags zwischen 7:15 und 7:45, mit festem Morgenzug. Gut in ihrer Welt: Die Bar liegt am Weg, die Barista kennt die Stammgäste (G3, I3-6), und „wenn der erste Schluck passt, ist der Morgen gerettet“ (I1-4). Großes Ziel: auf dem Weg zum Zug Kaffee besorgen (J1), ohne gehetzt in den Tag zu starten (J2). <strong>Auslöser:</strong> Sie wissen nicht, ob sich der Kaffee bis zur Abfahrt ausgeht (P1); bei mehr als fünf Leuten reicht die Zeit nicht (P2). <strong>Steigende Handlung:</strong> „Gleis-1-Express“ – bestellen im Browser, per QR-Code an der Hallentür, abholen an der Express-Ausgabe.</p>
       <p><strong>Krise:</strong> Die heutigen Alternativen stammen aus den Interviews: der Automat – „halt Notlösung, aber er ist schnell“ (I1-3), „Meistens ist es der Automat“ (I4-3), „Dann halt die Brühe“ (I4-4) – oder gar kein Kaffee: „Bei mehr als fünf Leuten lass ich es“ (I3-4), „Wenn es voll ist, lass ich es“ (I5-2). Dazu der Widerstand gegen Neues: Im Gehen am Handy tippen? Und wenn er doch nicht fertig ist, steht man erst recht da (I3-3). <strong>Höhepunkt:</strong> Beim Bestellen steht, ob es sich ausgeht. Anders als der Automat (schnell, aber Brühe) und die Schlange (Glücksspiel): Gewissheit und der gute Kaffee (Pain Relievers zu P1–P3, Gain Creator zu G1).</p>
       <p><strong>Fallende Handlung, nur gedacht:</strong> „Ich muss nicht mehr auf die Uhr schauen“ – das Gegenbild zu „Wenn ich auf die Uhr schauen muss, geh ich“ (I2-2). Als Annahme: „Wir glauben, dass die Zeile ‚Fertig 7:31‘ reicht, damit Pendler*innen an der Schlange vorbeigehen.“ <strong>Ende:</strong> Kaffee in der Hand, bevor der Zug einfährt (G1). Geschäft: der Outcome aus dem Produkt-Brief – mehr Pendler*innen steigen morgens mit Kaffee in den Zug, auch solche, die heute Automat oder Verzicht wählen; gemessen an Bestellungen über den Code zwischen 7:15 und 7:45.</p>
-      <p><strong>Flach-Probe:</strong> Die einfache Lösung wäre die Wartezeit-Anzeige an der Tür – Problem, Produkt, Ende, ohne Krise und Höhepunkt: eine Linie. Das war die erste der drei Ideen, und sie hat im Fit verloren.</p>
+      <p><strong>Kursregel – Flach-Probe:</strong> Die einfache Lösung wäre die Wartezeit-Anzeige an der Tür – Problem, Produkt, Ende, ohne Krise und Höhepunkt: eine Linie. Sie war eine der drei Ideen aus der Ideation und verlor schon im Vergleich der Lückensätze: Sie trifft P1, aber nicht P2, P3 und G1 (<a href="/innolab/methoden/value-map#beispiel">Value Map, Am Beispiel</a>).</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="woher">Woher kommt jede Station?</h2>
-    <p class="folie-satz">Ihr erfindet nichts – ihr ordnet, was ihr schon habt.</p>
+    <p class="folie-satz">Sechs von sieben Stationen stehen schon in euren Unterlagen.</p>
     <div class="table-scroll">
       <table class="woher">
         <thead><tr><th scope="col">Station</th><th scope="col">Lichaws Frage</th><th scope="col">Bei euch aus</th></tr></thead>
@@ -270,45 +278,60 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
           <tr data-schritt><th scope="row">3 Steigende Handlung</th><td>Name? Art?</td><td>Value Map: Spitzenreiter</td></tr>
           <tr data-schritt><th scope="row">4 Krise</th><td>Konkurrenz? Hürden?</td><td>Interviews: heute (Zitat-IDs)</td></tr>
           <tr data-schritt><th scope="row">5 Höhepunkt</th><td>Was löst beides?</td><td>Value Map: Pain Relievers, Gain Creators</td></tr>
-          <tr data-schritt><th scope="row">6 Fallende Handlung</th><td>Was denken sie danach?</td><td><strong>neu</strong> – als Annahme</td></tr>
-          <tr data-schritt><th scope="row">7 Ende</th><td>Woran merkt es das Geschäft?</td><td>G… und Outcome mit Messgröße</td></tr>
+          <tr data-schritt><th scope="row">6 Fallende Handlung</th><td>Was denken sie danach?</td><td><strong>neu</strong> – Annahme in die Annahmen-Map <span class="muted">(Kursregel)</span></td></tr>
+          <tr data-schritt><th scope="row">7 Ende</th><td>Woran merkt es das Geschäft?</td><td>G… und Outcome mit Messgröße <span class="muted">(Kursregel)</span></td></tr>
         </tbody>
       </table>
     </div>
     <div class="nur-handout">
-      <p>Die Tabelle ausführlich. <strong>1 Exposition:</strong> Wer ist eure Zielkundschaft, was ist gut in ihrer Welt, was ist ihr großes Ziel? Aus dem Kundenprofil (Miro, „T3 · 4 · Canvas · Produkt n“): Segment, Jobs (J…), Gains (G…). <strong>2 Auslöser:</strong> Welches Problem, welcher Pain? Eure Ziel-Chance, im Profil P1. <strong>3 Steigende Handlung:</strong> Wie heißt das Produkt, was für eine Art Produkt ist es? Aus der Value Map (Miro, „T3 · 4 · Canvas · Produkt n“): das Produkt des Spitzenreiters. <strong>4 Krise:</strong> Wie sieht die Konkurrenz aus, welche inneren Hürden gibt es? Aus den Interviews: was die Menschen heute tun, mit Zitat-IDs; dazu das „anders als …“ eures Lückensatzes. <strong>5 Höhepunkt:</strong> Was löst Problem und Widerstand, was unterscheidet euch? Aus der Value Map: Pain Relievers und Gain Creators. <strong>6 Fallende Handlung:</strong> Was sollen Menschen danach denken, fühlen, sich vorstellen? Neu – ein Gedanke, als Annahme in die Annahmen-Map. <strong>7 Ende:</strong> Was passiert, wenn das Ziel erreicht ist, und woran merkt das Geschäft, dass es auf dem richtigen Weg ist? Ein Gain (G…) und euer Outcome aus dem Produkt-Brief, mit Messgröße – bei der Kaffeebar die Wurzel des Baums (Outcome, Kaffeebar-Baum): „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“.</p>
-      <p>Die mittlere Spalte sind Lichaws Fragen, auf der Folie gekürzt ({LICHAW}, Kap. 3, Mapping a Concept Story), etwa „What’s good in her world as it relates to your product or service?“, „What mental hurdles might keep her from adopting your solution?“, „What do you want people to think, feel, or envision after learning about your product?“ und am Ende „How will you know you’re on the right path?“. Die rechte Spalte ist die Zuordnung des Kurses: wo die Antwort in euren Unterlagen schon steht. Lichaw verlangt genau das: „Stories are not something that you make up“ – „Stories for products come from data“ (Kap. 6, Einleitung). Wenn ihr eure Concept Story schreibt, ist nur Station 6 neu, und die ist eine Hypothese, die ihr prüft (Kap. 3, Falling Action).</p>
+      <p>Die Tabelle ausführlich. <strong>1 Exposition:</strong> Wer ist eure Zielkundschaft, was ist gut in ihrer Welt, was ist ihr großes Ziel? Aus dem Kundenprofil (Miro, „T3 · 4 · Canvas · Produkt n“): Segment, Jobs (J…), Gains (G…). <strong>2 Auslöser:</strong> Welches Problem, welcher Pain? Eure Ziel-Chance, im Profil P1. <strong>3 Steigende Handlung:</strong> Wie heißt das Produkt, was für eine Art Produkt ist es? Aus der Value Map (Miro, „T3 · 4 · Canvas · Produkt n“): das Produkt des Spitzenreiters. <strong>4 Krise:</strong> Wie sieht die Konkurrenz aus, welche inneren Hürden gibt es? Aus den Interviews: was die Menschen heute tun, mit Zitat-IDs; dazu das „anders als …“ eures Lückensatzes. <strong>5 Höhepunkt:</strong> Was löst Problem und Widerstand, was unterscheidet euch? Aus der Value Map: Pain Relievers und Gain Creators. <strong>6 Fallende Handlung:</strong> Was sollen Menschen danach denken, fühlen, sich vorstellen? Neu – ein Gedanke. <strong>7 Ende:</strong> Was passiert, wenn das Ziel erreicht ist, und woran merkt das Geschäft, dass es auf dem richtigen Weg ist? Ein Gain (G…) und euer Outcome aus dem Produkt-Brief, mit Messgröße – bei der Kaffeebar die Wurzel des Baums (Outcome, Kaffeebar-Baum): „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“.</p>
+      <p>Kursregel zu 6: Die fallende Handlung kommt als Annahme in die Annahmen-Map; an der Experiment-Karte wählt ihr die riskanteste. Lichaw verlangt die Prüfung, nicht den Ort: „If you posit this falling action as a hypothesis, you should test it with real people“ ({LICHAW}, Kap. 3, Falling Action, S. 29). Kursregel zu 7: Das Ende nennt eine Messgröße. Lichaw: „Goals in the stories you create can and should be measured, both for your characters and your business.“ (Kap. 8, Goals Are Measurable, S. 135).</p>
+      <p>Die mittlere Spalte sind Lichaws Fragen, auf der Folie gekürzt (Kap. 3, Mapping a Concept Story, S. 34–35), etwa „What’s good in her world as it relates to your product or service?“, „What mental hurdles might keep her from adopting your solution?“, „What do you want people to think, feel, or envision after learning about your product?“ und am Ende „How will you know you’re on the right path?“. Die rechte Spalte ist die Zuordnung des Kurses: wo die Antwort in euren Unterlagen schon steht. Lichaw verlangt genau das: „Stories are not something that you make up“ – „Stories for products come from data“ (Kap. 6, Einleitung). Wenn ihr eure Concept Story schreibt, ist nur Station 6 neu, und die ist eine Hypothese, die ihr prüft.</p>
     </div>
   </Folie>
 
   <Folie>
     <h2 id="ein-satz">Ein Satz daraus</h2>
     <p class="folie-satz">Die Story, so kurz wie eine Liftfahrt.</p>
-    <p class="gross" data-schritt>„Für <strong>[Zielgruppe]</strong> mit <strong>[Pain]</strong> ist <strong>[Name]</strong> ein <strong>[Art]</strong>, das <strong>[Nutzen]</strong>. Anders als <strong>[Alternative]</strong>: <strong>[Unterschied]</strong>.“</p>
+    <p class="gross" data-schritt>„Für <strong>[Zielgruppe]</strong><sup class="stationsnr">1</sup> mit <strong>[Pain]</strong><sup class="stationsnr">2</sup> ist <strong>[Name]</strong><sup class="stationsnr">3</sup> ein <strong>[Art]</strong><sup class="stationsnr">3</sup>, das <strong>[Nutzen]</strong><sup class="stationsnr">3</sup>. Anders als <strong>[Alternative]</strong><sup class="stationsnr">4</sup>: <strong>[Unterschied]</strong><sup class="stationsnr">5</sup>.“</p>
+    <p class="muted" data-schritt>Die kleinen Zahlen sind die Stationen. Stationen 6 und 7 stehen nicht im Satz.</p>
     <p data-schritt>„Für Pendler*innen, die nicht wissen, ob sich der Kaffee vor der Abfahrt ausgeht, ist Gleis-1-Express eine Bestellung per QR-Code, die beim Bestellen sagt, ob er vor dem Zug fertig ist. Anders als Automat und Schlange: Gewissheit statt Glücksspiel.“</p>
-    <p class="nur-handout">Lichaws Elevator Pitch (nach dem Format aus <em>Gamestorming</em>): „For [target customer] who has [customer need], [product name] is a [market category] that [one key benefit]. Unlike [competition], the product [unique differentiator].“ Er bildet die Concept Story ab: Zielkunde = Hauptfigur, Bedürfnis = Auslöser, Name, Art und Nutzen = steigende Handlung, Konkurrenz = Krise, Unterschied = Höhepunkt ({LICHAW}, Kap. 7). Wenn ihr eure Concept Story schreibt, gehört dieser Satz in Abschnitt 3 eures Produkt-Briefs; der Lückensatz aus der Ideation bleibt euer Arbeitsmittel.</p>
+    <p class="nur-handout">Lichaws Elevator Pitch (nach dem Format aus <em>Gamestorming</em>): „For [target customer] who has [customer need], [product name] is a [market category] that [one key benefit]. Unlike [competition], the product [unique differentiator].“ Er bildet die Concept Story ab: Zielkunde = Hauptfigur, Bedürfnis = Auslöser, Name, Art und Nutzen = steigende Handlung, Konkurrenz = Krise, Unterschied = Höhepunkt ({LICHAW}, Kap. 7, Elevator Pitch, S. 128). Fallende Handlung und Ende haben keine Lücke im Satz; Lichaw ordnet sie dem zu, wie alles zusammenkommt: „this is how it all comes together“ (ebd.). Wenn ihr eure Concept Story schreibt, gehört dieser Satz in Abschnitt 3 eures Produkt-Briefs; der Lückensatz aus der Ideation bleibt euer Arbeitsmittel.</p>
+  </Folie>
+
+  <Folie>
+    <h2 id="drei-storys">Ausblick: drei Storys, ein Bogen</h2>
+    <p class="folie-satz">Verstehen, sehen, erleben.</p>
+    <ul class="gross">
+      <li data-schritt><strong>Concept Story:</strong> wie jemand den Wert <em>versteht</em> – die schreibt ihr jetzt.</li>
+      <li data-schritt><strong>Origin Story:</strong> wie jemand ihn zum ersten Mal <em>sieht</em> – zum <a href="/innolab/tag-4#abschluss">Abschluss des Tages</a>.</li>
+      <li data-schritt><strong>Usage Story:</strong> wie jemand ihn Schritt für Schritt <em>erlebt</em> – <a href="/innolab/methoden/usage-story">nach der Mittagspause</a>.</li>
+      <li data-schritt><strong>Exposition</strong> ist in allen dreien gleich.</li>
+    </ul>
+    <p class="nur-handout">„In a concept story, the climax occurs when your customer understands the value of a product; in an origin story, it happens when the user sees the value … the climax of a usage story is where the user experiences the value“ ({LICHAW}, Kap. 4). Und: „The material in the exposition is the same in all three stories“ (Kap. 4, How Origin Stories Work, Exposition) – ihr schreibt die Exposition einmal.</p>
   </Folie>
 
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (30 min)</h2>
-    <p class="folie-satz">Stationen, Flach-Probe, festhalten – jede*r allein, still.</p>
+    <p class="folie-satz">Stationen, Flach-Probe, festhalten – allein, still.</p>
     <p class="wozu"><strong>Wozu?</strong> Damit jemand in Sekunden versteht, warum euer Spitzenreiter besser ist als das, was er heute tut.</p>
     <ol class="gross">
-      <li data-schritt><strong>Sieben Stationen, allein:</strong> Vorlage in <code>docs/STORYS.md</code>; je ein, zwei Sätze, jede Behauptung mit J-, P-, G- oder Zitat-ID. Station 6 ist ein Gedanke in „…“. <Timer minuten={20} /></li>
-      <li data-schritt><strong>Flach-Probe:</strong> eine Zeile darunter – Problem → Produkt → Ende. Was hat eure Story mehr? <Timer minuten={5} /></li>
-      <li data-schritt><strong>Festhalten:</strong> Story committen, Satz in Abschnitt 3 des Produkt-Briefs, Station 6 in die Annahmen-Map. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Sieben Stationen, allein:</strong> auf Miro in eurem Frame, in die Stickies unter „1 Exposition“ bis „7 Ende“, jede Behauptung mit J-, P-, G- oder Zitat-ID. Station 6 ist ein Gedanke in „…“. <Timer minuten={20} /></li>
+      <li data-schritt><strong>Kursregel – Flach-Probe:</strong> ins Feld „Flach-Probe“ unten links – Problem → Produkt → Ende. Was hat eure Story mehr? <Timer minuten={5} /></li>
+      <li data-schritt><strong>Festhalten:</strong> Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), Station 6 in die Annahmen-Map. <Timer minuten={5} /></li>
     </ol>
+    <p class="gross">Miro, euer Frame: <MiroLink name="T4 · 0 · Concept Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 3">Produkt 3</MiroLink></p>
     <div class="nur-handout">
-      <p>Davor zehn Minuten Theorie: Die Folien von Tag 3 noch einmal, kurz – <a href="#stationen">sieben Stationen</a>, <a href="#a-mal-b">A × B = C</a>, <a href="#flach">flach</a> oder <a href="#hoch">hoch</a>. Bei der Frage „Was fehlt dieser Geschichte?“ überlegt jede*r still, dann antwortet ihr zugleich, laut.</p>
-      <p>Zu Schritt 1: Lichaws Fragen je Station und wo die Antworten bei euch schon stehen, zeigt die Tabelle oben (<a href="#woher">Woher kommt jede Station?</a>; {LICHAW}, Kap. 3, Mapping a Concept Story). Ihr schreibt allein, jede*r am eigenen Produkt. Ab Minute 5 spricht Markus nacheinander mit jeder Person, online in einem eigenen Breakout-Raum, und fragt: „Was ist eure einfache Lösung – und was hat eure Story ihr gegenüber mehr?“ Eine Runde, in der ihr einander eure Storys erzählt, gibt es nicht: Jede*r von euch hat ein eigenes Produkt. Lichaws Probe beim Erzählen ist das Lächeln am Höhepunkt (Kap. 6, Use the Smile Test); die macht ihr, wenn ihr die Story jemandem aus eurer Zielgruppe erzählt.</p>
-      <p>Zu Schritt 2: Wenn ihr gegenüber der Linie nur „schneller“ oder „leichter“ habt, fehlt die Krise: Welche Alternative nutzen eure Interviewten heute, und warum würden sie bei ihr bleiben? Erst wenn ihr das beantworten könnt, hat der Höhepunkt etwas aufzulösen – Lichaws Slack-Beispiel oben zeigt die Linie daneben.</p>
-      <p>Zu Schritt 3: <code>docs/STORYS.md</code>, Abschnitt „Concept Story“; der Satz in Abschnitt 3 eures Produkt-Briefs in der Werkstatt; die fallende Handlung als Annahme in die Annahmen-Map – an der Experiment-Karte nach dem Geschäftsmodell wählt ihr die riskanteste.</p>
+      <p>Davor die Theorie: alle Folien von <a href="#story-bogen">„Geschichten haben eine Form“</a> bis <a href="#drei-storys">„Ausblick: drei Storys, ein Bogen“</a>. Bei der Frage „Was fehlt dieser Geschichte?“ (<a href="#flach">flach</a>) überlegt jede*r still, dann antwortet ihr zugleich, laut; die Auflösung zeigen <a href="#hoch">„Dieselbe Figur, jetzt mit Bogen“</a> und <a href="#hoch-lehre">„Krise und Höhepunkt geben Höhe“</a>.</p>
+      <p>Zu Schritt 1: Ihr arbeitet in eurem Frame „T4 · 0 · Concept Story · Produkt n“ (Produkt 1 bis 3 = eure Spalten von links); daneben hängt das ausgefüllte Beispiel der Kaffeebar. Auf dem Bogen stehen die sieben Stationen, unter jeder ein Sticky mit einer Leitfrage – die Frage ersetzt ihr durch eure Antwort. Unten rechts steht die Erinnerung an die IDs. Lichaws Fragen je Station und wo die Antworten bei euch schon stehen, zeigt die Tabelle oben (<a href="#woher">Woher kommt jede Station?</a>; {LICHAW}, Kap. 3, Mapping a Concept Story). Ihr schreibt allein, jede*r am eigenen Produkt. Ab Minute 5 spricht Markus nacheinander mit jeder Person, online in einem eigenen Breakout-Raum, und fragt: „Was ist eure einfache Lösung – und was hat eure Story ihr gegenüber mehr?“ Eine Runde, in der ihr einander eure Storys erzählt, gibt es nicht: Jede*r von euch hat ein eigenes Produkt. Lichaws Probe beim Erzählen ist das Lächeln am Höhepunkt (Kap. 6, Use the Smile Test); die macht ihr, wenn ihr die Story jemandem aus eurer Zielgruppe erzählt.</p>
+      <p>Zu Schritt 2 (Kursregel): Wenn ihr gegenüber der Linie nur „schneller“ oder „leichter“ habt, fehlt die Krise: Welche Alternative nutzen eure Interviewten heute, und warum würden sie bei ihr bleiben? Erst wenn ihr das beantworten könnt, hat der Höhepunkt etwas aufzulösen – Lichaws Slack-Beispiel oben zeigt die Linie daneben.</p>
+      <p>Zu Schritt 3: der Satz in Abschnitt 3 eures Produkt-Briefs in der Werkstatt; die fallende Handlung als Annahme in die Annahmen-Map – an der Experiment-Karte nach dem Geschäftsmodell wählt ihr die riskanteste. In <code>docs/STORYS.md</code> kommt die Story erst im Block um 10:50 (erster Schritt): Ihr übertragt sie von Miro in die Vorlage unten.</p>
     </div>
   </Folie>
 
   <div class="nur-handout">
   <h2 id="vorlage">Vorlage</h2>
-  <p>Kopiert die Vorlage nach <code>docs/STORYS.md</code> und füllt sie Station für Station.</p>
+  <p>Das Format für die Übertragung bei Claude Code um 10:50 (erster Schritt): Ihr kopiert die Vorlage nach <code>docs/STORYS.md</code> und tragt eure Story von Miro Station für Station ein.</p>
   <Prompt label="Vorlage · docs/STORYS.md"># Storys — [Produkt]
 
 Stand: [Datum] · Profil und Value Map: Miro, T3 · 4 · Canvas · Produkt n
@@ -327,6 +350,7 @@ Einfache Lösung (zur Probe): [Problem] → [Produkt] → [Ende]. Was hat die St
 Ein Satz: Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Anders als [Alternative]: [Unterschied].</Prompt>
 
   <h2 id="pruefen">Prüfen</h2>
+  <p>Vor dem Übertrag liegt eure Story nur auf Miro: Nehmt dann den Weg „Ohne Claude Code: Text in Claude einfügen“ und fügt den Text aus eurem Frame ein. Nach dem Übertrag um 10:50 prüft Claude Code die Datei <code>docs/STORYS.md</code>.</p>
   <ClaudePruefung slug="concept-story" />
   </div>
 
@@ -339,8 +363,12 @@ Ein Satz: Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Ander
   /* woher: sieben Zeilen plus Kopf passen nur mit engeren Zeilen auf eine Beamer-Folie (1280×720). */
   :global(html[data-beamer]) .woher :is(th, td) { padding-block: .3rem; }
   .woher th[scope="row"] { white-space: nowrap; }
-  /* story-bogen: sieben Punkte neben dem Bogen passen bei 1280×720 nur mit breiterer Textspalte (Entscheidung 66). */
+  /* story-bogen: die Punkte neben dem Bogen brauchen bei 1280×720 eine breitere Textspalte (Entscheidung 66). */
   @media (min-width: 900px) {
     :global(html[data-beamer] [data-folie]:has(#story-bogen) .bild-text) { grid-template-columns: minmax(0, .85fr) minmax(0, 1.3fr); }
   }
+  /* hoch: Abb. 3.4 ist fast quadratisch und dicht beschriftet; der Folien-Satz hat nur eine Zeile, die Abbildung bekommt die Höhe. */
+  :global(html[data-beamer] [data-folie]:has(#hoch) .buch-abbildung img) { max-height: calc(100vh - 15rem); }
+  /* ein-satz: Stationsnummern an den Lücken des Satzes. */
+  .stationsnr { color: var(--accent); font-weight: 600; font-size: .6em; margin-left: .1em; }
 </style>

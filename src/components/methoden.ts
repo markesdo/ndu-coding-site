@@ -55,7 +55,8 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'ideen', name: 'Drei Ideen für die Ziel-Chance, je als Lückensatz', lebtIn: ['miro'], miro: 'T3 · 3 · Ideation', miroSpalte: true },
   // Value Map und Fit im Canvas; der Ideen-Vergleich mit den „?“ im gemeinsamen Frame T3 · 4 (Prüfpunkte value-map-fit-vergleich, -wahl, -fragezeichen).
   { id: 'valuemap', name: 'Spitzenreiter mit Value Map und Fit', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · Produkt n', miroAuch: { frame: 'T3 · 4 · Kundenprofil & Value Map', feld: 'Ideen vergleichen und wählen' } },
-  { id: 'concept', name: 'Concept Story', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
+  // Seit 26.11.2026 zuerst auf Miro (T4 · 0 · Concept Story · Produkt n), um 10:50 übertragen in docs/STORYS.md; geprüft wird die Datei.
+  { id: 'concept', name: 'Concept Story', lebtIn: ['miro', 'repo'], pfad: 'docs/STORYS.md' },
   { id: 'experimente', name: 'Experiment-Karten', lebtIn: ['repo'], pfad: 'docs/EXPERIMENTE.md' },
   { id: 'origin', name: 'Origin Story als Landingpage-Text', lebtIn: ['repo'], pfad: 'docs/STORYS.md' },
   { id: 'geschaeftsmodell', name: 'Geschäftsmodell', lebtIn: ['repo'], pfad: 'docs/GESCHAEFTSMODELL.md' },

@@ -39,6 +39,12 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T3 · 4 · Anleitung Value Map · Produkt 3': '3458764691611859843',
   // Bis 19.11.2026 „T3 · 5 · Annahmen der Idee“; genutzt wird der Frame an Tag 4 (experiment.astro), darum T4 · 0.
   'T4 · 0 · Annahmen der Idee': '3458764687894872786',
+  // Concept Story auf Miro (seit 26.11.2026): sieben Stationen auf dem Bogen und das Feld „Flach-Probe (Kursregel)“, ein Frame
+  // je Person; das ausgefüllte Beispiel der Kaffeebar daneben. Um 10:50 übertragen in docs/STORYS.md.
+  'T4 · 0 · Concept Story · Kaffeebar': '3458764691724565870',
+  'T4 · 0 · Concept Story · Produkt 1': '3458764691724622640',
+  'T4 · 0 · Concept Story · Produkt 2': '3458764691724622641',
+  'T4 · 0 · Concept Story · Produkt 3': '3458764691724622642',
   'T4 · 1 · Story Map': '3458764687894872787',
   'T4 · 2 · Teamaufstellung & DoD': '3458764687968670113',
   // Übung „Kaffeebar auf der Scrum-Karte“ (seit 26.11.2026): ein Frame je Person; die Lösung ist auf dem Board bis zur
