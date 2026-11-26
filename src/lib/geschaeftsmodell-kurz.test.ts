@@ -8,7 +8,7 @@ const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro',
 const PFAD = '/innolab/methoden/geschaeftsmodell';
 const q = quellen[PFAD] ?? '';
 // Bereiche [Anfang, Ende) jeder <Folie> im Quelltext.
-const folienBereiche = (s: string) => [...s.matchAll(/<Folie>/g)].map((m) => [m.index!, s.indexOf('</Folie>', m.index!)] as const);
+const folienBereiche = (s: string) => [...s.matchAll(/<Folie\b[^>]*>/g)].map((m) => [m.index!, s.indexOf('</Folie>', m.index!)] as const);
 const inFolie = (s: string, i: number) => folienBereiche(s).some(([a, b]) => i > a && i < b);
 
 // Entscheidung Markus 26.11.2026: Geschäftsmodell gekürzt – keine Musterkarten-Runde mehr; der Block liefert die

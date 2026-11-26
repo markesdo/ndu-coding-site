@@ -1,8 +1,9 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/geschaeftsmodell (Tag 4, 10:30–10:50). Seit 26.11.2026 ohne Musterkarten-Runde:
-// rund 10 min Theorie an fünf Folien (warum-jetzt bis annahme), dann 10 min Übung (vorgehen), Übertrag als Brücke zum
-// Claude-Pro-Block um 10:50 (experiment#claude-pro-jetzt). Die Karten stehen nur noch zum Nachschlagen im Handout.
+// Begleiter-Notizen zu /innolab/methoden/geschaeftsmodell (Tag 4, 20-min-Block). Seit 26.11.2026 ohne Musterkarten-Runde:
+// rund 8 min Theorie an fünf Folien (warum-jetzt bis annahme), dann 10 min Übung (vorgehen), 2 min Übertrag als Brücke zum
+// Claude-Pro-Block danach (experiment#claude-pro-jetzt). Zeiten in den Stichworten nur relativ: Der Tagesplan verschiebt
+// sich noch, folienPlan verteilt die 10 min ohne Übung auf die sechs übrigen Folien (je knapp 2 min). Die Karten stehen nur noch zum Nachschlagen im Handout.
 // Vorwissen: „bekannt“ aus dem Entrepreneur Lab (vorwissen.ts) – Theorie kurz, das Dreieck nur abgleichen.
 // Seiten: VPD nach PDF, Cagan gedruckt, Gassmann (EPUB) nach Abschnitt.
 const GASSMANN = 'Gassmann, Frankenberger, Csik, Geschäftsmodelle entwickeln (2. Aufl. 2017)';
@@ -13,9 +14,9 @@ const TORRES = 'Teresa Torres, Continuous Discovery Habits (2021)';
 export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
   'warum-jetzt': {
     live: [
-      'Zeit: Tag 4, 10:30; Theorie bis 10:40.',
+      'Zeit: rund 8 min Theorie, knapp 2 min je Folie.',
       'Bild von unten nach oben lesen: Papier, Markt, Bank.',
-      '„Fit 1 habt ihr seit gestern auf Papier – Fit 2 prüfen eure Tests.“',
+      '„Fit 1 habt ihr seit der Value Map heute Morgen auf Papier.“',
       '„Fit 3 erreicht ihr heute nicht. Ihr schreibt auf, woran er hängt.“',
     ],
     verstaendnis: {
@@ -56,7 +57,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
     ueberleitung: 'Wie sieht ein Geschäftsmodell aus, wenn man es in vier Fragen fasst?',
     kern: [
       {
-        text: '„Viability assumptions: Should we build it? There are many ideas that will work for our customers but won’t work for our business.“ Torres zählt fünf Arten, mit ethischen Annahmen; die Werkstatt arbeitet mit Cagans vier.',
+        text: '„Viability assumptions: Should we build it? There are many ideas that will work for our customers but won’t work for our business.“ Torres zählt fünf Arten, mit ethischen Annahmen; die Werkstatt arbeitet mit Cagans vier, „ethisch“ (Kann es schaden?) gibt es dort als Ergänzung.',
         quelle: `${TORRES}, S. 118`,
       },
       {
@@ -164,7 +165,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Zeit: 10:40–10:50, vier Timer: 4, 2, 2, 2 min.',
+      'Zeit: Übung 10 min, vier Timer: 4, 2, 2, 2.',
       'Timer 4 min: Wie? und Wert? in docs/GESCHAEFTSMODELL.md.',
       '1:1 ab Minute 2: Wer zahlt bei dir wofür?',
       'Nach 4 min: Linie, dann Annahme, je 2 min.',
@@ -196,7 +197,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
       'Fragen: An welcher Zahl hängt euer Modell?',
       'Zahlt niemand: Wozu trägt es bei? Loss Leader ist erlaubt.',
       'Bei Bedarf: Musterkarten unten im Handout, keine Kurszeit.',
-      'Zeit: 10:50 – weiter zu Claude Pro auf der Experiment-Seite.',
+      'Zeit: Übertrag 2 min, dann Claude Pro auf der Experiment-Seite.',
     ],
     verstaendnis: {
       frage: 'Muss jede Idee selbst Geld bringen?',

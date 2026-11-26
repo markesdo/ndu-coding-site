@@ -2,6 +2,7 @@
 // Eine Linie durch den Baum (Torres, „Walk the Lines“): Kästen von der Lösung bis zum Impact, dazwischen Pfeile.
 // weil: Index des Pfeils (0 = zwischen Kasten 0 und 1), der betont und mit „weil …“ beschriftet wird – dort steckt die
 // Annahme. Nebeneinander, in schmalen Spalten untereinander (Container-Query wie Fluss.astro).
+// Pfeile sind role=presentation: Für Screenreader enthält die Liste nur die Kästen; „weil …“ wird als Text mitgelesen.
 const { knoten, label, weil, weilText = 'weil …' } = Astro.props as {
   knoten: { art: string; t: string }[];
   label: string;
@@ -14,7 +15,7 @@ const { knoten, label, weil, weilText = 'weil …' } = Astro.props as {
     {knoten.map((k, i) => (
       <>
         {i > 0 && (
-          <li class:list={['linie-pfeil', { weil: weil === i - 1 }]} aria-hidden={weil === i - 1 ? undefined : 'true'}>
+          <li role="presentation" class:list={['linie-pfeil', { weil: weil === i - 1 }]} aria-hidden={weil === i - 1 ? undefined : 'true'}>
             <span class="linie-spitze" aria-hidden="true">→</span>
             {weil === i - 1 && <span class="linie-weil">{weilText}</span>}
           </li>
