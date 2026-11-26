@@ -9,11 +9,14 @@
 // - 'unter': sie liegt ganz über dem Bildschirm – man liest Handout-Text nach ihr (etwa #faden auf Tag 4).
 // Regel für 'vor' und 'unter': → handelt nie für eine Folie, die man nicht sieht (keine Schritte, kein data-weiter). Es
 // geht zur nächsten Folie, sobald deren Oberkante im Bildschirm liegt; sonst einen Bildschirm weiter, damit kein Text
-// übersprungen wird. Dasselbe am Ende einer Folie, wenn zwischen ihr und der nächsten sichtbarer Text steht. Nach der letzten Folie bis zum Seitenende, dann gilt das Ende der letzten Folie. ← springt von
-// 'unter' auf diese Folie selbst (nicht auf die davor).
+// übersprungen wird. Dasselbe am Ende einer Folie, wenn zwischen ihr und der nächsten sichtbarer Text steht. Nach der
+// letzten Folie bis zum Seitenende, dann gilt das Ende der letzten Folie (bei data-ende erst zurück auf die Folie, damit
+// ihr Hinweis „Ende“ zu sehen ist). ← springt von 'unter' auf diese Folie selbst (nicht auf die davor); liegt sie mehr als
+// einen Bildschirm darüber, erst bildschirmweise hoch – ebenso im Seitenkopf zurück zum Anfang.
+// data-zurueck (Folie.astro): ← am Anfang dieser Folie führt dorthin statt zur Folie oder Seite davor.
 
 export type Weiter = 'hierhin' | 'runter' | 'schritt' | 'aufloesung' | 'folie' | 'sprung' | 'ende' | 'seite';
-export type Zurueck = 'schritt' | 'hierhin' | 'folie' | 'anfang' | 'seite';
+export type Zurueck = 'schritt' | 'hierhin' | 'hoch' | 'folie' | 'sprung' | 'anfang' | 'seite';
 export type Lage = 'vor' | 'auf' | 'unter';
 
 export function weiter(z: {
@@ -33,18 +36,22 @@ export function weiter(z: {
   sprung?: boolean;
   /** Folie mit data-ende: an ihrem Ende passiert nichts mehr (Ende des Kurstags). */
   ende?: boolean;
+  /** Ihre Oberkante liegt über der Kopfleiste (etwa am Seitenende nur halb zu sehen). */
+  verschoben?: boolean;
 }): Weiter {
   const lage = z.lage ?? 'auf';
   const amEnde = (): Weiter => (z.ende ? 'ende' : z.sprung ? 'sprung' : 'seite');
   if (lage === 'vor') return z.zielUnterhalb ? 'runter' : 'hierhin';
   if (lage === 'unter') {
     if (z.naechsteFolie) return z.zielUnterhalb ? 'runter' : 'folie';
-    return z.seiteRestUnten ? 'runter' : amEnde();
+    if (z.seiteRestUnten) return 'runter';
+    // Den Hinweis „Ende“ trägt die Folie: erst zurück auf sie, sonst leuchtete er außerhalb des Bildschirms.
+    return z.ende ? 'hierhin' : amEnde();
   }
   if (z.versteckteSchritte > 0) return 'schritt';
   if (z.offeneAufloesung) return 'aufloesung';
   if (z.restUnten) return 'runter';
-  if (z.ende) return 'ende';
+  if (z.ende) return z.verschoben ? 'hierhin' : 'ende';
   if (z.sprung) return 'sprung';
   if (z.naechsteFolie && z.zielUnterhalb) return 'runter';
   return z.naechsteFolie ? 'folie' : 'seite';
@@ -97,11 +104,30 @@ const KEIN_TEXT = new Set(['checkbox', 'button', 'submit', 'reset', 'image', 'fi
  *  mit ihrer Oberkante über der Kopfleiste (verschoben: etwa am Seitenende, wo die letzte Folie nur noch halb zu sehen ist):
  *  zurück auf sie selbst – nicht auf die davor, sonst fehlte sie beim Zurückblättern. Im Seitenkopf ('vor') zählen ihre
  *  Schritte nicht. */
-export function zurueck(z: { gezeigteSchritte: number; vorherigeFolie: boolean; kopfDarueber?: boolean; lage?: Lage; verschoben?: boolean }): Zurueck {
-  if (z.lage === 'unter' || (z.lage !== 'vor' && z.verschoben)) return 'hierhin';
-  if (z.lage !== 'vor' && z.gezeigteSchritte > 0) return 'schritt';
-  if (z.lage !== 'vor' && z.vorherigeFolie) return 'folie';
+export function zurueck(z: {
+  gezeigteSchritte: number; vorherigeFolie: boolean; kopfDarueber?: boolean; lage?: Lage; verschoben?: boolean;
+  /** Der vorige Halt ('unter': Unterkante der Folie, 'vor': Seitenanfang) liegt mehr als einen Bildschirm über dem Bildschirm. */
+  weitWeg?: boolean;
+  /** Folie mit data-zurueck. */
+  sprung?: boolean;
+}): Zurueck {
+  if (z.lage === 'unter') return z.weitWeg ? 'hoch' : 'hierhin';
+  if (z.lage === 'vor') return z.kopfDarueber ? (z.weitWeg ? 'hoch' : 'anfang') : 'seite';
+  if (z.verschoben) return 'hierhin';
+  if (z.gezeigteSchritte > 0) return 'schritt';
+  if (z.sprung) return 'sprung';
+  if (z.vorherigeFolie) return 'folie';
   return z.kopfDarueber ? 'anfang' : 'seite';
+}
+
+/** Ziel des Knopfs „Weiter: …“ in der Kopfleiste: wo → diese Seite verlässt. Von der aktuellen Folie an die erste mit
+ *  data-weiter oder data-ende; ohne sie die nächste Seite (FooterNav). Vor der ersten Folie (i = 0) zählt die Seite ab Folie 1. */
+export function seitenAusgang(folien: { weiter?: string; ende?: boolean }[], i: number): { art: 'weiter'; ziel: string } | { art: 'ende' } | { art: 'seite' } {
+  for (const f of folien.slice(Math.max(0, i))) {
+    if (f.ende) return { art: 'ende' };
+    if (f.weiter) return { art: 'weiter', ziel: f.weiter };
+  }
+  return { art: 'seite' };
 }
 
 /** Lage zur aktuellen Folie aus ihrem Rand (px im Viewport): darunter, wenn ihre Unterkante die Kopfleiste nicht mehr

@@ -11,19 +11,34 @@ const LAYOUT = readFileSync(new URL('../layouts/Layout.astro', import.meta.url),
 describe('Folie: weiter und ende', () => {
   it('weiter wird data-weiter, ende wird data-ende; ohne beides keines der Attribute', async () => {
     const c = await AstroContainer.create();
-    const mitWeiter = await c.renderToString(Folie, { props: { weiter: '/innolab/methoden/value-map#vorgehen' } });
+    const mitWeiter = await c.renderToString(Folie, { props: { weiter: '/innolab/methoden/value-map#vorgehen', weiterTitel: 'Value Map' } });
     const mitEnde = await c.renderToString(Folie, { props: { ende: true } });
     const ohne = await c.renderToString(Folie, {});
     expect(mitWeiter).toContain('data-weiter="/innolab/methoden/value-map#vorgehen"');
     expect(mitWeiter).not.toContain('data-ende');
     expect(mitEnde).toMatch(/data-ende(=""|\s|>)/);
     expect(mitEnde).not.toContain('data-weiter');
-    expect(ohne).not.toMatch(/data-(weiter|ende)/);
+    expect(mitWeiter).toContain('data-weiter-titel="Value Map"');
+    expect(ohne).not.toMatch(/data-(weiter|ende|zurueck)/);
+  });
+
+  it('zurueck wird data-zurueck; weiter ohne weiterTitel bricht den Build ab', async () => {
+    const c = await AstroContainer.create();
+    expect(await c.renderToString(Folie, { props: { zurueck: '/innolab/tag-5#debrief' } })).toContain('data-zurueck="/innolab/tag-5#debrief"');
+    await expect(c.renderToString(Folie, { props: { weiter: '/x' } })).rejects.toThrow(/braucht weiterTitel/);
   });
 
   it('Layout.astro liest beide Attribute für → (folien.ts: sprung, ende)', () => {
     expect(LAYOUT).toContain("sprung: !!folie.dataset.weiter, ende: folie.hasAttribute('data-ende')");
     expect(LAYOUT).toContain("else if (tun === 'sprung') springeNach(folie.dataset.weiter!);");
+    expect(LAYOUT).toContain("else if (tun === 'sprung') springeNach(folie.dataset.zurueck!);");
+  });
+
+  // Review #447: Auf einer ende-Folie mit Schritten zeigte der Zähler „n / n“, „Ende“ erschien nie.
+  it('„Ende“ steht, sobald keine Schritte mehr offen sind – auch auf einer Folie mit Schritten', () => {
+    expect(BEAMER_CSS).toContain("html[data-beamer] .folie[data-ende]:not([data-schritte-offen])::after {\n  content: 'Ende';");
+    expect(BEAMER_CSS).toContain('html[data-beamer] .folie[data-ende][data-ende-gedrueckt]:not([data-schritte-offen])::after {');
+    expect(BEAMER_CSS).not.toMatch(/data-ende[^{]*:not\(\[data-schritte\]\)/);
   });
 });
 
@@ -42,5 +57,12 @@ describe('BuchAbbildung: Maße vor dem Laden', () => {
     expect(html).toContain('width="1000"');
     expect(html).toContain('height="394"');
     expect(html).toContain('contain-intrinsic-size: 1000px 394px');
+  });
+
+  it('findet die Datei auch mit ?query, #anker und Prozent-Kodierung im Pfad', async () => {
+    const html = await (await AstroContainer.create()).renderToString(BuchAbbildung, {
+      props: { src: '/quellen/patton/%76arianten.jpg?v=2#bild', alt: 'x', quelle: 'y' },
+    });
+    expect(html).toContain('width="1000"');
   });
 });

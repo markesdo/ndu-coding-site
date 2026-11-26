@@ -5,8 +5,11 @@
 // Innerhalb: data-schritt deckt Elemente im Beamer nacheinander auf; .nur-handout fehlt im Beamer.
 // weiter: → am Ende dieser Folie führt dorthin (Pfad mit #anker oder #anker auf derselben Seite) statt zur nächsten Folie
 // oder Seite – so kann eine Seite Folien für später im Tag tragen (Tag 4: Arbeitsfluss um 9:00, Abschluss um 17:15).
+// weiterTitel: Name des Ziels für den Knopf „Weiter: …“ in der Kopfleiste (Pflicht mit weiter).
+// zurueck: ← am Anfang dieser Folie (keine Schritte gezeigt) führt dorthin statt zur Folie oder Seite davor.
 // ende: → am Ende dieser Folie tut nichts mehr; unten rechts steht „Ende“ (beamer.css). Für die letzte Folie eines Kurstags.
-const { weiter, ende = false } = Astro.props as { weiter?: string; ende?: boolean };
+const { weiter, weiterTitel, zurueck, ende = false } = Astro.props as { weiter?: string; weiterTitel?: string; zurueck?: string; ende?: boolean };
 if (weiter && ende) throw new Error('Folie: weiter und ende schließen sich aus');
+if (weiter && !weiterTitel) throw new Error(`Folie: weiter="${weiter}" braucht weiterTitel (Knopf „Weiter: …“)`);
 ---
-<section class="folie" data-folie data-weiter={weiter} data-ende={ende ? '' : undefined}><slot /></section>
+<section class="folie" data-folie data-weiter={weiter} data-weiter-titel={weiterTitel} data-zurueck={zurueck} data-ende={ende ? '' : undefined}><slot /></section>

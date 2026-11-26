@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { aktuelleFolie, lageZurFolie, restText, runterUm, tasteSteuertFolien, tastenZiel, timerFuerT, weiter, zurueck } from './folien';
+import { aktuelleFolie, lageZurFolie, restText, runterUm, seitenAusgang, tasteSteuertFolien, tastenZiel, timerFuerT, weiter, zurueck } from './folien';
 
 describe('weiter (→ im Beamer)', () => {
   const folie = { versteckteSchritte: 0, offeneAufloesung: false, naechsteFolie: true };
@@ -46,6 +46,10 @@ describe('weiter (→ im Beamer)', () => {
     expect(weiter({ ...folie, sprung: true, restUnten: true })).toBe('runter');
   });
 
+  it('data-ende auf einer verschobenen Folie (nur halb zu sehen): erst ausrichten, dann „Ende“', () => {
+    expect(weiter({ ...folie, ende: true, verschoben: true })).toBe('hierhin');
+  });
+
   it('data-ende: am Ende der Folie nichts mehr, auch wenn danach noch Folien oder Seiten kämen', () => {
     expect(weiter({ ...folie, ende: true })).toBe('ende');
     expect(weiter({ ...folie, naechsteFolie: false, ende: true })).toBe('ende');
@@ -65,11 +69,15 @@ describe('weiter (→ im Beamer)', () => {
       expect(weiter({ ...unter, zielUnterhalb: true })).toBe('runter');
     });
 
+    // Review #447: Am Seitenende unter einer ende-Folie leuchtete „Ende“ außerhalb des Bildschirms, → war verschluckt.
+    it('unter einer ende-Folie am Seitenende: erst zurück auf sie, damit „Ende“ zu sehen ist', () => {
+      expect(weiter({ ...unter, naechsteFolie: false, sprung: false, ende: true, seiteRestUnten: false })).toBe('hierhin');
+    });
+
     it('nach der letzten Folie bis zum Seitenende, dann gilt ihr Ende', () => {
       expect(weiter({ ...unter, naechsteFolie: false, seiteRestUnten: true })).toBe('runter');
       expect(weiter({ ...unter, naechsteFolie: false, sprung: false })).toBe('seite');
       expect(weiter({ ...unter, naechsteFolie: false })).toBe('sprung');
-      expect(weiter({ ...unter, naechsteFolie: false, sprung: false, ende: true })).toBe('ende');
     });
   });
 });
@@ -117,6 +125,20 @@ describe('zurueck (← im Beamer)', () => {
 
   it('im Seitenkopf vor der ersten Folie zählen deren Schritte nicht: an den Seitenanfang', () => {
     expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: false, kopfDarueber: true, lage: 'vor' })).toBe('anfang');
+  });
+
+  // Review #447: Nach vier Bildschirmen Seitenkopf sprang ← ganz an den Anfang.
+  it('liegt der vorige Halt mehr als einen Bildschirm darüber, erst einen Bildschirm hoch', () => {
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, kopfDarueber: true, lage: 'vor', weitWeg: true })).toBe('hoch');
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'unter', weitWeg: true })).toBe('hoch');
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, lage: 'auf', weitWeg: true })).toBe('folie');
+  });
+
+  it('data-zurueck: am Anfang der Folie dorthin statt zur Folie davor – erst nach verdeckten Schritten', () => {
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, kopfDarueber: true, sprung: true })).toBe('sprung');
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: false, sprung: true })).toBe('sprung');
+    expect(zurueck({ gezeigteSchritte: 1, vorherigeFolie: true, sprung: true })).toBe('schritt');
+    expect(zurueck({ gezeigteSchritte: 0, vorherigeFolie: true, sprung: true, lage: 'unter' })).toBe('hierhin');
   });
 
   it('vor der ersten Folie an den Seitenanfang, danach die vorige Seite', () => {
@@ -216,5 +238,17 @@ describe('tasteSteuertFolien (Fokus nach dem Mausklick)', () => {
     expect(mit({ tagName: 'BUTTON' }, { vollbild: true })).toBe(false);
     expect(mit({ tagName: 'BUTTON' }, { wiederholt: true })).toBe(false);
     expect(mit({ tagName: 'BUTTON' }, { schonBehandelt: true })).toBe(false);
+  });
+});
+
+// Review #447: Der Knopf „Weiter: …“ zeigte auf scrum#weiter-tag-4 „Backlog aus Issues“, → führte aber in den Abschluss von Tag 4.
+describe('seitenAusgang (Knopf „Weiter: …“)', () => {
+  const folien = [{}, { weiter: '/innolab/tag-4#abschluss' }, {}, {}];
+  it('von der aktuellen Folie an das erste data-weiter oder data-ende, sonst die nächste Seite', () => {
+    expect(seitenAusgang(folien, 0)).toStrictEqual({ art: 'weiter', ziel: '/innolab/tag-4#abschluss' });
+    expect(seitenAusgang(folien, 1)).toStrictEqual({ art: 'weiter', ziel: '/innolab/tag-4#abschluss' });
+    expect(seitenAusgang(folien, 2)).toStrictEqual({ art: 'seite' });
+    expect(seitenAusgang([{}, { ende: true }], 0)).toStrictEqual({ art: 'ende' });
+    expect(seitenAusgang([{}, {}], -1)).toStrictEqual({ art: 'seite' });
   });
 });
