@@ -52,11 +52,22 @@ const nachSpalte = SPALTEN.map((sp) => ({ sp, stationen: STATIONEN.filter((s) =>
   <Folie>
     <h2 id="plan">Vom Zitat zum Bau</h2>
     <p class="folie-satz">Jeder Schritt nimmt etwas mit und gibt etwas weiter.</p>
-    <Arbeitsfluss id="af-plan" hier="heute" aufdecken={3} />
+    <Arbeitsfluss id="af-plan" hier="heute" aufdecken={3} fokusAusAdresse />
     <div class="nur-handout">
-      <p>Der Plan zeigt Ergebnisse, nicht Übungen. Eine Station ist etwas, das danach irgendwo liegt: in der Werkstatt, auf Miro, in eurem Repo oder in Linear. Die drei Linien sind die Dinge, die ihr von Schritt zu Schritt mitnehmt. Die Markierung „Ihr seid hier“ folgt dem Kurstag; mit <code>?tag=4</code> in der Adresse zeigt sie einen bestimmten Tag.</p>
+      <p>Der Plan zeigt Ergebnisse, nicht Übungen. Eine Station ist etwas, das danach irgendwo liegt: in der Werkstatt, auf Miro, in eurem Repo oder in Linear. Die drei Linien sind die Dinge, die ihr von Schritt zu Schritt mitnehmt; ein Klick auf die Legende zeigt eine Linie allein. Die Markierung „Ihr seid hier“ folgt dem Kurstag; mit <code>?tag=4</code> in der Adresse zeigt sie einen bestimmten Tag.</p>
+      <p>Woher ein Ergebnis kommt und wohin es geht, zeigt der Plan für eine Station zur Zeit: Fahrt mit der Maus darüber oder geht mit der Tabulatortaste hin. Ein Ring markiert, was die Station nimmt, ein Pfeil, wohin sie es weitergibt; die Zeile unter dem Plan sagt es in Worten. Der Link „Arbeitsfluss“ im Streifen am Anfang jeder Methodenseite öffnet den Plan mit dieser Station im Fokus; Escape oder ein Klick ins Leere des Plans nimmt den Fokus wieder weg.</p>
       <p>Die Abfolge bis zur Lösung folgt {TORRES}, Kap. 4–10; Kundenprofil, Value Map und Fit kommen aus Osterwalder u. a., „Value Proposition Design“ (2014); die Story Map aus Jeff Patton, „User Story Mapping“ (2014); die Storys aus Donna Lichaw, „The User’s Journey“ (2016). Die Zusammenstellung zu einem Fluss und die drei Linien sind eine Darstellung dieses Kurses.</p>
       <p class="small muted">Zum Ausdrucken: A3 quer (Strg/Cmd + P). Im Druck stehen alle Spalten offen.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="tag-4-stationen">Tag 4 Station für Station</h2>
+    <p class="folie-satz">Was jede Station nimmt – und wohin sie es weitergibt.</p>
+    <Arbeitsfluss id="af-tour" hier={4} bis={4} tour={4} legende={false} tastatur={false} />
+    <div class="nur-handout">
+      <p>Im Beamer deckt → die Stationen von Tag 4 der Reihe nach auf: Die aufgedeckte Station steht im Fokus, mit allem, woraus sie entsteht, und allem, was sie weitergibt. ← geht einen Schritt zurück. Wer die Tour nicht braucht, blättert mit → bis zur nächsten Folie durch.</p>
+      <p>Eine Verbindung zeigt der Plan nicht: Die Origin Story entsteht am Abend, ihr Text geht aber zurück in die Karte E1 vom Vormittag – die Handlung, zu der er führt, ist die Messgröße von E1. Im Plan zeigen Verbindungen immer vorwärts in der Zeit; diese eine sagen wir dazu.</p>
     </div>
   </Folie>
 
@@ -69,7 +80,7 @@ const nachSpalte = SPALTEN.map((sp) => ({ sp, stationen: STATIONEN.filter((s) =>
     <p class="kette-schluss" data-schritt><MessageSquareQuote size={20} aria-hidden="true" /> Wer bei Issue 2 fragt „Warum bauen wir das?“, geht diese Kette zurück – bis zu drei Interviews.</p>
     <div class="nur-handout">
       <p>Die Kette ist das Beispiel der Kaffeebar von den Methodenseiten, in eine Reihe gestellt. Glieder 1–5 folgen Torres (Kap. 5–7) und dem Kundenprofil aus „Value Proposition Design“; dass die Ziel-Chance als P1 ins Profil wandert, ist eine Zuordnung dieses Kurses. Bei euch heißt jedes Glied anders – die Reihenfolge ist dieselbe. Fehlt ein Glied, ist das kein Formfehler, sondern eine Frage: Woher wisst ihr es?</p>
-      <Arbeitsfluss id="af-beleg" faden="beleg" legende={false} />
+      <Arbeitsfluss id="af-beleg" faden="beleg" legende={false} tastatur={false} />
     </div>
   </Folie>
 
@@ -81,7 +92,7 @@ const nachSpalte = SPALTEN.map((sp) => ({ sp, stationen: STATIONEN.filter((s) =>
     </ol>
     <div class="nur-handout">
       <p>„An outcome is a change in human behavior that drives business results“ (Josh Seiden, zitiert bei {TORRES}, S. 37). Slices nach Outcome: Patton, Kap. 2. Das Produktziel als Verpflichtung des Product Backlogs: Scrum Guide 2020. Dass der Outcome-Satz des Briefs als Produktziel dient, ist eine Festlegung dieses Kurses.</p>
-      <Arbeitsfluss id="af-outcome" faden="outcome" legende={false} />
+      <Arbeitsfluss id="af-outcome" faden="outcome" legende={false} tastatur={false} />
     </div>
   </Folie>
 
@@ -94,7 +105,7 @@ const nachSpalte = SPALTEN.map((sp) => ({ sp, stationen: STATIONEN.filter((s) =>
     <p class="small kette-fuss" data-schritt>Tag 1 fragt nach dem <strong>Problem</strong>, Tag 4 nach der <strong>Idee</strong>. Dieselbe Map, ein anderer Gegenstand.</p>
     <div class="nur-handout">
       <p>Annahmen statt ganzer Ideen testen: {TORRES}, S. 116–117; zuerst Wünschbarkeit: Bland/Osterwalder, „Testing Business Ideas“, S. 34–35; Schwelle und Entscheidung vor dem Test: Thomke, S. 86–87. Was ein Test zeigt und was ihr daraus entscheidet – weitermachen, umschwenken oder verwerfen –, steht auf der <a href="/innolab/methoden/experiment#lernkarte">Lernkarte</a>. Dass ihr nur den Spitzenreiter testet und die anderen beiden Ideen je mit einer Zeile offenhaltet, weicht von Torres ab (S. 130, 134) und ist eine Entscheidung dieses Kurses. Die Befunde der Kaffeebar sind ausgedacht.</p>
-      <Arbeitsfluss id="af-annahme" faden="annahme" legende={false} />
+      <Arbeitsfluss id="af-annahme" faden="annahme" legende={false} tastatur={false} />
     </div>
   </Folie>
 

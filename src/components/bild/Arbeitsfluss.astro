@@ -5,47 +5,85 @@
 // bis: Kurstag, nach dem die Spalten blass werden (Zukunft). Bei hier='heute' derselbe Tag.
 // faden: eine Linie hervorheben, die anderen blass. aufdecken: so viele Spalten sofort, die übrigen je Spalte per →
 // (data-schritt, wie die übrigen Folien). Im Druck A3 quer: siehe /innolab/arbeitsfluss.
-import { FlaskConical, MapPin, MessageSquareQuote, Star, Target } from '@lucide/astro';
+// Fokus (NDU-74): Eine Station zeigt, woher sie nimmt (Ring) und wohin sie gibt (Pfeil), mit einem Strich; der Rest wird
+// blass, die Fußzeile sagt es in Worten. Auslöser: Maus oder Tastatur auf der Station (Klick bleibt der Link), Prop
+// fokus (fest, ohne Skript), fokusAusAdresse (?station=…), tour (Kurstag: je Station dieses Tags ein Schritt).
+// Vorrang (arbeitsfluss-fokus.ts): ruhend Tour-Schritt vor ?station=… vor fokus; Maus/Tastatur überlagern, bis ein
+// Tour-Schritt kommt; Escape oder Klick ins Leere lassen los. ?station=… deckt im Beamer die Spalten bis zur Station auf;
+// Zugedecktes bleibt aus Hervorhebung und Fußzeile. tastatur={false}: weitere Pläne einer Seite ohne Tab-Halt.
+// Legende: Knöpfe, die eine Linie allein zeigen (data-faden).
+import { ArrowRight, FlaskConical, MapPin, MessageSquareQuote, Star, Target } from '@lucide/astro';
 import {
-  HOEHE, LINIE, LINIEN, SPALTEN, STATIONEN, ZEILEN, spaltenPfade, spalteVonTag, station, stationHref, type Linie,
+  GEO, HOEHE, LINIE, LINIEN, PUNKT_REM, SPALTEN, STATIONEN, ZEILEN, fokusPfade, fokusText, quellen, spaltenPfade,
+  spalteVonTag, station, stationHref, tourStationen, ziele, type Linie,
 } from '../arbeitsfluss';
+import { rollen } from '../arbeitsfluss-fokus';
 import { TAGE } from '../methoden';
 
-const { id = 'arbeitsfluss', hier, bis, faden, aufdecken, legende = true } = Astro.props as {
+const { id = 'arbeitsfluss', hier, bis, faden, aufdecken, legende = true, fokus, tour, fokusAusAdresse = false, tastatur = true } = Astro.props as {
   id?: string;
   hier?: number | string;
   bis?: number;
   faden?: Linie;
   aufdecken?: number;
   legende?: boolean;
+  /** Station (ID) fest im Fokus – Handout, Druck. */
+  fokus?: string;
+  /** Kurstag: je Station dieses Tags ein unsichtbarer Schritt; der zuletzt aufgedeckte steht im Fokus. */
+  tour?: number;
+  /** ?station=… in der Adresse setzt den Fokus (Link „Arbeitsfluss“ im Übergangsstreifen). */
+  fokusAusAdresse?: boolean;
+  /** false: Stationen nicht per Tab erreichbar (weitere Pläne derselben Seite – einer reicht für die Tastatur). */
+  tastatur?: boolean;
 };
 
 const heute = hier === 'heute';
 const hierStation = typeof hier === 'string' && !heute ? station(hier) : undefined;
 if (typeof hier === 'string' && !heute && !hierStation) throw new Error(`Arbeitsfluss: Station „${hier}“ unbekannt`);
+if (fokus !== undefined && !station(fokus)) throw new Error(`Arbeitsfluss: Fokus „${fokus}“ unbekannt`);
+// Spalten aufdecken und Tour zugleich: Die Schritte kämen durcheinander.
+if (tour !== undefined && aufdecken !== undefined) throw new Error('Arbeitsfluss: tour und aufdecken schließen sich aus');
+const tourListe = tour !== undefined ? tourStationen(tour) : [];
+if (tour !== undefined && tourListe.length === 0) throw new Error(`Arbeitsfluss: Tour für Tag ${tour} ohne Stationen`);
 const hierSpalte = typeof hier === 'number' ? spalteVonTag(hier) : hierStation?.spalte;
 const bisSpalte = bis !== undefined ? spalteVonTag(bis) : undefined;
 
 const ICON = { beleg: MessageSquareQuote, outcome: Target, annahme: FlaskConical };
 const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bisSpalte !== undefined && n > bisSpalte });
+
+// Kanten und Fokus-Pfade je Station, zur Bauzeit (im Browser keine Geometrie).
+const KANTEN = new Map(STATIONEN.map((s) => [s.id, { quellen: quellen(s).map((x) => x.id), ziele: ziele(s).map((x) => x.id) }]));
+const PFADE = new Map(STATIONEN.map((s) => [s.id, fokusPfade(s)]));
+const rolle = rollen(STATIONEN.map((s) => s.id), fokus, fokus ? KANTEN.get(fokus)! : { quellen: [], ziele: [] });
+const fussId = (s: string) => `${id}-fuss-${s}`;
+// Umsteigepunkt: je Linie ein Kreisausschnitt in ihrer Farbe.
+const mischung = (l: Linie[]) => `--af-mix:conic-gradient(${l.map((x, i) => `var(--af-${x}) ${(i * 100) / l.length}% ${((i + 1) * 100) / l.length}%`).join(', ')})`;
+const planStil = [
+  `--af-zeilen:${ZEILEN}`, `--af-punkt-x:${GEO.punktX}%`, `--af-punkt:${PUNKT_REM.normal}rem`, `--af-punkt-umstieg:${PUNKT_REM.umstieg}rem`,
+  `--af-punkt-ziel:${PUNKT_REM.ziel}rem`, `--af-punkt-stern:${PUNKT_REM.stern}rem`, `grid-template-rows:auto ${GEO.oben / 100}fr repeat(${ZEILEN}, 1fr)${GEO.unten ? ` ${GEO.unten / 100}fr` : ''}`,
+].join(';');
 ---
-<figure class="af" id={id} data-faden={faden} data-heute={heute ? JSON.stringify(TAGE.map((t) => ({ n: t.n, datum: t.datum }))) : undefined} aria-label="Arbeitsfluss als Linienplan: Spalten sind Kurstage, Stationen sind Ergebnisse; drei Linien: Beleg, Outcome, Annahme">
+<figure class="af" id={id} data-faden={faden} data-fokus={fokus} data-fokus-an={fokus ? '' : undefined} data-adresse={fokusAusAdresse ? '' : undefined}
+  data-heute={heute ? JSON.stringify(TAGE.map((t) => ({ n: t.n, datum: t.datum }))) : undefined}
+  aria-label="Arbeitsfluss als Linienplan: Spalten sind Kurstage, Stationen sind Ergebnisse; drei Linien: Beleg, Outcome, Annahme. Maus oder Tastatur auf einer Station zeigt, woher sie kommt und wohin sie geht.">
   {legende && (
     <ul class="af-legende">
       {LINIEN.map((l) => {
         const Icon = ICON[l];
         return (
-          <li class={`af-leg af-leg-${l}`}>
-            <svg class="af-muster" viewBox="0 0 36 10" aria-hidden="true"><path class={`af-l af-l-${l}`} d="M0 5H36" />{l === 'outcome' && <path class="af-innen" d="M0 5H36" />}</svg>
-            <Icon size={16} aria-hidden="true" class="af-leg-icon" />
-            <span><strong>{LINIE[l].name}</strong><span class="af-leg-text"> – {LINIE[l].text}</span></span>
+          <li>
+            <button type="button" class={`af-leg af-leg-${l}`} data-faden-knopf={l} aria-pressed={faden === l ? 'true' : 'false'} title={`Nur die Linie ${LINIE[l].name} zeigen (noch einmal: alle)`}>
+              <svg class="af-muster" viewBox="0 0 36 10" aria-hidden="true"><path class={`af-l af-l-${l}`} d="M0 5H36" />{l === 'outcome' && <path class="af-innen" d="M0 5H36" />}</svg>
+              <Icon size={16} aria-hidden="true" class="af-leg-icon" />
+              <span><strong>{LINIE[l].name}</strong><span class="af-leg-text"> – {LINIE[l].text}</span></span>
+            </button>
           </li>
         );
       })}
     </ul>
   )}
   <div class="af-scroll">
-    <div class="af-plan" style={`--af-zeilen:${ZEILEN}`}>
+    <div class="af-plan" style={planStil}>
       {SPALTEN.map((sp) => (
         <div class:list={['af-spalte', klassen(sp.n)]} data-spalte={sp.n} data-schritt={aufdecken !== undefined && sp.n > aufdecken ? '' : undefined}>
           <div class:list={['af-kopf', klassen(sp.n)]} data-spalte={sp.n} style={`grid-column:${sp.n}`}>
@@ -64,16 +102,22 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
                 </g>
               ) : null;
             })}
+            {STATIONEN.filter((s) => PFADE.get(s.id)![sp.n]).map((s) => (
+              <path class:list={['af-fokus-pfad', { 'af-an': s.id === fokus }]} data-fokus-pfad={s.id} d={PFADE.get(s.id)![sp.n]} />
+            ))}
           </svg>
           {STATIONEN.filter((s) => s.spalte === sp.n).map((s) => {
             const href = stationHref(s);
             const Tag = href ? 'a' : 'span';
+            const r = rolle[s.id];
             return (
-              <Tag href={href} data-spalte={sp.n}
-                class:list={['af-station', klassen(sp.n), ...s.linien.map((l) => `af-auf-${l}`), { 'af-endet': !!s.endet, 'af-fortsetzung': !!s.fortsetzung, 'af-umstieg': s.linien.length > 1, 'af-stern': s.stern, 'af-diese': s === hierStation }]}
-                style={`grid-column:${sp.n};grid-row:${s.zeile + 2}`}
+              <Tag href={href} tabindex={!tastatur ? -1 : href ? undefined : 0} role={href ? undefined : 'button'} aria-label={href ? undefined : s.kurz}
+                data-spalte={sp.n} data-id={s.id}
+                data-quellen={KANTEN.get(s.id)!.quellen.join(' ')} data-ziele={KANTEN.get(s.id)!.ziele.join(' ')} aria-describedby={fussId(s.id)}
+                class:list={['af-station', klassen(sp.n), `af-haupt-${s.linien[0]}`, ...s.linien.map((l) => `af-auf-${l}`), r && `af-${r}`, { 'af-endet': !!s.endet, 'af-fortsetzung': !!s.fortsetzung, 'af-umstieg': s.linien.length > 1, 'af-stern': s.stern, 'af-diese': s === hierStation }]}
+                style={`grid-column:${sp.n};grid-row:${s.zeile + 2}${s.linien.length > 1 ? `;${mischung(s.linien)}` : ''}`}
                 title={s.endet ? `${s.kurz} – ${s.endet}` : s.fortsetzung ? `${s.kurz} – Fortsetzung von ${station(s.fortsetzung)?.kurz}` : s.kurz}>
-                <span class="af-punkt" aria-hidden="true">{s.stern && <Star size={12} />}</span>
+                <span class="af-punkt" aria-hidden="true">{s.stern && <Star size={12} class="af-stern-icon" />}<ArrowRight size={11} class="af-pfeil" /></span>
                 <span class="af-name">{s.kurz}{s.stern && <span class="visually-hidden"> (Was bauen wir?)</span>}</span>
               </Tag>
             );
@@ -82,17 +126,38 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
       ))}
     </div>
   </div>
+  {tourListe.map((s) => <span class="af-tour" data-schritt data-tour={s.id} aria-hidden="true" />)}
   {hierStation && (
     <div class="af-detail">
       <p><strong>{hierStation.kurz}.</strong> {hierStation.satz}{hierStation.zusatz && <> {hierStation.zusatz}</>}</p>
       <p class="af-weiter">→ {hierStation.gebrauchtIn}</p>
     </div>
   )}
-  <figcaption class="af-fuss">Hohle Punkte enden oder werden ersetzt; gepunktete setzen eine frühere Station fort.<Star size={14} aria-hidden="true" class="af-fuss-stern" /> Der Stern ist die Antwort auf „Was bauen wir?“.</figcaption>
+  <figcaption class="af-fuss">
+    <span class="af-fuss-legende" hidden={fokus ? true : undefined}>
+      <span class="af-fuss-tipp">Fahrt mit der Maus über eine Station: Ring = kommt daher, Pfeil = geht dorthin. </span>Hohle Punkte enden oder werden ersetzt; gepunktete setzen eine frühere Station fort.<Star size={14} aria-hidden="true" class="af-fuss-stern" /> Der Stern ist die Antwort auf „Was bauen wir?“.
+    </span>
+    {STATIONEN.map((s) => {
+      // Je Station ein Glied mit Spalte: Im Beamer blendet das Skript Glieder aus noch zugedeckten Spalten aus
+      // (arbeitsfluss-fokus.ts); bleibt keines, steht der Ersatztext da.
+      const t = fokusText(s);
+      const teil = (kopf: string, l: typeof STATIONEN, leer: string) => (
+        <span class="af-fuss-teil"><span class="af-fuss-kopf">{kopf}</span> {l.map((x) => <span class="af-glied" data-spalte={x.spalte}>{x.kurz}</span>)}<span class="af-glied-leer" hidden={l.length ? true : undefined}>{leer}</span></span>
+      );
+      return (
+        <span class="af-fuss-fokus" id={fussId(s.id)} data-fuss={s.id} hidden={s.id === fokus ? undefined : true}>
+          <strong>{s.kurz}</strong> {teil('Kommt aus', quellen(s), t.aus)}
+          <ArrowRight size={14} aria-hidden="true" class="af-fuss-pfeil" /><span class="visually-hidden">;</span>
+          {teil('Geht nach', ziele(s), ziele(s).length ? 'später im Kurs' : t.nach)}
+        </span>
+      );
+    })}
+  </figcaption>
 </figure>
 
 <script>
   import { heutigerTag, spalteVonTag } from '../arbeitsfluss-heute';
+  import { fokusSteuern } from '../arbeitsfluss-fokus';
   import { wienerZeit } from '../jetzt';
 
   // hier='heute': Markierung im Browser setzen – ?tag=N schlägt das Datum (zum Vorbereiten und Verlinken).
@@ -108,6 +173,9 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
       el.classList.toggle('af-spaeter', n > sp);
     }
   }
+
+  // Fokus (NDU-74): Maus, Tastatur, ?station=…, Tour und Legende – Logik in arbeitsfluss-fokus.ts (dort getestet).
+  for (const fig of document.querySelectorAll<HTMLElement>('.af')) fokusSteuern(fig, location.search);
 </script>
 
 <style>
@@ -117,7 +185,13 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
     margin: 1.25rem 0; max-width: none;
   }
   .af-legende { list-style: none; margin: 0 0 .6rem; padding: 0; display: flex; flex-wrap: wrap; gap: .3rem 1.4rem; font-size: .9rem; }
-  .af-leg { display: inline-flex; align-items: center; gap: .4rem; }
+  .af-legende li { margin: 0; }
+  .af-leg {
+    display: inline-flex; align-items: center; gap: .4rem; font: inherit; color: inherit; text-align: left;
+    background: none; border: 1px solid transparent; border-radius: var(--radius); padding: .1rem .35rem; margin: 0 -.35rem; cursor: pointer;
+  }
+  .af-leg:hover { border-color: var(--border); }
+  .af-leg[aria-pressed="true"] { border-color: var(--fg); background: var(--bg-2); }
   .af-muster { width: 2.2rem; height: .7rem; flex: none; }
   .af-leg-icon { flex: none; }
   .af-leg-beleg .af-leg-icon { color: var(--af-beleg); }
@@ -129,7 +203,6 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
   .af-plan {
     position: relative; display: grid; min-width: 46rem; height: var(--af-h);
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    grid-template-rows: auto .4fr repeat(var(--af-zeilen), 1fr) .3fr;
     border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2);
   }
   /* Jede Spalte ist eine Gruppe (für data-schritt), legt aber kein eigenes Kästchen ins Raster. */
@@ -153,37 +226,44 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
   .af-linien { grid-column: 1 / -1; grid-row: 2 / -1; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
   .af-l { fill: none; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
   .af-l-beleg { stroke: var(--af-beleg); stroke-width: 3; }
-  .af-l-outcome { stroke: var(--af-outcome); stroke-width: 6; }
+  .af-l-outcome { stroke: var(--af-outcome); stroke-width: 5; }
   .af-l-annahme { stroke: var(--af-annahme); stroke-width: 3; stroke-dasharray: 7 5; stroke-linecap: butt; }
   /* Outcome doppelt: breiter Strich, innen in der Grundfarbe ausgespart. */
-  .af-innen { fill: none; vector-effect: non-scaling-stroke; stroke: var(--bg-2); stroke-width: 2; }
+  .af-innen { fill: none; vector-effect: non-scaling-stroke; stroke: var(--bg-2); stroke-width: 1.5; }
+  /* Fokus: ein Strich in Textfarbe, nur für die Station im Fokus. */
+  .af-fokus-pfad { fill: none; vector-effect: non-scaling-stroke; stroke: var(--fg); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; display: none; }
+  .af-fokus-pfad.af-an { display: inline; }
 
   .af-station {
     position: relative; z-index: 1; display: flex; align-items: center; min-width: 0;
-    padding: 0 .3rem 0 calc(15% + .75rem); color: var(--fg); text-decoration: none;
+    padding: 0 .3rem 0 calc(var(--af-punkt-x) + .75rem); color: var(--fg); text-decoration: none;
     font-size: var(--af-schrift); line-height: 1.1; font-weight: 600;
   }
   a.af-station:hover .af-name { text-decoration: underline; }
+  .af-station:focus-visible { outline: none; }
+  .af-station:focus-visible .af-name { outline: 2px solid var(--fg); outline-offset: 2px; border-radius: 3px; }
   .af-name { overflow-wrap: break-word; }
+  /* Punkt in der Farbe der Hauptlinie: Die Linie einer Station ist am Punkt lesbar, ohne Ast. */
+  .af-haupt-beleg { --af-farbe: var(--af-beleg); }
+  .af-haupt-outcome { --af-farbe: var(--af-outcome); }
+  .af-haupt-annahme { --af-farbe: var(--af-annahme); }
   .af-punkt {
-    position: absolute; left: 15%; top: 50%; transform: translate(-50%, -50%);
-    width: .8rem; height: .8rem; border-radius: 50%; box-sizing: border-box;
-    background: var(--bg-2); border: 3px solid var(--fg);
+    position: absolute; left: var(--af-punkt-x); top: 50%; transform: translate(-50%, -50%);
+    width: var(--af-punkt); height: var(--af-punkt); border-radius: 50%; box-sizing: border-box;
+    background: var(--af-farbe); border: 3px solid var(--af-farbe); color: var(--bg-2);
     display: grid; place-items: center;
   }
-  .af-auf-beleg .af-punkt { border-color: var(--af-beleg); }
-  .af-auf-annahme .af-punkt { border-color: var(--af-annahme); }
-  .af-auf-outcome .af-punkt { border-color: var(--af-outcome); }
-  /* Ergebnis mit Wirkung: Punkt gefüllt; endet es hier oder wird ersetzt: hohl. Umsteigepunkt: größer, dunkler Ring. */
-  .af-station:not(.af-endet) .af-punkt { background: var(--fg); }
+  .af-punkt > :global(svg) { grid-area: 1 / 1; }
+  /* Endet hier oder wird ersetzt: hohl. */
+  .af-station.af-endet .af-punkt { background: var(--bg-2); }
   /* Fortsetzung einer Station von einem früheren Tag: gepunkteter Ring (ein Umsteigepunkt behält sein Aussehen). */
-  .af-station.af-fortsetzung .af-punkt { background: var(--bg-2); border-style: dotted; }
+  .af-station.af-fortsetzung:not(.af-umstieg) .af-punkt { background: var(--bg-2); border-style: dotted; }
   .af-fortsetzung:not(.af-umstieg) .af-name { font-weight: 500; font-style: italic; }
-  /* Umsteigepunkt: größer, gefüllt, mit hellem Kern – nicht zu verwechseln mit dem hohlen Punkt „endet“. */
-  .af-station.af-umstieg .af-punkt { width: 1.1rem; height: 1.1rem; border-color: var(--fg); background: radial-gradient(circle, var(--bg-2) 0 28%, var(--fg) 30%); }
+  /* Umsteigepunkt: größer, je Linie ein Ausschnitt in ihrer Farbe, Rand in Textfarbe. */
+  .af-station.af-umstieg .af-punkt { width: var(--af-punkt-umstieg); height: var(--af-punkt-umstieg); background: var(--af-mix); border: 2px solid var(--fg); }
   .af-endet .af-name { color: var(--muted); font-weight: 500; }
-  .af-station.af-stern .af-punkt { width: 1.5rem; height: 1.5rem; background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink); }
-  .af-station.af-stern .af-punkt :global(svg) { fill: currentColor; }
+  .af-station.af-stern .af-punkt { width: var(--af-punkt-stern); height: var(--af-punkt-stern); background: var(--yellow-soft); border: 2px solid var(--yellow); color: var(--yellow-ink); }
+  .af-station.af-stern .af-punkt :global(.af-stern-icon) { fill: currentColor; }
   .af-station.af-stern .af-name { font-weight: 700; }
   .af-station.af-diese .af-name { background: var(--accent-soft); box-shadow: 0 0 0 .2rem var(--accent-soft); border-radius: 3px; }
 
@@ -195,15 +275,49 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
   .af[data-faden="outcome"] .af-station:not(.af-auf-outcome),
   .af[data-faden="annahme"] .af-station:not(.af-auf-annahme) { opacity: .3; }
 
+  /* Fokus: Linien und unbeteiligte Stationen blass; Quelle mit Ring, Ziel mit Pfeil im Punkt, die Station markiert.
+     Gilt vor dem Faden – im Fokus zählt die Station. */
+  .af[data-fokus-an] .af-g { opacity: .15; }
+  .af[data-fokus-an] .af-station.af-blass { opacity: .3; }
+  .af[data-fokus-an] .af-station:is(.af-quelle, .af-ziel, .af-fokus) { opacity: 1; }
+  /* Die Zukunft bleibt auch im Fokus gedämpft. */
+  .af[data-fokus-an] .af-station.af-spaeter:is(.af-quelle, .af-ziel, .af-fokus) { opacity: .6; }
+  .af-pfeil { display: none; }
+  .af-station.af-quelle .af-punkt { box-shadow: 0 0 0 2px var(--bg-2), 0 0 0 4.5px var(--fg); }
+  .af-station.af-ziel .af-punkt {
+    width: var(--af-punkt-ziel); height: var(--af-punkt-ziel); background: var(--fg); border: 2px solid var(--fg); color: var(--bg-2);
+  }
+  .af-station.af-ziel .af-pfeil { display: block; }
+  /* Der Stern hat Vorrang: Als Ziel behält er Farbe und Stern, bekommt nur den Ring (kein Pfeil). */
+  .af-station.af-ziel.af-stern .af-punkt {
+    width: var(--af-punkt-stern); height: var(--af-punkt-stern); background: var(--yellow-soft); border-color: var(--yellow); color: var(--yellow-ink);
+    box-shadow: 0 0 0 2px var(--bg-2), 0 0 0 4.5px var(--fg);
+  }
+  .af-station.af-ziel.af-stern .af-pfeil { display: none; }
+  .af-station.af-fokus .af-name { background: var(--accent-soft); box-shadow: 0 0 0 .12rem var(--accent-soft); border-radius: 3px; }
+  .af-station.af-fokus .af-punkt { box-shadow: 0 0 0 2px var(--bg-2), 0 0 0 5px var(--accent); }
+
+  /* Tour: Schritt-Marker ohne Fläche (data-schritt zählt, sichtbar ist der Fokus). */
+  .af-tour { display: block; width: 0; height: 0; overflow: hidden; }
+
   .af-detail { margin: .6rem 0 0; font-size: 1rem; max-width: 52em; }
   .af-detail p { margin: 0 0 .2rem; }
   .af-weiter { color: var(--muted); }
-  .af-fuss { margin-top: .45rem; font-size: .85rem; color: var(--muted); display: flex; align-items: center; gap: .3rem; flex-wrap: wrap; }
-  .af-fuss-stern { color: var(--yellow); fill: currentColor; }
+  /* Zwei Zeilen Mindesthöhe: Wechselt die Fußzeile zwischen Legende und Fokus, springt nichts. */
+  .af-fuss { margin-top: .45rem; font-size: .85rem; color: var(--muted); min-height: 2.7em; line-height: 1.35; }
+  .af-fuss-legende, .af-fuss-fokus { display: inline; }
+  .af-fuss-legende[hidden], .af-fuss-fokus[hidden] { display: none; }
+  .af-fuss-fokus { color: var(--fg); }
+  .af-glied[hidden], .af-glied-leer[hidden] { display: none; }
+  /* Trenner nur zwischen sichtbaren Gliedern (ein ausgeblendetes zählt nicht). */
+  .af-glied:not([hidden]) ~ .af-glied:not([hidden])::before { content: " · "; }
+  .af-fuss-kopf { font-family: var(--mono); font-size: .8em; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); margin: 0 .2em 0 .5em; }
+  .af-fuss-pfeil { vertical-align: -2px; margin-left: .4em; }
+  .af-fuss-stern { color: var(--yellow); fill: currentColor; vertical-align: -2px; margin: 0 .2em; }
   .visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
   /* Beamer: Höhe so, dass Titel, Kernsatz, Legende, Plan und Fußzeile in 1280×720 passen (rem wächst mit der Höhe). */
-  :global(html[data-beamer]) .af { --af-h: 22.8rem; --af-schrift: .75rem; margin: .5rem 0 0; }
+  :global(html[data-beamer]) .af { --af-h: 21.1rem; --af-schrift: .75rem; margin: .5rem 0 0; }
   /* Am Beamer nur Strich, Icon und Name in einer Zeile – die Erklärung sagt Markus, im Handout steht sie. Der Platz geht
      an die zehn Zeilen von Tag 4. */
   :global(html[data-beamer]) .af-legende { font-size: .8rem; margin-bottom: .35rem; gap: 0 1.6rem; }
@@ -212,7 +326,10 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
   :global(html[data-beamer]) .af-kopf { padding: .3rem .5rem .25rem; }
   :global(html[data-beamer]) .af-tag { font-size: .75rem; }
   :global(html[data-beamer]) .af-titel, :global(html[data-beamer]) .af-hier-marke { font-size: .72rem; }
-  :global(html[data-beamer]) .af-fuss { font-size: .72rem; margin-top: .3rem; }
+  :global(html[data-beamer]) .af-fuss { font-size: .66rem; margin-top: .3rem; padding-right: 8.5rem; min-height: 4.05em; }
+  /* Am Beamer sagt Markus den Tipp; Platz für „Kommt aus → Geht nach“: drei Zeilen (Brief hat zehn Ziele), rechts der
+     Schrittzähler. */
+  :global(html[data-beamer]) .af-fuss-tipp { display: none; }
   :global(html[data-beamer]) .af-detail { font-size: .9rem; }
   :global(html[data-beamer] .content) .af a.af-station { text-decoration: none; }
 
@@ -221,5 +338,6 @@ const klassen = (n: number) => ({ 'af-hier': n === hierSpalte, 'af-spaeter': bis
     .af-plan { min-width: 0; height: 175mm; break-inside: avoid; }
     .af, .af * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
     .af [data-schritt] { visibility: visible !important; }
+    .af-leg { border-color: transparent !important; }
   }
 </style>
