@@ -27,7 +27,7 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(q.indexOf('<h2 id="karte-e1">')).toBeGreaterThan(0);
     // Keine andere Folie dazwischen: nach der Pro-Folie öffnet genau eine weitere <Folie>, die des Vorgehens.
     const zwischen = q.slice(pro, q.indexOf('<h2 id="vorgehen">'));
-    expect(zwischen.match(/<Folie>/g)).toHaveLength(1);
+    expect(zwischen.match(/<Folie>/g) ?? []).toHaveLength(1);
   });
 
   it('die Folie kommt vor dem ersten Claude-Code-Schritt von Tag 4 (Pre-Mortem unter Prüfen)', () => {
@@ -50,6 +50,9 @@ describe('Tag 4: Claude Pro gemeinsam um 10:50 (Markus 26.11.2026)', () => {
     expect(schritte).toStrictEqual(['Claude Pro neu abschließen,', 'Gleich wieder kündigen:', 'Claude Code starten:', 'Kurzer Test:', 'Wer hängt,']);
     expect([...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => m[1])).toStrictEqual(['10']);
     for (const a of ['claude-pro', 'claude-code-browser', 'lokal-schnellweg', 'lokal-starten']) expect(f, a).toContain(`href="/setup#${a}"`);
+    // Auf der sichtbaren Folie (vor dem Handout) stehen die Links bei den Schritten Abschließen und Anmelden.
+    const sichtbar = f.slice(0, f.indexOf('<div class="nur-handout">'));
+    expect([...sichtbar.matchAll(/href="\/setup#([a-z-]+)"/g)].map((m) => m[1])).toStrictEqual(['claude-pro', 'claude-code-browser']);
     expect(f).toContain('21,60 €');
     expect(f).toContain('bis etwa 28. Dezember');
     expect(f).toContain('sagt es sofort – laut, in der Teams-Besprechung.');
