@@ -27,12 +27,19 @@ export function teile(text: string): Teil[] {
 /** Eine Zeile in festen Satzanfang und Rest teilen. */
 export function zeileTeilen(zeile: string): KartenZeile {
   const z = zeile.trim();
+  // Der Rest beginnt ohne Leerzeichen (die Darstellung setzt eins nach dem fetten Satzanfang); Leerzeichen zwischen Lücken
+  // und Text bleiben stehen („wenn [x] von 5“).
+  const rest = (r: string) => teile(r.replace(/^\s+/, ''));
   const bekannt = SATZANFAENGE.find((s) => z.startsWith(s));
-  if (bekannt) return { stamm: bekannt, rest: teile(z.slice(bekannt.length)) };
+  if (bekannt) {
+    // Folgt dem bekannten Satzanfang direkt ein Doppelpunkt („Wir messen:“), gehört er zum fetten Teil.
+    const stamm = z.slice(bekannt.length).startsWith(':') ? `${bekannt}:` : bekannt;
+    return { stamm, rest: rest(z.slice(stamm.length)) };
+  }
   const d = z.indexOf(':');
   // Ein Doppelpunkt früh in der Zeile, nicht in einer Lücke oder einem Zitat: Satzanfang bis dorthin.
-  if (d > 0 && d <= 48 && !/[[„]/.test(z.slice(0, d))) return { stamm: z.slice(0, d + 1), rest: teile(z.slice(d + 1)) };
-  return { stamm: '', rest: teile(z) };
+  if (d > 0 && d <= 48 && !/[[„]/.test(z.slice(0, d))) return { stamm: z.slice(0, d + 1), rest: rest(z.slice(d + 1)) };
+  return { stamm: '', rest: rest(z) };
 }
 
 /** Text wie im Prompt → Titel und Zeilen. */

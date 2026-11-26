@@ -11,7 +11,7 @@ const { titel, zeilen } = karteAus(text);
   <div class="karte-titel">{titel.map((t) => (t.luecke ? <span class="luecke">{t.text}</span> : t.text))}</div>
   <ul class="karte-zeilen">
     {zeilen.map((z) => (
-      <li>{z.stamm && <strong>{z.stamm}</strong>}{z.stamm && ' '}{z.rest.map((t) => (t.luecke ? <span class="luecke">{t.text}</span> : t.text.replace(/^\s+/, '')))}</li>
+      <li>{z.stamm && <strong>{z.stamm}</strong>}{z.stamm && ' '}{z.rest.map((t) => (t.luecke ? <span class="luecke">{t.text}</span> : t.text))}</li>
     ))}
   </ul>
 </figure>
