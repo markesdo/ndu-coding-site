@@ -52,8 +52,8 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
   it('kein Lego-Block an Tag 4; Agil & Scrum, dann Prototyp weiterbauen / Puffer, dann Origin Story', () => {
     const t4 = seite('/innolab/tag-4');
     expect(t4).not.toMatch(/<Block[^>]*title="Lego4Scrum"/);
-    expect(t4).toContain('<Block time="15:45–16:15" type="konzept" title="Agil & Scrum"');
-    expect(t4).toContain('<Block time="16:15–17:15" type="uebung" title="Prototyp weiterbauen / Puffer">');
+    expect(t4).toContain('<Block time="15:45–16:25" type="konzept" title="Agil & Scrum"');
+    expect(t4).toContain('<Block time="16:25–17:15" type="uebung" title="Prototyp weiterbauen / Puffer">');
     expect(t4).toContain('<Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe"');
     expect(t4).toContain('(Lego4Scrum ist dieses Kursjahr nicht dabei)');
   });
@@ -73,9 +73,9 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
   it('Prüfliste und Vorlage ohne Lego; Dauer der Methode = Agil an Tag 4 + Team an Tag 5', () => {
     const scrum = METHODEN.find((x) => x.slug === 'scrum')!;
     expect(scrum.pruefliste!.map((p) => p.id)).not.toContain('scrum-lego');
-    expect(scrum.dauer).toBe(30 + 40);
+    expect(scrum.dauer).toBe(40 + 40);
     expect(seite(m('scrum'))).not.toMatch(/## Aus Lego4Scrum/);
-    expect(seite(m('scrum'))).toContain('<h2 id="vorgehen">So geht ihr vor (70 min)</h2>');
+    expect(seite(m('scrum'))).toContain('<h2 id="vorgehen">So geht ihr vor (80 min)</h2>');
   });
 
   it('Tag 5: Störfall ohne Lego-Bezug, Krivitsky nur als Quelle der Idee; Debrief markiert E1/E2 im Baum', () => {

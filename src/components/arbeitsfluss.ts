@@ -216,7 +216,7 @@ const ROH: Omit<Station, 'zeile'>[] = [
   {
     // Lego4Scrum ist dieses Kursjahr stillgelegt (Markus, 25.11.): Die Station ist nur der Input Agil & Scrum.
     id: 'scrum', methode: 'scrum', kurz: 'Agil und Scrum', linien: ['outcome'], spalte: 4, ergebnis: [],
-    href: '/innolab/methoden/scrum#agil',
+    href: '/innolab/methoden/scrum#foliensatz',
     kommtAus: ['Outcome-Satz (wird Produktziel)'], jetzt: 'Wasserfall, Manifest, Scrum nach dem Guide',
     satz: 'Ihr seht an der Kaffeebar, wie Scrum ein Produkt in Sprints liefert – und wo der Kurs vom Scrum Guide abweicht.',
     gebrauchtIn: 'Team und Definition of Done (Tag 5) · Sprint',

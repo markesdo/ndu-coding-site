@@ -412,7 +412,7 @@ export const METHODEN: Methode[] = [
   },
   {
     // Seit 25.11.2026 (NDU-72) ohne Lego4Scrum: Agil & Scrum an Tag 4 (30), Teamaufstellung und DoD an Tag 5 (40).
-    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 70, prueflisteStand: 2,
+    slug: 'scrum', name: 'Scrum im Team', tag: 4, dauer: 80, prueflisteStand: 2,
     frage: 'Wie arbeiten wir als drei Scrum-Teams mit denselben drei Personen an drei Produkten?',
     braucht: ['brief'], ergibt: ['team'],
     pruefliste: [

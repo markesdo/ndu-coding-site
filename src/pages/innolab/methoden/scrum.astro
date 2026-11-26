@@ -16,6 +16,7 @@ import BildText from '../../../components/bild/BildText.astro';
 import SprintKreislauf from '../../../components/bild/SprintKreislauf.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import { Eye, MessagesSquare, RefreshCw, Target } from '@lucide/astro';
+import { AGIL_SCRUM_FOLIEN, FOLIENSATZ_TITEL, FOLIENSATZ_URL } from '../../../lib/foliensatz';
 
 const GUIDE = 'Ken Schwaber & Jeff Sutherland, „The Scrum Guide“ (2020)';
 const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
@@ -42,6 +43,22 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
   <Orientierung seite="innolab/methoden/scrum" leiste={false} />
   <Uebergang station="scrum" />
   <MethodenKarte slug="scrum" />
+
+  {/* Tag 4, 15:45 (Entscheidung Markus 26.11.2026, Variante B): Die Theorie zeigt Markus aus dem Foliensatz, dann geht es
+      hier weiter mit „Wo wir abweichen“, der Übung und dem Beispiel. Die Folien „Warum nicht Wasserfall“ bis „Fertig heißt
+      fertig“ bleiben die Nachlese mit Zitaten und Seitenzahlen. */}
+  <Folie>
+    <h2 id="foliensatz">Agil &amp; Scrum: die Theorie im Foliensatz</h2>
+    <p class="folie-satz">Erst die Folien, dann hier weiter: wo wir abweichen, die Kaffeebar, das Beispiel.</p>
+    <ul class="gross">
+      <li><strong>Foliensatz:</strong> <a href={FOLIENSATZ_URL} target="_blank" rel="noopener noreferrer">„{FOLIENSATZ_TITEL}“</a>, Teil Agile &amp; Scrum (Folien 1–62).</li>
+      <li><strong>An Tag 4 gezeigt:</strong> Folien {AGIL_SCRUM_FOLIEN}.</li>
+      <li><strong>Danach hier:</strong> <a href="#abweichungen">Wo wir abweichen</a> → <a href="#kaffeebar-sortieren">Kaffeebar auf der Scrum-Karte</a> → <a href="#beispiel">Gleis-1-Express</a>.</li>
+    </ul>
+    <div class="nur-handout">
+      <p>Die Folien von „Warum nicht Wasserfall“ bis „Fertig heißt fertig“ fassen dieselbe Theorie zum Nachlesen zusammen, mit wörtlichen Zitaten und Seitenzahlen aus dem Scrum Guide 2020, dem Agilen Manifest und Jeffries. Wo Foliensatz und Guide verschieden klingen, gilt der Guide: Developers statt „Development Team“ ({GUIDE}, S. 5), der Sprint als Behälter der vier anderen Events (S. 7), das Sprint Review als Arbeitssitzung, nicht als Präsentation (S. 9).</p>
+    </div>
+  </Folie>
 
   <Folie>
     <h2 id="agil">Warum nicht Wasserfall</h2>
@@ -175,20 +192,15 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
   </Folie>
 
   <Folie>
-    <h2 id="planen">Planen ohne Schätzen</h2>
-    <p class="folie-satz">Zählt, was fertig wurde – und nehmt nicht mehr.</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/jeffries/gestern-wetter.jpg" alt="Zwei gezeichnete Fenster mit einem Pfeil dazwischen: links Regenwolken mit Blitz, rechts fast dasselbe Wetter mit etwas Sonne" quelle={`Yesterday’s Weather. ${JEFFRIES}, S. 37.`} />
-      <ul>
-        <li data-schritt><strong>Yesterday’s Weather:</strong> so viel wie im Sprint davor.</li>
-        <li data-schritt><strong>Das Team entscheidet selbst,</strong> wie viel es nimmt.</li>
-        <li data-schritt><strong>Klein und ähnlich groß schneiden,</strong> dann zählen.</li>
-        <li data-schritt><strong>Zu viel auf dem Teller?</strong> Runternehmen – acht Dinge gut statt zehn schlecht.</li>
-      </ul>
-    </BildText>
+    <h2 id="kaffeebar-sortieren">Übung: Kaffeebar auf der Scrum-Karte</h2>
+    <p class="folie-satz">Acht Karten der Kaffeebar – wohin gehören sie im Bild von Scrum?</p>
+    <ol class="gross">
+      <li data-schritt><strong>Still sortieren, jede*r im eigenen Frame:</strong> die acht Karten an die Stelle der Scrum-Grafik, an die sie gehören. <Timer minuten={4} /></li>
+      <li data-schritt><strong>Auflösung:</strong> Markus blendet die Lösung ein; besprochen werden nur die Karten, die bei euch verschieden liegen. <Timer minuten={3} /></li>
+    </ol>
+    <p class="small">Miro: T4 · Scrum · Kaffeebar sortieren · Produkt 1 · Produkt 2 · Produkt 3 <span class="muted">(= eure Spalten von links)</span></p>
     <div class="nur-handout">
-      <p>Wie viel nimmt ein Team? „the team itself should decide how much work it can accomplish“; die Idee stammt von Kent Beck und Martin Fowler: „You’ll probably get as much done today as you did yesterday. In iterative projects, plan to do as much this iteration as you did last iteration.“ Und: „I don’t recommend estimating the individual work pieces at all. Instead, understand them, and then look at the aggregate and decide how much of it the team can do“ ({JEFFRIES}, S. 37). „Things go best if each feature, often called a story, takes only two or three days to do“ (S. 36); wer vorhersagen muss, zählt: „When they need to predict how long things will take, they just count things done“ (S. 38). „Planning with ‚stretch goals‘ is destructive“ (S. 39). „It’s far better to do eight things well than ten things poorly“ (S. 41).</p>
-      <p>Der Scrum Guide: „The Developers who will be doing the work are responsible for the sizing“ ({GUIDE}, S. 11). Krivitsky lässt im Lego-Spiel kein Planning Poker mehr spielen – „so viel Zeit mit etwas zu verschwenden, das immer falsch sein wird“, den Schätzungen ({KRIVITSKY}, S. 24) – und nennt einen Sprint-Plan nach außen „nichts anderes als eine Prognose“ (S. 91). Wie ihr Issues so schneidet, dass Zählen reicht, kommt an Tag 5 in <a href="/innolab/methoden/schneiden">Schneiden statt Schätzen</a>.</p>
+      <p>Die Karten stammen aus dem Beispiel auf der nächsten Folie, ohne den Begriff davor: Sätze, Issues, Personen und Regeln der Kaffeebar „Gleis-1-Express“. Ihr sortiert allein, gleichzeitig und ohne Absprache. So zeigt die Auflösung, wo eure Bilder von Scrum auseinandergehen. Die Lösung liegt auf Miro in einem eigenen Frame (T4 · Scrum · Kaffeebar · Lösung), den Markus erst nach den vier Minuten einblendet; die nächste Folie geht sie Begriff für Begriff durch.</p>
     </div>
   </Folie>
 
@@ -204,6 +216,24 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
     <div class="nur-handout">
       <p><strong>Produktziel</strong> im Wortlaut des Briefs: „Wir glauben, dass Pendler*innen morgens Kaffee bekommen, ohne ihren Zug zu riskieren. Wir merken es, wenn mehr von ihnen mit Kaffee in den Zug steigen.“</p>
       <p><strong>Produkt:</strong> Im Gehen bestellen, mit Abfahrtszeit, abholen an der Express-Ausgabe (Value Map, Tag 3). <strong>Produktziel:</strong> der Outcome-Satz aus dem Produkt-Brief (<a href="/innolab/methoden/problem-rahmen">Problem-Rahmen</a>) – er beschreibt, wie es nach dem Produkt sein soll, und daran misst sich jeder Sprint. <strong>Product Owner:</strong> die Product Ownerin der Kaffeebar; Developers sind alle drei. <strong>Product Backlog:</strong> 1 Getränk wählen und bestellen · 2 Abfahrtszeit angeben und Fertig-Zeit sehen · 3 Bar sieht Bestellungen nach Abfahrt sortiert · 4 Zug aus einer Liste der nächsten Abfahrten wählen (U2) · 5 Abholnummer am Bildschirm der Ausgabe · 6 Bar markiert Bestellung als abgeholt, das Ereignis wird gespeichert (aus der Definition of Done, Tag 5). Wie die Issues entstehen, kommt an Tag 5 in <a href="/innolab/methoden/backlog">Backlog aus Issues</a>. <strong>Stakeholder im Review:</strong> Markus und Louis, dazu die Testpersonen aus den Usability-Tests an Tag 6. <strong>Sprint-Ziel:</strong> ein Satz, der sagt, was danach jemand kann – nicht die Liste der Issues. <strong>Definition of Done:</strong> siehe <a href="#dod">unten</a>.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="planen">Planen ohne Schätzen</h2>
+    <p class="folie-satz">Zählt, was fertig wurde – und nehmt nicht mehr.</p>
+    <BildText>
+      <BuchAbbildung src="/quellen/jeffries/gestern-wetter.jpg" alt="Zwei gezeichnete Fenster mit einem Pfeil dazwischen: links Regenwolken mit Blitz, rechts fast dasselbe Wetter mit etwas Sonne" quelle={`Yesterday’s Weather. ${JEFFRIES}, S. 37.`} />
+      <ul>
+        <li data-schritt><strong>Yesterday’s Weather:</strong> so viel wie im Sprint davor.</li>
+        <li data-schritt><strong>Das Team entscheidet selbst,</strong> wie viel es nimmt.</li>
+        <li data-schritt><strong>Klein und ähnlich groß schneiden,</strong> dann zählen.</li>
+        <li data-schritt><strong>Zu viel auf dem Teller?</strong> Runternehmen – acht Dinge gut statt zehn schlecht.</li>
+      </ul>
+    </BildText>
+    <div class="nur-handout">
+      <p>Wie viel nimmt ein Team? „the team itself should decide how much work it can accomplish“; die Idee stammt von Kent Beck und Martin Fowler: „You’ll probably get as much done today as you did yesterday. In iterative projects, plan to do as much this iteration as you did last iteration.“ Und: „I don’t recommend estimating the individual work pieces at all. Instead, understand them, and then look at the aggregate and decide how much of it the team can do“ ({JEFFRIES}, S. 37). „Things go best if each feature, often called a story, takes only two or three days to do“ (S. 36); wer vorhersagen muss, zählt: „When they need to predict how long things will take, they just count things done“ (S. 38). „Planning with ‚stretch goals‘ is destructive“ (S. 39). „It’s far better to do eight things well than ten things poorly“ (S. 41).</p>
+      <p>Der Scrum Guide: „The Developers who will be doing the work are responsible for the sizing“ ({GUIDE}, S. 11). Krivitsky lässt im Lego-Spiel kein Planning Poker mehr spielen – „so viel Zeit mit etwas zu verschwenden, das immer falsch sein wird“, den Schätzungen ({KRIVITSKY}, S. 24) – und nennt einen Sprint-Plan nach außen „nichts anderes als eine Prognose“ (S. 91). Wie ihr Issues so schneidet, dass Zählen reicht, kommt an Tag 5 in <a href="/innolab/methoden/schneiden">Schneiden statt Schätzen</a>.</p>
     </div>
   </Folie>
 
@@ -396,13 +426,13 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
   </Folie>
 
   <Folie>
-    <h2 id="vorgehen">So geht ihr vor (70 min)</h2>
+    <h2 id="vorgehen">So geht ihr vor (80 min)</h2>
     <p class="folie-satz">Theorie mit der Kaffeebar an Tag 4, euer Team an Tag 5.</p>
     <ol class="gross">
-      <li data-schritt><strong>Agil &amp; Scrum (Tag 4, 15:45–16:15):</strong> acht Folien, die Kaffeebar in Scrum-Begriffen, euer Produktziel in einem Satz.</li>
+      <li data-schritt><strong>Agil &amp; Scrum (Tag 4, 15:45–16:25):</strong> Theorie aus dem <a href={FOLIENSATZ_URL} target="_blank" rel="noopener noreferrer">Foliensatz</a>, wo wir abweichen, die Kaffeebar auf der Scrum-Karte.</li>
       <li data-schritt><strong>Teamaufstellung &amp; Definition of Done (Tag 5, 09:25–10:05):</strong> <code>docs/TEAM.md</code> in jedem der drei Repos.</li>
     </ol>
-    <p class="nur-handout">Agil &amp; Scrum: 18 Minuten Theorie, 8 Minuten Kaffeebar gemeinsam, 4 Minuten Produktziele. Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
+    <p class="nur-handout">Agil &amp; Scrum: 27 Minuten Theorie aus dem Foliensatz (20 Folien), 2 Minuten „Wo wir abweichen“, 7 Minuten Kaffeebar auf der Scrum-Karte (4 sortieren, 3 Auflösung), 4 Minuten Gleis-1-Express und Übergang. „Euer Produkt in einem Satz“ hat an Tag 4 keinen Platz mehr; das Produktziel schreibt ihr an Tag 5 in der Teamaufstellung (Schritt 2). Teamaufstellung &amp; Definition of Done: 40 Minuten nach den Schritten unter <a href="#team">Euer Team aufstellen</a>. <code>docs/TEAM.md</code> ist in allen drei Repos gleich.</p>
   </Folie>
 
   <div class="nur-handout">

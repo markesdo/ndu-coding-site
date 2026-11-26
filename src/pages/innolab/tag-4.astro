@@ -10,6 +10,7 @@ import Arbeitsfluss from '../../components/bild/Arbeitsfluss.astro';
 import WasBauenWir from '../../components/bild/WasBauenWir.astro';
 import Baum from '../../components/bild/Baum.astro';
 import { KAFFEEBAR_BAUM_TAG_4 } from '../../components/innolab-beispiel';
+import { FOLIENSATZ_URL } from '../../lib/foliensatz';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 ---
@@ -39,8 +40,8 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <Block time="13:35–14:05" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Der Kernablauf mit Höhepunkt nahe am Ende.</Block>
     <Block time="14:05–15:35" type="uebung" title="Prototyp-Spike" href="/innolab/methoden/prototyp-spike">Papier, dann Claude Code; Karte E2, Trockenlauf.</Block>
     <Block time="15:35–15:45" type="pause" title="Pause" />
-    <Block time="15:45–16:15" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#agil">Wasserfall, Agiles Manifest, Scrum nach dem Guide, wo wir abweichen; die Kaffeebar in Scrum-Begriffen.</Block>
-    <Block time="16:15–17:15" type="uebung" title="Prototyp weiterbauen / Puffer">Was im Spike offen blieb: Höhepunkt-Bildschirm, Karte E2, Trockenlauf – oder nachholen, was vom Tag fehlt.</Block>
+    <Block time="15:45–16:25" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#abweichungen">Theorie aus dem <a href={FOLIENSATZ_URL} target="_blank" rel="noopener noreferrer">Foliensatz</a>: Wasserfall, Agiles Manifest, Scrum nach dem Guide. Dann hier: wo wir abweichen, Kaffeebar auf der Scrum-Karte (Miro), Auflösung am Gleis-1-Express.</Block>
+    <Block time="16:25–17:15" type="uebung" title="Prototyp weiterbauen / Puffer">Was im Spike offen blieb: Höhepunkt-Bildschirm, Karte E2, Trockenlauf – oder nachholen, was vom Tag fehlt.</Block>
     <Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie jemand den Wert zum ersten Mal sieht; E1 laufen lassen, fünf Usability-Tests.</Block>
   </div>
 
@@ -77,7 +78,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
     <li><a href="/innolab/methoden/story-map">Story Map</a> – der Plan, nach Outcome geschnitten</li>
     <li><a href="/innolab/methoden/usage-story">Usage Story</a> – der Kernablauf mit Höhepunkt</li>
     <li><a href="/innolab/methoden/prototyp-spike">Prototyp-Spike & Usability-Test</a> – lernen mit Wegwerf-Code</li>
-    <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Agil und Scrum (Lego4Scrum ist dieses Kursjahr nicht dabei); Teamaufstellung und Definition of Done folgen an Tag 5</li>
+    <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Agil und Scrum, die Theorie aus dem Foliensatz (Lego4Scrum ist dieses Kursjahr nicht dabei); Teamaufstellung und Definition of Done folgen an Tag 5</li>
   </ul>
 
   <h2 id="abschluss">Abschluss & Hausaufgabe bis Tag 5</h2>
