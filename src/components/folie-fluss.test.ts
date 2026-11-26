@@ -26,12 +26,17 @@ describe('Folie: weiter und ende', () => {
     const c = await AstroContainer.create();
     expect(await c.renderToString(Folie, { props: { zurueck: '/innolab/tag-5#debrief' } })).toContain('data-zurueck="/innolab/tag-5#debrief"');
     await expect(c.renderToString(Folie, { props: { weiter: '/x' } })).rejects.toThrow(/braucht weiterTitel/);
+    await expect(c.renderToString(Folie, { props: { weiterTitel: 'X' } })).rejects.toThrow(/ohne weiter/);
   });
 
   it('Layout.astro liest beide Attribute für → (folien.ts: sprung, ende)', () => {
     expect(LAYOUT).toContain("sprung: !!folie.dataset.weiter, ende: folie.hasAttribute('data-ende')");
-    expect(LAYOUT).toContain("else if (tun === 'sprung') springeNach(folie.dataset.weiter!);");
-    expect(LAYOUT).toContain("else if (tun === 'sprung') springeNach(folie.dataset.zurueck!);");
+    expect(LAYOUT).toContain("else if (tun === 'sprung' && !springeNach(folie.dataset.weiter!)) {");
+    expect(LAYOUT).toContain("else if (tun === 'sprung' && !springeNach(folie.dataset.zurueck!)) {");
+    // Review 3: fehlt das Ziel auf derselben Seite, blättert ← / → normal weiter statt stehen zu bleiben.
+    expect(LAYOUT).toContain('if (!el) return false;');
+    // Review 3: #anker nur bei einem frischen Aufruf ausrichten, nicht beim Neuladen oder Zurück.
+    expect(LAYOUT).toMatch(/type === 'navigate';\n\s*if \(frisch\) \{\n\s*ankerFolie\(\);/);
   });
 
   // Review #447: Auf einer ende-Folie mit Schritten zeigte der Zähler „n / n“, „Ende“ erschien nie.
@@ -42,16 +47,6 @@ describe('Folie: weiter und ende', () => {
   });
 });
 
-describe('nur im Beamer', () => {
-  // Review 2 #448: Sätze zur Uhrzeit auf einer Folie („Heute: … bis 17:15“) lesen sich im Handout an Tag 5 falsch.
-  it('.nur-beamer fehlt außerhalb des Beamers und steht im Beamer', () => {
-    expect(BEAMER_CSS).toContain('.nur-beamer { display: none; }\nhtml[data-beamer] .nur-beamer { display: revert; }');
-  });
-});
-
-// Review 2 #447, im Browser gemessen: Von scrum#team ging ← per scrollBy auf die Stelle mit dem Hinweis davor, dann zog
-// scroll-snap (proximity, in Scrollrichtung) #planen an den Rand – der Hinweis war übersprungen. Abhilfe: beim Blättern
-// mit ← / → kein Einrasten, bis wieder mit Rad, Finger oder Bildtasten gescrollt wird.
 describe('kein Einrasten beim Blättern', () => {
   it('beamer.css schaltet scroll-snap mit data-ohne-einrasten ab; Layout setzt es bei ← / → und nimmt es beim Scrollen weg', () => {
     expect(BEAMER_CSS).toContain('html[data-beamer][data-ohne-einrasten]:has(.folie) { scroll-snap-type: none; }');

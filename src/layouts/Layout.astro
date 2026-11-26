@@ -118,7 +118,7 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
         sb?.classList.remove('open');
       };
       // aria-pressed und Kopfleistenhöhe folgen dem Attribut – egal, wer umschaltet (auch PraesentatorEinstieg, wo-ist.ts).
-      new MutationObserver(() => { sync(); hoeheMessen(); falzSetzen(); }).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
+      new MutationObserver(() => { sync(); hoeheMessen(); falzSetzen(); weiterKnopf(); }).observe(root, { attributes: true, attributeFilter: ['data-beamer'] });
 
       // Klebende Kopfleiste: Höhe für Schrittleiste und Sprungziele (beamer.css, --topbar-h).
       const topbar = document.querySelector<HTMLElement>('.topbar');
@@ -198,6 +198,7 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
         weiter.hidden = false;
       };
       weiterKnopf();
+      addEventListener('resize', weiterKnopf);
       let knopfGeplant = false;
       addEventListener('scroll', () => {
         if (knopfGeplant) return;
@@ -264,14 +265,17 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
       // data-weiter (Folie.astro): auf derselben Seite direkt zur Folie mit dem Anker, sonst Seitenwechsel.
       // trailingSlash 'ignore' (astro.config): /innolab/tag-4 und /innolab/tag-4/ sind dieselbe Seite.
       const ohneSchraegstrich = (p: string) => p.replace(/\/+$/, '') || '/';
-      const springeNach = (ziel: string) => {
+      // false: Ziel auf dieser Seite fehlt (Anker umbenannt) – dann blättert ← / → normal, statt stehen zu bleiben.
+      const springeNach = (ziel: string): boolean => {
         const url = new URL(ziel, location.href);
         const gleich = ohneSchraegstrich(url.pathname) === ohneSchraegstrich(location.pathname);
+        if (!gleich) { location.href = url.href; return true; }
         let el: HTMLElement | null = null;
-        try { el = gleich && url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null; } catch {}
-        if (!el) { location.href = url.href; return; }
+        try { el = url.hash ? document.getElementById(decodeURIComponent(url.hash.slice(1))) : null; } catch {}
+        if (!el) return false;
         history.pushState(null, '', url.search + url.hash);
         springe(el.closest<HTMLElement>('[data-folie]') ?? el);
+        return true;
       };
       // data-ende: → tut nichts, der Hinweis „Ende“ unten rechts (beamer.css) leuchtet kurz auf.
       let endeUhr: ReturnType<typeof setTimeout> | undefined;
@@ -294,8 +298,13 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
         const oben = topbar?.getBoundingClientRect().height ?? 0;
         if (f && Math.abs(f.getBoundingClientRect().top - oben) > 2) springe(f);
       };
-      ankerFolie();
-      addEventListener('load', () => { ankerFolie(); setTimeout(ankerFolie, 400); }, { once: true });
+      // Nur bei einem frischen Aufruf: Beim Neuladen (F5) und bei Zurück/Vorwärts stellt der Browser die Scroll-Position
+      // wieder her – die soll bleiben, auch wenn die Adresse noch den #anker trägt.
+      const frisch = (performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined)?.type === 'navigate';
+      if (frisch) {
+        ankerFolie();
+        addEventListener('load', () => { ankerFolie(); setTimeout(ankerFolie, 400); }, { once: true });
+      }
       addEventListener('hashchange', () => ankerFolie(true));
       // Kein Einrasten, solange mit ← / → geblättert wird: Die Sprünge stehen genau, aber scroll-snap (proximity, beamer.css)
       // zöge eine Folie, die ein Stück im Bildschirm steht, in Scrollrichtung an den Rand – beim Zurückblättern über Text
@@ -333,7 +342,10 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
           else if (tun === 'schritt') schritte.find((s) => !s.classList.contains('gezeigt'))?.classList.add('gezeigt');
           else if (tun === 'aufloesung') knopf?.click();
           else if (tun === 'folie') springe(folien[i + 1]);
-          else if (tun === 'sprung') springeNach(folie.dataset.weiter!);
+          else if (tun === 'sprung' && !springeNach(folie.dataset.weiter!)) {
+            if (i + 1 >= folien.length) return false;
+            springe(folien[i + 1]);
+          }
           else if (tun === 'ende') endeZeigen(folie);
           return tun !== 'seite';
         }
@@ -345,12 +357,16 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
         const tun = folieZurueck({
           gezeigteSchritte: gezeigt.length, vorherigeFolie: i > 0, kopfDarueber: scrollY > 0, lage, verschoben: rand.top < oben - 4,
           weitWeg: bisHalt > bildschirm + 4, sprung: !!folie.dataset.zurueck, zwischenOben: zwischen > 4,
+          folieImBild: rand.top < innerHeight - 4,
         });
         if (tun === 'schritt') gezeigt.at(-1)?.classList.remove('gezeigt');
         else if (tun === 'hierhin') springe(folie);
         // Auf der Folie (Text davor): dorthin, wo → angehalten hat – ihre Oberkante am unteren Rand; sonst einen Bildschirm.
         else if (tun === 'hoch') scrollBy({ top: lage === 'auf' ? rand.top - innerHeight : -bildschirm, behavior: 'instant' as ScrollBehavior });
-        else if (tun === 'sprung') springeNach(folie.dataset.zurueck!);
+        else if (tun === 'sprung' && !springeNach(folie.dataset.zurueck!)) {
+          if (i === 0) return false;
+          springe(folien[i - 1]);
+        }
         else if (tun === 'folie') springe(folien[i - 1]);
         else if (tun === 'anfang') scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
         return tun !== 'seite';

@@ -113,10 +113,13 @@ export function zurueck(z: {
   weitWeg?: boolean;
   /** Zwischen der vorigen Folie und dieser steht sichtbarer Text – → hielt dort an, also auch ← (hoch). */
   zwischenOben?: boolean;
+  /** 'vor': Die Folie beginnt schon im Bildschirm (etwa ein paar px unter der Kopfleiste) – ihre gezeigten Schritte sind zu sehen. */
+  folieImBild?: boolean;
   /** Folie mit data-zurueck. */
   sprung?: boolean;
 }): Zurueck {
   if (z.lage === 'unter') return z.weitWeg ? 'hoch' : 'hierhin';
+  if (z.lage === 'vor' && z.folieImBild && z.gezeigteSchritte > 0) return 'schritt';
   if (z.lage === 'vor') return z.kopfDarueber ? (z.weitWeg ? 'hoch' : 'anfang') : 'seite';
   if (z.verschoben) return 'hierhin';
   if (z.gezeigteSchritte > 0) return 'schritt';

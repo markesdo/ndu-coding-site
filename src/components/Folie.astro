@@ -11,5 +11,6 @@
 const { weiter, weiterTitel, zurueck, ende = false } = Astro.props as { weiter?: string; weiterTitel?: string; zurueck?: string; ende?: boolean };
 if (weiter && ende) throw new Error('Folie: weiter und ende schließen sich aus');
 if (weiter && !weiterTitel) throw new Error(`Folie: weiter="${weiter}" braucht weiterTitel (Knopf „Weiter: …“)`);
+if (weiterTitel && !weiter) throw new Error(`Folie: weiterTitel="${weiterTitel}" ohne weiter`);
 ---
 <section class="folie" data-folie data-weiter={weiter} data-weiter-titel={weiterTitel} data-zurueck={zurueck} data-ende={ende ? '' : undefined}><slot /></section>
