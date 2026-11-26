@@ -4,6 +4,8 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Karte from '../../../components/bild/Karte.astro';
+import MiroLink from '../../../components/MiroLink.astro';
 import Prompt from '../../../components/Prompt.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -118,13 +120,13 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="karte-e2">Auch dieser Test hat eine Karte</h2>
     <p class="folie-satz">Annahme, Messgröße, Schwelle, Entscheidung – bevor die erste Person testet.</p>
-    <Prompt label="Beispiel · Experiment-Karte E2">E2 · A3 (bedienbar) · läuft bis Tag 5
+    <Karte label="Beispiel · Experiment-Karte E2" text={`E2 · A3 (bedienbar) · läuft bis Tag 5
 Wir glauben, dass Pendler*innen im Gehen ohne Hilfe bis zur Fertig-Zeit bestellen können.
 Um das zu prüfen, geben wir fünf Pendler*innen den Klick-Prototyp am Handy mit der Aufgabe:
   „Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“
 Wir messen: Höhepunkt „Fertig 7:31“ ohne Hilfe erreicht (ja/nein), Zeit bis dahin (Richtwert aus A3: 20 Sekunden), wo sie hängen, was sie beim Höhepunkt sagen oder zeigen.
 Wir haben recht, wenn 4 von 5 den Höhepunkt ohne Hilfe erreichen.
-Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen</Prompt>
+Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen`} />
     <div class="nur-handout">
       <p>Die Zeit notiert ihr; 20 Sekunden sind der Richtwert aus A3, nicht die Schwelle. Die Zeile „Wir entscheiden vorher“ steht hier wie auf Karte E1 (<a href="/innolab/methoden/experiment#vorher-entscheiden">Vorher entscheiden</a>); die drei Bänder für E2 sind eine Setzung der Kaffeebar. Testpersonen sind Menschen mit dem Pain, nicht die bequemsten: „make sure that your participants experience the need, pain point, or desire … Remember to recruit for variation“ ({TORRES}, S. 145). Was ihr beim Höhepunkt beobachtet, ist Lichaws Smile Test: Lächelt die Person dort, wo eure Usage Story den Höhepunkt hat? Die Reaktion notiert ihr neben „Höhepunkt erreicht“; für die Schwelle zählt nur, ob sie ohne Hilfe dort ankommt.</p>
     </div>
@@ -162,8 +164,6 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
     <p class="nur-handout">Die Befunde sind ausgedacht – an der Form erkennt ihr, wie eure aussehen sollten. U2 schiebt „Zug aus der Liste“ von Slice 2 in Slice 1: Das steht in der Spalte „Folge“ und auf der Lernkarte, Beleg U2. Torres beschreibt genau das: Fällt eine Annahme, entwickelt man die Idee so weiter, dass sie nicht mehr davon abhängt ({TORRES}, S. 140). Die Folge von U3 ist eine Setzung der Kaffeebar.</p>
   </Folie>
 
-  {/* TODO Miro-IDs: Sobald „T4 · 5 · Prototyp · Produkt 1–3“ in miro-frames.ts stehen, hier als MiroLink
-      verlinken – usage-spike-klar.test.ts schlägt dann an. */}
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (75 min)</h2>
     <p class="folie-satz">Sechs Schritte, einer nach dem anderen – jeder hat ein Feld auf Miro.</p>
@@ -175,10 +175,10 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       { t: '5 Karte E2', sub: '10 min<br>Miro' },
       { t: '6 Trockenlauf', sub: '10 min<br>zu dritt, Teams' },
     ]} />
-    <p class="gross"><strong>Wo:</strong> euer Frame „T4 · 5 · Prototyp · Produkt n“ – die Felder 1 bis 6 heißen wie die Schritte.</p>
+    <p class="gross"><strong>Wo:</strong> euer Frame „T4 · 5 · Prototyp · Produkt n“ – <MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">Produkt 3</MiroLink> · Beispiel <MiroLink name="T4 · 5 · Prototyp · Kaffeebar">Kaffeebar</MiroLink> · <MiroLink name="T4 · 5 · Anleitung Prototyp">Anleitung</MiroLink>. Die Felder 1 bis 6 heißen wie die Schritte.</p>
     <p class="gross"><strong>Bis Tag 5, freiwillig:</strong> Tests mit Menschen, die den Pain haben.</p>
     <div class="nur-handout">
-      <p>Dazu 15 Minuten Theorie und Beispiel. Die Schritte 1 bis 5 macht jede*r allein für das eigene Produkt; nur der Trockenlauf läuft zu dritt. Geschrieben wird nur auf Miro, in eurem Frame „T4 · 5 · Prototyp · Produkt n“ (Produkt 1 bis 3). Claude Code baut nach Bildern eurer Frames; eine Datei im Repo schreibt ihr nicht. Den Aufbau des Frames zeigt „So sieht euer Frame aus“ weiter unten.</p>
+      <p>Dazu rund 22 Minuten Theorie und Beispiel. Die Schritte 1 bis 5 macht jede*r allein für das eigene Produkt; nur der Trockenlauf läuft zu dritt. Geschrieben wird nur auf Miro, in eurem Frame „T4 · 5 · Prototyp · Produkt n“ (Produkt 1 bis 3). Claude Code baut nach Bildern eurer Frames; eine Datei im Repo schreibt ihr nicht. Den Aufbau des Frames zeigt „So sieht euer Frame aus“ weiter unten.</p>
     </div>
   </Folie>
 
@@ -192,7 +192,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       <li data-schritt><strong>Foto je Blatt</strong> in Feld 1 eures Frames.</li>
     </ol>
     <p class="beispiel-box"><strong>Kaffeebar:</strong> 1 Getränk (eins aus drei) → 2 Zug (7:38 eintippen) → 3 ★ „Fertig 7:31. Dein Zug fährt 7:38.“ → 4 Abholnummer · 5 Ansicht für die Bar</p>
-    <p class="wo-fertig"><span><strong>Wo:</strong> Papier und Stift, dann Feld „1 · Papier-Skizzen“</span><span><strong>Fertig, wenn:</strong> jemand Fremdes an den Pfeilen den Weg zum Stern sieht</span> <Timer minuten={10} /></p>
+    <p class="wo-fertig"><span><strong>Wo:</strong> Papier und Stift, dann Feld „1 · Papier-Skizzen“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> jemand Fremdes an den Pfeilen den Weg zum Stern sieht</span> <Timer minuten={10} /></p>
     <div class="nur-handout">
       <p>Ein Blatt ist ein Bildschirm, kein Ablauf. Schreibt die Wörter so hin, wie sie am Bildschirm stehen sollen: Überschrift, Knöpfe, der Satz am Höhepunkt. Nummeriert die Blätter oben rechts; an jeden Knopf kommt ein Pfeil mit der Nummer des Blatts, zu dem er führt. Zeichnen müsst ihr nicht können: Kästen und Wörter reichen. Foto: mit dem Handy, ein Foto je Blatt, gerade von oben; in der Miro-App in euren Frame laden oder per AirDrop auf den Mac und in Feld 1 ziehen. Wer bei der Usage Story nur Krise und Höhepunkt geschafft hat, zeichnet zuerst das Höhepunkt-Blatt und dann den kürzesten Weg dorthin. Bland führt Papier- und Klick-Prototyp als Paar: erst Papier, dann klickbar ({BLAND}, S. 185, 239). „Papier vor Claude“ ist eine Kursregel.</p>
     </div>
@@ -211,7 +211,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       <p>Er läuft am Handy im Browser; oben steht „Prototyp – nicht echt“.</p>
       <p>Er hat nicht: Login, Zahlung, Datenbank.</p>
     </div>
-    <p class="wo-fertig"><span><strong>Wo:</strong> Feld „2 · Abnahmekriterien“</span><span><strong>Fertig, wenn:</strong> ihr jeden Satz später am Handy mit Ja oder Nein beantworten könnt</span> <Timer minuten={3} /></p>
+    <p class="wo-fertig"><span><strong>Wo:</strong> Feld „2 · Abnahmekriterien“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> ihr jeden Satz später am Handy mit Ja oder Nein beantworten könnt</span> <Timer minuten={3} /></p>
     <div class="nur-handout">
       <p>Abnahmekriterien schreibt ihr vor dem Bauen. Sie sind eine kurze Liste von Dingen, die ihr prüft, um zu sehen, dass ihr fertig seid: „a short list of things to check. This list is often called acceptance criteria, or story tests“ (Jeff Patton, „User Story Mapping“, Kap. 6, „3. Confirmation“). Für einen Spike verlangt Bland sie ausdrücklich vorab: „Define your acceptance criteria“ – und am Ende: „Determine if the acceptance criteria were successfully met“ ({BLAND}, S. 307). Die Form in drei Sätzen ist eine Kursregel; der dritte Satz, was der Prototyp nicht hat, steht bei Bland nicht – er hält den Prototyp klein und sagt Claude, was es nicht bauen soll. Prüfbar heißt: eine Zahl, ein Text, den man sieht – nicht „einfach“ oder „schön“. Akzeptanzkriterien für eure Issues folgen an Tag 5; das hier ist dieselbe Idee, nur für den Wegwerf-Prototyp.</p>
     </div>
@@ -225,10 +225,10 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       <li data-schritt><strong>Eintragen, was zuerst gebaut wird:</strong> der Höhepunkt-Bildschirm, dann der Weg dorthin.</li>
       <li data-schritt><strong>Bei null hört ihr auf</strong> – auch wenn etwas fehlt. Was fehlt, schreibt ihr ins Feld.</li>
     </ol>
-    <p class="beispiel-box"><strong>Kaffeebar:</strong> Zeitbox: bis 15:15 · Zuerst: „Fertig 7:31“ · Bei null fehlt noch: Ansicht für die Bar</p>
-    <p class="wo-fertig"><span><strong>Wo:</strong> Feld „3 · Zeitbox“</span><span><strong>Fertig, wenn:</strong> eine Uhrzeit dasteht und ihr wisst, welcher Bildschirm zuerst kommt</span> <Timer minuten={2} /></p>
+    <p class="beispiel-box"><strong>Kaffeebar:</strong> Zeitbox: bis 16:00 · Zuerst: „Fertig 7:31“ · Bei null fehlt noch: Ansicht für die Bar</p>
+    <p class="wo-fertig"><span><strong>Wo:</strong> Feld „3 · Zeitbox“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> eine Uhrzeit dasteht und ihr wisst, welcher Bildschirm zuerst kommt</span> <Timer minuten={2} /></p>
     <div class="nur-handout">
-      <p>Eine Zeitbox ist eine feste Dauer, die ihr vorher festlegt. Ist sie um, hört ihr auf – fertig oder nicht. Bland: „Define your time box for the spike“; der Spike ist „aggressively time boxed for a reason“, und ohne Grenze werden Spikes zu „never-ending research projects“ ({BLAND}, S. 307–308). Patton nennt Spikes „bits of development or research we do with the explicit goal of learning“ (Kap. 11, „Discover a Minimum Viable Solution“). Dass die Zeitbox bei euch 40 Minuten dauert und dass der Höhepunkt zuerst gebaut wird, ist eine Kursregel: Fehlt am Ende etwas, dann nicht der Bildschirm, den der Test braucht. Abnahmekriterien sagen, wann der Spike fertig ist; die Zeitbox sagt, wann ihr aufhört, auch wenn er es nicht ist. Was offen bleibt, baut ihr im Puffer ab 16:25 weiter.</p>
+      <p>Eine Zeitbox ist eine feste Dauer, die ihr vorher festlegt. Ist sie um, hört ihr auf – fertig oder nicht. Bland: „Define your time box for the spike“; der Spike ist „aggressively time boxed for a reason“, und ohne Grenze werden Spikes zu „never-ending research projects“ ({BLAND}, S. 307–308). Patton nennt Spikes „bits of development or research we do with the explicit goal of learning“ (Kap. 11, „Discover a Minimum Viable Solution“). Dass die Zeitbox bei euch 40 Minuten dauert und dass der Höhepunkt zuerst gebaut wird, ist eine Kursregel: Fehlt am Ende etwas, dann nicht der Bildschirm, den der Test braucht. Abnahmekriterien sagen, wann der Spike fertig ist; die Zeitbox sagt, wann ihr aufhört, auch wenn er es nicht ist. Was offen bleibt, baut ihr zu Hause weiter, wenn ihr wollt – im selben Branch.</p>
     </div>
   </Folie>
 
@@ -236,7 +236,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
     <h2 id="schritt-bauen">Schritt 4: Claude Code baut – ihr gebt die Bilder</h2>
     <p class="folie-satz">Ein Prompt, eure Bilder – erst lesen, was Claude vorhat.</p>
     <ol class="gross dicht">
-      <li data-schritt><strong>Claude Code öffnen:</strong> dasselbe Fenster wie um 10:50 – euer Repo, Terminal, <code>claude</code>. Dann <code>/model opus</code>.</li>
+      <li data-schritt><strong>Claude Code öffnen:</strong> dasselbe Fenster wie beim Einrichten am Vormittag – euer Repo, Terminal, <code>claude</code>. Dann <code>/model opus</code>.</li>
       <li data-schritt><strong>Prompt „Spike · Claude Code“</strong> aus dem Handout einfügen, euren Vornamen eintragen.</li>
       <li data-schritt><strong>Bilder dazu</strong> (<code>ctrl</code> + <code>V</code>): Usage Story · Story Map mit Slice 1 · Abnahmekriterien und Zeitbox · eure Skizzen-Fotos.</li>
       <li data-schritt><strong>Claude nennt zuerst die Bildschirme.</strong> Stimmt die Liste mit euren Blättern: „Ja, los.“</li>
@@ -244,7 +244,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
     <p class="beispiel-box">Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen.</p>
     <p class="wo-fertig"><span><strong>Wo:</strong> Claude Code, in eurem Repo</span><span><strong>Fertig, wenn:</strong> Claude eure Bildschirme samt Höhepunkt richtig aufzählt</span> <Timer minuten={40} gruppe="spike-bauen" /> <span class="wo-fertig-hinweis">läuft auf der nächsten Folie weiter</span></p>
     <div class="nur-handout">
-      <p><strong>Öffnen:</strong> dasselbe Fenster wie um 10:50 – VS Code → File → Open Recent → euer Repo → Terminal → New Terminal → <code>claude</code>. Oben in der Mitte von VS Code steht der Name eures Produkts. Eine Datei öffnet oder schreibt ihr nicht; VS Code ist nur der Rahmen um das Claude-Terminal. <strong>Opus:</strong> <code>/model opus</code> eintippen, Enter. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> eintippen und das vorgeschlagene Standardmodell wählen. <strong>Bilder:</strong> auf Miro so weit hineinzoomen, dass ihr die Stickys lesen könnt; am Mac <code>cmd</code> + <code>ctrl</code> + <code>shift</code> + <code>4</code>, Bereich aufziehen, im Claude-Terminal <code>ctrl</code> + <code>V</code> (wirklich <code>ctrl</code>, nicht <code>cmd</code>) – es erscheint <code>[Image #1]</code>. Von der Story Map nur Backbone und Slice 1. Die Skizzen-Fotos zusätzlich direkt hineinziehen: Im Screenshot des Frames sind sie zu klein. <strong>Den Branch legt Claude Code an;</strong> ihr müsst nicht wissen, wie. Fragt Claude, ob es etwas ausführen darf, was zum Prompt passt: Ja.</p>
+      <p><strong>Öffnen:</strong> dasselbe Fenster wie beim Einrichten am Vormittag – VS Code → File → Open Recent → euer Repo → Terminal → New Terminal → <code>claude</code>. Oben in der Mitte von VS Code steht der Name eures Produkts. Eine Datei öffnet oder schreibt ihr nicht; VS Code ist nur der Rahmen um das Claude-Terminal. <strong>Opus:</strong> <code>/model opus</code> eintippen, Enter. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> eintippen und das vorgeschlagene Standardmodell wählen. <strong>Bilder:</strong> auf Miro so weit hineinzoomen, dass ihr die Stickys lesen könnt; am Mac <code>cmd</code> + <code>ctrl</code> + <code>shift</code> + <code>4</code>, Bereich aufziehen, im Claude-Terminal <code>ctrl</code> + <code>V</code> (wirklich <code>ctrl</code>, nicht <code>cmd</code>) – es erscheint <code>[Image #1]</code>. Von der Story Map nur Backbone und Slice 1. Die Skizzen-Fotos zusätzlich direkt hineinziehen: Im Screenshot des Frames sind sie zu klein. <strong>Den Branch legt Claude Code an;</strong> ihr müsst nicht wissen, wie. Fragt Claude, ob es etwas ausführen darf, was zum Prompt passt: Ja.</p>
     </div>
   </Folie>
 
@@ -258,10 +258,10 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       <li data-schritt><strong>Bei null:</strong> aufhören. Drei Kriterien ankreuzen, Fehlendes in Feld 3.</li>
     </ol>
     <p class="beispiel-box"><strong>Kaffeebar:</strong> „Der Knopf ‚Weiter‘ auf dem Bildschirm Zug führt nicht zu ‚Fertig 7:31‘ – bitte so ändern, sonst nichts.“</p>
-    <p class="wo-fertig"><span><strong>Wo:</strong> Browser und Claude Code; Link und Kreuze in Feld „4 · Prototyp“</span><span><strong>Fertig, wenn:</strong> ihr bis zum Höhepunkt kommt – oder der Timer bei null steht</span> <Timer minuten={40} gruppe="spike-bauen" /> <span class="wo-fertig-hinweis">Rest der 40 min · bei 5:00: Spike sichern</span></p>
+    <p class="wo-fertig"><span><strong>Wo:</strong> Browser und Claude Code; Link und Kreuze in Feld „4 · Prototyp“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> ihr bis zum Höhepunkt kommt – oder der Timer bei null steht</span> <Timer minuten={40} gruppe="spike-bauen" /> <span class="wo-fertig-hinweis">Rest der 40 min · bei 5:00: Spike sichern</span></p>
     <div class="nur-handout">
       <p><strong>Ansehen:</strong> Claude nennt eine Adresse wie <code>http://localhost:3000/spike</code>; <code>cmd</code> + Klick öffnet sie. Schmal wie ein Handy: Fenster zusammenschieben oder die Geräte-Ansicht in Chrome. <strong>Nachbessern:</strong> Sagt, was ihr seht und was ihr erwartet, mit den Wörtern von euren Blättern. Mehr Beispiele: „Auf dem Bildschirm Getränk fehlt der Knopf ‚Weiter‘ aus Skizze 1 – bitte ergänzen, sonst nichts ändern.“ · „Am Handy ragt der Satz am Höhepunkt über den Rand, siehe Bild – bitte beheben.“ · „Der Bildschirm Abholnummer fehlt. Bau ihn wie auf Skizze 4.“ Ein Bildschirmfoto dazu hilft. Nicht verschönern lassen: Farben und Schrift sind für den Test egal. Dreht sich Claude zweimal am selben Fehler im Kreis: Markus rufen, nicht weiter probieren.</p>
-      <p><strong>Sichern, fünf Minuten vor Schluss:</strong> Prompt „Spike sichern“ unten. Den Link tragt ihr in Feld 4 ein und öffnet ihn am Handy. Verlangt das Handy eine Anmeldung bei Vercel: auf vercel.com euer Projekt → Settings → Deployment Protection → Vercel Authentication aus → Save (wie an Coding-Tag 3). Ohne das können Testpersonen den Link nicht öffnen. Für den Trockenlauf reicht die Adresse auf eurem Mac. <strong>Stoppen:</strong> Bei null beginnt ihr keine Änderung mehr. In Feld 4 kreuzt ihr an, welche der drei Abnahmekriterien erfüllt sind; was fehlt, steht in Feld 3 bei „Bei null fehlt noch“. Weiter geht es im Puffer ab 16:25. Der Spike wird nicht in <code>main</code> gemergt; an Tag 5 schreibt ihr aus dem, was ihr gelernt habt, Issues.</p>
+      <p><strong>Sichern, fünf Minuten vor Schluss:</strong> Prompt „Spike sichern“ unten. Den Link tragt ihr in Feld 4 ein und öffnet ihn am Handy. Verlangt das Handy eine Anmeldung bei Vercel: auf vercel.com euer Projekt → Settings → Deployment Protection → Vercel Authentication aus → Save (wie an Coding-Tag 3). Ohne das können Testpersonen den Link nicht öffnen. Für den Trockenlauf reicht die Adresse auf eurem Mac. <strong>Stoppen:</strong> Bei null beginnt ihr keine Änderung mehr. In Feld 4 kreuzt ihr an, welche der drei Abnahmekriterien erfüllt sind; was fehlt, steht in Feld 3 bei „Bei null fehlt noch“. Weiter geht es zu Hause, freiwillig. Der Spike wird nicht in <code>main</code> gemergt; an Tag 5 schreibt ihr aus dem, was ihr gelernt habt, Issues.</p>
     </div>
   </Folie>
 
@@ -269,13 +269,13 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
     <h2 id="schritt-karte">Schritt 5: Karte E2 – bevor jemand testet</h2>
     <p class="folie-satz">Annahme, Aufgabe, Schwelle, Entscheidung – vor dem Test.</p>
     <ol class="gross dicht">
-      <li data-schritt><strong>Annahme mit ID</strong> aus eurer Annahmen-Map: „Wir glauben, dass …“ (bedienbar).</li>
+      <li data-schritt><strong>Annahme mit ID</strong> aus eurer <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a>: „Wir glauben, dass …“ (bedienbar).</li>
       <li data-schritt><strong>Aufgabe:</strong> Situation und Ziel – keine Bedienschritte, kein Wort von euren Knöpfen.</li>
       <li data-schritt><strong>Schwelle:</strong> „Wir haben recht, wenn x von 5 den Höhepunkt ohne Hilfe erreichen.“</li>
       <li data-schritt><strong>„Wir entscheiden vorher“:</strong> drei Bänder, je eine Handlung.</li>
     </ol>
     <p class="beispiel-box"><strong>Kaffeebar:</strong> „Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“ · ab 4 von 5 → Slice 1 bauen · 3 → Hänger beheben · unter 3 → neu skizzieren</p>
-    <p class="wo-fertig"><span><strong>Wo:</strong> Feld „5 · Karte E2“</span><span><strong>Fertig, wenn:</strong> „Wir entscheiden vorher“ steht und die Aufgabe kein Wort eurer Knöpfe enthält</span> <Timer minuten={10} /></p>
+    <p class="wo-fertig"><span><strong>Wo:</strong> Feld „5 · Karte E2“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> „Wir entscheiden vorher“ steht und die Aufgabe kein Wort eurer Knöpfe enthält</span> <Timer minuten={10} /></p>
     <div class="nur-handout">
       <p>Die Zeilen der Karte stehen im Feld vorgedruckt; ihr füllt die Lücken. Die ganze Karte der Kaffeebar steht oben auf dieser Seite („Auch dieser Test hat eine Karte“). Gemessen wird: Höhepunkt ohne Hilfe erreicht (ja/nein), Zeit bis dahin, wo gehangen, Reaktion am Höhepunkt. Die Zeit notiert ihr nur. Die Probe für die Aufgabe: Lest sie laut – kommt ein Wort vor, das auf einem eurer Knöpfe steht, schreibt sie um. Die Zeile „Wir entscheiden vorher“ steht wie auf Karte E1; die drei Bänder der Kaffeebar sind eine Setzung. Die Karte schreibt ihr heute, auch wenn die Tests mit Menschen, die den Pain haben, freiwillig sind: Testet ihr bis Tag 5, steht die Schwelle schon fest.</p>
     </div>
@@ -297,7 +297,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       <li data-schritt><strong>Testperson:</strong> denkt laut und sagt, wo sie tippen würde. <strong>Dritte Person:</strong> schreibt in Zeile „0 · Trockenlauf“.</li>
       <li data-schritt><strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Nächste Runde.</li>
     </ol>
-    <p class="wo-fertig"><span><strong>Wo:</strong> Teams (Bildschirm teilen) und Feld „6 · Tests“, Zeile 0</span><span><strong>Fertig, wenn:</strong> in allen drei Frames Zeile 0 ausgefüllt ist</span> <Timer minuten={10} /></p>
+    <p class="wo-fertig"><span><strong>Wo:</strong> Teams (Bildschirm teilen) und Feld „6 · Tests“, Zeile 0 (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> in allen drei Frames Zeile 0 ausgefüllt ist</span> <Timer minuten={10} /></p>
     <div class="nur-handout">
       <p>Wem der Prototyp gehört, teilt in Teams das Browser-Fenster mit dem Prototyp, schmal wie am Handy – die Adresse auf dem eigenen Mac reicht, den Link fürs Handy braucht ihr erst für Tests mit Menschen, die den Pain haben. Sie oder er liest die Aufgabe von Karte E2 wörtlich vor und klickt danach nur, was die Testperson ansagt, auch wenn es der falsche Knopf ist. Erlaubt ist ein Satz: „Was würdest du jetzt tun?“ Die dritte Person notiert im Frame des Prototyps in Zeile 0: Aufgabe verständlich (ja/nein), Höhepunkt erreicht (ja/nein), wo gehangen (Stichwort). Nach gut drei Minuten ist Schluss, auch ohne Höhepunkt. Besprochen wird nichts; wer nach der Runde etwas ändern will, ändert allein: die Aufgabe, wenn sie nicht verständlich war. Ist ein Prototyp nicht fertig, läuft die Runde mit den Fotos der Papier-Skizzen im Frame: Wem er gehört, zeigt das Blatt, zu dem der angesagte Knopf führt.</p>
       <p>Der Trockenlauf ist heute euer Test des Prototyps. Er ist keine Runde über Kreuz, in der ihr die Arbeit der anderen beurteilt: Die Testperson erfüllt eine Aufgabe und denkt laut, besprochen wird nichts. Bland verlangt den Probelauf vor dem ersten echten Test: „Test it internally to make sure the flow works“ ({BLAND}, S. 183). Für die Schwelle von E2 zählt er nicht – dafür zählen nur Testpersonen mit dem Pain, freiwillig bis Tag 5. Dass online die Besitzerin oder der Besitzer klickt und die Testperson ansagt, und „keine Kritik“, sind Kursregeln.</p>
@@ -327,55 +327,49 @@ Starte die Seite lokal und gib mir die Adresse. Ich habe 40 Minuten. main, Issue
   </Callout>
 
   <h2 id="vorlage">So sieht euer Frame aus</h2>
+  <p>Das Beispiel der Kaffeebar auf Miro: <MiroLink name="T4 · 5 · Prototyp · Kaffeebar">Kaffeebar</MiroLink>.</p>
   <p>Im Frame „T4 · 5 · Prototyp · Produkt n“ stehen sechs nummerierte Felder, so wie die Schritte: oben 1 bis 4, darunter 5 und 6, dazu die Befunde. Testet ihr bis Tag 5 mit Menschen, die den Pain haben (freiwillig), kommen die Tests, die Befunde und die Lernkarte E2 in denselben Frame.</p>
-  <Prompt label="Miro · T4 · 5 · Prototyp · Produkt n">1 · Papier-Skizzen
+  <Karte label="Miro · T4 · 5 · Prototyp · Produkt n" text={`1 · Papier-Skizzen
 Ein Foto je Blatt. Ein Blatt = ein Bildschirm (Stationen 2 bis 6 eurer Usage Story). Höhepunkt = eigenes Blatt mit Stern. Pfeil an jedem Knopf: zu welchem Blatt führt er?
-Blatt 1 · [Name des Bildschirms] · Station [n] … Blatt 6 · …
-
-2 · Abnahmekriterien
+Blatt 1 · [Name des Bildschirms] · Station [n] … Blatt 6 · …`} />
+  <Karte text={`2 · Abnahmekriterien
 Der Prototyp zeigt [den Weg von … bis zum Höhepunkt „…“ – in … Tipps].
 Er läuft [am Handy im Browser; oben steht „Prototyp – nicht echt“].
-Er hat nicht: [Login · Zahlung · Datenbank · …].
-
-3 · Zeitbox
+Er hat nicht: [Login · Zahlung · Datenbank · …].`} />
+  <Karte text={`3 · Zeitbox
 Zeitbox: bis [Uhrzeit] (40 Minuten)
 Zuerst gebaut: [Höhepunkt-Bildschirm]
-Bei null fehlt noch: [...]
-
-4 · Prototyp
+Bei null fehlt noch: [...]`} />
+  <Karte text={`4 · Prototyp
 Branch: spike/[vorname]
 Link fürs Handy: [Vorschau-Adresse …/spike]
-Abnahme – zeigt: ja / nein · läuft: ja / nein · hat nicht: ja / nein
-
-5 · Karte E2 · A[n] (bedienbar) · läuft bis Tag 5
+Abnahme – zeigt: ja / nein · läuft: ja / nein · hat nicht: ja / nein`} />
+  <Karte text={`5 · Karte E2 · A[n] (bedienbar) · läuft bis Tag 5
 Wir glauben, dass [...].
 Um das zu prüfen, geben wir fünf [Zielgruppe] den Prototyp am Handy mit der Aufgabe:
   „[Situation, Ziel – ohne Bedienschritte]“
 Wir messen: Höhepunkt ohne Hilfe erreicht · Zeit bis dahin · wo gehangen · Reaktion am Höhepunkt.
 Wir haben recht, wenn [x] von 5 den Höhepunkt ohne Hilfe erreichen.
-Wir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [...]
-
-6 · Tests
+Wir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [...]`} />
+  <Karte text={`6 · Tests
 Testperson · Pain vorhanden? · Höhepunkt ohne Hilfe? · Zeit · wo gehangen · Reaktion am Höhepunkt · Zitat
 0 · Trockenlauf (heute): Aufgabe verständlich? ja / nein · Höhepunkt erreicht? ja / nein · wo gehangen: [...]
 1 bis 5: freiwillig bis Tag 5
 Ablauf je Test (15–20 min): Einwilligung (Notizen, KI) · „Wir testen den Prototyp, nicht dich; sag, was dir durch den Kopf geht“ ·
-  Aufgabe vorlesen · schweigen, höchstens „Was würdest du jetzt tun?“ · danach: „Was hat dich überrascht?“
-
-Befunde – falls ihr testet
-U1 · [Befund] · [n von 5] · Folge: [was ihr deshalb ändert]
-
-Lernkarte E2 – falls ihr testet
+  Aufgabe vorlesen · schweigen, höchstens „Was würdest du jetzt tun?“ · danach: „Was hat dich überrascht?“`} />
+  <Karte text={`Befunde – falls ihr testet
+U1 · [Befund] · [n von 5] · Folge: [was ihr deshalb ändert]`} />
+  <Karte text={`Lernkarte E2 – falls ihr testet
 Wir glaubten, dass [...].
 Wir haben beobachtet: [x von 5, Zeiten, U-IDs]
 Verlässlichkeit: schwach / mittel / stark – weil [...]
 Daraus lernen wir: [...]
 Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: [...]
 Weicht ab von „Wir entscheiden vorher“? Grund: [...]
-Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]</Prompt>
+Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]`} />
 
   <h2 id="pruefen">Prüfen</h2>
-  <p>Mit Opus – in Claude Code <code>/model opus</code>. Statt Dateien fügt ihr Screenshots eurer Frames ein.</p>
+  <p>Skizzen, Kriterien, Karte E2 und Befunde liegen nur auf Miro, in eurem Frame „T4 · 5 · Prototyp · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>
   <ClaudePruefung slug="prototyp-spike" />
   </div>
 

@@ -1,8 +1,8 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/scrum.astro. Zwei Tage auf einer Seite:
-// - Tag 4 (28.11., 15:45–16:25, Variante B): Theorie aus dem Foliensatz (27 min), dann hier „Wo wir abweichen“ (2 min),
-//   Kaffeebar auf der Scrum-Karte (4 + 3 min), Gleis-1-Express (4 min); „Weiter heute“ führt in den Puffer.
+// - Tag 4 (28.11., 16:35–17:15, Variante B): Theorie aus dem Foliensatz (27 min), dann hier „Wo wir abweichen“ (2 min),
+//   Kaffeebar auf der Scrum-Karte (4 + 3 min), Gleis-1-Express (4 min); „Weiter heute“ führt in den Abschluss (17:15).
 //   Die Folien agil … fertig und planen sind Nachlese im Handout: an Tag 4 im Beamer überspringen.
 // - Tag 5 (12.12., 09:25–10:05): team, dod, vorgehen, uebertrag – im Code unten markiert.
 // Abgeschaltet und darum ohne Notiz (folienAus lässt sie weg): produktziel (PRODUKTSATZ_AN_TAG_4), Lego4Scrum.
@@ -235,16 +235,16 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         quelle: `${JEFFRIES}, S. 38, 41`,
       },
     ],
-    ueberleitung: 'Für heute: zurück an den Prototyp.',
+    ueberleitung: 'Für heute: gleich der Abschluss mit der Origin Story.',
   },
 
   'weiter-tag-4': {
     live: [
       'Teamaufstellung und Definition of Done kommen an Tag 5.',
-      '„Jetzt weiter am Prototyp bis 17:15: Höhepunkt, Karte E2, Trockenlauf.“',
+      '„Jetzt Origin Story; den Prototyp baut ihr zu Hause weiter.“',
       'Pfeil → Abschluss Tag 4; das Panel zeigt die nächste Folie der Seite.',
     ],
-    ueberleitung: 'Um 17:15: Origin Story und Hausaufgabe im Abschluss.',
+    ueberleitung: 'Gleich: Origin Story und Hausaufgabe im Abschluss.',
   },
 
   // Tag 5 (12.12., 09:25–10:05): Einstieg von tag-5#debrief-ablauf; ← führt dorthin zurück.

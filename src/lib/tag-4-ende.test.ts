@@ -5,7 +5,7 @@ import { station } from '../components/arbeitsfluss';
 import { bloeckeAus, folienAus, quellenAusGlob } from './begleiter';
 
 // Audit 26.11.2026 (Tag 4 im Beamer, Punkte E und F): Tag 4 hatte kein Ende. Nach scrum#planen lief → in die Tag-5-Folien
-// (#team, #dod …) und weiter nach /methoden/backlog; die Origin Story (17:15) kam schon um 11:30 nach experiment#vorgehen.
+// (#team, #dod …) und weiter nach /methoden/backlog; die Origin Story (17:15) kam schon um 11:30 (heute 11:50) nach experiment#vorgehen.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 const seite = (p: string) => ohneAbgeschaltet(quellen[p] ?? '');
 const folie = (p: string, id: string) => {
@@ -94,7 +94,7 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
     expect(weg.some((w) => w.startsWith('/innolab/methoden/backlog'))).toBe(false);
   });
 
-  it('die Origin Story kommt einmal, im Abschluss – nicht um 11:30 auf der Experiment-Seite', () => {
+  it('die Origin Story kommt einmal, im Abschluss – nicht um 11:50 auf der Experiment-Seite', () => {
     const origin = weg.filter((w) => folie(w.split('#')[0], w.split('#')[1]).includes('/quellen/lichaw/origin-story.jpg'));
     expect(origin).toStrictEqual(['/innolab/tag-4#abschluss']);
     expect(folienAus('/innolab/methoden/experiment', seite('/innolab/methoden/experiment')).map((f) => f.id)).not.toContain('origin-story');
@@ -135,25 +135,18 @@ describe('Tag 4: Folien des Abschlusses', () => {
     expect(schritte.length).toBeGreaterThanOrEqual(4);
     expect(schritte.length).toBeLessThanOrEqual(7);
     const liste = f.slice(f.indexOf('<div class="nur-handout">'));
-    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v6" items={[');
-    // Je Schritt der Teil, der wörtlich aus einem Punkt der Liste kommt.
-    // Markus 26.11. abends: Origin Story → Aufsteller/Landingpage → E1 → Lernkarte E1; Usability-Tests optional; dann Aufräumen.
+    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v7" items={[');
+    // Dozent 27.11.2026: E1 läuft nicht. Origin Story → Karte E1 fertig → freiwillig Usability-Tests → Aufräumen → Linear.
     expect(schritte.map((x) => x.match(/^<strong>([^<]+)<\/strong>/)?.[1])).toStrictEqual([
-      'Origin Story', 'Daraus der Aufsteller oder die Landingpage', 'E1 laufen lassen', 'Lernkarte E1', 'Wer Zeit hat: Usability-Tests', 'Fertig machen, was heute offen blieb', 'Linear einrichten,',
+      'Origin Story', 'Karte E1 fertig machen,', 'Freiwillig: Usability-Tests', 'Fertig machen, was heute offen blieb', 'Linear einrichten,',
     ]);
-    expect(schritte[2]).toContain('bis drei Werktage vor Tag 5');
-    expect(schritte[4]).toContain('fünf sind ideal, auch zwei, drei helfen');
+    expect(schritte.join('\n')).not.toMatch(/E1 laufen lassen|Lernkarte E1|Aufsteller oder die Landingpage/);
+    expect(schritte[2]).toContain('fünf sind ideal, auch zwei, drei helfen');
     for (const aus of ['Value Map und Fit', 'Concept Story', 'Euer Baum', 'Geschäftsmodell auf Miro', 'Karte E1', 'Story Map mit Slice 1', 'Usage Story']) expect(liste, aus).toContain(aus);
-    // Die Liste in derselben Reihenfolge: Origin Story, Aufsteller, E1, Lernkarte, optionale Tests vor dem Rest.
-    const pos = ['Origin Story als Text', 'Daraus der Aufsteller', 'E1 gelaufen', 'Lernkarte E1', 'Optional, wer Zeit hat: Usability-Tests', 'Value Map und Fit'].map((w) => liste.indexOf(w));
+    const pos = ['Origin Story auf Miro', 'Karte E1 fertig', 'Freiwillig: Usability-Tests', 'Value Map und Fit'].map((w) => liste.indexOf(w));
     expect(pos.every((x, k) => x > 0 && (k === 0 || x > pos[k - 1]))).toBe(true);
-    for (const aus of [
-      'als Text für Aufsteller oder Landingpage',
-      'an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe',
-      'Usability-Tests</strong> mit Karte E2',
-      'Befund → Handlung',
-      'als Collaborator',
-    ]) {
+    expect(liste).not.toMatch(/E1 gelaufen|Lernkarte E1 mit/);
+    for (const aus of ['mit dem E1 laufen würde', 'Usability-Tests</strong> mit dem Prototyp', 'als Collaborator']) {
       expect(schritte.join('\n'), aus).toContain(aus);
       expect(liste.replace(/<\/?strong>/g, ''), aus).toContain(aus.replace(/<\/?strong>/g, ''));
     }
@@ -166,7 +159,7 @@ describe('Tag 4: Folien des Abschlusses', () => {
     const erster = bloeckeAus(seite('/innolab/tag-5'))[0];
     expect(erster.titel).toBe('Test-Debrief');
     const f = folie('/innolab/tag-4', 'ende-tag-4');
-    expect(f).toContain(`<p class="nur-beamer">Tag 5 beginnt am 12. Dezember mit dem <a href="/innolab/tag-5${erster.href}">${erster.titel}</a>: Was haben E1 und eure Tests gezeigt?</p>`);
+    expect(f).toContain(`<p class="nur-beamer">Tag 5 beginnt am 12. Dezember mit dem <a href="/innolab/tag-5${erster.href}">${erster.titel}</a>: Was hätte E1 gezeigt – und was eure Tests?</p>`);
     expect(seite('/innolab/tag-5')).toContain('Samstag, 12. Dezember 2026');
   });
 });
@@ -206,9 +199,9 @@ describe('Hilfen des Tests', () => {
 
 // Review 2 #448: Was nur zur Uhrzeit am Beamer stimmt, steht nicht im Handout (dort lesen es alle auch an Tag 5).
 describe('Handout ohne Beamer-Sätze', () => {
-  it('„Heute … bis 17:15“, der Tag-5-Satz und die Hausaufgaben-Schritte nur im Beamer; das Handout behält Hinweis und Checkliste', () => {
+  it('„Jetzt: Origin Story“, der Tag-5-Satz und die Hausaufgaben-Schritte nur im Beamer; das Handout behält Hinweis und Checkliste', () => {
     const weiter = folie('/innolab/methoden/scrum', 'weiter-tag-4');
-    expect(weiter).toMatch(/<p class="nur-beamer">Heute: weiter am Prototyp bis 17:15/);
+    expect(weiter).toMatch(/<p class="nur-beamer">Jetzt: Origin Story und Hausaufgabe/);
     expect(weiter).toMatch(/<p class="nur-handout">Teamaufstellung und Definition of Done folgen an <a href="\/innolab\/tag-5">Tag 5<\/a>/);
     // „folgen an Tag 5“ steht genau einmal außerhalb von .nur-beamer.
     const ohneBeamer = weiter.replace(/<p class="[^"]*\bnur-beamer\b[^"]*">[\s\S]*?<\/p>/g, '');
@@ -223,7 +216,7 @@ describe('Handout ohne Beamer-Sätze', () => {
 describe('Origin Story: Vorlage verlinkt', () => {
   // Seit 26.11. abends: keine docs-Vorlage mehr – die Origin Story steht auf Miro im eigenen Frame.
   it('tag-4#abschluss nennt den Miro-Frame der Origin Story statt einer docs-Vorlage', () => {
-    expect(folie('/innolab/tag-4', 'abschluss')).toContain('Ihr schreibt sie auf Miro, in eurem Frame „T4 · 6 · Origin Story · Produkt n“.');
+    expect(folie('/innolab/tag-4', 'abschluss')).toContain('in eurem Frame „T4 · 6 · Origin Story · Produkt n“: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink>');
     expect(folie('/innolab/tag-4', 'abschluss')).not.toContain('vorlage-origin-story');
     // Auf der Experiment-Seite zeigt der Abschnitt mit dieser id, wie der Miro-Frame aussieht.
     expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">So sieht die Origin Story auf Miro aus</h3>');
@@ -257,8 +250,28 @@ describe('Tag 4: Folie „Slice 1 im Baum“', () => {
     const bild = roh.replace(/^---[\s\S]*?\n---/, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '');
     expect(bild).toContain('<figure class="slice-baum"');
     for (const w of ['LINIE.outcome.name', 'LINIE.beleg.name', 'LINIE.annahme.name', 'Ziel-Chance', 'Spitzenreiter', '<strong>Slice 1</strong>', '„Wir lernen, ob …“ – die riskanteste Annahme']) expect(bild, w).toContain(w);
-    // Durchsicht 26.11.: rechts nur Begriffe, die um 9:35 bekannt sind – das Layout der Story Map kommt erst ab 11:30.
+    // Durchsicht 26.11.: rechts nur Begriffe, die um 9:35 bekannt sind – das Layout der Story Map kommt erst ab 11:50.
     expect(bild.match(/Lern-Sticky|links neben Slice 1/g) ?? []).toStrictEqual([]);
     expect(bild).not.toMatch(/\bdata-schritt\b/);
+  });
+});
+
+// Wünsche des Dozenten (27.11.2026): Origin Story mit den sieben Stationen des Miro-Frames; Warm-up der Story Map mit dem Satz
+// aus seinem Foliensatz und den drei Morgen; „im Kopf überschlägt“ statt „zusammenrechnet“ (Lichaw: „mental calculation“).
+describe('Origin Story, Warm-up, Concept Story: Wortlaut nach Durchsicht', () => {
+  it('tag-4#abschluss zeigt sieben Stationen in der Reihenfolge des Frames', () => {
+    const f = folie('/innolab/tag-4', 'abschluss');
+    const stationen = [...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1]);
+    expect(stationen).toStrictEqual(['Exposition', 'Auslöser', 'Steigende Handlung', 'Krise', 'Höhepunkt', 'Fallende Handlung', 'Ende']);
+  });
+  it('Story-Map-Warm-up: Satz zum Aufwachen und drei Morgen', () => {
+    const q = folie('/innolab/methoden/story-map', 'morgen-aufschreiben');
+    expect(q).toContain('<p class="folie-satz">„Schließt die Augen und denkt an den Moment zurück, als ihr heute aufgewacht seid. Was ist das Erste, woran ihr euch erinnert? Öffnet die Augen und schreibt es auf ein Sticky.“</p>');
+    const v = folie('/innolab/methoden/story-map', 'varianten');
+    expect(v).toContain('<p class="folie-satz">Drei Morgen: ein typischer Morgen – euer bester – euer schlechtester.</p>');
+    expect(v).toContain('„the typical day story, the fabulous day story, and the story that has an emergency or two“');
+  });
+  it('Concept Story: „im Kopf überschlägt“, nirgends „zusammenrechnet“', () => {
+    expect(folie('/innolab/methoden/concept-story', 'concept-story')).toContain('Was jemand in Sekunden im Kopf überschlägt, wenn er zum ersten Mal von eurem Produkt hört.');
   });
 });

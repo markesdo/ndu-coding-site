@@ -1,0 +1,28 @@
+---
+// Eine Karte, wie sie auf Miro steht (Experiment-Karte E1/E2, Lernkarte, Vorlagen der Frames): Titel und je Zeile der feste
+// Satzanfang fett, der Rest normal; Lücken „[…]“ grau. Kein Kopieren-Knopf – Studierende schreiben auf Miro, nicht ab.
+// label: kleine Zeile über der Karte („Beispiel · …“, „Vorlage · Miro, Frame …“). Zerlegen: karte.ts.
+import { karteAus } from './karte';
+const { label, text } = Astro.props as { label?: string; text: string };
+const { titel, zeilen } = karteAus(text);
+---
+<figure class="karte">
+  {label && <figcaption class="karte-label">{label}</figcaption>}
+  <div class="karte-titel">{titel.map((t) => (t.luecke ? <span class="luecke">{t.text}</span> : t.text))}</div>
+  <ul class="karte-zeilen">
+    {zeilen.map((z) => (
+      <li>{z.stamm && <strong>{z.stamm}</strong>}{z.stamm && ' '}{z.rest.map((t) => (t.luecke ? <span class="luecke">{t.text}</span> : t.text))}</li>
+    ))}
+  </ul>
+</figure>
+
+<style>
+  .karte { margin: .6rem 0; padding: .6rem .9rem; border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 8px; background: var(--bg-2, var(--bg)); }
+  .karte-label { font-size: .8rem; color: var(--muted); margin-bottom: .2rem; }
+  .karte-titel { font-weight: 700; margin-bottom: .3rem; }
+  .karte-zeilen { list-style: none; margin: 0; padding: 0; }
+  .karte-zeilen li { margin: .2rem 0; line-height: 1.4; }
+  .luecke { color: var(--muted); }
+  :global(html[data-beamer]) .karte { padding: .45rem .8rem; margin: .4rem 0; }
+  :global(html[data-beamer]) .karte-zeilen li { font-size: .95rem; margin: .12rem 0; line-height: 1.35; }
+</style>

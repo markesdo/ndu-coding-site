@@ -53,7 +53,7 @@ describe('Geschäftsmodell gekürzt (26.11.2026)', () => {
     expect(v).toContain('<li><strong>Wert?</strong> Ertrag: wer zahlt wofür; wie die Kundschaft heute bezahlt. Kosten: die größten Posten.</li>');
     expect(v).toContain('<li><strong>Linie:</strong> [Outcome] führt zu [Impact], weil …</li>');
     expect(q.match(/docs\//g) ?? []).toStrictEqual([]);
-    expect(q).toContain('Wählt dafür Opus (in Claude Code <code>/model opus</code>');
+    expect(q).toContain('Euer Modell liegt nur auf Miro, in eurem Frame „T4 · 7 · Geschäftsmodell · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.');
   });
 
   it('Begleiter: jede Folie hat eine Notiz mit live-Stichworten, Seite zwischen Concept Story und Experiment', () => {

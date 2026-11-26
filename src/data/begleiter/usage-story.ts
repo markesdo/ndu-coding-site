@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/usage-story.astro (Tag 4, 28.11., 13:35–14:05: 12 min Theorie und
+// Begleiter-Notizen zu src/pages/innolab/methoden/usage-story.astro (Tag 4, 28.11., 14:15–14:45: 12 min Theorie und
 // Beispiel auf vier Folien – seit 26.11. mit „Drei Storys“ vorn –, 18 min Übung). Vorwissen „unsicher“ (Entrepreneur Lab: „kinda, not really?“): kurz nachfragen.
 // Lichaw = EPUB, zitiert nach Kapitel und Abschnitt.
 const LICHAW = 'Donna Lichaw, The User’s Journey (2016)';
@@ -9,8 +9,9 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
   'drei-storys': {
     live: [
       'Anknüpfen: Slice 1 steht seit dem Vormittag auf der Story Map.',
-      'Drei Kästen von links: versteht – sieht – erlebt den Wert.',
-      '„Concept Story heute Morgen, Origin Story um 17:15, Usage Story jetzt.“',
+      'Drei Kästen von links: versteht – sieht – erlebt den Wert eures Produkts.',
+      'Wert: besser als das, was die Person heute tut.',
+      'Concept heute Morgen, Usage jetzt, Origin am Ende des Tages.',
       'Kernaufgabe = der Weg durch Slice 1, den Menschen immer wieder gehen.',
     ],
     kern: [
@@ -20,7 +21,7 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
       },
       {
         text: '„Core tasks are interactions that you want and expect users to perform over and over again.“',
-        quelle: `${LICHAW}, Kap. 5`,
+        quelle: `${LICHAW}, Kap. 5, Micro-Stories: Core Tasks, S. 86`,
       },
     ],
     ueberleitung: 'Wie die Usage Story aufgebaut ist: sieben Stationen auf dem bekannten Bogen.',

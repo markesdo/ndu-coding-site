@@ -17,7 +17,9 @@ const COHN = 'Mike Cohn, „Agile Estimating and Planning“ (2005)';
 const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
 const DUARTE = 'Vasco Duarte, „NoEstimates“ (2016)';
 const GILAD = 'Itamar Gilad, „Evidence-Guided“ (2023)';
-const NACH_LINEAR = `Lies docs/LINEAR.md, docs/STORY-MAP.md und docs/TESTS.md. Hier sind meine Issues für Slice 1 in dieser Reihenfolge, je mit Titel, Ziel, Kontext, Nicht im Umfang, Fragen aus dem Gespräch und Fertig wenn: [Liste]. Zeig mir zuerst, wie du sie anlegen würdest; Akzeptanzkriterien als „folgt“. Leg sie erst nach meinem Okay in Linear an, in genau dieser Reihenfolge, und schreib die Fragen aus dem Gespräch als ersten Kommentar ins Issue.`;
+// Seit dem Nachtrag 26.11.2026 liegen Story Map und Testbefunde auf Miro: Claude bekommt Bilder statt der alten
+// Dateien für Story Map und Tests. Befunde gibt es nur, wenn jemand bis Tag 5 getestet hat (freiwillig).
+const NACH_LINEAR = `Lies docs/LINEAR.md. Unter dieser Nachricht stehen Bilder aus Miro: meine Spalte im Frame „T4 · 1 · Story Map“ mit Slice 1 und, falls ich getestet habe, die Befunde aus meinem Frame „T4 · 5 · Prototyp · Produkt n“. Hier sind meine Issues für Slice 1 in dieser Reihenfolge, je mit Titel, Ziel, Kontext, Nicht im Umfang, Fragen aus dem Gespräch und Fertig wenn: [Liste]. Zeig mir zuerst, wie du sie anlegen würdest; Akzeptanzkriterien als „folgt“. Leg sie erst nach meinem Okay in Linear an, in genau dieser Reihenfolge, und schreib die Fragen aus dem Gespräch als ersten Kommentar ins Issue.`;
 ---
 <Layout title="Backlog aus Issues">
   <span class="eyebrow">Innolab · Tag 5 · Methode</span>
@@ -178,14 +180,14 @@ mit leerer und mit voller Warteschlange am Handy gezeigt</Prompt>
     <p class="folie-satz">Allein schreiben und ordnen, dann erzählt jede*r, dann nach Linear.</p>
     <MiroFrame name="T5 · 1 · Backlog-Reihenfolge" />
     <ol class="gross">
-      <li data-schritt><strong>Karten schreiben, allein:</strong> Slice 1 Karte für Karte, Testbefunde, das Mess-Issue. <Timer minuten={15} /></li>
+      <li data-schritt><strong>Karten schreiben, allein:</strong> Slice 1 Karte für Karte von Miro, Testbefunde (falls ihr getestet habt), das Mess-Issue. <Timer minuten={15} /></li>
       <li data-schritt><strong>Ordnen, allein:</strong> Wert und Risiko, Platz 1 bis n. <Timer minuten={5} /></li>
       <li data-schritt><strong>Erzählen:</strong> je drei Minuten, die anderen fragen. <Timer minuten={9} /></li>
       <li data-schritt><strong>Nach Linear:</strong> Claude zeigt erst, legt nach eurem Okay an. <Timer minuten={11} /></li>
     </ol>
     <div class="nur-handout">
-      <p>Davor: Theorie 12 Minuten, Kaffeebar gemeinsam 8 – zusammen 60. Zu 1: Geht Slice 1 eurer Story Map (<code>docs/STORY-MAP.md</code>) von links nach rechts durch. Titel = der Verb-Satz vom Sticky; Ziel = wer, was, warum; dazu die Testbefunde aus <code>docs/TESTS.md</code>, die etwas am Slice ändern, die Fehlerfälle aus Slice 1 und das Issue für das Mess-Ereignis aus der Definition of Done in <code>docs/TEAM.md</code>. Erst Stichworte, dann das Format (Vorlage unten). „Fertig, wenn“ nennt nur, was für dieses Issue gilt – die Definition of Done gilt ohnehin. Zu 2: Legt die Karten in das Raster von Cohn und nummeriert sie. Wo ihr vom Bauchgefühl abweicht, schreibt ihr den Grund ins Issue, unter Kontext.</p>
-      <p>Zu 3: A erzählt den eigenen Backlog entlang der Map, mit „und dann …“, und sagt, warum diese Reihenfolge. B und C fragen nach Pattons Liste „What to Really Talk About“ ({PATTON}, Kap. 7): Wer genau? Was genau? Warum? Was passiert, wenn etwas schiefgeht? Welche Fragen und Annahmen sind offen? A notiert die Antworten auf der Karte – unter Kontext, Nicht im Umfang oder Fragen aus dem Gespräch. Danach erzählen B und C, wer zuerst bereit ist. Patton hält solche Gespräche in Gruppen von „two to five“ für richtig (Kap. 9, „Build an Oral Tradition of Storytelling“); die drei Minuten pro Person sind eine Kürzung des Kurses. Zu 4: Prompt unten, in eurem Repo.</p>
+      <p>Davor: Theorie 12 Minuten, Kaffeebar gemeinsam 8 – zusammen 60. Zu 1: Geht Slice 1 eurer Story Map auf Miro (eure Spalte im Frame „T4 · 1 · Story Map“) von links nach rechts durch. Titel = der Verb-Satz vom Sticky; Ziel = wer, was, warum; dazu – falls ihr bis Tag 5 getestet habt – die Befunde aus eurem Frame „T4 · 5 · Prototyp · Produkt n“, die etwas am Slice ändern (wie sie aussehen: <a href="/innolab/methoden/prototyp-spike#beispiel-befunde">Befunde der Kaffeebar</a>), die Fehlerfälle aus Slice 1 und das Issue für das Mess-Ereignis aus der Definition of Done in <code>docs/TEAM.md</code>. Erst Stichworte, dann das Format (Vorlage unten). „Fertig, wenn“ nennt nur, was für dieses Issue gilt – die Definition of Done gilt ohnehin. Zu 2: Legt die Karten in das Raster von Cohn und nummeriert sie. Wo ihr vom Bauchgefühl abweicht, schreibt ihr den Grund ins Issue, unter Kontext.</p>
+      <p>Zu 3: A erzählt den eigenen Backlog entlang der Map, mit „und dann …“, und sagt, warum diese Reihenfolge. B und C fragen nach Pattons Liste „What to Really Talk About“ ({PATTON}, Kap. 7): Wer genau? Was genau? Warum? Was passiert, wenn etwas schiefgeht? Welche Fragen und Annahmen sind offen? A notiert die Antworten auf der Karte – unter Kontext, Nicht im Umfang oder Fragen aus dem Gespräch. Danach erzählen B und C, wer zuerst bereit ist. Patton hält solche Gespräche in Gruppen von „two to five“ für richtig (Kap. 9, „Build an Oral Tradition of Storytelling“); die drei Minuten pro Person sind eine Kürzung des Kurses. Zu 4: Prompt unten, in Claude Code in eurem Repo, mit Opus (<code>/model opus</code>); die Bilder von Miro fügt ihr darunter ein (Bildschirmfoto mit Cmd+Ctrl+Shift+4, im Terminal mit Ctrl+V).</p>
       <Prompt label="Issues nach Linear · Claude Code" note="Claude legt nichts an, bevor ihr die Vorschau freigegeben habt. Prüft vor dem Okay Titel und Reihenfolge.">{NACH_LINEAR}</Prompt>
     </div>
   </Folie>
@@ -220,7 +222,7 @@ mit leerer und mit voller Warteschlange am Handy gezeigt</Prompt>
   <Folie>
     <h2 id="uebertrag">Übertrag auf euer Produkt</h2>
     <p class="folie-satz">Welches eurer Issues ist eure „Zugliste“ – nach vorn, weil ein Test und ein Risiko es verlangen, nicht eine Rechnung?</p>
-    <p class="nur-handout">Wenn ihr keins findet, stehen eure Testbefunde noch nicht im Backlog. Oder eure Reihenfolge folgt der Map von links nach rechts – dann fragt euch, welches Issue ihr als erstes sehen wollt, weil ihr am wenigsten wisst, ob es geht.</p>
+    <p class="nur-handout">Wenn ihr keins findet, stehen eure Testbefunde noch nicht im Backlog – oder ihr habt (noch) nicht getestet; dann fragt nach dem Risiko allein. Oder eure Reihenfolge folgt der Map von links nach rechts – dann fragt euch, welches Issue ihr als erstes sehen wollt, weil ihr am wenigsten wisst, ob es geht.</p>
   </Folie>
 
   <p class="small muted">Nach {PATTON}, Kap. 4, 6–11; drei Cs nach Ron Jeffries, <em>Extreme Programming Installed</em> (2000), zitiert in Patton Kap. 6 und Wake 2003; {WAKE}; {COHN}, Kap. 9; {JEFFRIES}, Kap. 2, 5, 11; {DUARTE}; RICE und ICE im Handout nach Sean McBride, Intercom (2018), und {GILAD}, Kap. 3.</p>

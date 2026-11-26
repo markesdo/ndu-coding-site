@@ -155,8 +155,8 @@ const ROH: Omit<Station, 'zeile'>[] = [
     satz: 'Jedes „?“ im Ideen-Vergleich und im Fit ist eine offene Frage.',
     gebrauchtIn: 'Annahmen der Idee (Tag 4)',
   },
-  // Tag 4 (Ablauf ab 25.11., seit 26.11. mit Claude Pro gemeinsam um 10:50: 9:05 Value Map & Fit nachholen, 9:35 Was bauen wir?, 9:40 Concept
-  // Story, 10:30 Geschäftsmodell, 10:50 Claude Pro, 11:00 Experiment-Karte, 11:30 Story Map, 13:35 Usage Story, 14:05 Prototyp-Spike, 15:45 Agil & Scrum, 17:15 Origin Story). Der Baum
+  // Tag 4 (Ablauf ab 25.11., seit 27.11. mit den Zeiten des Tag-4-PRs: 9:05 Value Map & Fit nachholen, 9:35 Was bauen wir?, 9:40 Concept
+  // Story, 10:40 Geschäftsmodell, 11:00 Claude Pro, 11:10 Experiment-Karte, 11:50 Story Map, 14:15 Usage Story, 14:45 Prototyp-Spike, 16:35 Agil & Scrum, 17:15 Origin Story). Der Baum
   // wächst über den Tag mit (Ideen, Annahme, E1, E2) und steht nach dem Spike.
   {
     id: 'value-map-nachholen', fortsetzung: 'value-map', kurz: 'Value Map & Fit (Nachholen)', linien: ['beleg'], spalte: 4, ergebnis: [],
@@ -183,7 +183,7 @@ const ROH: Omit<Station, 'zeile'>[] = [
     von: ['annahmen', 'belege', 'ideation', 'value-map', 'offene-fragen', 'concept-story', 'geschaeftsmodell'],
     jetzt: 'Schritte, Annahmen, Map – Karte E1 mit Schwelle',
     satz: 'Ihr geht die Idee Schritt für Schritt durch, findet, was dafür stimmen muss, und legt für die riskanteste Annahme Test und Schwelle fest.',
-    gebrauchtIn: 'Baum: Lösungen und Tests · E1 läuft bis Tag 5 · Lernkarte · Backlog',
+    gebrauchtIn: 'Baum: Lösungen und Tests · E1 als Gedankenexperiment · Lernkarte, falls getestet · Backlog',
   },
   {
     id: 'story-map', methode: 'story-map', kurz: 'Story Map: Slice 1', linien: ['beleg', 'outcome'], spalte: 4, stern: true,

@@ -4,7 +4,7 @@ import type { Notiz } from './typen';
 // Tag 3 (21.11.): Story-Bogen nur als Theorie. Tag 4 (28.11., NDU-66): Die Theorie läuft als eigener Teil vor der Übung,
 // alle 16 Folien von story-bogen bis drei-storys, in dieser Reihenfolge (Fable-Durchsicht 26.11.: concept-story vor flach,
 // hoehepunkt darin aufgegangen, flach – hoch – hoch-lehre – baut-mit als iPhone-Strang, drei-storys als Ausblick am Ende).
-// Danach 30 min Übung (vorgehen): sieben Stationen auf Miro in „T4 · 0 · Concept Story · Produkt n“, Flach-Probe,
+// Danach 30 min Übung (vorgehen): sieben Stationen auf Miro in „T4 · 0 · Concept Story · Produkt n“ mit der Flach-Probe als Check (seit 27.11.),
 // festhalten – allein, Markus 1:1, keine Erzählrunde. Die Story bleibt auf Miro – keine Datei (Entscheidung 26.11. abends).
 // Zeit: Die Sprechzeiten in den live-Stichworten ergeben zusammen rund 22 min; die Uhrzeiten des Blocks stehen in tag-4.astro.
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
@@ -331,7 +331,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 3, How Concept Stories Work, S. 25–26`,
       },
       {
-        text: 'Krise: schon iPod oder Handy, der Preis, der Touchscreen – „Wouldn’t a touchscreen make the iPhone difficult to use?“ Höhepunkt: „what they get with the iPhone was the best way to communicate“, mit Internet, Karten, E-Mail; „the iPhone worked like magic. It was easy to use.“ Fallende Handlung: überzeugt, neugierig oder skeptisch – „in the realm of thought, rather than action“.',
+        text: 'Krise: schon iPod oder Handy, der Preis, der Touchscreen – „Wouldn’t a touchscreen make the iPhone difficult to use? And no keyboard? Typing would be impossible. At least that’s what the few people who owned Blackberrys and Palm Treos thought at the time.“ Der alte Weg war also Tastatur oder Stift. Höhepunkt: „what they get with the iPhone was the best way to communicate“, mit Internet, Karten, E-Mail; „the iPhone worked like magic. It was easy to use.“ Fallende Handlung: überzeugt, neugierig oder skeptisch – „in the realm of thought, rather than action“.',
         quelle: `${LICHAW}, Kap. 3, Crisis, S. 27; Climax/Resolution, S. 28; Falling Action, S. 28–29; Abb. 3.4, S. 30`,
       },
     ],
@@ -377,14 +377,18 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Kursregel nennen: Was die Story nicht stützt, kommt nicht in den Prototyp.',
     ],
     verstaendnis: {
-      frage: 'Warum Animation vor Kopieren und Einfügen?',
-      antwort: 'Die Krise war die Angst vor dem Touchscreen; der Höhepunkt versprach „works like magic“. Damit der Touchscreen „user-friendly“ war, setzte Apple auf Animation und Technik, mit der man tippt statt mit Stift (Kap. 3, S. 27–28, 33). Warum Kopieren und Einfügen nicht dazugehörte, sagt Lichaw nicht – nur, dass es die Story nicht stützte.',
-      falsch: '„Weil es schöner aussah“ – sie löste die Krise auf, die der Höhepunkt versprach.',
+      frage: 'Warum fehlte Kopieren und Einfügen?',
+      antwort: 'Weil es die Story – „works like magic“, leicht mit dem Finger – nicht stützte: „Animation supported the story. Cut-and-paste did not.“ (Kap. 3, S. 33). Die Krise war die Angst vor dem Touchscreen; Animation und Technik zum Tippen statt Stift lösten sie auf. Lichaw nennt keinen weiteren Grund.',
+      falsch: '„Weil Apple es nicht konnte“ – das sagt Lichaw nicht; der Palm Treo hatte es längst (Kap. 7, S. 129).',
     },
     kern: [
       {
         text: '„in order for the touchscreen to be user-friendly (which Palm Treo touchscreens were not), Apple’s strategy was to employ animation and cutting-edge technology that enabled people to tap, rather than to interact with their device using a stylus.“ – „Animation supported the story. Cut-and-paste did not.“',
         quelle: `${LICHAW}, Kap. 3, Supporting the Story, S. 33`,
+      },
+      {
+        text: '„There was a good reason why the iPhone launched with fancy animation but no cut-and-paste functionality.“ Gemeint ist das erste iPhone (2007), und gefehlt hat Kopieren und Einfügen auf dem iPhone selbst. Welche Animation, nennt Lichaw nicht, auch nicht, wann Kopieren und Einfügen kam. Zum Vergleich: „The Palm Treo, which was the best-selling smartphone the year before, not only had features like cut-and-paste, but it also let you install apps and games. The iPhone did neither.“',
+        quelle: `${LICHAW}, Kap. 3, Supporting the Story, S. 33; Kap. 7, S. 129`,
       },
       {
         text: 'Die Story „wasn’t just a marketing pitch or shiny packaging—it drove everything from what the product requirements were to how the iPhone worked“; „concept stories don’t just help you figure out how to talk about a product, but how to build the product.“ Zur Krise: Frühe Touchscreens ohne Stift „simply weren’t easy to use, and that wasn’t a very good story“.',
@@ -393,6 +397,13 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       {
         text: '„Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out.“ Die Kursregel auf der Folie und der Bezug zur Story Map (erster Slice) sind ein Übertrag des Kurses.',
         quelle: `${LICHAW}, Kap. 8, Stories Are Character-Driven, S. 134; Kursregel`,
+      },
+    ],
+    zusatz: [
+      {
+        titel: 'Hintergrund (nicht bei Lichaw): das erste iPhone',
+        text: 'Vorgestellt am 9. Januar 2007, in den USA verkauft ab 29. Juni 2007. Zu den Gesten von iPhone OS 1.0 gehörten Zoomen mit zwei Fingern (Pinch) und Scrollen mit Schwung. Kopieren und Einfügen fehlte zum Start; es kam erst 2009 mit iPhone OS 3.0. Welche Animationen Lichaw meint, ist damit nicht gesagt – nur, was es gab.',
+        quelle: 'Apple Newsroom, 9.1.2007: https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/; Wikipedia, „IPhone (1st generation)“ und „IPhone OS 1“ (abgerufen 27.11.2026)',
       },
     ],
     ueberleitung: 'Lichaw füllt den Bogen einmal ganz aus – für Slack.',
@@ -508,7 +519,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       '„Fallende Handlung und Ende stehen nicht im Satz – die erzählt die Story.“',
       'Kaffeebar-Satz vorlesen.',
       'Falle: mit dem Satz anfangen – erst die sieben Stationen.',
-      'Zeit: Sprechzeit ~1 min; Satz kommt in Abschnitt 3 des Produkt-Briefs.',
+      'Zeit: Sprechzeit ~1 min; Satz → Brief, Abschnitt 3; Pitch an Tag 7.',
     ],
     kern: [
       {
@@ -525,8 +536,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   'drei-storys': {
     live: [
-      '„Verstehen, sehen, erleben – drei Storys auf demselben Bogen.“',
-      'Concept jetzt; Usage nach der Mittagspause, Origin zum Abschluss.',
+      'Zeilen aufdecken: Frage, Höhepunkt, Kaffeebar, was daraus wird.',
+      'Wert vorlesen: besser als das, was die Person heute tut.',
       'Exposition betonen: einmal schreiben, dreimal verwenden.',
       'Bei Bedarf: Lichaws Pinterest-Mail erzählen.',
       'Zeit: Sprechzeit ~1 min.',
@@ -538,38 +549,41 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     kern: [
       {
         text: '„In a concept story, the climax occurs when your customer understands the value of a product; in an origin story, it happens when the user sees the value of a product.“ Bei der Usage Story erlebt die Person den Wert.',
-        quelle: `${LICHAW}, Kap. 4, How Origin Stories Work, Climax/Resolution`,
+        quelle: `${LICHAW}, Kap. 4, How Origin Stories Work, Climax/Resolution, S. 50`,
       },
       {
         text: '„The material in the exposition is the same in all three stories: origin, concept, and usage.“',
-        quelle: `${LICHAW}, Kap. 4, How Origin Stories Work, Exposition`,
+        quelle: `${LICHAW}, Kap. 4, How Origin Stories Work, Note „You’re Not Seeing Double (or Triple)“, S. 48`,
+      },
+      {
+        text: 'Usage Story vor Origin Story ist Kurslogik: Der Prototyp braucht sie zuerst; die Origin Story ist der Text für E1 am Ende des Tages.',
+        quelle: 'Kursregel',
       },
     ],
-    ueberleitung: 'Jetzt eure Story: 30 Minuten auf Miro, drei Schritte.',
+    ueberleitung: 'Jetzt eure Story: 30 Minuten auf Miro, zwei Schritte.',
   },
 
   vorgehen: {
     live: [
       'Zeit: 30 min Übung nach der Theorie; Wozu vorlesen.',
-      'Timer 20 min: Stickies unter den sieben Stationen füllen, allein, mit IDs.',
+      'Timer 25 min: sieben Stationen füllen, allein, mit IDs.',
       '1:1 ab Minute 5: einfache Lösung – was hat die Story mehr?',
-      'Nach 20 min: Feld „Flach-Probe“ unten links füllen – Timer 5 min.',
+      'Fertig, wenn Krise und Höhepunkt stehen – sonst eine Linie.',
       'Nach 25 min: Satz in den Brief, Station 6 als Annahme.',
     ],
-    uebung: { dauer: '30 min (20 + 5 + 5)', form: 'allein auf Miro schreiben; Markus geht 1:1 von Person zu Person, keine Erzählrunde' },
+    uebung: { dauer: '30 min (25 + 5)', form: 'allein auf Miro schreiben; Markus geht 1:1 von Person zu Person, keine Erzählrunde' },
     miro: {
       frame: 'T4 · 0 · Concept Story · Produkt 1',
       schritte: [
         'Frame wie hier für Produkt 1, ebenso Produkt 2 und 3 (MiroLinks auf der Folie). Jede*r arbeitet im eigenen Frame „T4 · 0 · Concept Story · Produkt n“; das Kaffeebar-Beispiel hängt daneben.',
         'Unter jeder Station („1 Exposition“ bis „7 Ende“) ein Sticky mit Leitfrage – durch die eigene Antwort mit IDs ersetzen; Station 6 als Gedanke in „…“.',
-        'Flach-Probe als eine Zeile in das leere Sticky im Feld „Flach-Probe (Kursregel)“ unten links.',
+        'Feld „Flach-Probe (Kursregel)“ unten links: freiwillig, als Hilfe für den Check in Schritt 1.',
       ],
     },
     ablauf: {
       schritte: [
-        'Schritt 1 (20 min, allein): die Stickies unter den sieben Stationen in „T4 · 0 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person.',
-        'Schritt 2 (5 min, Kursregel – Flach-Probe): die einfache Lösung als eine Zeile ins Feld „Flach-Probe (Kursregel)“ unten links – Problem, Produkt, Ende.',
-        'Schritt 3 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map. Die Story bleibt auf Miro; geprüft wird mit Text oder Screenshot des Frames in Claude (Opus).',
+        'Schritt 1 (25 min, allein): die Stickies unter den sieben Stationen in „T4 · 0 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person. Fertig, wenn Krise und Höhepunkt stehen – sonst ist die Story eine Linie (Flach-Probe, Kursregel).',
+        'Schritt 2 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map – beides auf der Folie verlinkt. Die Story bleibt auf Miro; geprüft wird mit einem Screenshot des Frames in Claude (Opus).',
       ],
       achten: [
         'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',
