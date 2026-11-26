@@ -5,16 +5,23 @@
 // schritte: jedes Element als Schritt (data-schritt), im Beamer per → nacheinander. Auf Tag 4 aus: Dort war sie die
 // letzte Folie, und von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar ihre Schritte auf. Seit
 // 26.11. folgt ihr dort „Slice 1 im Baum“ (SliceImBaum.astro, ebenfalls ohne Schritte); im 5-min-Block um 9:35 bleibt es aus.
+// beleg/outcome/annahme: der Text nach dem Namen der Linie. Ohne Angabe tagneutral (Arbeitsfluss); Tag 4 sagt konkret, woher
+// jede Linie kommt und was daraus wird (Durchsicht 26.11.).
 import { FlaskConical, MessageSquareQuote, Star, Target } from '@lucide/astro';
 import { LINIE } from '../arbeitsfluss';
 
-const { schritte = true } = Astro.props as { schritte?: boolean };
+const {
+  schritte = true,
+  beleg = 'liefert den Inhalt: der Weg bis zum Höhepunkt.',
+  outcome = 'liefert das Maß: was Menschen danach anders tun.',
+  annahme = 'liefert das Lernziel: was dieser Slice zeigen muss.',
+} = Astro.props as { schritte?: boolean; beleg?: string; outcome?: string; annahme?: string };
 const s = schritte ? '' : undefined;
 ---
 <div class="drei-zum-stern">
-  <div class="zulauf zulauf-beleg" data-schritt={s}><MessageSquareQuote size={22} aria-hidden="true" /><strong>{LINIE.beleg.name}</strong> liefert den Inhalt: der Weg bis zum Höhepunkt.</div>
-  <div class="zulauf zulauf-outcome" data-schritt={s}><Target size={22} aria-hidden="true" /><strong>{LINIE.outcome.name}</strong> liefert das Maß: was Menschen danach anders tun.</div>
-  <div class="zulauf zulauf-annahme" data-schritt={s}><FlaskConical size={22} aria-hidden="true" /><strong>{LINIE.annahme.name}</strong> liefert das Lernziel: was dieser Slice zeigen muss.</div>
+  <div class="zulauf zulauf-beleg" data-schritt={s}><MessageSquareQuote size={22} aria-hidden="true" /><span><strong>{LINIE.beleg.name}</strong> {beleg}</span></div>
+  <div class="zulauf zulauf-outcome" data-schritt={s}><Target size={22} aria-hidden="true" /><span><strong>{LINIE.outcome.name}</strong> {outcome}</span></div>
+  <div class="zulauf zulauf-annahme" data-schritt={s}><FlaskConical size={22} aria-hidden="true" /><span><strong>{LINIE.annahme.name}</strong> {annahme}</span></div>
   <div class="stern" data-schritt={s}><Star size={30} aria-hidden="true" /><strong>Slice 1</strong></div>
 </div>
 {Astro.slots.has('default') && <p class="gross stern-satz" data-schritt={s}><strong><slot /></strong></p>}

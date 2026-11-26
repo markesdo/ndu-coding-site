@@ -3,7 +3,6 @@ import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
-import Prompt from '../../../components/Prompt.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
 import Timer from '../../../components/Timer.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -325,38 +324,32 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
       <p>Davor die Theorie: alle Folien von <a href="#story-bogen">„Geschichten haben eine Form“</a> bis <a href="#drei-storys">„Ausblick: drei Storys, ein Bogen“</a>. Bei der Frage „Was fehlt dieser Geschichte?“ (<a href="#flach">flach</a>) überlegt jede*r still, dann antwortet ihr zugleich, laut; die Auflösung zeigen <a href="#hoch">„Dieselbe Figur, jetzt mit Bogen“</a> und <a href="#hoch-lehre">„Krise und Höhepunkt geben Höhe“</a>.</p>
       <p>Zu Schritt 1: Ihr arbeitet in eurem Frame „T4 · 0 · Concept Story · Produkt n“ (Produkt 1 bis 3 = eure Spalten von links); daneben hängt das ausgefüllte Beispiel der Kaffeebar. Auf dem Bogen stehen die sieben Stationen, unter jeder ein Sticky mit einer Leitfrage – die Frage ersetzt ihr durch eure Antwort. Unten rechts steht die Erinnerung an die IDs. Lichaws Fragen je Station und wo die Antworten bei euch schon stehen, zeigt die Tabelle oben (<a href="#woher">Woher kommt jede Station?</a>; {LICHAW}, Kap. 3, Mapping a Concept Story). Ihr schreibt allein, jede*r am eigenen Produkt. Ab Minute 5 spricht Markus nacheinander mit jeder Person, online in einem eigenen Breakout-Raum, und fragt: „Was ist eure einfache Lösung – und was hat eure Story ihr gegenüber mehr?“ Eine Runde, in der ihr einander eure Storys erzählt, gibt es nicht: Jede*r von euch hat ein eigenes Produkt. Lichaws Probe beim Erzählen ist das Lächeln am Höhepunkt (Kap. 6, Use the Smile Test); die macht ihr, wenn ihr die Story jemandem aus eurer Zielgruppe erzählt.</p>
       <p>Zu Schritt 2 (Kursregel): Wenn ihr gegenüber der Linie nur „schneller“ oder „leichter“ habt, fehlt die Krise: Welche Alternative nutzen eure Interviewten heute, und warum würden sie bei ihr bleiben? Erst wenn ihr das beantworten könnt, hat der Höhepunkt etwas aufzulösen – Lichaws Slack-Beispiel oben zeigt die Linie daneben.</p>
-      <p>Zu Schritt 3: der Satz in Abschnitt 3 eures Produkt-Briefs in der Werkstatt; die fallende Handlung als Annahme in die Annahmen-Map – an der Experiment-Karte nach dem Geschäftsmodell wählt ihr die riskanteste. In <code>docs/STORYS.md</code> kommt die Story erst im Block um 10:50 (erster Schritt): Ihr übertragt sie von Miro in die Vorlage unten.</p>
+      <p>Zu Schritt 3: der Satz in Abschnitt 3 eures Produkt-Briefs in der Werkstatt; die fallende Handlung als Annahme in die Annahmen-Map – an der Experiment-Karte nach dem Geschäftsmodell wählt ihr die riskanteste. Die Story bleibt auf Miro in eurem Frame – eine Datei schreibt ihr nicht.</p>
     </div>
   </Folie>
 
   <div class="nur-handout">
-  <h2 id="vorlage">Vorlage</h2>
-  <p>Das Format für die Übertragung bei Claude Code um 10:50 (erster Schritt): Ihr kopiert die Vorlage nach <code>docs/STORYS.md</code> und tragt eure Story von Miro Station für Station ein.</p>
-  <Prompt label="Vorlage · docs/STORYS.md"># Storys — [Produkt]
-
-Stand: [Datum] · Profil und Value Map: Miro, T3 · 4 · Canvas · Produkt n
-
-## Concept Story
-1. Exposition: [Wer? Was ist gut in ihrer Welt? Großes Ziel] (J…, G…)
-2. Auslöser: [Pain] (P…)
-3. Steigende Handlung: [Name] – [Art des Produkts]
-4. Krise: heutige Alternativen: [...] (Zitat-IDs) · innerer Widerstand: „[...]“
-5. Höhepunkt: [was Pain und Krise löst – anders und besser als die Alternativen] (Value Map)
-6. Fallende Handlung (gedacht): „[...]“ → Annahme A…
-7. Ende: Person: [...] (G…) · Geschäft: [...], gemessen an [...]
-
-Einfache Lösung (zur Probe): [Problem] → [Produkt] → [Ende]. Was hat die Story mehr?
-
-Ein Satz: Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Anders als [Alternative]: [Unterschied].</Prompt>
+  <h2 id="vorlage">So sieht euer Frame aus</h2>
+  <p>Eure Concept Story steht nur auf Miro, in eurem Frame „T4 · 0 · Concept Story · Produkt n“ – eine Datei gibt es nicht. Unter jeder Station ersetzt ihr die Leitfrage durch eure Antwort:</p>
+  <ol>
+    <li><strong>Exposition:</strong> Wer? Was ist gut in ihrer Welt? Großes Ziel (J…, G…).</li>
+    <li><strong>Auslöser:</strong> der Pain (P…).</li>
+    <li><strong>Steigende Handlung:</strong> Name und Art des Produkts.</li>
+    <li><strong>Krise:</strong> heutige Alternativen (Zitat-IDs) und der innere Widerstand in „…“.</li>
+    <li><strong>Höhepunkt:</strong> was Pain und Krise löst – anders und besser als die Alternativen (Value Map).</li>
+    <li><strong>Fallende Handlung (gedacht):</strong> ein Gedanke in „…“ – er wird Annahme A… in der Werkstatt.</li>
+    <li><strong>Ende:</strong> Ziel der Person (G…) und ein Ziel des Geschäfts, gemessen an …</li>
+  </ol>
+  <p>Unten links das Feld „Flach-Probe“: Problem → Produkt → Ende – und was eure Story mehr hat. Der Satz daraus („Für [Zielgruppe] mit [Pain] ist [Name] ein [Art], das [Nutzen]. Anders als [Alternative]: [Unterschied].“) kommt in Abschnitt 3 des Produkt-Briefs in der Werkstatt.</p>
 
   <h2 id="pruefen">Prüfen</h2>
-  <p>Vor dem Übertrag liegt eure Story nur auf Miro: Nehmt dann den Weg „Ohne Claude Code: Text in Claude einfügen“ und fügt den Text aus eurem Frame ein. Nach dem Übertrag um 10:50 prüft Claude Code die Datei <code>docs/STORYS.md</code>.</p>
+  <p>Eure Story liegt nur auf Miro: Nehmt den Weg „Ohne Claude Code: Text in Claude einfügen“ und fügt den Text aus eurem Frame ein – oder einen Screenshot des Frames. Wählt dafür Opus (in Claude Code <code>/model opus</code>, auf claude.ai im Modellmenü).</p>
   <ClaudePruefung slug="concept-story" />
   </div>
 
   <p class="small muted">Nach {LICHAW}, Kap. 1–4, 6–8.</p>
 
-  <FooterNav prev={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} next={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell-Karten' }} />
+  <FooterNav prev={{ href: '/innolab/methoden/value-map', t: 'Value Map & Fit' }} next={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell' }} />
 </Layout>
 
 <style>

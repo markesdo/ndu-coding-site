@@ -82,9 +82,10 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
     expect(weg.slice(vm, vm + 4)).toStrictEqual([
       '/innolab/methoden/value-map#uebertrag', '/innolab/tag-4#was-bauen-wir', '/innolab/tag-4#slice-im-baum', '/innolab/methoden/concept-story#story-bogen',
     ]);
-    expect(weg.slice(-5)).toStrictEqual([
+    // Seit der Durchsicht 26.11.: das Beispiel der Origin Story (Aufsteller der Kaffeebar) als eigene Folie.
+    expect(weg.slice(-6)).toStrictEqual([
       '/innolab/methoden/scrum#planen', '/innolab/methoden/scrum#weiter-tag-4',
-      '/innolab/tag-4#abschluss', '/innolab/tag-4#hausaufgabe', '/innolab/tag-4#ende-tag-4',
+      '/innolab/tag-4#abschluss', '/innolab/tag-4#origin-beispiel', '/innolab/tag-4#hausaufgabe', '/innolab/tag-4#ende-tag-4',
     ]);
   });
 
@@ -132,17 +133,24 @@ describe('Tag 4: Folien des Abschlusses', () => {
     const f = folie('/innolab/tag-4', 'hausaufgabe');
     const schritte = [...f.matchAll(/<li data-schritt>([\s\S]*?)<\/li>/g)].map((m) => m[1]);
     expect(schritte.length).toBeGreaterThanOrEqual(4);
-    expect(schritte.length).toBeLessThanOrEqual(6);
+    expect(schritte.length).toBeLessThanOrEqual(7);
     const liste = f.slice(f.indexOf('<div class="nur-handout">'));
-    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v4" items={[');
+    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v6" items={[');
     // Je Schritt der Teil, der wörtlich aus einem Punkt der Liste kommt.
-    // Review #448: Die Folie zeigte nur die Punkte 6–12; der erste Schritt nennt die Punkte 1–5.
-    expect(schritte[0]).toBe('<strong>Fertig machen, was heute offen blieb:</strong> Value Map und Fit, Concept Story, Baum, Geschäftsmodell und Karte E1, Story Map und Usage Story (ganze Liste im Handout).');
-    for (const aus of ['Value Map und Fit', 'Concept Story', 'Euer Baum', 'GESCHAEFTSMODELL.md', 'Karte E1', 'STORY-MAP.md', 'Usage Story']) expect(liste, aus).toContain(aus);
+    // Markus 26.11. abends: Origin Story → Aufsteller/Landingpage → E1 → Lernkarte E1; Usability-Tests optional; dann Aufräumen.
+    expect(schritte.map((x) => x.match(/^<strong>([^<]+)<\/strong>/)?.[1])).toStrictEqual([
+      'Origin Story', 'Daraus der Aufsteller oder die Landingpage', 'E1 laufen lassen', 'Lernkarte E1', 'Wer Zeit hat: Usability-Tests', 'Fertig machen, was heute offen blieb', 'Linear einrichten,',
+    ]);
+    expect(schritte[2]).toContain('bis drei Werktage vor Tag 5');
+    expect(schritte[4]).toContain('fünf sind ideal, auch zwei, drei helfen');
+    for (const aus of ['Value Map und Fit', 'Concept Story', 'Euer Baum', 'Geschäftsmodell auf Miro', 'Karte E1', 'Story Map mit Slice 1', 'Usage Story']) expect(liste, aus).toContain(aus);
+    // Die Liste in derselben Reihenfolge: Origin Story, Aufsteller, E1, Lernkarte, optionale Tests vor dem Rest.
+    const pos = ['Origin Story als Text', 'Daraus der Aufsteller', 'E1 gelaufen', 'Lernkarte E1', 'Optional, wer Zeit hat: Usability-Tests', 'Value Map und Fit'].map((w) => liste.indexOf(w));
+    expect(pos.every((x, k) => x > 0 && (k === 0 || x > pos[k - 1]))).toBe(true);
     for (const aus of [
-      'als Text für Aufsteller oder Landingpage in <code>docs/STORYS.md</code>',
+      'als Text für Aufsteller oder Landingpage',
       'an einem echten Ort oder als simulierter Moment mit zehn Menschen aus der Zielgruppe',
-      'Fünf Usability-Tests</strong> mit Karte E2',
+      'Usability-Tests</strong> mit Karte E2',
       'Befund → Handlung',
       'als Collaborator',
     ]) {
@@ -213,8 +221,11 @@ describe('Handout ohne Beamer-Sätze', () => {
 
 // Review 3 #448: Der Handout-Link führt auf die Vorlage selbst, nicht nur auf die Seite.
 describe('Origin Story: Vorlage verlinkt', () => {
-  it('tag-4#abschluss verlinkt experiment#vorlage-origin-story, und dort steht die Überschrift mit dieser id', () => {
-    expect(folie('/innolab/tag-4', 'abschluss')).toContain('href="/innolab/methoden/experiment#vorlage-origin-story"');
+  // Seit 26.11. abends: keine docs-Vorlage mehr – die Origin Story steht auf Miro im eigenen Frame.
+  it('tag-4#abschluss nennt den Miro-Frame der Origin Story statt einer docs-Vorlage', () => {
+    expect(folie('/innolab/tag-4', 'abschluss')).toContain('Ihr schreibt sie auf Miro, in eurem Frame „T4 · 6 · Origin Story · Produkt n“.');
+    expect(folie('/innolab/tag-4', 'abschluss')).not.toContain('vorlage-origin-story');
+    // Auf der Experiment-Seite zeigt der Abschnitt mit dieser id, wie der Miro-Frame aussieht.
     expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">So sieht die Origin Story auf Miro aus</h3>');
   });
 });
@@ -245,7 +256,9 @@ describe('Tag 4: Folie „Slice 1 im Baum“', () => {
     // Ohne Frontmatter und Kommentare: dort darf „data-schritt“ als Wort stehen.
     const bild = roh.replace(/^---[\s\S]*?\n---/, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '');
     expect(bild).toContain('<figure class="slice-baum"');
-    for (const w of ['LINIE.outcome.name', 'LINIE.beleg.name', 'LINIE.annahme.name', 'Ziel-Chance', 'Spitzenreiter', '<strong>Slice 1</strong>', '(A5)']) expect(bild, w).toContain(w);
+    for (const w of ['LINIE.outcome.name', 'LINIE.beleg.name', 'LINIE.annahme.name', 'Ziel-Chance', 'Spitzenreiter', '<strong>Slice 1</strong>', '„Wir lernen, ob …“ – die riskanteste Annahme']) expect(bild, w).toContain(w);
+    // Durchsicht 26.11.: rechts nur Begriffe, die um 9:35 bekannt sind – das Layout der Story Map kommt erst ab 11:30.
+    expect(bild.match(/Lern-Sticky|links neben Slice 1/g) ?? []).toStrictEqual([]);
     expect(bild).not.toMatch(/\bdata-schritt\b/);
   });
 });
