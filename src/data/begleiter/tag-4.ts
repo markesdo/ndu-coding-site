@@ -71,7 +71,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
     live: [
       'Zeit: 15 min mit Beispiel und Hausaufgabe.',
       '„Die Origin Story ist der Text für euren Aufsteller oder eure Landingpage – für E1.“',
-      'Stationen per → aufdecken; Exposition und Auslöser wie Concept Story.',
+      'Sieben Stationen per → aufdecken, wie im Frame.',
       'Falle: Handlung „anmelden“ statt Ziel der Person („start training“).',
     ],
     verstaendnis: {

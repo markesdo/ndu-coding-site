@@ -22,7 +22,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'morgen-aufschreiben': {
     live: [
-      '„Augen zu: Was habt ihr heute nach dem Aufwachen als Erstes getan?“',
+      'Satz der Folie langsam vorlesen: Augen zu, aufwachen, Erstes aufschreiben.',
       'Timer 4 min starten; dein eigener Morgen läuft auf deinem Board mit.',
       'Falle: Substantive („Kaffee“) – nachfragen: Was tust du dabei?',
       'Nach 4 min: zählen lassen, 15 bis 25 ist normal.',
@@ -30,6 +30,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
     ],
     uebung: { dauer: '4 min', form: 'allein, eigener Warm-up-Frame' },
     kern: [
+      { text: '„Close your eyes, and think back to the moment you woke up this morning. … What’s the first thing you recall doing? Now, open your eyes, and write it down on a sticky note.“', quelle: `${PATTON}, Kap. 5, 1. Write Out Your Story a Step at a Time` },
       { text: '„I expect it’ll take you three or four minutes to write all your stickies.“', quelle: `${PATTON}, Kap. 5, 1. Write Out Your Story a Step at a Time` },
       { text: '„Most people write somewhere between 15 and 25.“ – „User tasks are the basic building blocks of a story map.“', quelle: `${PATTON}, Kap. 5, Tasks Are What We Do` },
     ],
@@ -50,7 +51,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   varianten: {
     live: [
-      'Drei Fragen vorlesen: gestern, kein Warmwasser, perfekter Morgen.',
+      'Drei Morgen vorlesen: typischer, bester, schlechtester.',
       'Timer 4 min: blaue Stickies nach unten, unter den passenden Schritt.',
       'Bei Bedarf: Reihenfolge unklar? Dann ist sie egal.',
       'Begriff: Körper der Map – Details, Alternativen, Varianten, Ausnahmen.',
@@ -58,6 +59,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
     uebung: { dauer: '4 min', form: 'allein, eigener Warm-up-Frame' },
     kern: [
       { text: '„Details, alternatives, variations, and exceptions fill in the body of a map.“', quelle: `${PATTON}, Kap. 5, 3. Explore Alternative Stories` },
+      { text: '„the typical day story, the fabulous day story, and the story that has an emergency or two“ – daher typischer, bester, schlechtester Morgen.', quelle: `${PATTON}, Kap. 5, 3. Explore Alternative Stories` },
       { text: '„If you’re arguing, it likely means that it doesn’t matter.“', quelle: `${PATTON}, Kap. 5, Keep the Flow` },
     ],
     ueberleitung: 'Die Map wird breit und tief – jetzt geben wir ihr ein Rückgrat.',

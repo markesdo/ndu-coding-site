@@ -262,3 +262,23 @@ describe('Tag 4: Folie „Slice 1 im Baum“', () => {
     expect(bild).not.toMatch(/\bdata-schritt\b/);
   });
 });
+
+// Wünsche des Dozenten (27.11.2026): Origin Story mit den sieben Stationen des Miro-Frames; Warm-up der Story Map mit dem Satz
+// aus seinem Foliensatz und den drei Morgen; „im Kopf überschlägt“ statt „zusammenrechnet“ (Lichaw: „mental calculation“).
+describe('Origin Story, Warm-up, Concept Story: Wortlaut nach Durchsicht', () => {
+  it('tag-4#abschluss zeigt sieben Stationen in der Reihenfolge des Frames', () => {
+    const f = folie('/innolab/tag-4', 'abschluss');
+    const stationen = [...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1]);
+    expect(stationen).toStrictEqual(['Exposition', 'Auslöser', 'Steigende Handlung', 'Krise', 'Höhepunkt', 'Fallende Handlung', 'Ende']);
+  });
+  it('Story-Map-Warm-up: Satz zum Aufwachen und drei Morgen', () => {
+    const q = folie('/innolab/methoden/story-map', 'morgen-aufschreiben');
+    expect(q).toContain('<p class="folie-satz">„Schließt die Augen und denkt an den Moment zurück, als ihr heute aufgewacht seid. Was ist das Erste, woran ihr euch erinnert? Öffnet die Augen und schreibt es auf ein Sticky.“</p>');
+    const v = folie('/innolab/methoden/story-map', 'varianten');
+    expect(v).toContain('<p class="folie-satz">Drei Morgen: ein typischer Morgen – euer bester – euer schlechtester.</p>');
+    expect(v).toContain('„the typical day story, the fabulous day story, and the story that has an emergency or two“');
+  });
+  it('Concept Story: „im Kopf überschlägt“, nirgends „zusammenrechnet“', () => {
+    expect(folie('/innolab/methoden/concept-story', 'concept-story')).toContain('Was jemand in Sekunden im Kopf überschlägt, wenn er zum ersten Mal von eurem Produkt hört.');
+  });
+});
