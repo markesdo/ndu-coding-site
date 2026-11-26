@@ -155,9 +155,10 @@ const ROH: Omit<Station, 'zeile'>[] = [
     satz: 'Jedes „?“ im Ideen-Vergleich und im Fit ist eine offene Frage.',
     gebrauchtIn: 'Annahmen der Idee (Tag 4)',
   },
-  // Tag 4 (Ablauf ab 25.11., seit 27.11. mit den Zeiten des Tag-4-PRs: 9:05 Value Map & Fit nachholen, 9:35 Was bauen wir?, 9:40 Concept
-  // Story, 10:40 Geschäftsmodell, 11:00 Claude Pro, 11:10 Experiment-Karte, 11:50 Story Map, 14:15 Usage Story, 14:45 Prototyp-Spike, 16:35 Agil & Scrum, 17:15 Origin Story). Der Baum
-  // wächst über den Tag mit (Ideen, Annahme, E1, E2) und steht nach dem Spike.
+  // Tag 4 (Ablauf ab 25.11., seit 26.11. nachts ohne Claude: 9:05 Value Map & Fit nachholen, 9:35 Was bauen wir?, 9:40 Concept
+  // Story, 10:40 Geschäftsmodell, 11:00 Experiment-Karte, 11:40 Story Map, 14:05 Usage Story, 14:35 Prototyp auf Papier, 15:30 Puffer,
+  // 16:35 Agil & Scrum, 17:15 Origin Story). Der Baum wächst über den Tag mit (Ideen, Annahme, E1, E2) und steht nach dem
+  // Papier-Prototyp; gebaut wird an Tag 5.
   {
     id: 'value-map-nachholen', fortsetzung: 'value-map', kurz: 'Value Map & Fit (Nachholen)', linien: ['beleg'], spalte: 4, ergebnis: [],
     href: '/innolab/methoden/value-map#vorgehen', von: ['value-map'],
@@ -189,19 +190,19 @@ const ROH: Omit<Station, 'zeile'>[] = [
     id: 'story-map', methode: 'story-map', kurz: 'Story Map: Slice 1', linien: ['beleg', 'outcome'], spalte: 4, stern: true,
     kommtAus: ['Spitzenreiter', 'Kundenprofil', 'Outcome aus dem Brief'], jetzt: 'Der Weg mit eurem Produkt; Slice 1',
     satz: 'Ihr erzählt den Weg mit eurem Produkt von Anfang bis Ende und schneidet das Kleinste heraus, mit dem ihr lernt.',
-    gebrauchtIn: 'Usage Story · Bildschirme des Spikes · Issues an Tag 5',
+    gebrauchtIn: 'Usage Story · Bildschirme des Papier-Prototyps · Issues an Tag 5',
   },
   {
     id: 'usage-story', methode: 'usage-story', kurz: 'Usage Story mit Höhepunkt', linien: ['beleg'], spalte: 4,
     kommtAus: ['Slice 1', 'Concept Story', 'Moment der Experience Map', 'P1'], jetzt: 'Sieben Stationen, Höhepunkt nahe am Ende',
     satz: 'Ihr legt fest, an welchem Bildschirm jemand den Wert erlebt – und wie schnell danach Schluss ist.',
-    gebrauchtIn: 'Spike (Stationen 2–6) · Messgröße von E2 · Reihenfolge im Backlog · Demo im Pitch',
+    gebrauchtIn: 'Papier-Prototyp (Stationen 2–6) · Messgröße von E2 · Reihenfolge im Backlog · Demo im Pitch',
   },
   {
-    id: 'prototyp-spike', methode: 'prototyp-spike', kurz: 'Prototyp-Spike, Karte E2', linien: ['beleg', 'annahme'], spalte: 4,
-    kommtAus: ['Usage Story', 'Slice 1', 'eine Annahme'], jetzt: 'Papier, Spike, Karte E2',
-    satz: 'Erst Papier, dann Wegwerf-Code: genug, damit fünf Menschen den Höhepunkt erreichen können – oder nicht.',
-    gebrauchtIn: 'Baum: Lösungen und Tests · Fünf Tests bis Tag 5 · Befunde U… · Lernkarte · Issues',
+    id: 'prototyp-spike', methode: 'prototyp-spike', kurz: 'Prototyp auf Papier, Karte E2', linien: ['beleg', 'annahme'], spalte: 4,
+    kommtAus: ['Usage Story', 'Slice 1', 'eine Annahme'], jetzt: 'Papier-Skizzen, Abnahmekriterien, Karte E2',
+    satz: 'Ein Blatt je Bildschirm: genug, damit fünf Menschen den Höhepunkt erreichen können – oder nicht. Gebaut wird an Tag 5.',
+    gebrauchtIn: 'Baum: Lösungen und Tests · Fünf Tests bis Tag 5 · Befunde U… · Lernkarte · Issues · Bau an Tag 5',
   },
   {
     // Der Baum von Tag 3 wächst weiter (Torres: Lösungen und Annahmen-Tests unter der Ziel-Chance). Outcome läuft durch

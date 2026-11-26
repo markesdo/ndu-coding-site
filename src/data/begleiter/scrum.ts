@@ -216,7 +216,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         quelle: `${GUIDE}, S. 11`,
       },
     ],
-    ueberleitung: 'Wie viel davon schafft ihr in einem Sprint? Das ist Nachlese – heute geht es am Prototyp weiter.',
+    ueberleitung: 'Wie viel davon schafft ihr in einem Sprint? Das ist Nachlese – gebaut wird ab Tag 5.',
   },
 
   planen: {
@@ -241,7 +241,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
   'weiter-tag-4': {
     live: [
       'Teamaufstellung und Definition of Done kommen an Tag 5.',
-      '„Jetzt Origin Story; den Prototyp baut ihr zu Hause weiter.“',
+      '„Jetzt Origin Story; den Prototyp baut Claude Code an Tag 5.“',
       'Pfeil → Abschluss Tag 4; das Panel zeigt die nächste Folie der Seite.',
     ],
     ueberleitung: 'Gleich: Origin Story und Hausaufgabe im Abschluss.',
@@ -251,12 +251,12 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
   team: {
     live: [
       'Zeit: 40 min, Schritte 5 + 10 + 15 + 10.',
-      'Schritt 1: Was hätte im Spike gefehlt, wäre er echt gewesen?',
+      'Schritt 1: Was muss die echte Version des Papier-Prototyps können?',
       'Je Produkt: Product Owner, Produktziel, Linear-Projekt; Scrum Master losen.',
       'Collaborator einladen – sonst kann niemand im fremden Repo bauen.',
     ],
     uebung: { dauer: '40 min (5 + 10 + 15 + 10)', form: 'alle drei gemeinsam auf Miro' },
-    miro: { frame: 'T4 · 2 · Teamaufstellung & DoD', schritte: ['Drei Stichworte aus dem Spike, dann je Produkt Product Owner, Produktziel, Linear-Projekt, Scrum Master.'] },
+    miro: { frame: 'T4 · 2 · Teamaufstellung & DoD', schritte: ['Drei Stichworte aus dem Papier-Prototyp, dann je Produkt Product Owner, Produktziel, Linear-Projekt, Scrum Master.'] },
     kern: [
       {
         text: 'Product Owner: „accountable for maximizing the value of the product“, entwickelt das Produktziel, erstellt und ordnet die Backlog-Einträge; „one person, not a committee“.',
@@ -311,6 +311,6 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         quelle: `${GUIDE}, S. 7`,
       },
     ],
-    ueberleitung: 'Nach der Pause: aus Slice 1 wird euer Backlog aus Issues.',
+    ueberleitung: 'Jetzt zehn Minuten Claude Pro und Claude Code, gemeinsam – nach der Pause wird aus Slice 1 euer Backlog.',
   },
 };

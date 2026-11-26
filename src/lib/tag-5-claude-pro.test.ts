@@ -1,0 +1,186 @@
+import { readFileSync } from 'node:fs';
+import { describe, expect, it } from 'vitest';
+import { bloeckeAus, folienAus, hhmm, quellenAusGlob } from './begleiter';
+
+// Entscheidung Markus 26.11.2026 nachts: Tag 4 ganz ohne Claude – der Prototyp entsteht auf Papier. Claude Pro und Claude
+// Code richten alle an Tag 5 gemeinsam ein, als eigener Block vor der ersten Nutzung (Backlog: Issues nach Linear), und am
+// Nachmittag baut Claude Code Slice 1 nach den Papier-Skizzen. Vorher (26.11.–27.11.) stand der Block an Tag 4 um 11:00
+// auf der Experiment-Seite (tag-4-claude-pro.test.ts).
+const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
+const seite = (p: string) => quellen[p] ?? '';
+const folie = (p: string, id: string) => {
+  const q = seite(p);
+  const a = q.indexOf(`<h2 id="${id}">`);
+  return a < 0 ? '' : q.slice(a, q.indexOf('</Folie>', a));
+};
+// Das öffnende <Folie …> vor einer Überschrift.
+const folienTag = (p: string, id: string) => {
+  const q = seite(p);
+  const a = q.indexOf(`<h2 id="${id}">`);
+  const auf = q.lastIndexOf('<Folie', a);
+  return q.slice(auf, q.indexOf('>', auf) + 1);
+};
+const setup = () => readFileSync(new URL('../pages/setup.astro', import.meta.url), 'utf8');
+const T4 = '/innolab/tag-4';
+const T5 = '/innolab/tag-5';
+const EX = '/innolab/methoden/experiment';
+const ohneKommentare = (q: string) => q.replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+// Was im Beamer zu sehen ist: alle Folien einer Seite ohne Handout und Kommentare.
+const beamer = (p: string) =>
+  (ohneKommentare(seite(p)).match(/<Folie\b[\s\S]*?<\/Folie>/g) ?? []).map((f) => f.replace(/<div class="nur-handout">[\s\S]*?<\/div>\s*(?=<\/Folie>|$)/, '').replace(/<p class="nur-handout">[\s\S]*?<\/p>/g, '')).join('\n');
+
+describe('Tag 4 ohne Claude (Markus 26.11.2026 nachts)', () => {
+  it('der Ablauf von Tag 4 nennt weder Claude Pro noch Claude Code; die Experiment-Karte beginnt direkt nach dem Geschäftsmodell', () => {
+    const t4 = seite(T4);
+    const ablauf = t4.slice(t4.indexOf('<h2 id="ablauf">'), t4.indexOf('</div>', t4.indexOf('<div class="schedule"')));
+    expect(ablauf.length).toBeGreaterThan(1000);
+    expect(ablauf.match(/Claude/g) ?? []).toStrictEqual([]);
+    const b = bloeckeAus(t4);
+    const gm = b.findIndex((x) => x.titel === 'Geschäftsmodell');
+    expect(b[gm + 1]).toMatchObject({ titel: 'Experiment-Karte', von: b[gm].bis });
+    expect(t4).not.toContain('experiment#claude-pro-jetzt');
+  });
+
+  it('die Experiment-Seite hat keine Claude-Pro-Folien mehr; ihre erste Folie ist die Theorie', () => {
+    const q = seite(EX);
+    expect(q).not.toMatch(/id="claude-pro-jetzt"|id="claude-code-opus"/);
+    expect(folienAus(EX, q)[0].id).toBe('annahmen-der-idee');
+  });
+
+  it('keine Folie von Tag 4 schickt Studierende in Claude Code oder zu /model opus', () => {
+    const pfade = [T4, ...['value-map', 'concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike'].map((x) => `/innolab/methoden/${x}`)];
+    const funde = pfade.flatMap((p) => {
+      const b = beamer(p);
+      expect(b.length, p).toBeGreaterThan(500);
+      return (b.match(/\/model opus|Claude Code (öffnen|starten|baut –|, mit Opus)|<code>claude<\/code>/g) ?? []).map((m) => `${p}: ${m}`);
+    });
+    expect(funde).toStrictEqual([]);
+    // Die Story Map fragt Claude nicht mehr im Kurs: „Annahmen hinter Slice 1“ nur noch zu Hause, freiwillig, in claude.ai.
+    expect(folie('/innolab/methoden/story-map', 'schritt-festhalten')).toContain('<h2 id="schritt-festhalten">11 · Fertig auf Miro</h2>');
+    expect(seite('/innolab/methoden/story-map')).toContain('<Prompt label="Annahmen hinter Slice 1 · zu Hause, freiwillig, in claude.ai"');
+  });
+
+  it('jede Prüfung auf den Tag-4-Seiten: zu Hause, in claude.ai, mit dem besten verfügbaren Modell – ab Tag 5 Opus', () => {
+    const satz = 'Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus.';
+    for (const slug of ['concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike']) {
+      const q = seite(`/innolab/methoden/${slug}`);
+      const pruefen = q.slice(q.indexOf('<h2 id="pruefen">'), q.indexOf('<ClaudePruefung', q.indexOf('<h2 id="pruefen">')));
+      expect(pruefen, slug).toContain(satz);
+    }
+    expect(seite(EX)).toContain('<Prompt label="Gegenprobe zu E1 · zu Hause, in claude.ai">{GEGENPROBE}</Prompt>');
+    expect(readFileSync(new URL('../components/ClaudePruefung.astro', import.meta.url), 'utf8')).toContain('Im Modellmenü das beste Modell wählen, das euch zur Verfügung steht – mit Claude Pro (ab Innolab-Tag 5) Opus;');
+  });
+
+  it('Tag 4: Hinweis „Claude Code ab Tag 5“ vor dem Ablauf – installieren bis Tag 5, Pro gemeinsam an Tag 5', () => {
+    const t4 = seite(T4);
+    const hinweis = t4.indexOf('<Callout type="info" title="Heute ohne Claude – Claude Code ab Tag 5">');
+    expect(hinweis).toBeGreaterThan(0);
+    expect(hinweis).toBeLessThan(t4.indexOf('<h2 id="ablauf">'));
+    const text = t4.slice(hinweis, t4.indexOf('</Callout>', hinweis));
+    expect(text).toContain('Installiert es bis Tag 5 auf eurem Mac (<a href="/setup#lokal-schnellweg">mit dem Setup-Skript</a>)');
+    expect(text).toContain('href="/innolab/tag-5#claude-pro-jetzt"');
+    expect(t4).not.toMatch(/Vor Tag 4: Claude Code installieren|um 11:00 gemeinsam/);
+  });
+});
+
+describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)', () => {
+  it('eigener Block 10:05–10:15 vor der Pause und vor dem Backlog – der ersten Nutzung von Claude Code an Tag 5', () => {
+    const b = bloeckeAus(seite(T5));
+    const pro = b.findIndex((x) => x.href === '#claude-pro-jetzt');
+    expect(b[pro]).toMatchObject({ titel: 'Claude Pro und Claude Code, gemeinsam', von: 10 * 60 + 5, bis: 10 * 60 + 15 });
+    expect(b[pro + 1].titel).toBe('Pause');
+    expect(b[pro + 2]).toMatchObject({ titel: 'Backlog aus Issues', href: '/innolab/methoden/backlog' });
+    // Erste Nutzung: der Prompt „Issues nach Linear“ im Backlog – davor braucht kein Block und keine Vorgehen-Folie Claude Code.
+    expect(seite('/innolab/methoden/backlog')).toContain('<Prompt label="Issues nach Linear · Claude Code"');
+    const ablauf = seite(T5).match(/<Block time="[^"]+"[\s\S]*?(?:\/>|<\/Block>)/g) ?? [];
+    expect(ablauf).toHaveLength(b.length);
+    const davor = ablauf.slice(0, pro);
+    expect(davor).toHaveLength(2);
+    expect(davor.flatMap((x) => x.match(/Claude/g) ?? [])).toStrictEqual([]);
+    for (const [p, id] of [['/innolab/methoden/scrum', 'team'], ['/innolab/methoden/scrum', 'dod'], [T5, 'debrief-ablauf']]) {
+      const f = folie(p, id);
+      expect(f.length, id).toBeGreaterThan(200);
+      expect(f.match(/Claude Code|Claude Pro/g) ?? [], id).toStrictEqual([]);
+    }
+    // Der Monat von Claude Pro reicht über Tag 5 und Tag 6 (19.12.).
+    expect(hhmm(b[pro].von)).toBe('10:05');
+  });
+
+  it('die beiden Folien stehen auf tag-5, im Beamer zwischen Teamaufstellung (scrum#uebertrag) und Backlog', () => {
+    expect(folienAus(T5, seite(T5)).map((f) => f.id)).toStrictEqual(['debrief', 'umschwenken', 'debrief-ablauf', 'claude-pro-jetzt', 'claude-code-opus', 'bauen-skizzen']);
+    expect(folienTag(T5, 'debrief-ablauf')).toBe('<Folie weiter="/innolab/methoden/scrum#team" weiterTitel="Teamaufstellung & Definition of Done">');
+    expect(folienTag('/innolab/methoden/scrum', 'uebertrag')).toBe('<Folie weiter="/innolab/tag-5#claude-pro-jetzt" weiterTitel="Claude Pro und Claude Code, gemeinsam">');
+    expect(folienTag(T5, 'claude-pro-jetzt')).toBe('<Folie zurueck="/innolab/methoden/scrum#uebertrag">');
+    expect(folienTag(T5, 'claude-code-opus')).toBe('<Folie weiter="/innolab/methoden/backlog" weiterTitel="Backlog aus Issues (nach der Pause)">');
+    expect(folienTag('/innolab/methoden/backlog', 'drei-cs')).toBe('<Folie zurueck="/innolab/tag-5#claude-code-opus">');
+  });
+
+  it('Schritte der beiden Folien: abschließen, kündigen, starten | Opus, Test, wer hängt – mit Setup-Links und 10-Minuten-Timer', () => {
+    const pro = folie(T5, 'claude-pro-jetzt');
+    const opus = folie(T5, 'claude-code-opus');
+    const f = pro + opus;
+    const schritte = (x: string) => [...x.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1]);
+    expect(schritte(pro)).toStrictEqual(['Claude Pro neu abschließen,', 'Gleich wieder kündigen:', 'Claude Code starten:']);
+    expect(schritte(opus)).toStrictEqual(['Modell auf Opus stellen:', 'Kurzer Test:', 'Wer hängt,']);
+    expect(opus).toContain('<ol class="gross" start="4">');
+    expect([...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => m[1])).toStrictEqual(['10']);
+    for (const a of ['claude-pro', 'claude-code-browser', 'lokal-schnellweg', 'lokal-starten']) expect(f, a).toContain(`href="/setup#${a}"`);
+    const sichtbar = pro.slice(0, pro.indexOf('<div class="nur-handout">'));
+    expect([...sichtbar.matchAll(/href="\/setup#([a-z-]+)"/g)].map((m) => m[1])).toStrictEqual(['claude-pro', 'claude-code-browser']);
+    expect(sichtbar).toContain('<strong>Ihr habt schon Pro oder Max?</strong> Dann nichts abschließen, nichts kündigen: nur Schritt 3 bis 5.');
+    expect(sichtbar).toContain('<p class="folie-satz">Alle zugleich, 10 Minuten – ab dem Backlog braucht ihr Claude Code.</p>');
+    expect(f).toContain('21,60 €');
+    // Abgeschlossen am 12.12., gekündigt: läuft bis etwa 12. Jänner – über Tag 5 und Tag 6.
+    expect(f).toContain('Pro läuft trotzdem bis etwa 12. Jänner.');
+    expect(f).not.toContain('28. Dezember');
+    expect(f).toContain('sagt es sofort – laut, in der Teams-Besprechung.');
+    expect(f).toContain('keine Erstattung anfordern');
+    expect(f).toContain('Kurzer Test:</strong> Screenshot eures Frames „T4 · 0 · Concept Story · Produkt n“ einfügen');
+    expect(f).toContain('<p class="small">Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.</p>');
+  });
+
+  it('Bauen: die erste Bau-Folie gibt Claude Code die Bilder von Tag 4 – Skizzen, Abnahmekriterien, Usage Story, Story Map', () => {
+    const f = folie(T5, 'bauen-skizzen');
+    expect(folienTag(T5, 'bauen-skizzen')).toBe('<Folie zurueck="/innolab/tag-5#stoerfall" weiter="#abschluss" weiterTitel="Abschluss">');
+    expect([...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual([
+      'Claude Code, mit Opus:', 'Prompt „Issue nach Skizzen“', 'Claude nennt zuerst die Bildschirme.', 'Ansehen, schmal wie ein Handy:', 'Prompt „Vorschau sichern“:',
+    ]);
+    expect(f).toContain('<Prompt label="Issue nach Skizzen · Claude Code, mit Opus"');
+    expect(f).toContain('meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen');
+    expect(f).toContain('<Prompt label="Vorschau sichern · Claude Code">');
+    expect(f).toContain('öffne einen Pull Request nach main – mergen tust du nicht');
+    // Der erste Bau-Block zeigt auf die Folie; er ist 10 Minuten kürzer als bis zum 26.11. (Pro-Block am Morgen).
+    const b = bloeckeAus(seite(T5)).filter((x) => x.titel === 'Bauen');
+    expect(b.map((x) => [hhmm(x.von), hhmm(x.bis)])).toStrictEqual([['14:30', '15:35'], ['15:45', '16:45']]);
+    expect(seite(T5)).toContain('nach euren Papier-Skizzen von Tag 4.</Block>');
+  });
+
+  it('die Anker der Setup-Seite, auf die die Folie zeigt, sind Überschriften', () => {
+    const s = setup();
+    for (const a of ['claude-pro', 'claude-code-browser', 'lokal-schnellweg', 'lokal-starten']) expect(s, a).toMatch(new RegExp(`<h[2-4] id="${a}">`));
+  });
+
+  it('Setup, Tag-2-Abschluss und Tag 3 schicken zu Tag 5, nicht mehr zu Tag 4 um 11:00', () => {
+    const s = setup();
+    const texte = [s, seite('/innolab/tag-2/abschluss'), seite('/innolab/tag-3'), seite(T4)];
+    expect(texte.every((x) => x.length > 1000)).toBe(true);
+    expect(texte.flatMap((x) => x.match(/experiment#claude-pro-jetzt|Pro gemeinsam neu ab, um 11:00|an Tag 4 neu abschließen|28\.11\.–28\.12\./g) ?? [])).toStrictEqual([]);
+    expect(s).toContain('<li><strong>Innolab (12.12.–12.01.):</strong> An Innolab-Tag 5 (12. Dezember) schließen wir Pro gemeinsam neu ab');
+    expect(s).toContain('(<a href="/innolab/tag-5#claude-pro-jetzt">Folie</a>)');
+    expect(seite('/innolab/tag-2/abschluss')).toContain('<p data-schritt>Claude Pro erst an Tag 5 neu abschließen, am 12. Dezember gemeinsam in der Besprechung.</p>');
+    expect(seite('/innolab/tag-3')).toContain('<p><strong>Tag 4 ist online und ohne Claude Code:</strong>');
+  });
+
+  // Nachtrag 26.11. abends: Claude und Claude Code immer mit Opus; im Innolab keine Dateien in VS Code, nur Terminal und claude.
+  it('Setup: Opus mit /model opus und derselben Ausweichzeile wie auf tag-5#claude-code-opus, ohne Versionsnummer', () => {
+    const s = setup();
+    const zeile = 'Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.';
+    expect(s.split(zeile)).toHaveLength(3);
+    for (const id of ['claude-code-opus', 'lokal-opus']) expect(s).toContain(`<p id="${id}"><strong>Modell: Opus.</strong>`);
+    expect(s.match(/<Prompt label="Claude Code">\/model opus<\/Prompt>/g)).toHaveLength(2);
+    expect(seite(T5)).toContain(zeile);
+    expect(s.match(/Opus \d|opus-\d/gi) ?? []).toStrictEqual([]);
+    expect(s).toContain('<h4 id="lokal-starten">VS Code, Claude und App starten</h4>');
+    expect(s).toContain('<Prompt label="Terminal in VS Code">claude</Prompt>');
+  });
+});

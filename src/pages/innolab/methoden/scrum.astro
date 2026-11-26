@@ -395,11 +395,11 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
   {/* Letzte Tag-4-Folie dieser Seite: → führt um 17:15 in den Abschluss von Tag 4, nicht in die Tag-5-Folien darunter. */}
   <Folie weiter="/innolab/tag-4#abschluss" weiterTitel="Abschluss Tag 4">
     <h2 id="weiter-tag-4">Weiter heute: Origin Story und Hausaufgabe</h2>
-    {/* Satz und Uhrzeit nur im Beamer (Tag 4); im Handout steht darunter derselbe Hinweis mit Links. Seit 27.11.2026 ohne
-        Puffer davor: Agil & Scrum endet um 17:15, den Prototyp baut ihr freiwillig zu Hause weiter. */}
+    {/* Satz und Uhrzeit nur im Beamer (Tag 4); im Handout steht darunter derselbe Hinweis mit Links. Seit 26.11.2026 nachts
+        baut Claude Code den Prototyp erst an Tag 5; Tag 4 endet mit dem Papier-Prototyp. */}
     <p class="folie-satz nur-beamer">Teamaufstellung und Definition of Done folgen an Tag 5.</p>
-    <p class="nur-beamer">Jetzt: Origin Story und Hausaufgabe. Den Prototyp baut ihr zu Hause weiter, wenn ihr wollt.</p>
-    <p class="nur-handout">Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief. An Tag 4 folgt jetzt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>; den Prototyp weiterzubauen ist freiwillige Hausaufgabe (<a href="/innolab/tag-4#hausaufgabe">Hausaufgabe</a>).</p>
+    <p class="nur-beamer">Jetzt: Origin Story und Hausaufgabe. Den Prototyp baut Claude Code an Tag 5 aus euren Skizzen.</p>
+    <p class="nur-handout">Teamaufstellung und Definition of Done folgen an <a href="/innolab/tag-5">Tag 5</a>, gleich nach dem Test-Debrief. An Tag 4 folgt jetzt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a> (<a href="/innolab/tag-4#hausaufgabe">Hausaufgabe</a>). Gebaut wird der Prototyp an Tag 5: Claude Code baut Slice 1 aus euren Papier-Skizzen (<a href="/innolab/tag-5#bauen-skizzen">Tag 5, Bauen</a>).</p>
   </Folie>
 
   {/* Tag 5 beginnt hier (von tag-5 per →): ← führt zurück zum Debrief, nicht in die Tag-4-Folie „Weiter heute“ darüber. */}
@@ -408,13 +408,13 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
     <p class="folie-satz">Je Produkt ein Product Owner und ein Produktziel – alle drei sind überall Developers.</p>
     <MiroFrame name="T4 · 2 · Teamaufstellung & DoD" />
     <ol class="gross">
-      <li data-schritt><strong>Aus eurem Spike an Tag 4:</strong> Was hätte gefehlt, wenn er echt gewesen wäre? Drei Stichworte auf Miro. <Timer minuten={5} /></li>
+      <li data-schritt><strong>Aus eurem Papier-Prototyp von Tag 4:</strong> Was muss die echte Version können, damit ihr sie fertig nennt? Drei Stichworte auf Miro. <Timer minuten={5} /></li>
       <li data-schritt><strong>Je Produkt:</strong> Product Owner, Produktziel, Linear-Projekt; Scrum Master für den Sprint; die Abweichungen. <Timer minuten={10} /></li>
       <li data-schritt><strong>Definition of Done,</strong> eine für alle drei Produkte. <Timer minuten={15} /></li>
       <li data-schritt><strong>Mess-Ereignis je Produkt</strong> als Mess-Issue in Stichworten; Collaborator einladen. <Timer minuten={10} /></li>
     </ol>
     <div class="nur-handout">
-      <p>Zu 1: Die Stichworte werden Zeilen der Definition of Done – sie kommen aus eurer eigenen Erfahrung mit dem Spike, nicht aus einer Vorlage. Die Idee stammt von Krivitsky, der die Definition of Done erst schreiben lässt, nachdem Teams ohne sie gescheitert sind: „Ich möchte, dass die Teams scheitern und verstehen, warum sie in jedem Projekt eine gute DoD brauchen“ ({KRIVITSKY}, S. 46). Zu 2: Jede*r ist Product Owner des eigenen Produkts und entscheidet dort über Produktziel, Backlog und Reihenfolge ({GUIDE}, S. 5–6). Alle drei sind Developers in allen drei Produkten: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente. Den Scrum Master für den Sprint lost ihr. Linear: ein Team, ein Projekt pro Produkt, ein Label für den Sprint (<code>Sprint</code>); eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>). Die Abweichungen vom Guide übernehmt ihr als eigenen Abschnitt in <code>docs/TEAM.md</code>. Zu 3 und 4: siehe nächste Folie. Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein (<a href="/innolab/methoden/sprint#spec">Sprint</a>).</p>
+      <p>Zu 1: Die Stichworte werden Zeilen der Definition of Done – sie kommen aus eurer eigenen Erfahrung mit dem Papier-Prototyp und seinem Trockenlauf, nicht aus einer Vorlage. Die Idee stammt von Krivitsky, der die Definition of Done erst schreiben lässt, nachdem Teams ohne sie gescheitert sind: „Ich möchte, dass die Teams scheitern und verstehen, warum sie in jedem Projekt eine gute DoD brauchen“ ({KRIVITSKY}, S. 46). Zu 2: Jede*r ist Product Owner des eigenen Produkts und entscheidet dort über Produktziel, Backlog und Reihenfolge ({GUIDE}, S. 5–6). Alle drei sind Developers in allen drei Produkten: Ihr baut Issues der anderen, prüft deren Pull Requests und testet deren Inkremente. Den Scrum Master für den Sprint lost ihr. Linear: ein Team, ein Projekt pro Produkt, ein Label für den Sprint (<code>Sprint</code>); eingerichtet mit <code>/ndu-linear</code> wie im Coding-Kurs (<a href="/konzepte/linear">Backlog im Team: Linear</a>). Die Abweichungen vom Guide übernehmt ihr als eigenen Abschnitt in <code>docs/TEAM.md</code>. Zu 3 und 4: siehe nächste Folie. Damit ihr in allen drei Produkten bauen könnt, laden die Product Owner die anderen beiden als Collaborator ins GitHub-Repo ein (<a href="/innolab/methoden/sprint#spec">Sprint</a>).</p>
       <p>Der Sprint: vom Planning heute (Tag 5, 12. Dezember) bis zu Review und Retro an Tag 6 (19. Dezember). Am 16. Jänner präsentiert ihr euer Produkt den Stakeholdern.</p>
     </div>
   </Folie>
@@ -472,7 +472,7 @@ Developers: alle drei in allen drei Produkten · Scrum Master: [Name]
 - Pull Request von einer anderen Person aus dem Team geprüft
 - Auf Vercel live
 - Das Ereignis [Name] kommt nach dem Merge an: Felder [...]; gespeichert wird kein Name und keine E-Mail
-- [aus eurem Spike: ...]
+- [aus eurem Papier-Prototyp: ...]
 
 ## Abweichungen vom Scrum Guide (und warum)
 - Drei Produkte, drei Sprint-Ziele, ein Takt: [...]
@@ -483,7 +483,8 @@ Developers: alle drei in allen drei Produkten · Scrum Master: [Name]
   <ClaudePruefung slug="scrum" />
   </div>
 
-  <Folie>
+  {/* Letzte Folie der Teamaufstellung (Tag 5): → zum gemeinsamen Claude-Pro-Block um 10:05 auf der Tagesseite. */}
+  <Folie weiter="/innolab/tag-5#claude-pro-jetzt" weiterTitel="Claude Pro und Claude Code, gemeinsam">
     <h2 id="uebertrag">Übertrag auf eure Produkte</h2>
     <p class="folie-satz">Was antwortet ihr als Product Owner, wenn mitten im Sprint jemand etwas Neues will?</p>
     <p class="nur-handout">Im Sprint gilt: „No changes are made that would endanger the Sprint Goal“; der Umfang darf mit dem Product Owner neu verhandelt werden, das Ziel nicht ({GUIDE}, S. 7). Was Neues kommt, landet im Product Backlog – und im nächsten Planning entscheidet ihr, ob es dran ist.</p>

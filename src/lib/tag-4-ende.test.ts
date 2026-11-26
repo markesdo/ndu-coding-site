@@ -135,18 +135,22 @@ describe('Tag 4: Folien des Abschlusses', () => {
     expect(schritte.length).toBeGreaterThanOrEqual(4);
     expect(schritte.length).toBeLessThanOrEqual(7);
     const liste = f.slice(f.indexOf('<div class="nur-handout">'));
-    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v7" items={[');
+    expect(liste).toContain('<Checklist id="il-tag4-hausaufgabe-5-v8" items={[');
     // Dozent 27.11.2026: E1 läuft nicht. Origin Story → Karte E1 fertig → freiwillig Usability-Tests → Aufräumen → Linear.
+    // Seit 26.11.2026 nachts: Prototyp auf Papier; der letzte Schritt sagt, was bis Tag 5 da sein muss (Claude Code, Linear).
     expect(schritte.map((x) => x.match(/^<strong>([^<]+)<\/strong>/)?.[1])).toStrictEqual([
-      'Origin Story', 'Karte E1 fertig machen,', 'Freiwillig: Usability-Tests', 'Fertig machen, was heute offen blieb', 'Linear einrichten,',
+      'Origin Story', 'Karte E1 fertig machen,', 'Freiwillig: Usability-Tests', 'Fertig machen, was heute offen blieb', 'Bis Tag 5:',
     ]);
+    expect(schritte[4]).toContain('Claude Code installieren; Linear einrichten');
+    expect(schritte.join('\n')).not.toMatch(/Spike|weiterbauen|Branch/);
+    expect(liste.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')).not.toMatch(/Spike|weiterbauen|im eigenen Branch/);
     expect(schritte.join('\n')).not.toMatch(/E1 laufen lassen|Lernkarte E1|Aufsteller oder die Landingpage/);
     expect(schritte[2]).toContain('fünf sind ideal, auch zwei, drei helfen');
     for (const aus of ['Value Map und Fit', 'Concept Story', 'Euer Baum', 'Geschäftsmodell auf Miro', 'Karte E1', 'Story Map mit Slice 1', 'Usage Story']) expect(liste, aus).toContain(aus);
     const pos = ['Origin Story auf Miro', 'Karte E1 fertig', 'Freiwillig: Usability-Tests', 'Value Map und Fit'].map((w) => liste.indexOf(w));
     expect(pos.every((x, k) => x > 0 && (k === 0 || x > pos[k - 1]))).toBe(true);
     expect(liste).not.toMatch(/E1 gelaufen|Lernkarte E1 mit/);
-    for (const aus of ['mit dem E1 laufen würde', 'Usability-Tests</strong> mit dem Prototyp', 'als Collaborator']) {
+    for (const aus of ['mit dem E1 laufen würde', 'Usability-Tests</strong> mit dem Papier-Prototyp', 'als Collaborator']) {
       expect(schritte.join('\n'), aus).toContain(aus);
       expect(liste.replace(/<\/?strong>/g, ''), aus).toContain(aus.replace(/<\/?strong>/g, ''));
     }
@@ -182,8 +186,9 @@ describe('Tag 5 im Beamer: rund um scrum#team keine Tag-4-Folie', () => {
     const team = fs.findIndex((f) => f.id === 'team');
     expect(team).toBeGreaterThanOrEqual(1);
     expect(fs[team - 1].id).toBe('weiter-tag-4');
-    // Der Debrief ist die letzte Folie auf tag-5; dessen → führt nach scrum#team.
-    expect(folienMit('/innolab/tag-5').at(-1)?.id).toBe('debrief-ablauf');
+    // Seit 26.11.2026 nachts stehen nach dem Debrief noch Folien auf tag-5 (Claude Pro um 10:05, Bauen um 14:30); das →
+    // der letzten Debrief-Folie führt darum ausdrücklich nach scrum#team.
+    expect(folienMit('/innolab/tag-5').find((f) => f.id === 'debrief-ablauf')?.weiter).toBe('/innolab/methoden/scrum#team');
   });
 });
 

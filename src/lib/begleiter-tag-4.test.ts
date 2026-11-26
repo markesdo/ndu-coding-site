@@ -11,11 +11,13 @@ const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro',
 const SEITEN: Record<string, number> = {
   // Tagesseite: 9:00 Arbeitsfluss, 9:35 Was bauen wir? und Slice 1 im Baum, 17:15 Abschluss mit Beispiel, Hausaufgabe, Ende.
   '/innolab/tag-4': 7,
-  '/innolab/methoden/experiment': 20,
+  // Seit 26.11.2026 nachts ohne die beiden Claude-Pro-Folien (jetzt auf tag-5).
+  '/innolab/methoden/experiment': 18,
   // Story Map seit 26.11.2026 abends: Warm-up in sechs Schritten, Begriffe, Theorie, Kaffeebar, Übung in elf Schritt-Folien.
   '/innolab/methoden/story-map': 31,
   '/innolab/methoden/usage-story': 6,
-  '/innolab/methoden/prototyp-spike': 17,
+  // Seit 26.11.2026 nachts Prototyp auf Papier: ohne Zeitbox, Bauen und Ansehen.
+  '/innolab/methoden/prototyp-spike': 14,
   '/innolab/methoden/scrum': 16,
 };
 

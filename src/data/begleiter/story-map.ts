@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/story-map.astro (Tag 4, 28.11.2026, 11:50–13:15): Warm-up „euer Morgen“
+// Begleiter-Notizen zu src/pages/innolab/methoden/story-map.astro (Tag 4, 28.11.2026, 11:40–13:05): Warm-up „euer Morgen“
 // in sechs Schritten (alle selbst, je ein Frame „T4 · 1 · Warm-up · euer Morgen · Produkt n“), Begriffe, Theorie,
 // Kaffeebar, dann die Übung in elf Schritten auf „T4 · 1 · Story Map“ (42 min). Patton = EPUB, zitiert nach Kapitel
 // und Abschnitt. Markus zeigt das Warm-up an seinem eigenen Morgen auf seinem eigenen Miro-Board (Link nicht im Repo).
@@ -340,15 +340,15 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Fragen: An welchem Sticky passiert der Outcome?',
     ],
     uebung: { dauer: '5 min', form: 'allein' },
-    ueberleitung: 'Zum Schluss: fertig auf Miro – und Claude nach Annahmen fragen.',
+    ueberleitung: 'Zum Schluss: fertig auf Miro.',
   },
 
   'schritt-festhalten': {
     live: [
       'Timer 4 min: auf Miro fertig – keine Datei, kein Commit.',
-      'Claude Code mit Opus: Screenshot des Bereichs in den Prompt.',
       'Fragen: Steht jedes Sticky nur einmal auf der Map?',
-      'Bei Bedarf: Claude Code noch nicht da? Prompt nach der Pause.',
+      '„Heute kein Claude – an Tag 5 werden aus Slice 1 eure Issues.“',
+      'Bei Bedarf: „Annahmen hinter Slice 1“ zu Hause in claude.ai, freiwillig (Handout).',
     ],
     uebung: { dauer: '4 min', form: 'allein' },
     ueberleitung: 'Slice 1 steht – nach der Pause wird er zur Geschichte.',

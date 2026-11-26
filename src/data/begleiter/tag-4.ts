@@ -17,7 +17,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
     live: [
       'Zeit: 5 min; Ist-Zeit notieren.',
       'Spalten per → aufdecken: was von Tag 1 bis 3 da ist.',
-      '„Heute wird aus Spalte 4 ein Prototyp – zuerst holen wir Value Map und Fit nach.“',
+      '„Heute wird aus Spalte 4 ein Prototyp auf Papier – zuerst Value Map und Fit.“',
       'Pfeil → führt zur Value Map, nicht zu „Was bauen wir?“.',
     ],
     ueberleitung: 'Zuerst holen wir nach, was von Tag 3 offen ist: Value Map und Fit.',
@@ -30,6 +30,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
       '„Slice 1 ist die kleinste Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.“',
       'Drei Zuläufe zeigen: je woher die Linie kommt, was daraus wird.',
       'Falle: Slice 1 als Feature-Liste; gemeint ist ein ganzer Weg.',
+      '„Heute auf Papier – an Tag 5 baut Claude Code daraus.“',
     ],
     verstaendnis: {
       frage: 'Was heißt „von Anfang bis Ende“ bei Slice 1?',
@@ -113,7 +114,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
     live: [
       'Reihenfolge: Origin Story, Karte E1 fertig; Tests freiwillig.',
       'E1 läuft nicht – an Tag 5 besprechen, was die Karte gezeigt hätte.',
-      'Ganze Liste: Checkliste im Handout der Seite.',
+      'Bis Tag 5: Claude Code installieren; Pro erst an Tag 5.',
       'Alles auf Miro oder in der Werkstatt – keine Dateien schreiben.',
       'Fragen: Steht bei allen „Wir entscheiden vorher“ auf der Karte E1?',
     ],

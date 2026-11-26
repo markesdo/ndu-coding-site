@@ -64,8 +64,8 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'geschaeftsmodell', name: 'Geschäftsmodell', lebtIn: ['miro'], miro: 'T4 · 7 · Geschäftsmodell · Produkt n' },
   { id: 'storymap', name: 'Story Map mit Slice 1', lebtIn: ['miro'], miro: 'T4 · 1 · Story Map', miroSpalte: true },
   { id: 'usage', name: 'Usage Story des Kernablaufs', lebtIn: ['miro'], miro: 'T4 · 4 · Usage Story · Produkt n' },
-  // Der Spike selbst liegt in seinem Branch (Claude Code legt ihn an); Skizzen, Kriterien, Karte E2 und Befunde im Frame.
-  { id: 'spike', name: 'Prototyp-Spike und Testbefunde', lebtIn: ['miro'], miro: 'T4 · 5 · Prototyp · Produkt n' },
+  // Seit 26.11.2026 nachts Prototyp auf Papier (gebaut wird an Tag 5): Skizzen, Kriterien, Karte E2 und Befunde im Frame.
+  { id: 'spike', name: 'Prototyp auf Papier und Testbefunde', lebtIn: ['miro'], miro: 'T4 · 5 · Prototyp · Produkt n' },
   { id: 'team', name: 'Team-Vereinbarung mit Definition of Done', lebtIn: ['repo'], pfad: 'docs/TEAM.md' },
   { id: 'issues', name: 'Backlog aus Issues', lebtIn: ['linear'] },
   { id: 'kriterien', name: 'Akzeptanzkriterien', lebtIn: ['linear'] },
@@ -349,7 +349,7 @@ export const METHODEN: Methode[] = [
     quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 27–28, 115–118 (PDF); Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128; Bland & Osterwalder, Testing Business Ideas, S. 34–35, 39',
   },
   {
-    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 4, dauer: 50, prueflisteStand: 2,
+    slug: 'experiment', name: 'Experiment-Karte & Origin Story', tag: 4, dauer: 40, prueflisteStand: 2,
     frage: 'An welcher Annahme hängt der Spitzenreiter – und wie prüfen wir sie diese Woche?',
     braucht: ['annahmen', 'ideen', 'valuemap', 'concept', 'geschaeftsmodell'], ergibt: ['experimente', 'origin'],
     pruefliste: [
@@ -403,25 +403,23 @@ export const METHODEN: Methode[] = [
     quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2, 5–8',
   },
   {
-    slug: 'prototyp-spike', name: 'Prototyp-Spike & Usability-Test', tag: 4, dauer: 100, prueflisteStand: 2,
-    frage: 'Erreichen fünf Menschen mit dem Prototyp den Höhepunkt, ohne dass ihr helft?',
+    // Seit 26.11.2026 nachts (Dozent): Prototyp auf Papier, ohne Claude an Tag 4; gebaut wird an Tag 5 (tag-5#bauen-skizzen).
+    // 55 min = rund 20 Theorie und Beispiel + 33 Übung (10 Papier, 3 Abnahmekriterien, 10 Karte E2, 10 Trockenlauf) + 2
+    // Übergang. Prüfliste Stand 3: ohne Branch, Link und Zeitbox; Felder 3 Karte E2 und 4 Tests.
+    slug: 'prototyp-spike', name: 'Prototyp auf Papier & Usability-Test', tag: 4, dauer: 55, prueflisteStand: 3,
+    frage: 'Erreichen fünf Menschen mit dem Prototyp auf Papier den Höhepunkt, ohne dass ihr helft?',
     braucht: ['usage', 'storymap', 'annahmen'], ergibt: ['spike'],
     pruefliste: [
-      { id: 'prototyp-spike-skizzen', text: 'Papierskizzen für jeden Bildschirm der Usage Story liegen als Foto im Feld „1 · Papier-Skizzen“; der Höhepunkt ist ein eigenes Blatt mit Stern.' },
-      {
-        id: 'prototyp-spike-branch',
-        text: 'Im Feld „4 · Prototyp“ stehen der eigene Branch (spike/…), der Link fürs Handy und die drei Abnahme-Kreuze; Abnahmekriterien und Zeitbox stehen in den Feldern 2 und 3 – der Spike wird nicht gemergt.',
-        // Code-Review #458: „Prototyp – nicht echt“ steht nur im Prototyp selbst, nicht im Bild des Frames.
-        frage: 'Ob oben „Prototyp – nicht echt“ steht, zeigt nur der Link, nicht das Bild – frag danach, statt es zu prüfen.',
-      },
-      { id: 'prototyp-spike-karte', text: 'Die Karte E2 nennt die Annahme (ID, Art) und die Schwelle „x von 5“, bevor jemand testet.' },
+      { id: 'prototyp-spike-skizzen', text: 'Papierskizzen für jeden Bildschirm der Usage Story liegen als Foto im Feld „1 · Papier-Skizzen“; der Höhepunkt ist ein eigenes Blatt mit Stern, und an jedem Knopf zeigt ein Pfeil, zu welchem Blatt er führt.' },
+      { id: 'prototyp-spike-kriterien', text: 'Im Feld „2 · Abnahmekriterien“ stehen drei Sätze – „Der Prototyp zeigt …“ mit Zahl, „Er läuft …“, „Er hat nicht …“ –, jeder mit Ja oder Nein prüfbar.' },
+      { id: 'prototyp-spike-karte', text: 'Die Karte E2 im Feld „3 · Karte E2“ nennt die Annahme (ID, Art) und die Schwelle „x von 5“, bevor jemand testet.' },
       { id: 'prototyp-spike-aufgabe', text: 'Die Aufgabe beschreibt Situation und Ziel, keine Bedienschritte und keine Begriffe aus der Oberfläche.' },
-      { id: 'prototyp-spike-trockenlauf', text: 'Ein Trockenlauf mit den anderen beiden ist gelaufen; die Testpersonen danach haben den Pain und kennen das Produkt nicht.' },
+      { id: 'prototyp-spike-trockenlauf', text: 'Der Trockenlauf auf Papier mit den anderen beiden steht in Feld „4 · Tests“, Zeile 0; die Testpersonen danach haben den Pain und kennen das Produkt nicht.' },
       { id: 'prototyp-spike-protokoll', text: 'Pro Testperson steht fest: Höhepunkt ohne Hilfe erreicht, Zeit, wo gehangen, Reaktion am Höhepunkt.' },
       { id: 'prototyp-spike-lernkarte', text: 'Nach den Tests: Lernkarte mit Verlässlichkeit und Befund (gestützt, widerlegt, unklar oder neue Einsicht), und was ihr deshalb ändert, in der Zeile „Beleg: … → darum: …“ mit U-IDs.' },
     ],
-    ki: 'Baut den Wegwerf-Prototyp – erst nach der Papierskizze und innerhalb der Abnahmekriterien.',
-    quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, Clickable Prototype, XP Spike); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
+    ki: 'Heute keine Rolle – an Tag 5 baut Claude Code Slice 1 nach den Papier-Skizzen und Abnahmekriterien.',
+    quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, S. 182–185); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
   },
   {
     // Seit 25.11.2026 (NDU-72) ohne Lego4Scrum; seit 26.11.2026 Variante B (Foliensatz plus Kaffeebar-Übung): Agil & Scrum an

@@ -10,13 +10,14 @@ import Folie from '../../components/Folie.astro';
 import Timer from '../../components/Timer.astro';
 import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import BildText from '../../components/bild/BildText.astro';
+import MiroLink from '../../components/MiroLink.astro';
 
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 ---
 <Layout title="Tag 5 · Backlog & Sprint">
   <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00 · online in Teams</span>
   <h1>Tag 5 · Backlog & Sprint</h1>
-  <p class="lead">Ihr entscheidet nach euren Tests, stellt euch als Team für drei Produkte auf, baut Backlogs, die jede*r im Team abarbeiten kann, und plant euren Sprint. Am Nachmittag wird gebaut.</p>
+  <p class="lead">Ihr entscheidet nach euren Tests, stellt euch als Team für drei Produkte auf, baut Backlogs, die jede*r im Team abarbeiten kann, und plant euren Sprint. Am Nachmittag wird gebaut: Claude Code, das ihr heute gemeinsam einrichtet, baut Slice 1 nach euren Papier-Skizzen von Tag 4.</p>
   <p>Heute seid ihr online in einer Teams-Besprechung; den Link findet ihr in Teams.</p>
   <Orientierung seite="innolab/tag-5" />
 
@@ -69,7 +70,7 @@ Wir haben beobachtet: 4 von 5 erreichten den Höhepunkt ohne Hilfe (U1); alle f�
 Verlässlichkeit: mittel – sie haben es getan, aber im Test.
 Daraus lernen wir: Bedienbar ja – die Uhrzeit ist die Hürde.
 Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
-      <p>E2 und U1–U3 stehen auf der Seite <a href="/innolab/methoden/prototyp-spike#beispiel-befunde">Prototyp-Spike</a>; die Zahl bei E1 ist ausgedacht wie die Testbefunde dort. Usability-Tests bis Tag 5 waren freiwillig, und E1 ist bei euch nicht gelaufen: Die Lernkarte E1 der Kaffeebar ist das ausgearbeitete Beispiel. Nach der Karte ist E1 nicht bestanden: 8 sind weniger als 10. „Unklar“ ist der Befund, weil 8 im Band 5–9 liegt, das die Karte vor dem Test festgelegt hat (Zeile „Wir entscheiden vorher“) – nicht, weil man nachher einen Grund findet. Dieselbe Zeile sagt, was folgt: wiederholen, eine Sache ändern. Welche Sache, entscheidet die Kaffeebar erst jetzt: Der Aufsteller stand an der Tür, nicht dort, wo die Schlange beginnt – also wandert er an die Schlange. Die Schwelle bleibt, wo sie war: Wer sie jetzt senkt, damit E1 besteht, macht genau den Fehler, vor dem die <a href="/innolab/methoden/experiment#karte-e1">Experiment-Karte</a> warnt. Wären es 2 von 30 gewesen, hieße der Befund „widerlegt“ (unter 5) – dann käme die nächste Folie.</p>
+      <p>E2 und U1–U3 stehen auf der Seite <a href="/innolab/methoden/prototyp-spike#beispiel-befunde">Prototyp auf Papier</a>; die Zahl bei E1 ist ausgedacht wie die Testbefunde dort. Usability-Tests bis Tag 5 waren freiwillig, und E1 ist bei euch nicht gelaufen: Die Lernkarte E1 der Kaffeebar ist das ausgearbeitete Beispiel. Nach der Karte ist E1 nicht bestanden: 8 sind weniger als 10. „Unklar“ ist der Befund, weil 8 im Band 5–9 liegt, das die Karte vor dem Test festgelegt hat (Zeile „Wir entscheiden vorher“) – nicht, weil man nachher einen Grund findet. Dieselbe Zeile sagt, was folgt: wiederholen, eine Sache ändern. Welche Sache, entscheidet die Kaffeebar erst jetzt: Der Aufsteller stand an der Tür, nicht dort, wo die Schlange beginnt – also wandert er an die Schlange. Die Schwelle bleibt, wo sie war: Wer sie jetzt senkt, damit E1 besteht, macht genau den Fehler, vor dem die <a href="/innolab/methoden/experiment#karte-e1">Experiment-Karte</a> warnt. Wären es 2 von 30 gewesen, hieße der Befund „widerlegt“ (unter 5) – dann käme die nächste Folie.</p>
       <p><strong>Rückfrage an die Kaffeebar:</strong> Hättet ihr den Ort des Aufstellers auch hinterfragt, wenn 12 von 30 eingetragen hätten? „we tend to happily accept ‚good‘ results that confirm our beliefs because they feel right. But we challenge and thoroughly investigate ‚bad‘ results that go against our assumptions“ (Stefan H. Thomke, „The Scientific Mindset“, 2027, S. 14). Vergleicht die Lernkarte mit der Zeile „Wir entscheiden vorher“ auf der <a href="/innolab/methoden/experiment#karte-e1">Karte E1</a>.</p>
     </div>
   </Folie>
@@ -89,7 +90,8 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
     </div>
   </Folie>
 
-  <Folie>
+  {/* Letzte Folie des Debriefs: → führt zur Teamaufstellung (9:25); die Folien weiter unten kommen erst um 10:05 und 14:30. */}
+  <Folie weiter="/innolab/methoden/scrum#team" weiterTitel="Teamaufstellung & Definition of Done">
     <h2 id="debrief-ablauf">So läuft der Debrief (25 min)</h2>
     <p class="folie-satz">Sechs Minuten je Product Ownerin, dann steht eure Antwort unter der Karte E1 und im Baum.</p>
     <ol class="gross">
@@ -120,6 +122,47 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
     <li><a href="/innolab/methoden/sprint">Sprint</a> – Issue als Spezifikation, Planning, Daily, Review, Retro</li>
   </ul>
 
+  {/* 10:05–10:15 (Entscheidung Markus 26.11.2026 nachts): Claude Code kommt von Tag 4 nach Tag 5. Tag 4 lief ohne Claude,
+      auf Papier und Miro. Gebraucht wird Claude Code heute ab dem Backlog (Issues nach Linear), dann für Grenzfälle,
+      Plan-Check und am Nachmittag zum Bauen – darum der Block vor der Pause, nicht erst vor dem Bauen: Wer hängt, hat die
+      Pause zum Nachholen. Von der letzten Folie der Teamaufstellung (scrum#uebertrag) per → hierher; → am Ende weiter zum
+      Backlog. Zwei Folien, damit jede bei 1280 × 720 passt. Schritte wie /setup#claude-pro und #lokal-starten. */}
+  <Folie zurueck="/innolab/methoden/scrum#uebertrag">
+    <h2 id="claude-pro-jetzt">Jetzt: Claude Pro abschließen und Claude Code starten</h2>
+    <p class="folie-satz">Alle zugleich, 10 Minuten – ab dem Backlog braucht ihr Claude Code.</p>
+    <p class="schon-pro"><strong>Ihr habt schon Pro oder Max?</strong> Dann nichts abschließen, nichts kündigen: nur Schritt 3 bis 5.</p>
+    <ol class="gross">
+      <li data-schritt><strong>Claude Pro neu abschließen,</strong> mit demselben Konto: <em>Monthly</em>, 21,60 €; die NDU erstattet ihn (<a href="/setup#claude-pro">wie</a>). <Timer minuten={10} /></li>
+      <li data-schritt><strong>Gleich wieder kündigen:</strong> Settings → Billing. Pro läuft trotzdem bis etwa 12. Jänner.</li>
+      <li data-schritt><strong>Claude Code starten:</strong> im Terminal eures Repos <code>claude</code>; fragt es, mit demselben Konto anmelden (<a href="/setup#claude-code-browser">wie</a>).</li>
+    </ol>
+    <p class="nur-beamer small">Weiter: Opus wählen und testen.</p>
+    <div class="nur-handout">
+      <p><strong>Warum jetzt:</strong> Bis hierher lief alles auf Papier, Miro und in der Werkstatt. Claude Code braucht ihr heute zum ersten Mal im <a href="/innolab/methoden/backlog#vorgehen">Backlog</a>, wenn Claude eure Issues in Linear anlegt; danach für die Grenzfälle, den Plan-Check und am Nachmittag zum Bauen. Richten es alle jetzt zugleich ein, bleibt die Pause, falls etwas hängt. Der bezahlte Monat reicht bis etwa 12. Jänner: über Tag 5 und Tag 6, den Bautag am 19. Dezember. Wer schon Pro oder Max hat, schließt nichts ab und kündigt nichts – nur starten, Opus wählen, testen.</p>
+      <p><strong>Pro abschließen</strong> (<a href="/setup#claude-pro">Setup, Schritt 2</a>): auf claude.ai mit demselben Konto anmelden wie im Oktober – Chats und Einstellungen bleiben. Bei Pro ist die jährliche Zahlung vorausgewählt: auf <em>Monthly</em> klicken, dann <em>Get Pro plan</em>. Auf der Bezahlseite muss <em>Pro · Monthly</em> stehen; mit Steuer sind es 21,60 €. Die Rechnung aus der E-Mail aufheben, die NDU erstattet sie.</p>
+      <p><strong>Kündigen:</strong> unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Nur kündigen, keine Erstattung anfordern: Eine Erstattung beendet Pro sofort, und Claude Code meldet sich ab.</p>
+      <p><strong>Claude Code starten:</strong> wie im Setup – VS Code mit eurem Repo öffnen (<em>File → Open Recent</em>), <em>Terminal → New Terminal</em>, <code>claude</code> eintippen (<a href="/setup#lokal-starten">wie</a>). Dateien schreibt ihr dort nicht selbst; das macht Claude Code. Fragt Claude nach der Anmeldung: <em>Claude account with subscription</em>, im Browser mit demselben Konto anmelden, <em>Authorize</em> (<a href="/setup#claude-code-browser">wie</a>). Am Mac springt der Browser danach von selbst zurück, einen Code kopieren müsst ihr nicht. Fehlt Claude Code noch auf eurem Mac, startet sofort das <a href="/setup#lokal-schnellweg">Setup-Skript</a> (15–25 Minuten) und sagt es.</p>
+    </div>
+  </Folie>
+
+  <Folie weiter="/innolab/methoden/backlog" weiterTitel="Backlog aus Issues (nach der Pause)">
+    <h2 id="claude-code-opus">Dann: Opus wählen und kurz testen</h2>
+    <p class="folie-satz">Ein Screenshot, ein Satz – dann läuft Claude Code.</p>
+    <ol class="gross" start="4">
+      <li data-schritt><strong>Modell auf Opus stellen:</strong> in Claude Code <code>/model opus</code>. In der Claude-App: im Modellmenü Opus wählen.</li>
+      <li data-schritt><strong>Kurzer Test:</strong> Screenshot eures Frames „T4 · 0 · Concept Story · Produkt n“ einfügen, dazu: „Sag mir in einem Satz, worum es in meiner Concept Story geht.“</li>
+      <li data-schritt><strong>Wer hängt,</strong> sagt es sofort – laut, in der Teams-Besprechung.</li>
+    </ol>
+    <p class="small">Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.</p>
+    <p class="nur-beamer small">Nach der Pause: Backlog aus Issues.</p>
+    <div class="nur-handout">
+      <p><strong>Opus:</strong> Wo ihr in diesem Kurs Claude oder Claude Code benutzt, nehmt ab heute das Modell Opus. In Claude Code einmal <code>/model opus</code> eintippen; mit <code>/model</code> seht ihr, welches Modell läuft. In der Claude-App und auf claude.ai wählt ihr Opus im Modellmenü am Eingabefeld. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> eintippen (in der App: das Modellmenü) und das vorgeschlagene Standardmodell wählen, dann weiter.</p>
+      <p><strong>Kurzer Test:</strong> Im Startbild von Claude Code steht „Claude Pro“. Dann macht ihr einen Screenshot eures Frames auf Miro: <MiroLink name="T4 · 0 · Concept Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 3">Produkt 3</MiroLink>. Am Mac mit <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>Ctrl</kbd> <kbd>4</kbd> in die Zwischenablage, in Claude Code mit <kbd>Ctrl</kbd> <kbd>V</kbd> einfügen (oder die Bilddatei ins Terminal ziehen), dann dieser Prompt. Kommt ein Satz, der zu eurer Story passt, seid ihr fertig.</p>
+      <Prompt label="Test · Claude Code, mit Opus">Sag mir in einem Satz, worum es in meiner Concept Story geht.</Prompt>
+      <p><strong>Wer hängt,</strong> sagt es sofort laut in der Teams-Besprechung, nicht erst nach dem Timer; Markus hilft in der Pause. Den Backlog schreibt ihr danach trotzdem gleich – Claude Code braucht ihr erst am Ende des Blocks, wenn die Issues nach Linear gehen.</p>
+    </div>
+  </Folie>
+
   <h2 id="stoerfall">Sprint-Planning mit Störfall</h2>
   <p>Ihr plant euren Sprint wie auf der Methodenseite (<a href="/innolab/methoden/sprint#planning">Sprint Planning</a>), zehn Minuten pro Produkt. Danach, mit dem ersten Entwurf in Linear, zieht jede*r Product Owner eine Störfall-Karte. Solche Karten gibt es in jedem echten Projekt:</p>
   <ul>
@@ -138,6 +181,43 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
   <Callout type="tip" title="Das Mess-Issue zuerst">
     <p>Baut das Issue, das das Mess-Ereignis einführt, als eines der ersten. Jedes Issue danach prüft ihr gleich mit: Kommt das Ereignis nach dem Merge noch an?</p>
   </Callout>
+
+  {/* 14:30: Der Bau, der bis 26.11. als Wegwerf-Spike an Tag 4 lief (prototyp-spike, Schritt 4), ist jetzt der Anfang des
+      echten Sprints: Claude Code baut Slice 1 Issue für Issue, und beim ersten Issue mit Oberfläche bekommt es die Bilder von
+      Tag 4 – Papier-Skizzen, Abnahmekriterien, Usage Story, Story Map. Prompts aus „Spike · Claude Code“ und „Spike
+      sichern“ abgeleitet; statt Wegwerf-Branch ein Branch je Issue und ein Pull Request (Coding-Kurs, konzepte/linear#prompts). */}
+  <Folie zurueck="/innolab/tag-5#stoerfall" weiter="#abschluss" weiterTitel="Abschluss">
+    <h2 id="bauen-skizzen">Bauen: das erste Issue nach euren Skizzen</h2>
+    <p class="folie-satz">Eure Blätter von Tag 4 sind der Bauplan – Claude Code baut daraus Slice 1, Issue für Issue.</p>
+    <ol class="gross dicht">
+      <li data-schritt><strong>Claude Code, mit Opus:</strong> euer Repo, Terminal, <code>claude</code>, dann <code>/model opus</code>.</li>
+      <li data-schritt><strong>Prompt „Issue nach Skizzen“</strong> aus dem Handout, Kennung eintragen; darunter die Bilder aus eurem Frame „T4 · 5 · Prototyp · Produkt n“ (<code>ctrl</code> + <code>V</code>).</li>
+      <li data-schritt><strong>Claude nennt zuerst die Bildschirme.</strong> Stimmt die Liste mit euren Blättern: „Ja, los.“</li>
+      <li data-schritt><strong>Ansehen, schmal wie ein Handy:</strong> ein Satz je Fehler, mit dem Namen des Blatts – „… sonst nichts ändern.“</li>
+      <li data-schritt><strong>Prompt „Vorschau sichern“:</strong> Pull Request und Link fürs Handy in Feld „5 · Tag 5: gebaut“, Abnahmekriterien ankreuzen.</li>
+    </ol>
+    <p class="wo-fertig"><strong>Fertig, wenn:</strong> ihr am Handy bis zu eurem Höhepunkt kommt – oder das Issue mit Belegen auf In Review steht.</p>
+    <div class="nur-handout">
+      <p>An Tag 4 habt ihr den Ablauf auf Papier gebaut und getestet; heute baut Claude Code die echte Version, als Issues in eurem Sprint. Bland führt die beiden als Paar: Was ihr am Papier-Prototyp gelernt habt, nutzt ihr „to inform your clickable prototype design“ ({BLAND}, S. 185). Bei euch wird daraus kein Wegwerf-Prototyp, sondern Slice 1 selbst – nach der Definition of Done, mit Pull Request.</p>
+      <p><strong>Reihenfolge:</strong> zuerst das Mess-Issue, dann das Branding (unten), dann das erste Issue mit Oberfläche – am besten das mit eurem Höhepunkt. <strong>Bilder:</strong> auf Miro so weit hineinzoomen, dass ihr die Stickys lesen könnt; am Mac <code>cmd</code> + <code>ctrl</code> + <code>shift</code> + <code>4</code>, Bereich aufziehen, im Claude-Terminal <code>ctrl</code> + <code>V</code> (wirklich <code>ctrl</code>, nicht <code>cmd</code>) – es erscheint <code>[Image #1]</code>. Usage Story (<MiroLink name="T4 · 4 · Usage Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Usage Story · Produkt 3">3</MiroLink>), von der Story Map nur Backbone und Slice 1 (<MiroLink name="T4 · 1 · Story Map">Story Map</MiroLink>), Abnahmekriterien und Skizzen-Fotos aus „T4 · 5 · Prototyp · Produkt n“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>). Die Skizzen-Fotos zusätzlich direkt hineinziehen: Im Screenshot des Frames sind sie zu klein.</p>
+      <p><strong>Ansehen:</strong> Claude nennt eine Adresse wie <code>http://localhost:3000</code>; <code>cmd</code> + Klick öffnet sie. Schmal wie ein Handy: Fenster zusammenschieben oder die Geräte-Ansicht in Chrome. <strong>Nachbessern:</strong> Sagt, was ihr seht und was ihr erwartet, mit den Wörtern von euren Blättern – „Der Knopf ‚Weiter‘ auf dem Bildschirm Zug führt nicht zu ‚Fertig 7:31‘ – bitte so ändern, sonst nichts.“ Nicht verschönern lassen; Farben und Schrift kommen aus dem Branding. Dreht sich Claude zweimal am selben Fehler im Kreis: Markus rufen.</p>
+      <p><strong>Sichern:</strong> Prompt „Vorschau sichern“. Den Link tragt ihr in Feld „5 · Tag 5: gebaut“ ein und öffnet ihn am Handy. Verlangt das Handy eine Anmeldung bei Vercel: auf vercel.com euer Projekt → Settings → Deployment Protection → Vercel Authentication aus → Save (wie an Coding-Tag 3) – sonst können eure Testpersonen an Tag 6 den Link nicht öffnen. Dann weiter wie immer: Pull Request ins Issue, eine andere Person prüft, der Product Owner setzt Done (<a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>).</p>
+      <Prompt label="Issue nach Skizzen · Claude Code, mit Opus" note="Statt [Kennung] die Kennung des Issues. Erst schicken, wenn die Bilder unter dem Prompt stehen.">Hol dir über den Linear-MCP das Issue [Kennung]. Setz es auf In Progress, weis es mir zu und leg einen Branch an, der mit der Kennung beginnt.
+
+Unter dieser Nachricht stehen Bilder aus Miro: meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen, ein Blatt je Bildschirm. Die Pfeile auf den Skizzen zeigen, wohin ein Knopf führt; das Blatt mit dem Stern ist der Höhepunkt.
+
+Bevor du baust: Zähl mir in höchstens sechs Zeilen auf, welche Bildschirme dieses Issue betrifft, welcher Knopf wohin führt und wie du jedes Akzeptanzkriterium belegst. Was du auf den Bildern nicht lesen kannst oder was im Issue fehlt, fragst du, statt zu raten. Dann warte auf mein Okay.
+
+Beim Bauen:
+- Halte dich an die Skizzen und an die Akzeptanzkriterien des Issues. Erfinde keinen Bildschirm und keinen Knopf dazu.
+- Für die Breite eines Handys (375 px), mit unserem Design-System.
+- Was im Issue unter „Nicht im Umfang“ steht, baust du nicht.
+
+Starte die Seite lokal und gib mir die Adresse. Zeig mir für jedes Akzeptanzkriterium einen Beleg. Du mergst nichts.</Prompt>
+      <Prompt label="Vorschau sichern · Claude Code">Committe den Stand auf dem aktuellen Branch, push ihn zu GitHub und öffne einen Pull Request nach main – mergen tust du nicht. Gib mir dann die Vorschau-Adresse, die Vercel für diesen Branch baut. Prüf, ob sie ohne Vercel-Anmeldung aufgeht. Wenn nicht, sag mir in zwei Sätzen, wo ich das umstelle – stell selbst nichts um.</Prompt>
+    </div>
+  </Folie>
+
   <h3 id="branding">Ein Gesicht für euer Produkt</h3>
   <p>Bevor das erste Issue mit Oberfläche gebaut wird, wählt jede*r als Product Owner ein Branding für das eigene Produkt. In Claude Design legt ihr dafür ein Design-System aus eurem Repo an, wie in <a href="/tag-3#uebung-9-a">Coding-Tag 3, Übung 9a</a>, und schickt im Chat dieses System diesen Prompt:</p>
   <Prompt label="Branding in drei Richtungen" note="Statt der Klammer euer Produkt in einem Satz aus dem Produkt-Brief in der Werkstatt, die Zielgruppe aus dem Kundenprofil und das Gefühl am Höhepunkt eurer Usage Story.">Entwickle für unsere App ein Branding in drei Richtungen, die sich deutlich voneinander unterscheiden. Ausgangspunkt: [Produkt in einem Satz, für wen, und welches Gefühl es auslösen soll]. Der Name der App bleibt.
@@ -169,3 +249,11 @@ Stell die drei nebeneinander und sag zu jeder in einem Satz, zu wem sie passt un
 
   <FooterNav prev={{ href: '/innolab/tag-4', t: 'Tag 4 · Prototyp & Scrum' }} next={{ href: '/innolab/methoden/scrum#team', t: 'Teamaufstellung & Definition of Done' }} />
 </Layout>
+
+<style>
+  .schon-pro { margin: .25rem 0 .5rem; }
+  .wo-fertig { margin: .6rem 0 0; padding-top: .5rem; border-top: 1px solid var(--border); font-size: .95rem; color: var(--muted); }
+  .wo-fertig strong { color: var(--fg); }
+  /* bauen-skizzen bei 1280 × 720: fünf Schritte und die Leiste passen nur mit etwas kleinerer Liste. */
+  :global(html[data-beamer] .folie:has(> h2#bauen-skizzen) ol.gross > li) { font-size: .95rem; line-height: 1.4; margin-bottom: .3rem; }
+</style>

@@ -1,6 +1,6 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/usage-story.astro (Tag 4, 28.11., 14:15–14:45: 12 min Theorie und
+// Begleiter-Notizen zu src/pages/innolab/methoden/usage-story.astro (Tag 4, 28.11., 14:05–14:35: 12 min Theorie und
 // Beispiel auf vier Folien – seit 26.11. mit „Drei Storys“ vorn –, 18 min Übung). Vorwissen „unsicher“ (Entrepreneur Lab: „kinda, not really?“): kurz nachfragen.
 // Lichaw = EPUB, zitiert nach Kapitel und Abschnitt.
 const LICHAW = 'Donna Lichaw, The User’s Journey (2016)';
@@ -121,12 +121,12 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
         'Kernaufgabe wählen: der Weg durch Slice 1, den Menschen immer wieder gehen (2 min).',
         'Sieben Stationen allein auf Miro im Frame „T4 · 4 · Usage Story · Produkt n“, mit Person aus den Interviews, Uhrzeit, Ort (10 min).',
         'Boom-Probe allein: die eigenen Stationen 4 bis 7 lesen – ist der Höhepunkt ein konkreter Bildschirm oder Moment, kommen danach höchstens ein, zwei Schritte, wo würde jemand lächeln? Markus geht zu jeder Person (Produkt 1, 2, 3, je gut eine Minute), liest die Stationen 4 bis 7 und fragt nach (4 min).',
-        'Festhalten im selben Frame: Höhepunkt markieren, Belege mit ID; nach diesem Frame baut der Spike (2 min).',
+        'Festhalten im selben Frame: Höhepunkt markieren, Belege mit ID; nach diesem Frame entsteht der Prototyp auf Papier (2 min).',
       ],
       achten: [
         'Höhepunkt als Bildschirm oder Moment, nicht als „Problem gelöst“.',
-        'Der Prototyp-Spike baut genau die Stationen 2 bis 6 – sie müssen konkret sein.',
-        'Keine Runde über Kreuz: Jede*r hat ein eigenes Produkt; zweite Probe allein ist die Claude-Prüfung im Handout, mit Opus (/model opus).',
+        'Der Papier-Prototyp zeichnet genau die Stationen 2 bis 6 – sie müssen konkret sein.',
+        'Keine Runde über Kreuz: Jede*r hat ein eigenes Produkt; zweite Probe allein ist die Claude-Prüfung im Handout – zu Hause, in claude.ai.',
       ],
     },
     kern: [
@@ -143,8 +143,8 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
       'Folien-Satz vorlesen: Was ist euer „Fertig 7:31“?',
       'Ein Satz oder Bild: Hier merkt die Person, es lohnt sich.',
       '„Könnt ihr ihn nicht zeigen, testet ihr eine Bestellseite, nicht euer Produkt.“',
-      'Weiter: Prototyp-Spike baut die Stationen 2 bis 6.',
+      'Weiter: Prototyp auf Papier, ein Blatt je Station 2 bis 6.',
     ],
-    ueberleitung: 'Genau diesen Höhepunkt baut ihr jetzt: erst auf Papier, dann klickbar.',
+    ueberleitung: 'Genau diesen Höhepunkt zeichnet ihr jetzt – auf Papier; an Tag 5 baut Claude Code ihn.',
   },
 };

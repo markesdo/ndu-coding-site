@@ -52,7 +52,7 @@ export const NOTIZEN: Record<string, Record<string, Notiz>> = {
   '/innolab/methoden/geschaeftsmodell': NOTIZEN_GESCHAEFTSMODELL,
   '/innolab/methoden/experiment': NOTIZEN_EXPERIMENT,
   '/innolab/methoden/story-map': NOTIZEN_STORY_MAP,
-  // Tag 4 nach der Story Map (14:15–17:15); scrum enthält auch die Tag-5-Folien team bis uebertrag.
+  // Tag 4 nach der Story Map (14:05–17:15); scrum enthält auch die Tag-5-Folien team bis uebertrag.
   '/innolab/methoden/usage-story': NOTIZEN_USAGE_STORY,
   '/innolab/methoden/prototyp-spike': NOTIZEN_PROTOTYP_SPIKE,
   '/innolab/methoden/scrum': NOTIZEN_SCRUM,

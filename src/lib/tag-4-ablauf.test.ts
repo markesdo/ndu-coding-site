@@ -26,13 +26,15 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
       '10:30–10:40 Pause',
       // Seit 26.11.2026 (Durchsicht): „Geschäftsmodell“ wie der Titel der Seite, nicht mehr „Geschäftsmodell-Karten“.
       '10:40–11:00 Geschäftsmodell /innolab/methoden/geschaeftsmodell',
-      // Seit 26.11.2026 (Markus, Option a): Claude Pro gemeinsam als eigener Block, Story Map dafür 65 statt 75 min.
-      '11:00–11:10 Claude Pro und Claude Code, gemeinsam /innolab/methoden/experiment#claude-pro-jetzt',
-      '11:10–11:50 Experiment-Karte /innolab/methoden/experiment#annahmen-der-idee',
-      '11:50–13:15 Story Map /innolab/methoden/story-map',
-      '13:15–14:15 Mittagspause',
-      '14:15–14:45 Usage Story /innolab/methoden/usage-story',
-      '14:45–16:25 Prototyp-Spike /innolab/methoden/prototyp-spike',
+      // Seit 26.11.2026 nachts (Markus): Tag 4 ohne Claude. Der Claude-Pro-Block (11:00–11:10) wandert an Tag 5, die
+      // Experiment-Karte beginnt direkt nach dem Geschäftsmodell; aus dem Prototyp-Spike (100 min) wird der Prototyp auf
+      // Papier (55 min). Die frei gewordenen 55 Minuten stehen als Puffer vor der Pause; Agil & Scrum bleibt um 16:35.
+      '11:00–11:40 Experiment-Karte /innolab/methoden/experiment#annahmen-der-idee',
+      '11:40–13:05 Story Map /innolab/methoden/story-map',
+      '13:05–14:05 Mittagspause',
+      '14:05–14:35 Usage Story /innolab/methoden/usage-story',
+      '14:35–15:30 Prototyp auf Papier /innolab/methoden/prototyp-spike',
+      '15:30–16:25 Puffer: nachholen, was offen ist',
       '16:25–16:35 Pause',
       '16:35–17:15 Agil & Scrum /innolab/methoden/scrum#foliensatz',
       '17:15–17:30 Origin Story & Hausaufgabe #abschluss',
@@ -45,9 +47,9 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(folie('/innolab/methoden/value-map', 'vorgehen-fit')).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>) und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
     const ex = folie('/innolab/methoden/experiment', 'vorgehen');
     expect(ex).toContain('<li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>). <Timer minuten={2} /></li>');
-    // E2 kommt erst nach dem Spike – nicht auf der Folie um 11:50, nur im Handout.
+    // E2 kommt erst nach dem Papier-Prototyp – nicht auf der Folie der Experiment-Karte, nur im Handout.
     expect(ex.slice(0, ex.indexOf('<div class="nur-handout">'))).not.toContain('E2');
-    expect(ex).toContain('nach dem Prototyp-Spike kommt E2 dazu');
+    expect(ex).toContain('nach dem Papier-Prototyp kommt E2 dazu');
     // 18 min Übung plus 12 min Theorie füllen den 30-Minuten-Block; der Titel ist die Summe der Timer.
     const timer = [...ex.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
     expect(timer).toBe(18);
@@ -94,11 +96,13 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
 
   // Seit 27.11.2026: Die Zeiten vor dem Tag-4-PR stehen nirgends mehr auf den Seiten des Tages, ihren Begleiter-Notizen und
   // den Seiten, die auf Tag 4 vorausweisen (Claude Pro 10:50, Story Map 11:30, Spike 14:05, Prototyp bis 15:35, Puffer 16:25).
-  it('keine Zeiten von vor dem 27.11. (10:50, 11:30, 13:35, 14:05, 15:35, 15:45, Puffer 16:25)', () => {
+  // 14:05 ist seit 26.11.2026 nachts wieder eine Zeit von Tag 4 (Usage Story) – hier nicht mehr verboten; dafür die Zeiten
+  // des Spike-Ablaufs vom 27.11. (Claude Pro 11:00–11:10, Experiment 11:10, Story Map 11:50, Mittag 13:15, Usage 14:15, Spike 14:45).
+  it('keine Zeiten von vor dem 27.11. (10:50, 11:30, 13:35, 15:35, 15:45, Puffer 16:25) und keine des Spike-Ablaufs', () => {
     const pfade = ['/innolab/tag-2/abschluss', '/innolab/tag-3', '/innolab/tag-4', ...['experiment', 'story-map', 'usage-story', 'prototyp-spike', 'scrum', 'concept-story', 'geschaeftsmodell', 'value-map'].map((x) => `/innolab/methoden/${x}`)];
     const texte = pfade.map((p) => ({ p, q: seite(p) }));
     for (const { p, q } of texte) expect(q.length, p).toBeGreaterThan(1000);
-    const alt = /\b(10:50|11:30|12:35|13:35|14:05|15:35|15:45)\b|ab 16:25|Puffer ab|16:25–17:15/g;
+    const alt = /\b(10:50|11:30|12:35|13:35|15:35|15:45|11:10|11:50|13:15|14:15|14:45)\b|ab 16:25|Puffer ab|16:25–17:15/g;
     // tag-3 hat eigene Blöcke um 11:30 (Kundenprofil): nur die Hinweise auf Tag 4 zählen.
     const ohneTag3Ablauf = (p: string, q: string) => (p === '/innolab/tag-3' ? q.replace(/<Block [^>]*>/g, '') : q);
     expect(texte.flatMap(({ p, q }) => (ohneTag3Ablauf(p, q).match(alt) ?? []).map((m) => `${p}: ${m}`))).toStrictEqual([]);
@@ -154,7 +158,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(folie('/innolab/tag-4', 'arbeitsfluss')).toContain('<Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />');
     // Letzte Folie ohne Schritte: Von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar ihre Schritte auf.
     expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('schritte={false}');
-    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, am Nachmittag als Prototyp. An Tag 5 besprecht ihr, ob er hält.</WasBauenWir>');
+    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, am Nachmittag als Prototyp auf Papier. An Tag 5 besprecht ihr, ob er hält – und baut ihn.</WasBauenWir>');
     // „Heute Mittag“ nur auf Tag 4; der Arbeitsfluss ist tagneutral.
     expect(folie('/innolab/arbeitsfluss', 'was-bauen-wir')).toContain('<WasBauenWir>An Tag 4 entsteht euer Slice 1.');
     expect(seite('/innolab/arbeitsfluss')).not.toContain('Heute Mittag');

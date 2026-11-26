@@ -1,11 +1,11 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 11:00–11:10 Claude Pro und Claude Code gemeinsam,
-// zwei Folien; 11:10–11:50 Experiment-Karte mit Theorie und Beispiel, 18 min Übung). Jede Folie hat eine Notiz
+// Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 11:00–11:40 Experiment-Karte mit Theorie und Beispiel,
+// 18 min Übung; seit 26.11.2026 nachts ohne den Claude-Pro-Block davor – dessen Notizen stehen jetzt in tag-5.ts). Jede Folie hat eine Notiz
 // (begleiter-tag-4.test.ts). Die Origin Story steht seit 26.11. im Abschluss von Tag 4 (tag-4#abschluss), nicht mehr hier.
-// Seit 26.11. ohne die Intuit-Folien (Geschichte im Handout von #karte); neu: claude-code-opus, schritte-der-idee,
+// Seit 26.11. ohne die Intuit-Folien (Geschichte im Handout von #karte); neu: schritte-der-idee,
 // ergebnis-gilt, test-arten, beispiel-map; gegen-den-beleg steht nach der Lernkarte. Seit dem Nachtrag 26.11. abends
-// keine docs-Dateien: Karte E1 und Lernkarten auf Miro, Annahmen in der Werkstatt, Claude immer mit Opus.
+// keine docs-Dateien: Karte E1 und Lernkarten auf Miro, Annahmen in der Werkstatt; Claude nur zu Hause in claude.ai, Claude Code erst ab Tag 5.
 // Thomke: gedruckte Seiten aus quellen/thomke/text.txt (=====PAGE n=====); Torres: PDF-Seiten wie in
 // quellen/torres/text.txt; Bland: gedruckte Seiten.
 const THOMKE = 'Stefan H. Thomke, The Scientific Mindset';
@@ -13,51 +13,12 @@ const BLAND = 'David J. Bland & Alexander Osterwalder, Testing Business Ideas';
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 
 export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
-  'claude-pro-jetzt': {
-    live: [
-      'Timer 10 min starten, sobald alle die Folie sehen.',
-      'Wer Pro oder Max hat: gleich zu Schritt 3.',
-      'Falle: Erstattung statt Kündigung – beendet Pro sofort.',
-      'Nach 4 min: Läuft bei allen Claude Code?',
-    ],
-    uebung: { dauer: '10 min', form: 'alle zugleich, jede*r am eigenen Laptop' },
-    ablauf: {
-      schritte: [
-        'Pro neu abschließen (Monthly, 21,60 €) und gleich kündigen; wer Pro oder Max hat, überspringt beides.',
-        'Claude Code im Repo starten und mit demselben Konto anmelden.',
-        'Weiterblättern, sobald die Ersten angemeldet sind: Opus und Test.',
-      ],
-    },
-    ueberleitung: 'Claude Code läuft – jetzt noch Opus wählen und kurz testen.',
-  },
-
-  'claude-code-opus': {
-    live: [
-      '„In Claude Code einmal /model opus – überall im Kurs nehmt ihr Opus.“',
-      'Test: Screenshot vom eigenen Concept-Story-Frame einfügen, ein Satz.',
-      'Nach 8 min: Steht bei allen „Claude Pro“ im Startbild?',
-      'Wer hängt: 11:10 trotzdem Theorie, Hilfe vor 11:50.',
-    ],
-    ablauf: {
-      schritte: [
-        '/model opus in Claude Code; in der Claude-App Opus im Modellmenü.',
-        'Screenshot des Frames „T4 · 0 · Concept Story · Produkt n“ einfügen (Ctrl+V), Prompt „Sag mir in einem Satz …“.',
-      ],
-      achten: [
-        'Keine Versionsnummer nennen – nur „Opus“.',
-        'Limit oder kein Opus: /model, das vorgeschlagene Standardmodell wählen, weiter.',
-        'Bild kommt nicht an: die Screenshot-Datei ins Terminal ziehen.',
-      ],
-    },
-    ueberleitung: 'Claude Code läuft – jetzt die Annahmen eures Spitzenreiters.',
-  },
-
   'annahmen-der-idee': {
     live: [
       'Zeit: Theorie und Beispiel bis zur Übung, dann 18 min allein.',
       '„Euer Spitzenreiter steht auf Papier – an welcher Annahme hängt er?“',
       'Zwei Fallen: Bestätigung suchen, sich in Investiertes verlieben.',
-      'Ergebnis um 11:50 nennen: Karte E1.',
+      'Ergebnis um 11:40 nennen: Karte E1.',
     ],
     verstaendnis: {
       frage: 'Warum testet ihr eine Annahme statt der ganzen Idee?',
