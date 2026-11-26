@@ -297,9 +297,17 @@ const zurMappe = (href?: string) => (href === MAPPE_PFAD ? { [NAV_MAPPE]: '' } :
       ankerFolie();
       addEventListener('load', () => { ankerFolie(); setTimeout(ankerFolie, 400); }, { once: true });
       addEventListener('hashchange', () => ankerFolie(true));
+      // Kein Einrasten, solange mit ← / → geblättert wird: Die Sprünge stehen genau, aber scroll-snap (proximity, beamer.css)
+      // zöge eine Folie, die ein Stück im Bildschirm steht, in Scrollrichtung an den Rand – beim Zurückblättern über Text
+      // zwischen zwei Folien (scrum: Hinweis vor #team) übersprang ← ihn so. Wer selbst scrollt, rastet wieder ein.
+      const ohneEinrasten = () => root.setAttribute('data-ohne-einrasten', '');
+      const einrasten = () => root.removeAttribute('data-ohne-einrasten');
+      for (const t of ['wheel', 'touchstart']) addEventListener(t, einrasten, { passive: true });
+      addEventListener('keydown', (e) => { if (['PageUp', 'PageDown', 'Home', 'End', ' ', 'ArrowUp', 'ArrowDown'].includes(e.key)) einrasten(); });
       const folienBlaettern = (vor: boolean): boolean => {
         const { folien, i, oben } = folieJetzt();
         if (i < 0) return false;
+        ohneEinrasten();
         const folie = folien[i];
         const rand = folie.getBoundingClientRect();
         const lage = lageZurFolie(rand, oben);

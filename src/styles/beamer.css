@@ -82,6 +82,8 @@ html[data-beamer] h2[id], html[data-beamer] .shots > li { scroll-margin-top: cal
    proximity statt mandatory: Folien, die doch länger sind, bleiben erreichbar. */
 /* scroll-padding: Rastpunkte und scrollIntoView liegen unter der klebenden Kopfleiste, nicht dahinter. */
 html[data-beamer]:has(.folie) { scroll-snap-type: y proximity; scroll-padding-top: var(--topbar-h, 48px); }
+/* Beim Blättern mit ← / → kein Einrasten (Layout.astro, ohneEinrasten) – bis wieder mit Rad, Finger oder Bildtasten gescrollt wird. */
+html[data-beamer][data-ohne-einrasten]:has(.folie) { scroll-snap-type: none; }
 /* Kein Scroll-Anchoring: Deckt eine Folie etwas auf, rückt ihr mittiger Inhalt – der Browser würde mitscrollen,
    und die Folie stünde nicht mehr unter der Kopfleiste (→ / T träfen dann die vorige Folie). */
 html[data-beamer]:has(.folie) { overflow-anchor: none; }
