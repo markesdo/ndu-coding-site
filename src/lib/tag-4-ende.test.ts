@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { beforeAll, describe, expect, it } from 'vitest';
 import { ohneAbgeschaltet } from '../components/abgeschaltet';
 import { station } from '../components/arbeitsfluss';
@@ -70,11 +71,17 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
   it('läuft Tag 4 in der Reihenfolge des Ablaufs und endet auf „Ende Tag 4“', () => {
     const seiten = weg.map((w) => w.split('#')[0]).filter((p, i, a) => p !== a[i - 1]);
     expect(seiten).toStrictEqual([
-      '/innolab/tag-4', '/innolab/methoden/value-map', '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell',
+      '/innolab/tag-4', '/innolab/methoden/value-map', '/innolab/tag-4', '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell',
       '/innolab/methoden/experiment', '/innolab/methoden/story-map', '/innolab/methoden/usage-story',
       '/innolab/methoden/prototyp-spike', '/innolab/methoden/scrum', '/innolab/tag-4',
     ]);
-    expect(weg.slice(0, 3)).toStrictEqual(['/innolab/tag-4#arbeitsfluss', '/innolab/tag-4#was-bauen-wir', '/innolab/methoden/value-map#vorgehen']);
+    // Seit 26.11.2026: Value Map vor „Was bauen wir?“; von ihrer letzten Folie zurück auf tag-4, dann zur Concept Story.
+    const vm = weg.indexOf('/innolab/methoden/value-map#uebertrag');
+    expect(weg.slice(0, 2)).toStrictEqual(['/innolab/tag-4#arbeitsfluss', '/innolab/methoden/value-map#vorgehen']);
+    expect(vm).toBeGreaterThan(1);
+    expect(weg.slice(vm, vm + 4)).toStrictEqual([
+      '/innolab/methoden/value-map#uebertrag', '/innolab/tag-4#was-bauen-wir', '/innolab/tag-4#slice-im-baum', '/innolab/methoden/concept-story#story-bogen',
+    ]);
     expect(weg.slice(-5)).toStrictEqual([
       '/innolab/methoden/scrum#planen', '/innolab/methoden/scrum#weiter-tag-4',
       '/innolab/tag-4#abschluss', '/innolab/tag-4#hausaufgabe', '/innolab/tag-4#ende-tag-4',
@@ -95,8 +102,19 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
 });
 
 describe('Tag 4: Folien des Abschlusses', () => {
-  it('„Was bauen wir?“ führt per → zur Value Map, nicht in den Abschluss darunter', () => {
-    expect(folienMit('/innolab/tag-4').find((f) => f.id === 'was-bauen-wir')?.weiter).toBe('/innolab/methoden/value-map#vorgehen');
+  // Seit 26.11.2026: Arbeitsfluss → Value Map → zurück zu „Was bauen wir?“ → „Slice 1 im Baum“ → Concept Story.
+  it('der Morgen: Arbeitsfluss → value-map#vorgehen; value-map#uebertrag → „Was bauen wir?“; „Slice 1 im Baum“ → Concept Story, nicht in den Abschluss', () => {
+    const fs = folienMit('/innolab/tag-4');
+    expect(fs.find((f) => f.id === 'arbeitsfluss')?.weiter).toBe('/innolab/methoden/value-map#vorgehen');
+    expect(fs.filter((f) => f.weiter === '/innolab/methoden/value-map#vorgehen').map((f) => f.id)).toStrictEqual(['arbeitsfluss']);
+    const vm = folienMit('/innolab/methoden/value-map');
+    expect(vm.at(-1)).toStrictEqual({ id: 'uebertrag', weiter: '/innolab/tag-4#was-bauen-wir', zurueck: undefined, ende: false });
+    expect(seite('/innolab/methoden/value-map')).toContain('<Folie weiter="/innolab/tag-4#was-bauen-wir" weiterTitel="Was bauen wir?">');
+    // „Was bauen wir?“: → auf „Slice 1 im Baum“ (kein weiter), ← zurück zur Value Map statt zum Arbeitsfluss.
+    expect(fs.find((f) => f.id === 'was-bauen-wir')).toStrictEqual({ id: 'was-bauen-wir', weiter: undefined, zurueck: '/innolab/methoden/value-map#uebertrag', ende: false });
+    expect(zurueckVon('/innolab/tag-4', 'was-bauen-wir')).toBe('/innolab/methoden/value-map#uebertrag');
+    expect(fs.find((f) => f.id === 'slice-im-baum')?.weiter).toBe('/innolab/methoden/concept-story#story-bogen');
+    expect(seite('/innolab/tag-4')).toContain('<Folie weiter="/innolab/methoden/concept-story#story-bogen" weiterTitel="Story-Bogen + Concept Story">');
   });
 
   // Review #448: ← auf tag-4#abschluss ging zu „Was bauen wir?“ (9:00) statt zurück auf scrum.
@@ -198,5 +216,36 @@ describe('Origin Story: Vorlage verlinkt', () => {
   it('tag-4#abschluss verlinkt experiment#vorlage-origin-story, und dort steht die Überschrift mit dieser id', () => {
     expect(folie('/innolab/tag-4', 'abschluss')).toContain('href="/innolab/methoden/experiment#vorlage-origin-story"');
     expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">Vorlage · Origin Story in docs/STORYS.md</h3>');
+  });
+});
+
+// 26.11.: Wie hängt Slice 1 mit dem Baum von Tag 2/3 zusammen? Eine Folie direkt nach „Was bauen wir?“ (9:00).
+describe('Tag 4: Folie „Slice 1 im Baum“', () => {
+  it('steht direkt nach „Was bauen wir?“, als letzte Folie vor dem Abschluss', () => {
+    const ids = folienMit('/innolab/tag-4').map((f) => f.id);
+    expect(ids.slice(ids.indexOf('was-bauen-wir'), ids.indexOf('was-bauen-wir') + 3)).toStrictEqual(['was-bauen-wir', 'slice-im-baum', 'abschluss']);
+  });
+
+  it('nennt die drei Linien, Slice 1, Ziel-Chance und Spitzenreiter; Torres nur im Handout', () => {
+    const f = folie('/innolab/tag-4', 'slice-im-baum');
+    expect(f).toContain('<h2 id="slice-im-baum">Slice 1 im Baum</h2>');
+    expect(f).toContain('<SliceImBaum />');
+    const handout = f.slice(f.indexOf('<div class="nur-handout">'));
+    expect(handout.length).toBeGreaterThan(30);
+    for (const w of ['<strong>Outcome</strong>', '<strong>Beleg</strong>', '<strong>Annahme</strong>', 'Slice 1', 'Ziel-Chance', 'Spitzenreiter', '(A5)', 'E1 testet A5']) expect(handout, w).toContain(w);
+    expect(handout).toContain('it’s also a great technique for helping us to surface underlying assumptions“ (S. 119)');
+    // Am Beamer ohne Zitat: Torres steht nicht außerhalb des Handouts.
+    expect(f.slice(0, f.indexOf('<div class="nur-handout">'))).not.toContain('Torres');
+    // Ohne Schritte: von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar Schritte auf.
+    expect(f).not.toContain('data-schritt');
+  });
+
+  it('das Bild zeigt die drei Linien, Ziel-Chance, Spitzenreiter und Slice 1 – ohne data-schritt', () => {
+    const roh = readFileSync(new URL('../components/bild/SliceImBaum.astro', import.meta.url), 'utf8');
+    // Ohne Frontmatter und Kommentare: dort darf „data-schritt“ als Wort stehen.
+    const bild = roh.replace(/^---[\s\S]*?\n---/, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '');
+    expect(bild).toContain('<figure class="slice-baum"');
+    for (const w of ['LINIE.outcome.name', 'LINIE.beleg.name', 'LINIE.annahme.name', 'Ziel-Chance', 'Spitzenreiter', '<strong>Slice 1</strong>', '(A5)']) expect(bild, w).toContain(w);
+    expect(bild).not.toMatch(/\bdata-schritt\b/);
   });
 });

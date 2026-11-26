@@ -1,0 +1,68 @@
+---
+// „Slice 1 im Baum“ (Tag 4, 9:35, nach der Value Map und „Was bauen wir?“): links der Pfad im Baum der Kaffeebar ab Tag 4 – Outcome,
+// Ziel-Chance, Spitzenreiter, A5 → E1 –, rechts, was davon auf der Story Map bei Slice 1 steht. Farben und Icons der
+// drei Linien wie in WasBauenWir.astro (LINIE); Slice 1 gelb mit Stern. Slice 1 ist kein Knoten im Baum (Torres kennt
+// unter der Lösung nur die Annahmen-Tests): Er steht in der rechten Spalte, neben dem Spitzenreiter.
+// Ohne Schritte: Die Folie ist die letzte des Morgens vor #faden, → von #faden, #methoden oder #abschluss aus deckte sonst erst
+// unsichtbar ihre Schritte auf (wie WasBauenWir schritte={false}).
+import { FlaskConical, Lightbulb, MessageSquareQuote, Star, Target } from '@lucide/astro';
+import { LINIE } from '../arbeitsfluss';
+import { KAFFEEBAR_BAUM_TAG_4 } from '../innolab-beispiel';
+
+const chance = KAFFEEBAR_BAUM_TAG_4.kinder![0];
+const spitze = chance.kinder!.find((k) => k.t.startsWith('Spitzenreiter: '));
+if (!spitze?.kinder?.[0]) throw new Error('SliceImBaum: Spitzenreiter mit Test fehlt in KAFFEEBAR_BAUM_TAG_4');
+const test = spitze.kinder[0].t;
+---
+<figure class="slice-baum" aria-label={`Links der Pfad im Baum der Kaffeebar: Outcome „${KAFFEEBAR_BAUM_TAG_4.t}“, Ziel-Chance ${chance.t}, ${spitze.t}, ${test}. Rechts, was davon bei Slice 1 auf der Story Map steht: Outcome im Rahmen und links neben Slice 1, der Weg zur Ziel-Chance mit Zitat-IDs, Slice 1 als konkreter Spitzenreiter, das Lern-Sticky mit A5.`}>
+  <div class="kopf">Baum auf Miro</div><div></div><div class="kopf">Story Map · Slice 1</div>
+
+  <div class="knoten k-outcome"><small><Target size={16} aria-hidden="true" />{LINIE.outcome.name} · Wurzel</small>{KAFFEEBAR_BAUM_TAG_4.t}</div>
+  <div class="steg"></div>
+  <div class="feld f-outcome">Derselbe Satz wie im Brief; links neben Slice 1: wer danach was anders tut</div>
+
+  <div class="knoten k-beleg"><small><MessageSquareQuote size={16} aria-hidden="true" />{LINIE.beleg.name} · Ziel-Chance <Star size={14} class="mini-stern" aria-hidden="true" /></small>{chance.t}</div>
+  <div class="steg"></div>
+  <div class="feld f-beleg">Der Weg bis zum Höhepunkt, mit Zitat-IDs</div>
+
+  <div class="knoten k-loesung"><small><Lightbulb size={16} aria-hidden="true" />Lösung · Spitzenreiter</small>{spitze.t.replace('Spitzenreiter: ', '')}</div>
+  <div class="steg steg-stern"></div>
+  <div class="feld f-slice"><Star size={22} aria-hidden="true" /><span><strong>Slice 1</strong> – auf der Story Map, kein Knoten im Baum.</span></div>
+
+  <div class="knoten k-annahme"><small><FlaskConical size={16} aria-hidden="true" />{LINIE.annahme.name} · Test</small>{test}</div>
+  <div class="steg"></div>
+  <div class="feld f-annahme">Lern-Sticky: „Wir lernen, ob … (A5)“</div>
+</figure>
+
+<style>
+  /* --abstand: Zeilenabstand und zugleich Länge der Senkrechten zwischen den Knoten links. */
+  .slice-baum { --abstand: .9rem; display: grid; grid-template-columns: minmax(0, 1fr) 2.5rem minmax(0, 1fr); row-gap: var(--abstand); align-items: center; margin: 1rem 0; }
+  .kopf { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+  /* Knoten füllen ihre Zeile (stretch): Ist das Feld rechts höher, wächst der Knoten mit, und die Senkrechte darunter
+     (durch den Rand, dann --abstand lang) trifft immer den nächsten Knoten. */
+  .knoten { position: relative; align-self: stretch; display: flex; flex-direction: column; justify-content: center; gap: .15rem; padding: .45rem .7rem; font-size: .95rem; line-height: 1.3; border: 2px solid var(--farbe); border-radius: var(--radius); background: color-mix(in srgb, var(--farbe) 10%, var(--bg-2)); }
+  .knoten small { display: flex; align-items: center; gap: .35rem; font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--farbe); }
+  .knoten small :global(svg) { flex: none; }
+  .knoten small :global(.mini-stern) { fill: currentColor; }
+  /* Senkrechte Linie zum nächsten Knoten: der Pfad im Baum. */
+  .knoten:not(.k-annahme)::after { content: ''; position: absolute; left: 50%; top: 100%; height: calc(var(--abstand) + 2px); border-left: 2px solid var(--border); }
+  .k-outcome { --farbe: var(--accent); }
+  .k-beleg { --farbe: var(--blue); }
+  .k-loesung { --farbe: var(--green); }
+  .k-annahme { --farbe: var(--purple); border-style: dashed; }
+  /* Waagrechte zwischen Baum und Story Map: gestrichelt, Slice 1 hängt daneben, nicht darunter. */
+  .steg { border-top: 2px dashed var(--border); }
+  .steg-stern { border-top: 2px solid var(--yellow); }
+  .feld { padding: .45rem .7rem; font-size: .95rem; line-height: 1.3; border: 1px solid var(--border); border-left: 4px solid var(--farbe); border-radius: var(--radius); background: var(--bg-2); }
+  .f-outcome { --farbe: var(--accent); }
+  .f-beleg { --farbe: var(--blue); }
+  .f-annahme { --farbe: var(--purple); border-left-style: dashed; }
+  .f-slice { display: flex; gap: .6rem; align-items: center; border: 2px solid var(--yellow); background: var(--yellow-soft); color: var(--yellow-ink); }
+  .f-slice :global(svg) { flex: none; fill: currentColor; }
+  @media (max-width: 760px) {
+    .slice-baum { grid-template-columns: minmax(0, 1fr) 1rem minmax(0, 1fr); }
+    .knoten, .feld { font-size: .85rem; }
+  }
+  :global(html[data-beamer]) .slice-baum { --abstand: .8rem; }
+  :global(html[data-beamer]) .knoten, :global(html[data-beamer]) .feld { font-size: 1rem; padding: .35rem .7rem; }
+</style>
