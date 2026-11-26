@@ -4,7 +4,6 @@ import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
 import ClaudePruefung from '../../../components/ClaudePruefung.astro';
-import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
@@ -156,27 +155,25 @@ const KARTEN = [
       <li data-schritt><strong>Annahme schreiben:</strong> „Wir glauben, dass …“ – Ertrag über den Kosten. <Timer minuten={2} /></li>
       <li data-schritt><strong>In die Annahmen-Map:</strong> Art „wirtschaftlich“, Wichtigkeit, Beleg. <Timer minuten={2} /></li>
     </ol>
-    <p class="small">Schritt 1–3 in <code>docs/GESCHAEFTSMODELL.md</code> (Vorlage unten), Schritt 4 in der Werkstatt.</p>
+    {/* TODO Miro-ID: „T4 · 2 · Geschäftsmodell · Produkt n“ (Fable baut den Frame; Name kann sich ändern) – dann als MiroLink je Produkt. */}
+    <p class="small">Schritt 1–3 auf Miro in eurem Frame „T4 · 2 · Geschäftsmodell · Produkt n“, Schritt 4 in der Werkstatt.</p>
     <p class="nur-handout">Davor rund acht Minuten Theorie, die Folien bis hierher; danach zwei Minuten Übertrag. Wer? und Was? verweisen auf Kundenprofil und Value Map, ihr schreibt sie nicht neu. Jede*r arbeitet allein am eigenen Produkt; Markus fragt im 1:1 nach. Die Annahme kommt in der Werkstatt als Art „wirtschaftlich“ in die Annahmen-Map, mit Wichtigkeit und Beleg – direkt danach wählt ihr an der Experiment-Karte die riskanteste. Prüfen mit der Liste unten ist Hausaufgabe.</p>
   </Folie>
 
   <div class="nur-handout">
-  <h2 id="vorlage">Vorlage</h2>
-  <Prompt label="Vorlage · docs/GESCHAEFTSMODELL.md"># Geschäftsmodell — [Produkt]
-
-Stand: [Datum] · Profil und Value Map: Miro, T3 · 4 · Canvas · Produkt n
-
-## Wer, Was, Wie, Wert
-- Wer? → Kundenprofil: [Segment]
-- Was? → Value Map: [Angebot]
-- Wie? [Ressourcen, Aktivitäten, Partner]
-- Wert? Ertrag: [wer zahlt wofür]; heute bezahlt die Kundschaft [...]
-  Kosten: [Posten], [Posten]
-
-Linie: [Outcome] führt zu [Impact], weil [...]
-Annahme (wirtschaftlich): Wir glauben, dass [...] (A[n])</Prompt>
+  <h2 id="vorlage">So sieht euer Frame aus</h2>
+  <p>Euer Geschäftsmodell steht nur auf Miro, in eurem Frame „T4 · 2 · Geschäftsmodell · Produkt n“ – eine Datei gibt es nicht. Die Felder:</p>
+  <ul>
+    <li><strong>Wer?</strong> → Kundenprofil: euer Segment, nur als Verweis.</li>
+    <li><strong>Was?</strong> → Value Map: euer Angebot, nur als Verweis.</li>
+    <li><strong>Wie?</strong> Ressourcen, Aktivitäten, Partner.</li>
+    <li><strong>Wert?</strong> Ertrag: wer zahlt wofür; wie die Kundschaft heute bezahlt. Kosten: die größten Posten.</li>
+    <li><strong>Linie:</strong> [Outcome] führt zu [Impact], weil …</li>
+    <li><strong>Annahme (wirtschaftlich):</strong> Wir glauben, dass … (A[n]) – dieselbe Annahme steht in der Annahmen-Map der Werkstatt.</li>
+  </ul>
 
   <h2 id="pruefen">Prüfen</h2>
+  <p>Euer Modell liegt auf Miro: Nehmt den Weg „Ohne Claude Code: Text in Claude einfügen“ und fügt den Text aus eurem Frame ein – oder einen Screenshot des Frames. Wählt dafür Opus (in Claude Code <code>/model opus</code>, auf claude.ai im Modellmenü).</p>
   <ClaudePruefung slug="geschaeftsmodell" />
   </div>
 

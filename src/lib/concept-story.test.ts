@@ -73,7 +73,9 @@ describe('Tag 4: Concept Story schreiben (NDU-66)', () => {
     expect(timer).toStrictEqual([20, 5, 5]);
     expect(f).toContain('<h2 id="vorgehen">So geht ihr vor (30 min)</h2>');
     expect([...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Sieben Stationen, allein:', 'Kursregel – Flach-Probe:', 'Festhalten:']);
-    expect(f).toContain('<code>docs/STORYS.md</code> kommt die Story erst im Block um 10:50 (erster Schritt)');
+    // Seit 26.11. abends: keine docs-Dateien für Studierende – die Story bleibt auf Miro.
+    expect(f).toContain('Die Story bleibt auf Miro in eurem Frame – eine Datei schreibt ihr nicht.');
+    expect(f).not.toContain('docs/');
     expect(seite).toContain('<ClaudePruefung slug="concept-story" />');
     expect(seite).toContain('<span class="eyebrow">Innolab · Tag 4 · Methode</span>');
     expect(NOTIZEN_CONCEPT_STORY.vorgehen?.uebung?.dauer).toBe('30 min (20 + 5 + 5)');
@@ -135,7 +137,7 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(folie('woher')).toContain('Kap. 8, Goals Are Measurable, S. 135');
   });
 
-  it('Übung auf Miro: Frames der Kaffeebar und je Produkt, docs/STORYS.md erst beim Übertrag', () => {
+  it('Übung auf Miro: Frames der Kaffeebar und je Produkt, keine docs-Datei (seit 26.11. abends)', () => {
     const f = folie('vorgehen');
     // Die Übungsfolie zeigt prominent die eigenen Frames; das Kaffeebar-Beispiel hängt an #beispiel.
     expect(f).not.toContain('<MiroFrame');
@@ -146,8 +148,9 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(f).toContain('in die Stickies unter „1 Exposition“ bis „7 Ende“');
     expect(f).toContain('ins Feld „Flach-Probe“ unten links');
     expect(f).not.toContain('Vorlage in <code>docs/STORYS.md</code>');
-    expect(seite).toContain('Das Format für die Übertragung bei Claude Code um 10:50 (erster Schritt)');
-    expect(seite).toContain('Nehmt dann den Weg „Ohne Claude Code: Text in Claude einfügen“ und fügt den Text aus eurem Frame ein.');
+    expect(seite).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
+    expect(seite).not.toContain('<Prompt label="Vorlage · docs/STORYS.md">');
+    expect(seite).toContain('Nehmt den Weg „Ohne Claude Code: Text in Claude einfügen“ und fügt den Text aus eurem Frame ein – oder einen Screenshot des Frames. Wählt dafür Opus (in Claude Code <code>/model opus</code>');
     expect(NOTIZEN_CONCEPT_STORY.vorgehen.miro?.frame).toBe('T4 · 0 · Concept Story · Produkt 1');
   });
 });

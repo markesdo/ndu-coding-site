@@ -22,7 +22,8 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
       '09:35–09:40 Was bauen wir? #was-bauen-wir',
       '09:40–10:20 Story-Bogen + Concept Story /innolab/methoden/concept-story#story-bogen',
       '10:20–10:30 Pause',
-      '10:30–10:50 Geschäftsmodell-Karten /innolab/methoden/geschaeftsmodell',
+      // Seit 26.11.2026 (Durchsicht): „Geschäftsmodell“ wie der Titel der Seite, nicht mehr „Geschäftsmodell-Karten“.
+      '10:30–10:50 Geschäftsmodell /innolab/methoden/geschaeftsmodell',
       // Seit 26.11.2026 (Markus, Option a): Claude Pro gemeinsam als eigener Block, Story Map dafür 65 statt 75 min.
       '10:50–11:00 Claude Pro und Claude Code, gemeinsam /innolab/methoden/experiment#claude-pro-jetzt',
       '11:00–11:30 Experiment-Karte /innolab/methoden/experiment#annahmen-der-idee',
@@ -95,14 +96,15 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
   it('Beamer: nach dem Ablauf kommen die Folien Arbeitsfluss (Tag 4 hier, Tag 4 und 5–7 per →) und „Was bauen wir?“', () => {
     const q = seite('/innolab/tag-4');
     // Dahinter die drei Folien des Abschlusses (17:15, tag-4-ende.test.ts). → vom Arbeitsfluss zur Value Map, von dort zurück zu „Was bauen wir?“.
-    expect(folienAus('/innolab/tag-4', q).map((f) => f.id)).toStrictEqual(['arbeitsfluss', 'was-bauen-wir', 'slice-im-baum', 'abschluss', 'hausaufgabe', 'ende-tag-4']);
+    expect(folienAus('/innolab/tag-4', q).map((f) => f.id)).toStrictEqual(['arbeitsfluss', 'was-bauen-wir', 'slice-im-baum', 'abschluss', 'origin-beispiel', 'hausaufgabe', 'ende-tag-4']);
     // Die erste Folie steht direkt hinter dem Ablauf, nicht erst nach #faden.
     const ablauf = q.indexOf('<h2 id="ablauf">');
     expect(ablauf).toBeGreaterThan(0);
     expect(q.slice(ablauf, q.search(/<Folie\b/)).match(/<h2 id="[^"]+"/g)).toStrictEqual(['<h2 id="ablauf"']);
     expect(folie('/innolab/tag-4', 'arbeitsfluss')).toContain('<Arbeitsfluss id="af-tag-4" hier={4} bis={4} aufdecken={3} />');
     // Letzte Folie ohne Schritte: Von #faden, #methoden oder #abschluss aus deckte → sonst erst unsichtbar ihre Schritte auf.
-    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('<WasBauenWir schritte={false}>Heute Mittag steht euer Slice 1. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>');
+    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('schritte={false}');
+    expect(folie('/innolab/tag-4', 'was-bauen-wir')).toContain('>Heute Mittag steht Slice 1 auf eurer Story Map, um 15:35 als Prototyp. In zwei Wochen wisst ihr, ob er hält.</WasBauenWir>');
     // „Heute Mittag“ nur auf Tag 4; der Arbeitsfluss ist tagneutral.
     expect(folie('/innolab/arbeitsfluss', 'was-bauen-wir')).toContain('<WasBauenWir>An Tag 4 entsteht euer Slice 1.');
     expect(seite('/innolab/arbeitsfluss')).not.toContain('Heute Mittag');

@@ -45,11 +45,15 @@ describe('Geschäftsmodell gekürzt (26.11.2026)', () => {
     expect(uebungMinuten(NOTIZEN[PFAD]?.vorgehen?.uebung?.dauer)).toBe(10);
   });
 
-  it('Vorlage ohne Kartentabelle und ohne „Gewählt: [Muster]“, Kosten unter Wert?', () => {
-    const v = q.slice(q.indexOf('<h2 id="vorlage">'), q.indexOf('</Prompt>'));
+  // Seit 26.11. abends: keine docs-Dateien für Studierende – das Modell steht auf Miro, die Vorlage beschreibt den Frame.
+  it('Frame statt Vorlage: ohne Kartentabelle und „Gewählt: [Muster]“, Kosten unter Wert?, keine docs-Datei', () => {
+    const v = q.slice(q.indexOf('<h2 id="vorlage">'), q.indexOf('<h2 id="pruefen">'));
+    expect(v).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(v.match(/Karte|Muster|Gewählt/g) ?? []).toStrictEqual([]);
-    expect(v).toContain('- Wert? Ertrag: [wer zahlt wofür]; heute bezahlt die Kundschaft [...]\n  Kosten: [Posten], [Posten]');
-    expect(v).toContain('Linie: [Outcome] führt zu [Impact], weil [...]');
+    expect(v).toContain('<li><strong>Wert?</strong> Ertrag: wer zahlt wofür; wie die Kundschaft heute bezahlt. Kosten: die größten Posten.</li>');
+    expect(v).toContain('<li><strong>Linie:</strong> [Outcome] führt zu [Impact], weil …</li>');
+    expect(q.match(/docs\//g) ?? []).toStrictEqual([]);
+    expect(q).toContain('Wählt dafür Opus (in Claude Code <code>/model opus</code>');
   });
 
   it('Begleiter: jede Folie hat eine Notiz mit live-Stichworten, Seite zwischen Concept Story und Experiment', () => {
