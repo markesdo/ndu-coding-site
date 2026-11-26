@@ -874,7 +874,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(quellen['/innolab/tag-4']).toContain(frage);
     expect(schritte).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
     expect(schritte).toContain('<li data-schritt><strong>Euer Canvas, Quadrat – füllen:</strong> den Sticky mit dem Satz des Spitzenreiters mitnehmen. Aus dem Satz, dann aus dem Profil von oben: Products & Services ohne ID · Pain Relievers mit (→&nbsp;P…) · Gain Creators mit (→&nbsp;G…).');
-    expect(schritte).toContain('<li data-schritt><strong>Festhalten und prüfen:</strong> rechts ein Zeichen je Zettel · links jeder ✓ mit ID · jedes ? mit Frage. Die ? bleiben, wo sie stehen – an der Experiment-Karte werden sie Annahmen. <Timer minuten={2} /></li>');
+    expect(schritte).toContain('<li data-schritt><strong>Festhalten und prüfen:</strong> rechts ein Zeichen je Zettel · links jeder ✓ mit (→&nbsp;…) · jedes ? mit Frage. Die ? bleiben, wo sie stehen – an der Experiment-Karte werden sie Annahmen. <Timer minuten={2} /></li>');
     expect(folie).toContain('<p class="small vm-legende-vorgehen">✓ trifft · ✗ trifft nicht · ? wissen wir nicht – beim Vergleich am Satz, beim Fit am Zettel.</p>');
     // Kaffeebar-Beispiele bei Füllen und Fit prüfen; die zu Wählen und Ordnen stehen aus Platzgründen im Handout (1280×720).
     expect([...schritte.matchAll(/<em class="vm-bsp">(Kaffeebar:[^<]+)<\/em>/g)].map((m) => m[1])).toStrictEqual(['Kaffeebar: „… ob der Kaffee vor der Abfahrt fertig ist (→&nbsp;P1)“.', 'Kaffeebar: G2 ✗ · J4 ?']);
@@ -1080,7 +1080,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(fitHandout.match(/bleibt es[^.]*stehen|hängt, bleibt|nichts trägt|Produkt bleibt|Produkte? bleiben? stehen|Produkt[^.]*nur die J-ID|J-ID des Jobs, den es direkt trifft/g) ?? []).toStrictEqual([]);
     expect(fitHandout.match(/Im Text nennt das Buch nur/g) ?? []).toStrictEqual([]);
     expect(q).toContain('trifft eines direkt einen Job, Pain oder Gain, kommt beim Fit dessen ID mit Pfeil dazu, etwa (→&nbsp;J1) (S. 110).');
-    expect(q).toContain('- ✓ links → rechts: [Pain Reliever (→ P…); Gain Creator (→ G…); Produkt (→ J…/P…/G…)]');
+    expect(q).toContain('- ✓ links trifft rechts: [Pain Reliever (→ P…); Gain Creator (→ G…); Produkt (→ J…/P…/G…)]');
     expect(q).toContain('- links ohne Treffer: [Zettel – gestrichen oder umformuliert]');
     const nFit = NOTIZEN['/innolab/methoden/value-map']?.fit;
     expect(nFit?.live[0]).toBe('Abbildung: Quadrat = Value Map, jeder Zettel geprüft, auch Produkte. Kreis = Profil.');
@@ -1090,7 +1090,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(JSON.stringify(nVm)).toContain('Ein Produkt bekommt schon im Quadrat eine ID – oder ein (→ P…) für einen Pain, den es nicht direkt trifft.');
     expect(JSON.stringify(nVm).match(/die J-ID kommt beim Fit|erfundene P-ID/g) ?? []).toStrictEqual([]);
     // Code-Review 21.11.: J4 ist halb getroffen (Anstehen über P2) – darum „?“; höchstes ✗ wie auf fit-kaffeebar-rechts.
-    expect(fit).toContain('<td>Kein Zettel links nennt G2; J4 nur halb (Anstehen über P2) → ?</td>');
+    expect(fit).toContain('<td>Kein Zettel links nennt G2; J4 nur halb (Anstehen über P2), darum ?</td>');
     expect(fit).toContain('Höchstes ✗: J2 und G2 – bewusst?');
     expect(fit.match(/Höchstes ✗: J2 – /g) ?? []).toStrictEqual([]);
     // Vorlage: die „?“ bleiben, wo sie stehen – keine Liste „Offene ?“.
@@ -1107,7 +1107,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const fr = folie('fit-kaffeebar-rechts');
     expect(fr).toContain('id="fit-kaffeebar-rechts">Fit prüfen: die Kaffeebar, rechts</h2>');
     expect(fr).toContain('<thead><tr><th>Eintrag (rechts)</th><th>getroffen von</th><th>Zeichen</th><th>warum</th></tr></thead>');
-    expect(fr).toContain('<p class="small">Selbstkontrolle: Rechts trägt jeder Zettel genau ein Zeichen. Links hat jeder ✓ eine ID.</p>');
+    expect(fr).toContain('<p class="small">Selbstkontrolle: Rechts trägt jeder Zettel genau ein Zeichen. Links hat jeder ✓ eine ID mit Pfeil.</p>');
     // Dieselben drei Schrittnamen auf fit, den beiden Kaffeebar-Folien und in vorgehen Schritt 4.
     for (const name of ['1 Links, Zettel für Zettel:', '2 Rechts, was übrig ist:', '3 Von oben lesen:']) expect(fk + fr, name).toContain(`<strong>${name}</strong>`);
     expect(q).toContain('<strong>Skalen – Fit prüfen:</strong> Links, Zettel für Zettel: ✓ auf den Zettel und auf den Eintrag, den er trifft. Rechts, was übrig ist: ✗ oder ? mit Frage. Von oben lesen.');
@@ -1168,7 +1168,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     expect(folie('vm-fehler')).toContain('<td>Steht seine ID im Profil rechts?</td>');
     const neuTexte = [...neu.map((id) => folie(id)), ...neu.map((id) => JSON.stringify(n[id] ?? {}))];
     expect(neuTexte.flatMap((x) => x.match(/lindert nichts|auf euren Skalen|auf den Skalen|(?<![Hh]ell)grün|(?<!Hell)Grün/g) ?? [])).toStrictEqual([]);
-    expect(n['pr-finden']?.live).toContain('„Kein Zettel zu einem Pain ist erlaubt. Trifft ihn auch kein anderer, bekommt er beim Fit rechts ein ✗.“');
+    expect(n['pr-finden']?.live).toContain('„Kein Zettel ist erlaubt. Trifft auch kein anderer den Pain: rechts ✗ – oder ? mit Frage.“');
   });
   // Entscheidungen 58–61 (21.11.): Brücke vom Lückensatz zur Value Map, Lückensatz mit ID-Slots, korrigierte Kaffeebar-Sätze,
   // ideation#beispiel ohne „18 Ideen“ und ohne Express-Kasse.
@@ -1178,7 +1178,7 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     const a = vm.indexOf('id="vom-satz"');
     const vom = vm.slice(a, vm.indexOf('</Folie>', a));
     expect(vom).toContain('<p class="breit" data-schritt><strong>Der Satz ist der Anfang:</strong> ein Pain, ein Gain.');
-    expect(vom).toContain('<tr data-schritt><td>… zeigt, ob der Kaffee vor der Abfahrt fertig ist (P1)</td><td>→ Pain Reliever</td>');
+    expect(vom).toContain('<tr data-schritt><td>… zeigt, ob der Kaffee vor der Abfahrt fertig ist (P1)</td><td>Pain Reliever</td>');
     expect(vm).toContain('<p class="small vm-legende">✓ trifft · ✗ trifft nicht · ? wissen wir nicht</p>');
     expect(vm).toContain('<h3 id="drei-fits">');
     expect(vm.match(/<h2 id="drei-fits"/g) ?? []).toStrictEqual([]);

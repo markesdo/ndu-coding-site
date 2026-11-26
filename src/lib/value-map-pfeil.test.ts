@@ -20,7 +20,9 @@ const folie = (id: string) => {
 const OHNE_PFEIL = /\((?:<strong>)?[JPG](?:\d|…)|(?:Pain Reliever|Gain Creator|Zettel) [JPG]\d|\b[JPG]\d-Zettel/g;
 // Lückensätze („Unser… – anders als der Automat.“, ohne inneres „“) und die linke Spalte von vom-satz (Halbsatz aus dem Lückensatz).
 const LUECKENSATZ = /„Unsere? [^“]*?– anders als der Automat\.“/g;
-const SATZ_SPALTE = /<td>… [^<]*<\/td><td>→ (?:Pain Reliever|Gain Creator)<\/td>/g;
+const SATZ_SPALTE = /<td>… [^<]*<\/td><td>(?:Pain Reliever|Gain Creator)<\/td>/g;
+// Der Satz auf vom-satz, der beide Formen gegenüberstellt (Review #444, Runde 3).
+const PFEIL_SATZ = 'Im Satz steht (P1), auf dem Zettel (→ P1): Der Pfeil zeigt, worauf der Zettel zielt.';
 
 // Die vier Wirkungs-Zettel der Kaffeebar, wie sie in der Value Map stehen.
 const ZETTEL = [
@@ -32,7 +34,7 @@ const ZETTEL = [
 
 describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
   it('außerhalb der Lückensätze trägt keine ID in Klammern die alte Form', () => {
-    const rest = vm.replace(LUECKENSATZ, '').replace(SATZ_SPALTE, '');
+    const rest = vm.replace(LUECKENSATZ, '').replace(SATZ_SPALTE, '').replace(PFEIL_SATZ, '');
     expect(rest.match(OHNE_PFEIL) ?? []).toStrictEqual([]);
     expect(vm.match(/P-ID|G-ID|P- oder G-ID|P[123]-Zettel/g) ?? []).toStrictEqual([]);
   });
@@ -78,13 +80,13 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
       expect(s).toContain('(P1)');
       expect(s.match(/\(→/g) ?? []).toStrictEqual([]);
     }
-    expect(folie('vom-satz')).toContain('<tr data-schritt><td>… zeigt, ob der Kaffee vor der Abfahrt fertig ist (P1)</td><td>→ Pain Reliever</td><td>Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist (→ P1)</td></tr>');
-    expect(folie('vom-satz')).toContain('<tr data-schritt><td>… ihn bereitstellt, wenn man an der Ausgabe ankommt (G1)</td><td>→ Gain Creator</td><td>Der Kaffee steht bereit, wenn man an der Ausgabe ankommt (→ G1)</td></tr>');
+    expect(folie('vom-satz')).toContain('<tr data-schritt><td>… zeigt, ob der Kaffee vor der Abfahrt fertig ist (P1)</td><td>Pain Reliever</td><td>Beim Bestellen steht, ob der Kaffee vor der Abfahrt fertig ist (→ P1)</td></tr>');
+    expect(folie('vom-satz')).toContain('<tr data-schritt><td>… ihn bereitstellt, wenn man an der Ausgabe ankommt (G1)</td><td>Gain Creator</td><td>Der Kaffee steht bereit, wenn man an der Ausgabe ankommt (→ G1)</td></tr>');
     expect(quellen['/innolab/methoden/ideation']).toContain('wollen (J…), indem es <strong>[Pain]</strong> [verringert] (P…) und <strong>[Gain]</strong> [ermöglicht] (G…)');
     // Begleiter: „Halbsatz vor (P1)“ meint den Lückensatz und bleibt.
     const n = JSON.stringify(NOTIZEN['/innolab/methoden/value-map'] ?? {});
     expect(n).toContain('„Der Halbsatz vor (P1) ist euer erster Pain Reliever.“');
-    expect(n).toContain('Halbsatz vor (P…) → Pain Reliever, Halbsatz vor (G…) → Gain Creator');
+    expect(n).toContain('der Halbsatz vor (P…) zum Pain Reliever, der Halbsatz vor (G…) zum Gain Creator');
   });
 
   it('Begleiter: Zettel links mit Pfeil, keine P-/G-ID-Formel', () => {
@@ -115,7 +117,7 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     // A3: Ideen-Zettel wird durch die Produkte ersetzt.
     expect(folie('ps-finden')).toContain('<li data-schritt><strong>Idee zerlegen:</strong> ein gelber Zettel je Produkt oder Dienst – sie ersetzen den Ideen-Zettel aus dem Satz.</li>');
     expect(folie('vorgehen')).toContain('den gelben Ideen-Zettel ersetzt ihr durch die Produkte und Dienste, in die ihr die Idee zerlegt.');
-    expect(JSON.stringify(NOTIZEN['/innolab/methoden/value-map']?.vorgehen ?? {})).toContain('Idee → Products & Services (wird ersetzt durch die Produkte, in die ihr sie zerlegt)');
+    expect(JSON.stringify(NOTIZEN['/innolab/methoden/value-map']?.vorgehen ?? {})).toContain('die Idee wird zu Products & Services (ersetzt durch die Produkte, in die ihr sie zerlegt)');
     // A4: Website-Frage entscheidet beim Wählen und kommt beim Füllen als Check wieder.
     const schritte = folie('vorgehen').slice(folie('vorgehen').indexOf('<ol'), folie('vorgehen').indexOf('</ol>'));
     const fuellen = schritte.slice(schritte.indexOf('Euer Canvas, Quadrat'), schritte.indexOf('Skalen links'));
@@ -128,10 +130,10 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     const n = JSON.stringify(NOTIZEN['/innolab/methoden/value-map'] ?? {});
     // Befund 1: „kein Zettel → ✗“ nirgends mehr; das ✗ bekommt der Eintrag rechts, wenn ihn kein anderer Zettel trifft.
     expect([vm, n].flatMap((x) => x.match(/wird beim Fit ein ✗/g) ?? [])).toStrictEqual([]);
-    expect(folie('pr-finden')).toContain('<li data-schritt><strong>Nein:</strong> kein Zettel. Trifft ihn auch kein anderer Zettel, bekommt der Pain beim Fit rechts ein ✗ – das ist erlaubt.</li>');
-    expect(n).toContain('„Kein Zettel zu einem Pain ist erlaubt. Trifft ihn auch kein anderer, bekommt er beim Fit rechts ein ✗.“');
+    expect(folie('pr-finden')).toContain('<li data-schritt><strong>Nein:</strong> kein Zettel. Trifft ihn auch kein anderer Zettel, bekommt der Pain beim Fit rechts ein ✗ – oder ? mit Frage, wenn offen. Das ist erlaubt.</li>');
+    expect(n).toContain('„Kein Zettel ist erlaubt. Trifft auch kein anderer den Pain: rechts ✗ – oder ? mit Frage.“');
     // Befund 2: Seiten für das ✗ und die Erlaubnis.
-    expect(folie('vorgehen')).toContain('bekommt er beim Fit rechts ein ✗ – das ist erlaubt (S. 110, 113; zum Verzicht S. 105–106).');
+    expect(folie('vorgehen')).toContain('bekommt er beim Fit rechts ein ✗ – oder ein ? mit Frage, wenn es offen ist; das ist erlaubt (S. 110, 113; zum Verzicht S. 105–106).');
     // Befund 3: Profil von oben ist das Vorgehen des Kurses.
     expect(folie('pr-finden')).toContain('das Vorgehen, das Profil Pain für Pain von oben durchzugehen; das Buch fragt vom Angebot her (S. 87, 100) und verlangt nur den Fokus auf die extremen Pains (S. 86).');
     expect(folie('gc-finden')).toContain('Die Gains von oben durchzugehen ist wie bei den Pains das Vorgehen dieses Kurses; das Buch fragt vom Angebot her (S. 90, 101).');
@@ -152,5 +154,30 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(folie('fit')).toContain('Ihr schreibt die ID mit Pfeil dazu, etwa (→ P1), und setzt ein ✓');
     expect(n.vorgehen?.ablauf?.schritte?.[3]).toContain('trifft er etwas, ID mit Pfeil dazu, etwa (→ P1),');
     expect(n.fit?.live).toContain('Klick 1: Zettel vorlesen. Was trifft er? P1 – also (→ P1).');
+  });
+
+  it('Review #444, Runde 3: Fehlerliste, ✗ oder ?, Festhalten mit Pfeil, Pfeil nur für „zielt auf“, Erklärung auf vom-satz', () => {
+    const n = NOTIZEN['/innolab/methoden/value-map'] ?? {};
+    const nj = JSON.stringify(n);
+    // 1: Die Fehlerliste meint einen Zettel ohne jede ID – (→ J1), (→ G2) und das alte „(P1)“ sind keine Fehler.
+    expect(n.vorgehen?.ablauf?.fehler).toContain('Ein Pain Reliever ohne ID (kein Pfeil auf J, P oder G) bekommt trotzdem einen Haken.');
+    expect(nj).not.toContain('ohne (→ P…) bekommt');
+    // 2: Wo kein Zettel trifft: ✗ – oder ? mit Frage (wie J4 der Kaffeebar).
+    expect(folie('gc-finden')).toContain('bekommt der Gain beim Fit rechts ein ✗ – oder ? mit Frage, wenn offen.</li>');
+    expect([vm, nj].flatMap((x) => x.match(/rechts ein ✗(?! – oder)|rechts ✗(?! – oder)/g) ?? [])).toStrictEqual([]);
+    // 3: Festhalten – links jeder ✓ mit Pfeil.
+    expect([vm, nj].flatMap((x) => x.match(/jeder ✓ mit ID|jeder ✓ eine ID\./g) ?? [])).toStrictEqual([]);
+    expect(folie('vorgehen')).toContain('rechts ein Zeichen je Zettel · links jeder ✓ mit (→ …) · jedes ? mit Frage.');
+    expect(n.vorgehen?.ablauf?.schritte?.[4]).toContain('links jeder ✓ mit (→ …)');
+    // 4: Ein Pfeil steht nur noch vor einer ID („zielt auf“) – nicht für „wird zu“ oder „führt zu“.
+    const ohneLueckensatz = (x: string) => x.replace(LUECKENSATZ, '');
+    const fremdePfeile = (x: string) => ohneLueckensatz(x).match(/→(?! [JPG…]| …)/g) ?? [];
+    expect(fremdePfeile(vm)).toStrictEqual([]);
+    expect(fremdePfeile(nj)).toStrictEqual([]);
+    const pl = JSON.stringify(METHODEN.find((x) => x.slug === 'value-map'));
+    expect(fremdePfeile(pl)).toStrictEqual([]);
+    expect(vm).toContain('- ✓ links trifft rechts: [');
+    // 5: Die Erklärung steht sichtbar auf vom-satz, wo die Pfeil-Form zuerst live erscheint.
+    expect(folie('vom-satz')).toContain(`<p class="small vm-pfeil">${PFEIL_SATZ}</p>`);
   });
 });
