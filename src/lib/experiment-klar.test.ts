@@ -141,8 +141,8 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
   it('#vorher-entscheiden: Bänder auf E1-Zahlen, aufgedeckt ab 10 → unter 5 → 5–9, Kursregel halbe Schwelle', () => {
     const v = sichtbar('vorher-entscheiden');
     // 27.11.2026: die 30 sind Menschen, die wählen (wie auf Karte E1 und der Lernkarte: 8 Einträge + 22 am Automaten).
-    expect(v).toContain('<p class="setup-zeile">Kaffeebar, E1: 30 Pendler*innen wählen zwischen Automat und Aufsteller – ab 10 Einträgen haben wir recht.</p>');
-    expect(v).toContain('aria-label="Skala von 0 bis 30: Einträge unter 30 Pendler*innen, die zwischen Automat und Aufsteller wählen; Marken bei 5 und 10');
+    expect(v).toContain('<p class="setup-zeile">Kaffeebar, E1: Die ersten 30 Pendler*innen, die bei Schlange wählen – Automat oder Aufsteller: ab 10 Einträgen haben wir recht.</p>');
+    expect(v).toContain('aria-label="Skala von 0 bis 30: Einträge von 30 Pendler*innen, die bei Schlange zwischen Automat und Aufsteller wählen; Marken bei 5 und 10');
     expect([...v.matchAll(/<li class="band-[a-z]+" data-schritt><b>([^<]+)<\/b>/g)].map((x) => x[1])).toStrictEqual(['ab 10 von 30', 'unter 5 von 30', '5–9 von 30']);
     expect(v).toContain('<p data-schritt><strong>Zwei Zahlen, vor dem Test:</strong> die Schwelle (ab 10: gestützt) und die Grenze (unter 5: widerlegt) – dazwischen ist es unklar. Kursregel: Grenze etwa bei der halben Schwelle.</p>');
     expect(v).toContain('Kursregel: drei Bänder für Thomkes Entscheidungsmatrix');

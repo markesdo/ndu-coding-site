@@ -165,8 +165,8 @@ const KAFFEEBAR_ANNAHMEN = [
   <Folie>
     <h2 id="vorher-entscheiden">Vorher festlegen, was ihr dann tut</h2>
     <p class="folie-satz">Zu jedem Ergebnis steht die Handlung vorher fest.</p>
-    <p class="setup-zeile">Kaffeebar, E1: 30 Pendler*innen wählen zwischen Automat und Aufsteller – ab 10 Einträgen haben wir recht.</p>
-    <figure class="skala" aria-label="Skala von 0 bis 30: Einträge unter 30 Pendler*innen, die zwischen Automat und Aufsteller wählen; Marken bei 5 und 10: unter 5 deutlich darunter, 5 bis 9 knapp darunter, ab 10 Schwelle erreicht">
+    <p class="setup-zeile">Kaffeebar, E1: Die ersten 30 Pendler*innen, die bei Schlange wählen – Automat oder Aufsteller: ab 10 Einträgen haben wir recht.</p>
+    <figure class="skala" aria-label="Skala von 0 bis 30: Einträge von 30 Pendler*innen, die bei Schlange zwischen Automat und Aufsteller wählen; Marken bei 5 und 10: unter 5 deutlich darunter, 5 bis 9 knapp darunter, ab 10 Schwelle erreicht">
       <div class="skala-balken" aria-hidden="true">
         <span class="sk-unter" style="flex: 5"></span><span class="sk-mitte" style="flex: 5"></span><span class="sk-ueber" style="flex: 20"></span>
       </div>
@@ -464,7 +464,9 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
   .so-liefe .bsp { display: block; font-size: .8em; color: var(--muted); }
   :global(html[data-beamer]) .so-liefe > li { font-size: .95rem; margin-bottom: .2rem; }
   :global(html[data-beamer] .folie:has(> h2#lernkarte) .karte-zeilen li) { font-size: .85rem; }
+  /* #vorher-entscheiden: Absätze in voller Breite (außer dem Folien-Satz), sonst läuft die Folie bei 1280 × 720 über. Fit von Hand geprüft (27.11., 1280×720 / 1728×1117), kein Test. */
   :global(html[data-beamer] .folie:has(> h2#vorher-entscheiden) > p) { margin-top: .3rem; margin-bottom: .3rem; }
+  :global(html[data-beamer] .folie:has(> h2#vorher-entscheiden) > p:not(.folie-satz)) { max-width: none; }
   :global(html[data-beamer] .folie:has(> h2#vorher-entscheiden) > p.small) { font-size: .8rem; }
   :global(html[data-beamer]) .concierge-zeile { font-size: .85rem; margin: .2rem 0; }
   /* Bei 1280 × 720: Karte E1 mit Concierge-Zeile, die fünf Fragen, die Map mit Achsen und „So geht ihr vor“ mit Links passen nur etwas dichter. */
@@ -473,11 +475,9 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
   :global(html[data-beamer]) .fuenf-bsp { margin: .15rem 0; font-size: .95rem; }
   :global(html[data-beamer] .annahmen-map .am-flaeche) { aspect-ratio: 2 / 1; }
   :global(html[data-beamer] .folie:has(> h2#vorgehen) ol.gross > li) { font-size: .95rem; line-height: 1.35; margin-bottom: .25rem; }
-  /* 27.11.: Schritte 2–3 von #vorgehen und die ID-Zeile in #annahmen-finden sind länger; breiter statt einer Zeile mehr, sonst läuft die Folie bei 1280 × 720 über. */
+  /* Schritte 2–3 von #vorgehen und die ID-Zeile in #annahmen-finden sind länger; breiter statt einer Zeile mehr, sonst läuft die Folie bei 1280 × 720 über. Fit von Hand geprüft (27.11., 1280×720 / 1728×1117), kein Test. */
   :global(html[data-beamer] .folie:has(> h2#vorgehen) ol.gross) { max-width: 46em; }
   :global(html[data-beamer] .folie:has(> h2#annahmen-finden) .fuenf-bsp) { max-width: none; }
-  /* 27.11.: #vorher-entscheiden mit längerer Setup- und Zwei-Zahlen-Zeile – volle Breite statt Überlauf bei 1280 × 720. */
-  :global(html[data-beamer] .folie:has(> h2#vorher-entscheiden) > p) { max-width: none; }
   .fluss-titel { margin: .5rem 0 -.75rem; }
   /* Fluss-Folien (ergebnis-gilt, gegen-den-beleg): etwas weniger Rand, damit Fluss und drei Zeilen bei 1280 × 720 passen. */
   :global(html[data-beamer] .folie:has(> h2#ergebnis-gilt) .fluss), :global(html[data-beamer] .folie:has(> h2#gegen-den-beleg) .fluss) { margin: .75rem 0; }
