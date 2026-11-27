@@ -248,7 +248,28 @@ const KAFFEEBAR_ANNAHMEN = [
     <p data-schritt><strong>Dazu die Pre-Mortem-Frage:</strong> Es ist gescheitert – woran lag es?</p>
     <div class="nur-handout">
       <p>Torres nennt fünf Arten von Annahmen, je mit ihrer Frage: „Desirability assumptions: Does anyone want it?“ – „Viability assumptions: Should we build it?“ – „Feasibility assumptions: Can we build it?“ – „Usability assumptions: Is it usable?“ – „Ethical assumptions: Is there any potential harm in building this idea?“ ({TORRES}, S. 118). Die deutschen Fragen auf der Folie sind die Kursfassung, auf einen einzelnen Schritt zugeschnitten: Statt „will das jemand?“ fragt ihr „wollen sie das <em>hier</em> tun?“.</p>
-      <p>Jede Antwort, bei der ihr „hoffentlich“ denkt, ist eine Annahme: als Satz „Wir glauben, dass …“, mit Art. Bei der Kaffeebar ergibt die erste Frage an Schritt 1 die Annahme A5 – sie wird später die riskanteste. Die übrigen Annahmen der Kaffeebar zeigt die nächste Folie. Danach die Pre-Mortem-Frage von vorhin: „{PRE_MORTEM_FRAGE}“ – sie findet Annahmen, die beim Gehen durch die Schritte fehlen.</p>
+      <p>Jede Antwort, bei der ihr „hoffentlich“ denkt, ist eine Annahme: als Satz „Wir glauben, dass …“, mit Art. Bei der Kaffeebar ergibt die erste Frage an Schritt 1 die Annahme A5 – sie wird später die riskanteste. Die nächste Folie geht einen Schritt mit allen fünf Fragen durch, die übernächste zeigt die Annahmen aller Schritte. Danach die Pre-Mortem-Frage von vorhin: „{PRE_MORTEM_FRAGE}“ – sie findet Annahmen, die beim Gehen durch die Schritte fehlen.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="ein-schritt-fuenf-fragen">Ein Schritt, fünf Fragen – nicht jede ergibt einen Zettel</h2>
+    <p class="folie-satz">Kaffeebar, <strong>Schritt 4:</strong> Bar zeigt „Fertig 7:31“ und bereitet zu.</p>
+    <table class="fuenf-fragen ein-schritt">
+      <thead><tr><th>Frage</th><th>Antwort an Schritt 4</th><th>Ergebnis</th></tr></thead>
+      <tbody>
+        <tr data-schritt><td>Wollen sie?</td><td>Gehen sie wegen einer Zeile an der Schlange vorbei? Hoffentlich.</td><td class="treffer"><strong>A6</strong> · S4 · wünschenswert</td></tr>
+        <tr data-schritt><td>Können sie?</td><td>Die Bar handelt, sie lesen nur eine Zeile – nichts zu hoffen.</td><td>kein Zettel</td></tr>
+        <tr data-schritt><td>Können wir?</td><td>Schafft die Bar 40 Bestellungen in 30 Minuten? Muss stimmen.</td><td class="treffer"><strong>A2</strong> · S4 · machbar</td></tr>
+        <tr data-schritt><td>Rechnet es sich?</td><td>Betrifft nicht diesen Schritt – steht bei Schritt 5 (A4).</td><td>weiter</td></tr>
+        <tr data-schritt><td>Schadet es jemandem?</td><td>Hier nicht – heikel ist Schritt 3 (A7).</td><td>kein Zettel</td></tr>
+      </tbody>
+    </table>
+    <p class="ein-schritt-regel" data-schritt><strong>Eine Frage darf leer bleiben – ein Schritt nicht.</strong> Je Schritt mindestens zwei; bleibt eine Art an allen Schritten leer: noch einmal fragen.</p>
+    <p class="small muted">{TORRES}, S. 122–124, 126, 131–132.</p>
+    <div class="nur-handout">
+      <p>Die fünf Fragen stellt ihr an jedem Schritt – aber nicht jede ergibt etwas. Drei Antworten sind möglich. <strong>Ein Zettel:</strong> Ihr denkt „hoffentlich“, oder der Schritt klappt nur, wenn es stimmt. An Schritt 4 sind das A6 und A2. A2 hat schon einen Beleg und bekommt trotzdem einen Zettel, weil der Schritt daran hängt; auf der Map liegt er links. <strong>Kein Zettel:</strong> Die Frage passt zum Schritt, aber hier gibt es nichts zu hoffen oder zu fürchten – die Pendler*innen lesen eine Zeile, mehr nicht; schaden kann das nicht, heikel ist erst die Abfahrtszeit an Schritt 3 (A7). <strong>Weiter:</strong> Die Frage betrifft gar nicht den einzelnen Schritt, sondern die ganze Idee – ob sich „Im Gehen bestellen“ rechnet, hängt bei der Kaffeebar an Schritt 5 (A4). Für leere Fragen schreibt ihr nichts auf, auch kein „–“.</p>
+      <p>Zwei Grenzen. Kein Schritt bleibt leer, je Schritt kommen mindestens zwei Annahmen zusammen: Bei Torres hat jeder Schritt drei bis fünf Annahmen, aus fünf Schritten werden zwanzig ({TORRES}, S. 123–124); zu wenige Annahmen sind der erste Fehler, vor dem sie warnt: „Not generating enough assumptions“ (S. 131). Und bleibt eine Art an allen Schritten leer, fragt ihr noch einmal: „Use the categories to catch your blind spots“ (S. 132). Für die ethische Frage sagt sie es deutlich: „Some teams struggle to come up with anything. But all products have some potential harm“ (S. 126).</p>
     </div>
   </Folie>
 
@@ -452,6 +473,12 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
   .fuenf-fragen td:last-child { white-space: nowrap; color: var(--muted); }
   :global(html[data-beamer]) .fuenf-fragen td { padding-top: .25rem; padding-bottom: .25rem; }
   .fuenf-bsp { margin: .3rem 0; }
+  /* #ein-schritt-fuenf-fragen: dieselbe Tabelle mit Antwort-Spalte; Treffer in voller Farbe, leere Fragen gedämpft. */
+  .ein-schritt td:first-child { white-space: nowrap; }
+  .ein-schritt td.treffer { color: var(--fg); }
+  .ein-schritt-regel { margin: .6rem 0 .3rem; }
+  /* Fit von Hand geprüft (27.11., 1280×720 / 1728×1117), kein Test: die Regel in einer Zeile statt mit Trennung. */
+  :global(html[data-beamer] .folie:has(> h2#ein-schritt-fuenf-fragen) .ein-schritt-regel) { max-width: none; }
   /* #karte-e1, #vorher-entscheiden: was „Concierge“ heißt, als eine Zeile unter der Karte. */
   .concierge-zeile { font-size: .95rem; margin: .4rem 0; }
   /* #so-liefe-e1: je Schritt die Kaffeebar als kleine zweite Zeile. */
@@ -515,5 +542,6 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
     .baender li { grid-row: auto; grid-column: auto; }
     .band-unter { order: 1; } .band-mitte { order: 2; } .band-ueber { order: 3; }
     .test-arten th, .beispiel-schritte td:last-child { white-space: normal; }
+    .ein-schritt td:first-child, .ein-schritt td:last-child { white-space: normal; }
   }
 </style>

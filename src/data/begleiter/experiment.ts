@@ -388,15 +388,60 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 118; Kursformulierung`,
       },
     ],
-    ueberleitung: 'Die fünf Fragen an jedem Schritt der Kaffeebar – das kommt heraus.',
+    ueberleitung: 'Und wenn eine Frage nichts ergibt? Ein Schritt der Kaffeebar, alle fünf Fragen.',
+  },
+
+  'ein-schritt-fuenf-fragen': {
+    live: [
+      'Vor jedem Klick die Frage laut stellen – wer mag, antwortet.',
+      'Zwei Treffer: A6 und A2 – A2 trotz Beleg, auf der Map links.',
+      'Leere Fragen: kein Zettel, auch kein „–“ – so reichen fünf Minuten.',
+      '„Eine Frage darf leer bleiben – ein Schritt nicht.“',
+      'Zeit: Sprechzeit ~2 min.',
+    ],
+    verstaendnis: {
+      frage: 'An Schritt 4 ergeben drei von fünf Fragen keinen Zettel. Ist das ein Fehler?',
+      antwort: 'Nein. Eine Frage kann an einem Schritt nichts ergeben: Es gibt dort nichts zu hoffen (kein Zettel), oder sie betrifft die ganze Idee statt des Schritts (weiter). Ein Fehler wäre ein Schritt mit weniger als zwei Annahmen – oder eine Art, die an allen Schritten leer bleibt (Torres S. 131–132).',
+      falsch: '„Zu jeder Frage muss etwas stehen“ – dann erfindet ihr Annahmen, an denen nichts hängt, und die fünf Minuten reichen nicht.',
+    },
+    kern: [
+      {
+        text: 'An den Schritten sucht Torres drei Arten: „every time you assume that an end-user will do something, you are making desirability assumptions […], usability assumptions […], and feasibility assumptions“. In ihrem Beispiel bleiben zwei Stellen leer: Schritt 3 ohne Machbarkeit, Schritt 4 (der Sender liefert) ohne Bedienbarkeit. Jeder Schritt hat drei bis fünf Annahmen.',
+        quelle: `${TORRES}, S. 122–124`,
+      },
+      {
+        text: 'Wirtschaftlich und ethisch findet sie für die ganze Idee, nicht je Schritt: „Sometimes story maps can help us uncover viability and ethical assumptions as well.“ Auf der Folie stehen trotzdem alle fünf Fragen an jedem Schritt, damit keine Art vergessen wird.',
+        quelle: `${TORRES}, S. 124–126`,
+      },
+      {
+        text: 'Leer über alle Schritte ist ein blinder Fleck: „Use the categories to catch your blind spots.“ – „Some teams struggle to come up with anything. But all products have some potential harm.“',
+        quelle: `${TORRES}, S. 126, 132`,
+      },
+    ],
+    fragen: [
+      {
+        frage: '„Aber verstehen sie die Zeile ‚Fertig 7:31‘ überhaupt?“',
+        antwort: 'Dann ist das für dich ein „hoffentlich“ – genau so entsteht ein Zettel (bedienbar, S4). Bei der Kaffeebar bekommt er keine ID, er ist nur zur Übung. Die Folie zeigt eine mögliche Antwort, nicht die einzige.',
+      },
+      {
+        frage: 'Soll ich auch aufschreiben, was ich sicher weiß?',
+        antwort: 'Wenn der Schritt daran hängt: ja, wie A2 – der Zettel kommt auf der Map nach links. Torres schreibt auch harmlose Annahmen auf, die Map sortiert sie (S. 124, 131). Für die fünf Minuten: Was sicher ist und an dem nichts hängt, lasst ihr weg.',
+      },
+      {
+        frage: 'A2 steht auf Miro beim Pre-Mortem, hier bei Schritt 4 – was stimmt?',
+        antwort: 'Beides. Dieselbe Annahme lässt sich auf zwei Wegen finden; sie bekommt einen Zettel.',
+      },
+    ],
+    ueberleitung: 'Dasselbe an allen fünf Schritten – das kommt heraus.',
   },
 
   beispiel: {
     live: [
-      'Fünf Schritte, als gäbe es „Im Gehen bestellen“ schon.',
-      'Pro Zeile: Schritt, Annahme, Art.',
+      'Schritt 4 kennt ihr schon: zwei Treffer.',
+      'Andere Schritte: je ein Treffer – zusammen alle fünf Arten.',
       'A5 ohne Beleg – I2-3 spricht sogar dagegen.',
       'A4 kommt aus dem Geschäftsmodell vorhin.',
+      'Zeit: kurz, ~30 s.',
     ],
     kern: [
       {
