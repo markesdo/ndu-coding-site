@@ -361,7 +361,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-erkunden': {
     live: [
-      'Timer 6 min: vier Zeilen – Genauer, Oder, Richtig gut, Geht schief.',
+      'Timer 6 min: vier Fragen, alles unter den Task – blau, schief rot.',
       'Mindestens ein rotes Sticky pro Aktivität.',
       'Falle: Kanal oder Feature-Name statt Verb-Satz.',
     ],
@@ -380,9 +380,9 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-outcome': {
     live: [
-      'Timer 2 min: pinkes Outcome-Sticky links an den Tasks.',
+      'Timer 2 min: Pink aus dem Streifen unten, links neben die Map.',
       '„[Wer] tut [was] statt [was bisher].“',
-      'Darunter cyan „Wir lernen, ob … (A_)“ mit Annahmen-ID.',
+      'Cyan daneben: „Wir lernen, ob … (A_)“ mit Annahmen-ID.',
       'Falle: „können“, „wird informiert“, „Umsatz“.',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
@@ -391,8 +391,8 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-schneiden': {
     live: [
-      'Timer 5 min: Linie, nach unten schieben – nicht kopieren.',
-      'Pro Spalte eine Variante oben; „oder“ bleibt unten.',
+      'Timer 5 min: Linie hochziehen, darunter schieben – nicht kopieren.',
+      'Beim „oder“: die Variante, die zum Lernen reicht, nach oben.',
       'Fragen: Was ist euer „bar an der Ausgabe“?',
       'Fragen: Welches Sticky oben fehlt der Lernfrage nicht?',
     ],
