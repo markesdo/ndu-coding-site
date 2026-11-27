@@ -324,6 +324,15 @@ describe('#schritte-der-idee: Begleiter erklärt Torres’ Streaming-Beispiel (2
     expect(kb).toMatch(/^Pendler\*in wie Subscriber: [\s\S]* Seite am Handy wie Platform: [\s\S]* Bar wie Local Channel: /);
     expect(kb).toContain('Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.');
   });
+  it('Review #477: keine Überdehnung von S. 122–124; die Seite handelt nicht für die Pendler*in', () => {
+    const lesen = frage('Wie liest man die Map?');
+    expect(lesen).toContain('Gerade dort stehen Machbarkeits-Annahmen: „Feasibility: We know what sports are available right now.“ (S. 123)');
+    expect(lesen).not.toMatch(/vor allem|genau diesen/);
+    const ann = frage('Welche Annahmen leitet Torres aus dieser Map ab?');
+    expect(ann).toContain('Wünschbarkeit, Bedienbarkeit und Machbarkeit stecken überall dort, wo jemand etwas tun muss – „every time you assume that an end-user will do something“ (S. 122)');
+    expect(ann).not.toContain('in jedem Schritt');
+    expect(frage('Wo stecken die drei Zeilen bei der Kaffeebar?')).toContain('sie öffnet sich nach dem Scan und nimmt Getränk und Abfahrtszeit entgegen (Schritte 2 und 3); Code scannen und wählen tut die Pendler*in.');
+  });
 });
 
 // Die Folien „claude-pro-jetzt“ und „claude-code-opus“ stehen seit 26.11.2026 nachts auf tag-5 (tag-5-claude-pro.test.ts).
