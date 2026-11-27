@@ -141,7 +141,10 @@ describe('Tag 4: Folien des Abschlusses', () => {
     expect(schritte.map((x) => x.match(/^<strong>([^<]+)<\/strong>/)?.[1])).toStrictEqual([
       'Origin Story', 'Karte E1 fertig machen,', 'Freiwillig: Usability-Tests', 'Fertig machen, was heute offen blieb', 'Bis Tag 5:',
     ]);
-    expect(schritte[4]).toContain('Claude Code installieren; Linear einrichten');
+    // Code-Review #459: Linear braucht Claude Code (/ndu-linear) und kommt darum erst an Tag 5.
+    expect(schritte[4]).toContain('Claude Code installieren, noch nicht anmelden');
+    expect(schritte[4]).toContain('Linear richtet ihr an Tag 5 gemeinsam ein.');
+    expect(liste).not.toContain('Linear eingerichtet');
     expect(schritte.join('\n')).not.toMatch(/Spike|weiterbauen|Branch/);
     expect(liste.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')).not.toMatch(/Spike|weiterbauen|im eigenen Branch/);
     expect(schritte.join('\n')).not.toMatch(/E1 laufen lassen|Lernkarte E1|Aufsteller oder die Landingpage/);
@@ -179,16 +182,16 @@ describe('Tag 5 im Beamer: rund um scrum#team keine Tag-4-Folie', () => {
     expect(weg.some((w) => w.endsWith('#weiter-tag-4') || w.startsWith('/innolab/tag-4'))).toBe(false);
   });
 
-  it('← am Anfang von scrum#team führt zurück zum Debrief von Tag 5, nicht auf #weiter-tag-4', () => {
-    expect(zurueckVon('/innolab/methoden/scrum', 'team')).toBe('/innolab/tag-5#debrief-ablauf');
+  // Seit Code-Review #459 liegt zwischen Debrief und Teamaufstellung der Block mit Claude Pro, Claude Code und Linear.
+  it('← am Anfang von scrum#team führt zurück zur Linear-Folie von Tag 5, nicht auf #weiter-tag-4', () => {
+    expect(zurueckVon('/innolab/methoden/scrum', 'team')).toBe('/innolab/tag-5#linear-einrichten');
     // Gegenprobe: Ohne zurueck wäre es die Tag-4-Folie darüber.
     const fs = folienMit('/innolab/methoden/scrum');
     const team = fs.findIndex((f) => f.id === 'team');
     expect(team).toBeGreaterThanOrEqual(1);
     expect(fs[team - 1].id).toBe('weiter-tag-4');
-    // Seit 26.11.2026 nachts stehen nach dem Debrief noch Folien auf tag-5 (Claude Pro um 10:05, Bauen um 14:30); das →
-    // der letzten Debrief-Folie führt darum ausdrücklich nach scrum#team.
-    expect(folienMit('/innolab/tag-5').find((f) => f.id === 'debrief-ablauf')?.weiter).toBe('/innolab/methoden/scrum#team');
+    // Nach dem Debrief folgen auf tag-5 die drei Folien von 9:25 (Claude Pro, Opus, Linear); die letzte führt nach scrum#team.
+    expect(folienMit('/innolab/tag-5').find((f) => f.id === 'linear-einrichten')?.weiter).toBe('/innolab/methoden/scrum#team');
   });
 });
 

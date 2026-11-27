@@ -4,7 +4,7 @@ import type { Notiz } from './typen';
 // - Tag 4 (28.11., 16:35–17:15, Variante B): Theorie aus dem Foliensatz (27 min), dann hier „Wo wir abweichen“ (2 min),
 //   Kaffeebar auf der Scrum-Karte (4 + 3 min), Gleis-1-Express (4 min); „Weiter heute“ führt in den Abschluss (17:15).
 //   Die Folien agil … fertig und planen sind Nachlese im Handout: an Tag 4 im Beamer überspringen.
-// - Tag 5 (12.12., 09:25–10:05): team, dod, vorgehen, uebertrag – im Code unten markiert.
+// - Tag 5 (12.12., 09:40–10:20): team, dod, vorgehen, uebertrag – im Code unten markiert.
 // Abgeschaltet und darum ohne Notiz (folienAus lässt sie weg): produktziel (PRODUKTSATZ_AN_TAG_4), Lego4Scrum.
 // Guide und Jeffries = gedruckte Seiten.
 const GUIDE = 'Ken Schwaber & Jeff Sutherland, The Scrum Guide (2020)';
@@ -247,7 +247,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
     ueberleitung: 'Gleich: Origin Story und Hausaufgabe im Abschluss.',
   },
 
-  // Tag 5 (12.12., 09:25–10:05): Einstieg von tag-5#debrief-ablauf; ← führt dorthin zurück.
+  // Tag 5 (12.12., 09:40–10:20): Einstieg von tag-5#linear-einrichten; ← führt dorthin zurück.
   team: {
     live: [
       'Zeit: 40 min, Schritte 5 + 10 + 15 + 10.',
@@ -311,6 +311,6 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         quelle: `${GUIDE}, S. 7`,
       },
     ],
-    ueberleitung: 'Jetzt zehn Minuten Claude Pro und Claude Code, gemeinsam – nach der Pause wird aus Slice 1 euer Backlog.',
+    ueberleitung: 'Nach der Pause: aus Slice 1 wird euer Backlog aus Issues.',
   },
 };

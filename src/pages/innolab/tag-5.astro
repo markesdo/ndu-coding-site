@@ -24,16 +24,16 @@ const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas
   <h2 id="ablauf">Ablauf</h2>
   <div class="schedule" data-kurstag="2026-12-12">
     <Block time="09:00–09:25" type="plenum" title="Test-Debrief" href="#debrief">Karte E1 als Gedankenexperiment (und E2, falls ihr getestet habt): was der Beleg getan hätte, dann die Entscheidung.</Block>
-    <Block time="09:25–10:05" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Produktziele, Rollen, Linear; „fertig“ aus eurem Papier-Prototyp und mit Mess-Ereignis.</Block>
-    <Block time="10:05–10:15" type="plenum" title="Claude Pro und Claude Code, gemeinsam" href="#claude-pro-jetzt">Alle zugleich: Claude Pro mit demselben Konto neu abschließen und gleich kündigen, Claude Code starten und anmelden, mit Opus (<code>/model opus</code>). Testprompt: Screenshot eures Concept-Story-Frames einfügen – „Sag mir in einem Satz, worum es in meiner Concept Story geht.“</Block>
-    <Block time="10:15–10:25" type="pause" title="Pause" />
-    <Block time="10:25–11:25" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, Reihenfolge nach Outcome und Risiko; jede*r erzählt, die anderen fragen, dann nach Linear.</Block>
-    <Block time="11:25–12:10" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Zwei Fragen der Confirmation; Story-Workshop je Product Owner: Normalfall, Was-wenn, Demo.</Block>
-    <Block time="12:10–13:10" type="pause" title="Mittagspause" />
-    <Block time="13:10–13:40" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Wer baut, schätzt; Plan-Check mit Claude, Geteiltes zeigen, die anderen prüfen.</Block>
-    <Block time="13:40–14:20" type="uebung" title="Sprint-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, wer baut was – und eine Karte, die alles ändert.</Block>
-    <Block time="14:20–14:30" type="pause" title="Pause" />
-    <Block time="14:30–15:35" type="uebung" title="Bauen" href="#bauen">Das Mess-Issue zuerst, Branding, dann das erste Issue mit Oberfläche – nach euren Papier-Skizzen von Tag 4.</Block>
+    <Block time="09:25–09:40" type="plenum" title="Claude Pro, Claude Code und Linear, gemeinsam" href="#claude-pro-jetzt">Alle zugleich: Claude Pro mit demselben Konto neu abschließen und gleich kündigen, Claude Code starten und anmelden, mit Opus (<code>/model opus</code>). Testprompt: Screenshot eures Concept-Story-Frames einfügen – „Sag mir in einem Satz, worum es in meiner Concept Story geht.“ Dann Linear: <code>/ndu-linear</code>, ein Projekt je Produkt.</Block>
+    <Block time="09:40–10:20" type="uebung" title="Teamaufstellung & Definition of Done" href="/innolab/methoden/scrum#team">Produktziele, Rollen, Linear-Projekte; „fertig“ aus eurem Papier-Prototyp und mit Mess-Ereignis.</Block>
+    <Block time="10:20–10:30" type="pause" title="Pause" />
+    <Block time="10:30–11:30" type="uebung" title="Backlog aus Issues" href="/innolab/methoden/backlog">Slice 1 als Issues, INVEST, Reihenfolge nach Outcome und Risiko; jede*r erzählt, die anderen fragen, dann nach Linear.</Block>
+    <Block time="11:30–12:15" type="uebung" title="Akzeptanzkriterien" href="/innolab/methoden/akzeptanzkriterien">Zwei Fragen der Confirmation; Story-Workshop je Product Owner: Normalfall, Was-wenn, Demo.</Block>
+    <Block time="12:15–13:15" type="pause" title="Mittagspause" />
+    <Block time="13:15–13:45" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Wer baut, schätzt; Plan-Check mit Claude, Geteiltes zeigen, die anderen prüfen.</Block>
+    <Block time="13:45–14:25" type="uebung" title="Sprint-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, wer baut was – und eine Karte, die alles ändert.</Block>
+    <Block time="14:25–14:35" type="pause" title="Pause" />
+    <Block time="14:35–15:35" type="uebung" title="Bauen" href="#bauen-skizzen">Das Mess-Issue zuerst, Branding, dann das erste Issue mit Oberfläche – nach euren Papier-Skizzen von Tag 4.</Block>
     <Block time="15:35–15:45" type="pause" title="Pause" />
     <Block time="15:45–16:45" type="uebung" title="Bauen" href="#bauen">Issues, Belege, Pull Requests.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss" href="#abschluss">Der Sprint läuft – bis Tag 6.</Block>
@@ -86,12 +86,12 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
     </ul>
     <div class="nur-handout">
       <p>„A pivot often means that some of your earlier evidence may be irrelevant to your new trajectory. It usually requires retesting elements of your business model that you’ve already tested“ ({BLAND}, S. 61). Die drei Arten: „The three major types of pivots we witness are based on the customer, problem, and solution. You can stick with the customer, pivot on the problem. You can stick with the problem and pivot on customer. You can stick with customer and problem, and pivot on the solution“ (S. 80).</p>
-      <p>Bei der Kaffeebar hieße umschwenken: weiter Pendler*innen, weiter „Ich weiß nicht, ob es sich ausgeht“ (P1) – aber die Wartezeit-Anzeige an der Hallentür statt „Im Gehen bestellen“. Weiter gilt, was alle drei Ideen teilen: die Interviews, das Kundenprofil und die geteilte Annahme, die ihr zuerst getestet habt (<a href="/innolab/methoden/experiment#spitzenreiter">Experiment-Karte</a>). Nicht mehr gilt, was nur der Spitzenreiter brauchte – A5 und die Zählung aus E1. Neu zu testen ist die Annahme, an der die Wartezeit-Anzeige hängt: A6. Die Story Map und Slice 1 zieht ihr dann neu, bevor um 10:25 die Issues entstehen.</p>
+      <p>Bei der Kaffeebar hieße umschwenken: weiter Pendler*innen, weiter „Ich weiß nicht, ob es sich ausgeht“ (P1) – aber die Wartezeit-Anzeige an der Hallentür statt „Im Gehen bestellen“. Weiter gilt, was alle drei Ideen teilen: die Interviews, das Kundenprofil und die geteilte Annahme, die ihr zuerst getestet habt (<a href="/innolab/methoden/experiment#spitzenreiter">Experiment-Karte</a>). Nicht mehr gilt, was nur der Spitzenreiter brauchte – A5 und die Zählung aus E1. Neu zu testen ist die Annahme, an der die Wartezeit-Anzeige hängt: A6. Die Story Map und Slice 1 zieht ihr dann neu, bevor um 10:30 die Issues entstehen.</p>
     </div>
   </Folie>
 
-  {/* Letzte Folie des Debriefs: → führt zur Teamaufstellung (9:25); die Folien weiter unten kommen erst um 10:05 und 14:30. */}
-  <Folie weiter="/innolab/methoden/scrum#team" weiterTitel="Teamaufstellung & Definition of Done">
+  {/* Letzte Folie des Debriefs: → führt zur nächsten Folie der Seite, dem Claude-Pro-Block um 9:25. */}
+  <Folie>
     <h2 id="debrief-ablauf">So läuft der Debrief (25 min)</h2>
     <p class="folie-satz">Sechs Minuten je Product Ownerin, dann steht eure Antwort unter der Karte E1 und im Baum.</p>
     <ol class="gross">
@@ -101,7 +101,7 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
       <li data-schritt><strong>Euer Baum:</strong> E1 als „nicht gelaufen“ markieren, E2 (falls getestet) mit ✓, ✗, „unklar“ oder „neue Einsicht“ – bleiben, zur Geschwister-Idee wechseln oder verwerfen. <Timer minuten={2} /></li>
     </ol>
     <div class="nur-handout">
-      <p>Zu 2, dreimal hintereinander: Karte E1 vorstellen und die zwei Fragen beantworten – Was hätte euch umstimmen können? Welches Band hättet ihr erwartet – und was hättet ihr dann getan? (2 Minuten) – Lernkarte E2, falls ihr getestet habt (1; sonst eine Minute mehr für die Empfehlung) – eure Empfehlung: Welche der drei Ideen würde der Beleg stützen, und was ändert sich an der Story Map? (1) – je eine Rückfrage der anderen beiden und von Markus (2). E2, falls getestet, fragt, wie viele den Höhepunkt ohne Hilfe erreicht haben und welcher Befund euch überrascht hat. Zu 3: Eure Antwort steht als Zeile unter der Karte E1 auf Miro („T4 · 0 · Annahmen der Idee“); bei E2 auf der Lernkarte („T4 · 6 · Lernkarten · Produkt n“, Befunde in „T4 · 5 · Prototyp · Produkt n“), mit Befund-IDs als Beleg („Beleg: unklar → darum: weiter testen“). Was sich an der Story Map ändert, notiert ihr als Stichwort für den Backlog-Block um 10:25. Zu 4: In eurem Baum auf Miro („Baum · Produkt n“) hängen seit Tag 4 unter der Ziel-Chance die drei Ideen und unter dem Spitzenreiter E1 und E2. E1 markiert ihr als „nicht gelaufen“; E2, falls getestet, wie den Befund auf der Lernkarte: ✓ (gestützt), ✗ (widerlegt), „unklar“ oder „neue Einsicht“. Dann entscheidet ihr: beim Spitzenreiter bleiben (weitermachen), zur Geschwister-Idee wechseln – einer anderen Lösung unter derselben Chance, das Umschwenken auf die Lösung von der Folie davor – oder die Idee verwerfen. Die Entscheidung steht damit im Baum und unter der Karte E1. Unter einer Chance mehrere Lösungen, darunter ihre Tests: So zeichnet Teresa Torres den Baum („Continuous Discovery Habits“, 2021, S. 25–27).</p>
+      <p>Zu 2, dreimal hintereinander: Karte E1 vorstellen und die zwei Fragen beantworten – Was hätte euch umstimmen können? Welches Band hättet ihr erwartet – und was hättet ihr dann getan? (2 Minuten) – Lernkarte E2, falls ihr getestet habt (1; sonst eine Minute mehr für die Empfehlung) – eure Empfehlung: Welche der drei Ideen würde der Beleg stützen, und was ändert sich an der Story Map? (1) – je eine Rückfrage der anderen beiden und von Markus (2). E2, falls getestet, fragt, wie viele den Höhepunkt ohne Hilfe erreicht haben und welcher Befund euch überrascht hat. Zu 3: Eure Antwort steht als Zeile unter der Karte E1 auf Miro („T4 · 0 · Annahmen der Idee“); bei E2 auf der Lernkarte („T4 · 6 · Lernkarten · Produkt n“, Befunde in „T4 · 5 · Prototyp · Produkt n“), mit Befund-IDs als Beleg („Beleg: unklar → darum: weiter testen“). Was sich an der Story Map ändert, notiert ihr als Stichwort für den Backlog-Block um 10:30. Zu 4: In eurem Baum auf Miro („Baum · Produkt n“) hängen seit Tag 4 unter der Ziel-Chance die drei Ideen und unter dem Spitzenreiter E1 und E2. E1 markiert ihr als „nicht gelaufen“; E2, falls getestet, wie den Befund auf der Lernkarte: ✓ (gestützt), ✗ (widerlegt), „unklar“ oder „neue Einsicht“. Dann entscheidet ihr: beim Spitzenreiter bleiben (weitermachen), zur Geschwister-Idee wechseln – einer anderen Lösung unter derselben Chance, das Umschwenken auf die Lösung von der Folie davor – oder die Idee verwerfen. Die Entscheidung steht damit im Baum und unter der Karte E1. Unter einer Chance mehrere Lösungen, darunter ihre Tests: So zeichnet Teresa Torres den Baum („Continuous Discovery Habits“, 2021, S. 25–27).</p>
     </div>
   </Folie>
 
@@ -122,14 +122,15 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
     <li><a href="/innolab/methoden/sprint">Sprint</a> – Issue als Spezifikation, Planning, Daily, Review, Retro</li>
   </ul>
 
-  {/* 10:05–10:15 (Entscheidung Markus 26.11.2026 nachts): Claude Code kommt von Tag 4 nach Tag 5. Tag 4 lief ohne Claude,
-      auf Papier und Miro. Gebraucht wird Claude Code heute ab dem Backlog (Issues nach Linear), dann für Grenzfälle,
-      Plan-Check und am Nachmittag zum Bauen – darum der Block vor der Pause, nicht erst vor dem Bauen: Wer hängt, hat die
-      Pause zum Nachholen. Von der letzten Folie der Teamaufstellung (scrum#uebertrag) per → hierher; → am Ende weiter zum
-      Backlog. Zwei Folien, damit jede bei 1280 × 720 passt. Schritte wie /setup#claude-pro und #lokal-starten. */}
-  <Folie zurueck="/innolab/methoden/scrum#uebertrag">
+  {/* 9:25–9:40 (Entscheidung Markus 26.11.2026 nachts; Code-Review #459): Claude Code kommt von Tag 4 nach Tag 5. Tag 4
+      lief ohne Claude, auf Papier und Miro. Gebraucht wird Claude Code heute zuerst für Linear (/ndu-linear legt die
+      Projekte an und schreibt docs/LINEAR.md, das die Teamaufstellung und der Backlog-Prompt brauchen), dann im Backlog,
+      für Grenzfälle, Plan-Check und zum Bauen – darum gleich nach dem Debrief. Drei Folien, damit jede bei 1280 × 720
+      passt; → von der letzten weiter nach scrum#team. Schritte wie /setup#claude-pro und #lokal-starten, Linear wie
+      konzepte/linear#umzug. */}
+  <Folie>
     <h2 id="claude-pro-jetzt">Jetzt: Claude Pro abschließen und Claude Code starten</h2>
-    <p class="folie-satz">Alle zugleich, 10 Minuten – ab dem Backlog braucht ihr Claude Code.</p>
+    <p class="folie-satz">Alle zugleich, 15 Minuten mit Linear – ab jetzt braucht ihr Claude Code.</p>
     <p class="schon-pro"><strong>Ihr habt schon Pro oder Max?</strong> Dann nichts abschließen, nichts kündigen: nur Schritt 3 bis 5.</p>
     <ol class="gross">
       <li data-schritt><strong>Claude Pro neu abschließen,</strong> mit demselben Konto: <em>Monthly</em>, 21,60 €; die NDU erstattet ihn (<a href="/setup#claude-pro">wie</a>). <Timer minuten={10} /></li>
@@ -138,14 +139,14 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
     </ol>
     <p class="nur-beamer small">Weiter: Opus wählen und testen.</p>
     <div class="nur-handout">
-      <p><strong>Warum jetzt:</strong> Bis hierher lief alles auf Papier, Miro und in der Werkstatt. Claude Code braucht ihr heute zum ersten Mal im <a href="/innolab/methoden/backlog#vorgehen">Backlog</a>, wenn Claude eure Issues in Linear anlegt; danach für die Grenzfälle, den Plan-Check und am Nachmittag zum Bauen. Richten es alle jetzt zugleich ein, bleibt die Pause, falls etwas hängt. Der bezahlte Monat reicht bis etwa 12. Jänner: über Tag 5 und Tag 6, den Bautag am 19. Dezember. Wer schon Pro oder Max hat, schließt nichts ab und kündigt nichts – nur starten, Opus wählen, testen.</p>
+      <p><strong>Warum jetzt:</strong> Bis hierher lief alles auf Papier, Miro und in der Werkstatt. Claude Code braucht ihr gleich für Linear: Die Teamaufstellung nennt je Produkt ein Linear-Projekt, und im <a href="/innolab/methoden/backlog#vorgehen">Backlog</a> legt Claude eure Issues dort an; danach für die Grenzfälle, den Plan-Check und am Nachmittag zum Bauen. Der bezahlte Monat reicht bis etwa 12. Jänner: über Tag 5 und Tag 6, den Bautag am 19. Dezember. Wer schon Pro oder Max hat, schließt nichts ab und kündigt nichts – nur starten, Opus wählen, testen.</p>
       <p><strong>Pro abschließen</strong> (<a href="/setup#claude-pro">Setup, Schritt 2</a>): auf claude.ai mit demselben Konto anmelden wie im Oktober – Chats und Einstellungen bleiben. Bei Pro ist die jährliche Zahlung vorausgewählt: auf <em>Monthly</em> klicken, dann <em>Get Pro plan</em>. Auf der Bezahlseite muss <em>Pro · Monthly</em> stehen; mit Steuer sind es 21,60 €. Die Rechnung aus der E-Mail aufheben, die NDU erstattet sie.</p>
       <p><strong>Kündigen:</strong> unten links auf euren Namen → <em>Settings</em> → <em>Billing</em>. Nur kündigen, keine Erstattung anfordern: Eine Erstattung beendet Pro sofort, und Claude Code meldet sich ab.</p>
       <p><strong>Claude Code starten:</strong> wie im Setup – VS Code mit eurem Repo öffnen (<em>File → Open Recent</em>), <em>Terminal → New Terminal</em>, <code>claude</code> eintippen (<a href="/setup#lokal-starten">wie</a>). Dateien schreibt ihr dort nicht selbst; das macht Claude Code. Fragt Claude nach der Anmeldung: <em>Claude account with subscription</em>, im Browser mit demselben Konto anmelden, <em>Authorize</em> (<a href="/setup#claude-code-browser">wie</a>). Am Mac springt der Browser danach von selbst zurück, einen Code kopieren müsst ihr nicht. Fehlt Claude Code noch auf eurem Mac, startet sofort das <a href="/setup#lokal-schnellweg">Setup-Skript</a> (15–25 Minuten) und sagt es.</p>
     </div>
   </Folie>
 
-  <Folie weiter="/innolab/methoden/backlog" weiterTitel="Backlog aus Issues (nach der Pause)">
+  <Folie>
     <h2 id="claude-code-opus">Dann: Opus wählen und kurz testen</h2>
     <p class="folie-satz">Ein Screenshot, ein Satz – dann läuft Claude Code.</p>
     <ol class="gross" start="4">
@@ -154,12 +155,28 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
       <li data-schritt><strong>Wer hängt,</strong> sagt es sofort – laut, in der Teams-Besprechung.</li>
     </ol>
     <p class="small">Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.</p>
-    <p class="nur-beamer small">Nach der Pause: Backlog aus Issues.</p>
+    <p class="nur-beamer small">Weiter: Linear einrichten.</p>
     <div class="nur-handout">
       <p><strong>Opus:</strong> Wo ihr in diesem Kurs Claude oder Claude Code benutzt, nehmt ab heute das Modell Opus. In Claude Code einmal <code>/model opus</code> eintippen; mit <code>/model</code> seht ihr, welches Modell läuft. In der Claude-App und auf claude.ai wählt ihr Opus im Modellmenü am Eingabefeld. Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> eintippen (in der App: das Modellmenü) und das vorgeschlagene Standardmodell wählen, dann weiter.</p>
       <p><strong>Kurzer Test:</strong> Im Startbild von Claude Code steht „Claude Pro“. Dann macht ihr einen Screenshot eures Frames auf Miro: <MiroLink name="T4 · 0 · Concept Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 0 · Concept Story · Produkt 3">Produkt 3</MiroLink>. Am Mac mit <kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>Ctrl</kbd> <kbd>4</kbd> in die Zwischenablage, in Claude Code mit <kbd>Ctrl</kbd> <kbd>V</kbd> einfügen (oder die Bilddatei ins Terminal ziehen), dann dieser Prompt. Kommt ein Satz, der zu eurer Story passt, seid ihr fertig.</p>
       <Prompt label="Test · Claude Code, mit Opus">Sag mir in einem Satz, worum es in meiner Concept Story geht.</Prompt>
-      <p><strong>Wer hängt,</strong> sagt es sofort laut in der Teams-Besprechung, nicht erst nach dem Timer; Markus hilft in der Pause. Den Backlog schreibt ihr danach trotzdem gleich – Claude Code braucht ihr erst am Ende des Blocks, wenn die Issues nach Linear gehen.</p>
+      <p><strong>Wer hängt,</strong> sagt es sofort laut in der Teams-Besprechung, nicht erst nach dem Timer; Markus hilft gleich, auch noch während der Teamaufstellung. Die Teamaufstellung beginnt ihr trotzdem – das Linear-Projekt tragt ihr nach.</p>
+    </div>
+  </Folie>
+
+  <Folie weiter="/innolab/methoden/scrum#team" weiterTitel="Teamaufstellung & Definition of Done">
+    <h2 id="linear-einrichten">Dann: Linear einrichten</h2>
+    <p class="folie-satz">Ein Team für euch drei, ein Projekt je Produkt – bevor ihr euch aufstellt.</p>
+    <ol class="gross" start="7">
+      <li data-schritt><strong>Team im Browser:</strong> eine*r legt in Linear ein Team für euch drei an und lädt die anderen beiden ein (<a href="/konzepte/linear#verbinden">wie</a>). <Timer minuten={5} /></li>
+      <li data-schritt><strong>Claude mit Linear verbinden:</strong> in Claude Code <code>/mcp</code> → <em>plugin:linear:linear</em> → <em>Authenticate</em>.</li>
+      <li data-schritt><strong>Jede*r im eigenen Repo:</strong> <code>/ndu-linear</code> – Team wählen, Projekt eures Produkts anlegen.</li>
+    </ol>
+    <p class="nur-beamer small">Weiter: Teamaufstellung und Definition of Done.</p>
+    <div class="nur-handout">
+      <p><strong>Warum jetzt:</strong> Die Teamaufstellung nennt je Produkt ein Linear-Projekt, und der Prompt „Issues nach Linear“ im Backlog liest <code>docs/LINEAR.md</code> – beides gibt es erst, wenn <code>/ndu-linear</code> gelaufen ist. Bis Tag 4 hattet ihr kein Claude Code, darum richtet ihr Linear erst heute ein.</p>
+      <p><strong>Team:</strong> Eine*r legt in Linear (im Browser, ohne Claude) ein Team für euch drei an und lädt die anderen beiden als Mitglied ein, nicht als Gast. <strong>Verbinden:</strong> in Claude Code <code>/mcp</code>, <em>plugin:linear:linear</em>, <em>Authenticate</em> – im Browser mit genau dem Konto, mit dem ihr eingeladen seid (<a href="/konzepte/linear#verbinden">Claude mit Linear verbinden</a>). <strong><code>/ndu-linear</code>:</strong> Claude prüft die Verbindung, fragt nach Team und Projekt und legt erst nach eurem Okay an; dabei entsteht <code>docs/LINEAR.md</code> mit den Regeln für Linear (<a href="/konzepte/linear#umzug">wie</a>). Kennt Claude den Befehl nicht: <a href="/konzepte/linear#ndu-linear-fehlt">so holt ihr ihn nach</a>. Rollen, Produktziel und Sprint-Label folgen in der Teamaufstellung.</p>
+      <Prompt label="In Claude Code">/ndu-linear</Prompt>
     </div>
   </Folie>
 

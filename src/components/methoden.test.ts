@@ -609,7 +609,7 @@ describe('methoden', () => {
     // Die Experiment-Karte beginnt direkt nach dem Geschäftsmodell um 11:00.
     expect(bloecke(4).find((x) => x.titel === 'Experiment-Karte')).toMatchObject({ von: 11 * 60, bis: 11 * 60 + 40 });
     expect(bloecke(4).some((x) => /claude/i.test(x.titel + x.href))).toBe(false);
-    expect(bloecke(5).find((x) => x.href === '#claude-pro-jetzt')).toMatchObject({ von: 10 * 60 + 5, bis: 10 * 60 + 15 });
+    expect(bloecke(5).find((x) => x.href === '#claude-pro-jetzt')).toMatchObject({ von: 9 * 60 + 25, bis: 9 * 60 + 40 });
     expect(minuten(4, 'experiment')).toBe(40);
     expect(METHODEN.find((x) => x.slug === 'experiment')!.dauer).toBe(minuten(4, 'experiment'));
     expect(minuten(3, 'experiment')).toBe(0);
@@ -632,7 +632,8 @@ describe('methoden', () => {
     // Scrum: Agil an Tag 4 (Lego4Scrum seit 25.11.2026 stillgelegt, NDU-72), Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
     expect(minuten(4, 'scrum')).toBe(40);
     expect(bloecke(4).some((x) => x.href.includes('#lego'))).toBe(false);
-    expect(bloecke(5).find((x) => x.href === '/innolab/methoden/scrum#team')).toMatchObject({ von: 9 * 60 + 25, bis: 10 * 60 + 5 });
+    // Seit Code-Review #459: Claude Pro, Claude Code und Linear (15 min) vor der Teamaufstellung, die darum um 9:40 beginnt.
+    expect(bloecke(5).find((x) => x.href === '/innolab/methoden/scrum#team')).toMatchObject({ von: 9 * 60 + 40, bis: 10 * 60 + 20 });
     expect(minuten(4, 'scrum') + minuten(5, 'scrum')).toBe(METHODEN.find((x) => x.slug === 'scrum')!.dauer);
   });
 });

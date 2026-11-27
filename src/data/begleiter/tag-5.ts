@@ -2,8 +2,8 @@ import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu /innolab/tag-5 (12.12.) – der Test-Debrief, Rückfrage aus Thomke. Seit 27.11.2026 läuft E1
 // nicht: Die Karte E1 wird als Gedankenexperiment besprochen, die Kaffeebar-Lernkarte ist das Beispiel.
-// Seit 26.11.2026 nachts (Dozent) auch der Claude-Pro-Block 10:05–10:15 (claude-pro-jetzt, claude-code-opus, von
-// experiment.ts hierher) und der Einstieg ins Bauen um 14:30 (bauen-skizzen): Claude Code baut Slice 1 nach den
+// Seit 26.11.2026 nachts (Dozent) auch der Block 9:25–9:40 mit Claude Pro, Claude Code und Linear (claude-pro-jetzt,
+// claude-code-opus von experiment.ts hierher; linear-einrichten seit Code-Review #459) und der Einstieg ins Bauen um 14:30 (bauen-skizzen): Claude Code baut Slice 1 nach den
 // Papier-Skizzen von Tag 4.
 // Der Begleiter zeigt bisher nur Tag 1; die Notizen stehen bereit, der Test prüft die ids.
 export const NOTIZEN_TAG_5: Record<string, Notiz> = {
@@ -64,7 +64,7 @@ export const NOTIZEN_TAG_5: Record<string, Notiz> = {
       '„In Claude Code einmal /model opus – ab heute nehmt ihr überall Opus.“',
       'Test: Screenshot vom eigenen Concept-Story-Frame einfügen, ein Satz.',
       'Nach 8 min: Steht bei allen „Claude Pro“ im Startbild?',
-      'Wer hängt: Hilfe in der Pause; Claude Code erst am Backlog-Ende.',
+      'Wer hängt: Hilfe gleich, auch während der Teamaufstellung.',
     ],
     ablauf: {
       schritte: [
@@ -77,7 +77,24 @@ export const NOTIZEN_TAG_5: Record<string, Notiz> = {
         'Bild kommt nicht an: die Screenshot-Datei ins Terminal ziehen.',
       ],
     },
-    ueberleitung: 'Claude Code läuft – nach der Pause wird aus Slice 1 euer Backlog.',
+    ueberleitung: 'Claude Code läuft – jetzt noch Linear, dann stellt ihr euch als Team auf.',
+  },
+
+  'linear-einrichten': {
+    live: [
+      'Timer 5 min: eine*r legt das Team an, lädt die anderen ein.',
+      'Dann jede*r: /mcp, Linear anmelden, /ndu-linear im eigenen Repo.',
+      'Falle: als Gast eingeladen – im Team alle als Mitglied.',
+      'Fragen: Steht bei allen docs/LINEAR.md im Repo?',
+    ],
+    uebung: { dauer: '5 min', form: 'eine*r im Browser, dann jede*r in Claude Code' },
+    ablauf: {
+      achten: [
+        'Falsches Google-Konto im Browser: in /mcp trennen und neu anmelden.',
+        'Kennt Claude /ndu-linear nicht: Prompt auf konzepte/linear#ndu-linear-fehlt.',
+      ],
+    },
+    ueberleitung: 'Linear steht – jetzt stellt ihr euch als Team auf und schreibt eure Definition of Done.',
   },
 
   'bauen-skizzen': {

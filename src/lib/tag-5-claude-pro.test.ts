@@ -55,6 +55,13 @@ describe('Tag 4 ohne Claude (Markus 26.11.2026 nachts)', () => {
       return (b.match(/\/model opus|Claude Code (öffnen|starten|baut –|, mit Opus)|<code>claude<\/code>/g) ?? []).map((m) => `${p}: ${m}`);
     });
     expect(funde).toStrictEqual([]);
+    // Code-Review #459: auch im Handout der Tag-4-Seiten kein /model opus und kein „in Claude Code“ als Ort der Arbeit –
+    // nur die Vorschau auf Tag 5 (Feld „Für Claude Code (an Tag 5 …)“ und der Hinweis „An Tag 5 baut Claude Code daraus“).
+    const handout = pfade.flatMap((p) => {
+      const q = ohneKommentare(seite(p)).replace('Für Claude Code (an Tag 5, mit Opus – /model opus)', '');
+      return (q.match(/\/model opus|in Claude Code <code>/g) ?? []).map((m) => `${p}: ${m}`);
+    });
+    expect(handout).toStrictEqual([]);
     // Die Story Map fragt Claude nicht mehr im Kurs: „Annahmen hinter Slice 1“ nur noch zu Hause, freiwillig, in claude.ai.
     expect(folie('/innolab/methoden/story-map', 'schritt-festhalten')).toContain('<h2 id="schritt-festhalten">11 · Fertig auf Miro</h2>');
     expect(seite('/innolab/methoden/story-map')).toContain('<Prompt label="Annahmen hinter Slice 1 · zu Hause, freiwillig, in claude.ai"');
@@ -84,35 +91,46 @@ describe('Tag 4 ohne Claude (Markus 26.11.2026 nachts)', () => {
 });
 
 describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)', () => {
-  it('eigener Block 10:05–10:15 vor der Pause und vor dem Backlog – der ersten Nutzung von Claude Code an Tag 5', () => {
+  // Code-Review #459: Linear braucht Claude Code (/ndu-linear), und die Teamaufstellung nennt schon Linear-Projekte – darum
+  // steht der Block gleich nach dem Debrief, 15 min mit Linear. Die Minuten kommen aus dem ersten Bau-Block.
+  it('eigener Block 9:25–9:40 gleich nach dem Debrief, mit Linear – vor der Teamaufstellung und der ersten Nutzung im Backlog', () => {
     const b = bloeckeAus(seite(T5));
     const pro = b.findIndex((x) => x.href === '#claude-pro-jetzt');
-    expect(b[pro]).toMatchObject({ titel: 'Claude Pro und Claude Code, gemeinsam', von: 10 * 60 + 5, bis: 10 * 60 + 15 });
-    expect(b[pro + 1].titel).toBe('Pause');
-    expect(b[pro + 2]).toMatchObject({ titel: 'Backlog aus Issues', href: '/innolab/methoden/backlog' });
-    // Erste Nutzung: der Prompt „Issues nach Linear“ im Backlog – davor braucht kein Block und keine Vorgehen-Folie Claude Code.
-    expect(seite('/innolab/methoden/backlog')).toContain('<Prompt label="Issues nach Linear · Claude Code"');
+    expect(b[pro]).toMatchObject({ titel: 'Claude Pro, Claude Code und Linear, gemeinsam', von: 9 * 60 + 25, bis: 9 * 60 + 40 });
+    expect(b[pro - 1].titel).toBe('Test-Debrief');
+    expect(b[pro + 1]).toMatchObject({ titel: 'Teamaufstellung & Definition of Done', href: '/innolab/methoden/scrum#team', von: 9 * 60 + 40 });
+    expect(seite(T5)).toContain('Dann Linear: <code>/ndu-linear</code>, ein Projekt je Produkt.</Block>');
+    expect(b.map((x) => `${hhmm(x.von)}–${hhmm(x.bis)} ${x.titel}`)).toStrictEqual([
+      '09:00–09:25 Test-Debrief', '09:25–09:40 Claude Pro, Claude Code und Linear, gemeinsam', '09:40–10:20 Teamaufstellung & Definition of Done',
+      '10:20–10:30 Pause', '10:30–11:30 Backlog aus Issues', '11:30–12:15 Akzeptanzkriterien', '12:15–13:15 Mittagspause',
+      '13:15–13:45 Schneiden statt Schätzen', '13:45–14:25 Sprint-Planning mit Störfall', '14:25–14:35 Pause', '14:35–15:35 Bauen',
+      '15:35–15:45 Pause', '15:45–16:45 Bauen', '16:45–17:00 Abschluss',
+    ]);
+    // Davor (Debrief) braucht niemand Claude Code.
     const ablauf = seite(T5).match(/<Block time="[^"]+"[\s\S]*?(?:\/>|<\/Block>)/g) ?? [];
     expect(ablauf).toHaveLength(b.length);
-    const davor = ablauf.slice(0, pro);
-    expect(davor).toHaveLength(2);
-    expect(davor.flatMap((x) => x.match(/Claude/g) ?? [])).toStrictEqual([]);
-    for (const [p, id] of [['/innolab/methoden/scrum', 'team'], ['/innolab/methoden/scrum', 'dod'], [T5, 'debrief-ablauf']]) {
-      const f = folie(p, id);
-      expect(f.length, id).toBeGreaterThan(200);
-      expect(f.match(/Claude Code|Claude Pro/g) ?? [], id).toStrictEqual([]);
-    }
-    // Der Monat von Claude Pro reicht über Tag 5 und Tag 6 (19.12.).
-    expect(hhmm(b[pro].von)).toBe('10:05');
+    expect(ablauf.slice(0, pro).flatMap((x) => x.match(/Claude/g) ?? [])).toStrictEqual([]);
+    const f = folie(T5, 'debrief-ablauf');
+    expect(f.length).toBeGreaterThan(200);
+    expect(f.match(/Claude Code|Claude Pro/g) ?? []).toStrictEqual([]);
+    // Der Backlog-Prompt liest docs/LINEAR.md – das schreibt /ndu-linear im Block davor.
+    expect(seite('/innolab/methoden/backlog')).toContain('const NACH_LINEAR = `Lies docs/LINEAR.md.');
+    const l = folie(T5, 'linear-einrichten');
+    expect([...l.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Team im Browser:', 'Claude mit Linear verbinden:', 'Jede*r im eigenen Repo:']);
+    expect(l).toContain('<ol class="gross" start="7">');
+    expect(l).toContain('<Prompt label="In Claude Code">/ndu-linear</Prompt>');
+    expect([...(folie(T5, 'claude-pro-jetzt') + folie(T5, 'claude-code-opus') + l).matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([10, 5]);
+    // Die Teamaufstellung sagt, dass Linear gerade eingerichtet wurde.
+    expect(seite('/innolab/methoden/scrum')).toContain('Team und Projekte habt ihr gerade mit <code>/ndu-linear</code> eingerichtet (<a href="/innolab/tag-5#linear-einrichten">Tag 5</a>');
   });
 
-  it('die beiden Folien stehen auf tag-5, im Beamer zwischen Teamaufstellung (scrum#uebertrag) und Backlog', () => {
-    expect(folienAus(T5, seite(T5)).map((f) => f.id)).toStrictEqual(['debrief', 'umschwenken', 'debrief-ablauf', 'claude-pro-jetzt', 'claude-code-opus', 'bauen-skizzen']);
-    expect(folienTag(T5, 'debrief-ablauf')).toBe('<Folie weiter="/innolab/methoden/scrum#team" weiterTitel="Teamaufstellung & Definition of Done">');
-    expect(folienTag('/innolab/methoden/scrum', 'uebertrag')).toBe('<Folie weiter="/innolab/tag-5#claude-pro-jetzt" weiterTitel="Claude Pro und Claude Code, gemeinsam">');
-    expect(folienTag(T5, 'claude-pro-jetzt')).toBe('<Folie zurueck="/innolab/methoden/scrum#uebertrag">');
-    expect(folienTag(T5, 'claude-code-opus')).toBe('<Folie weiter="/innolab/methoden/backlog" weiterTitel="Backlog aus Issues (nach der Pause)">');
-    expect(folienTag('/innolab/methoden/backlog', 'drei-cs')).toBe('<Folie zurueck="/innolab/tag-5#claude-code-opus">');
+  it('die drei Folien stehen auf tag-5, im Beamer zwischen Debrief und Teamaufstellung', () => {
+    expect(folienAus(T5, seite(T5)).map((f) => f.id)).toStrictEqual(['debrief', 'umschwenken', 'debrief-ablauf', 'claude-pro-jetzt', 'claude-code-opus', 'linear-einrichten', 'bauen-skizzen']);
+    for (const id of ['debrief-ablauf', 'claude-pro-jetzt', 'claude-code-opus']) expect(folienTag(T5, id), id).toBe('<Folie>');
+    expect(folienTag(T5, 'linear-einrichten')).toBe('<Folie weiter="/innolab/methoden/scrum#team" weiterTitel="Teamaufstellung & Definition of Done">');
+    expect(folienTag('/innolab/methoden/scrum', 'team')).toBe('<Folie zurueck="/innolab/tag-5#linear-einrichten">');
+    expect(folienTag('/innolab/methoden/scrum', 'uebertrag')).toBe('<Folie>');
+    expect(folienTag('/innolab/methoden/backlog', 'drei-cs')).toBe('<Folie>');
   });
 
   it('Schritte der beiden Folien: abschließen, kündigen, starten | Opus, Test, wer hängt – mit Setup-Links und 10-Minuten-Timer', () => {
@@ -128,7 +146,7 @@ describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)
     const sichtbar = pro.slice(0, pro.indexOf('<div class="nur-handout">'));
     expect([...sichtbar.matchAll(/href="\/setup#([a-z-]+)"/g)].map((m) => m[1])).toStrictEqual(['claude-pro', 'claude-code-browser']);
     expect(sichtbar).toContain('<strong>Ihr habt schon Pro oder Max?</strong> Dann nichts abschließen, nichts kündigen: nur Schritt 3 bis 5.');
-    expect(sichtbar).toContain('<p class="folie-satz">Alle zugleich, 10 Minuten – ab dem Backlog braucht ihr Claude Code.</p>');
+    expect(sichtbar).toContain('<p class="folie-satz">Alle zugleich, 15 Minuten mit Linear – ab jetzt braucht ihr Claude Code.</p>');
     expect(f).toContain('21,60 €');
     // Abgeschlossen am 12.12., gekündigt: läuft bis etwa 12. Jänner – über Tag 5 und Tag 6.
     expect(f).toContain('Pro läuft trotzdem bis etwa 12. Jänner.');
@@ -149,9 +167,11 @@ describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)
     expect(f).toContain('meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen');
     expect(f).toContain('<Prompt label="Vorschau sichern · Claude Code">');
     expect(f).toContain('öffne einen Pull Request nach main – mergen tust du nicht');
-    // Der erste Bau-Block zeigt auf die Folie; er ist 10 Minuten kürzer als bis zum 26.11. (Pro-Block am Morgen).
+    // Der erste Bau-Block ist 15 Minuten kürzer als bis zum 26.11. (Block mit Claude Pro, Claude Code und Linear am Morgen).
     const b = bloeckeAus(seite(T5)).filter((x) => x.titel === 'Bauen');
-    expect(b.map((x) => [hhmm(x.von), hhmm(x.bis)])).toStrictEqual([['14:30', '15:35'], ['15:45', '16:45']]);
+    expect(b.map((x) => [hhmm(x.von), hhmm(x.bis)])).toStrictEqual([['14:35', '15:35'], ['15:45', '16:45']]);
+    // Code-Review #459: Der erste Bau-Block führt direkt auf die Folie mit den Skizzen.
+    expect(b[0].href).toBe('#bauen-skizzen');
     expect(seite(T5)).toContain('nach euren Papier-Skizzen von Tag 4.</Block>');
   });
 

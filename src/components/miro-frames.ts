@@ -65,7 +65,8 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 4 · Usage Story · Produkt 1': '3458764691726734312',
   'T4 · 4 · Usage Story · Produkt 2': '3458764691726734313',
   'T4 · 4 · Usage Story · Produkt 3': '3458764691726734314',
-  // Felder: 1 Papier-Skizzen · 2 Abnahmekriterien · 3 Zeitbox · 4 Prototyp · 5 Karte E2 · 6 Tests · Befunde (falls getestet).
+  // Felder (seit 26.11.2026 nachts, Prototyp auf Papier): 1 Papier-Skizzen · 2 Abnahmekriterien · 3 Karte E2 · 4 Tests ·
+  // Befunde (falls getestet) · 5 Tag 5: gebaut · Für Claude Code (Bilder für den Bau an Tag 5).
   'T4 · 5 · Anleitung Prototyp': '3458764691728716089',
   'T4 · 5 · Prototyp · Kaffeebar': '3458764691726853493',
   'T4 · 5 · Prototyp · Produkt 1': '3458764691726853494',
