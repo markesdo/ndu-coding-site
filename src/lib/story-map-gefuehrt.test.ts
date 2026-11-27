@@ -249,9 +249,8 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     const reihen = folie('schritt-reihen');
     const s = sichtbar(reihen);
     expect(reihen).toMatch(/^<h2 id="schritt-reihen">5 · Wer noch handelt: über die Aktivität<\/h2>/);
-    expect(s).toContain('<strong>Kleines violettes Sticky „Wer noch: …“</strong> in die Reihe „Wer handelt“, über die Aktivität, bei der diese Person handelt. Ihre Tasks in die Fläche, unter die Tasks eurer Person.');
-    expect(s).toContain('violett „Barista“ über „Bestellen“, darunter „Bestellung sehen, zubereiten“');
-    expect(handout(reihen)).toContain('Wer gerade handelt, zeigt ein kleines Personen-Sticky über der Aktivität');
+    expect(s).toContain('<strong>Kleines violettes Sticky „Wer noch: …“</strong> in die Reihe „Wer handelt“, über die Aktivität, bei der diese Person dazukommt. Ihre Tasks gelb unter die Tasks eurer Person – mit ihrem Namen vorn: „Barista: zubereiten“.');
+    expect(handout(reihen)).toContain('„I like to place stickies or simple persona thumbnails above the backbone so I can see who we’re talking about at particular times in the story“');
     for (const text of [reihen, folie('schritt-rahmen'), folie('schritt-loecher')]) {
       expect(text).not.toMatch(/in die eigene Reihe|\(eigene Reihe\)|Reihe der Barista|Reihe der Pendler|Wessen Reihe|links vor dem Backbone|Wer muss noch handeln, damit der Wert ankommt\?“/);
     }
@@ -261,15 +260,57 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(vorlage.indexOf('Reihe „Wer handelt“')).toBeLessThan(vorlage.indexOf('Backbone-Reihe'));
     const n = NOTIZEN['/innolab/methoden/story-map'];
     expect(n['schritt-reihen'].live).toStrictEqual([
-      'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie handelt.',
-      'Ihre Tasks in die Fläche, unter die Tasks eurer Person.',
+      'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie dazukommt.',
+      'Ihre Tasks gelb darunter, Name vorn: „Barista: zubereiten“.',
       'System grau, unter den Task, bei dem die Person wartet.',
-      'Fragen: Wer muss noch handeln, damit der Wert ankommt?',
+      'Falle: gelbes Sticky ohne Namen in der zweiten Reihe.',
+      'Vorlesen: erst die Spalte der Pendler*in fertig, dann die Barista.',
     ]);
     expect(n['schritt-rahmen'].live).toContain('Violett „Wer handelt“: Hauptperson, klein in die Reihe über dem Backbone.');
     for (const id of ['schritt-rahmen', 'schritt-reihen']) {
       for (const z of n[id].live) expect(z.split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length, z).toBeLessThanOrEqual(12);
     }
+  });
+
+  // 28.11.2026 (Markus, Miro): Tasks anderer Personen tragen den Namen vorn – „Barista: zubereiten“, wie „System: zeigt …“.
+  // Violett heißt „Wer handelt: Pendler*in“ / „Wer noch: Barista“. Alle Aktivitäten sind die der Pendler*in; die Barista hat
+  // eigene Tasks, keine eigenen Aktivitäten (consult-story-map-akteure.md).
+  it('Wer noch: Name vorn auf jedem Task der anderen Person, die Barista hat keine eigenen Aktivitäten', () => {
+    const s = sichtbar(folie('schritt-reihen'));
+    expect(s).toContain('<span class="nicht">Nicht so:</span> „Bestellung wird bearbeitet“ · „zubereiten“ (gelb, ohne Namen) <span class="so">So:</span> violett „Wer noch: Barista“ über „Bestellen“ · gelb „Barista: zubereiten“ · grau „System: zeigt ‚Fertig 7:31‘“');
+    expect(s).toContain('aktiv: „System: zeigt …“.');
+    expect(s).toContain('<strong>Prüft:</strong> Wer muss noch etwas tun, damit der Wert ankommt – und steht sein Name auf jedem seiner Tasks?');
+    expect(handout(folie('schritt-reihen'))).toContain('deshalb steht der Name vorn auf dem Sticky, wie bei „System: …“.');
+
+    const beispiel = folie('beispiel');
+    expect(beispiel).not.toContain('eigene Aktivitäten');
+    expect(beispiel).toContain('Alle Aktivitäten sind die der Pendler*in. Die Barista hat eigene Tasks auf derselben Zeitachse');
+    expect(beispiel).toContain('„Wer handelt: Pendler*in“ und „Wer noch: Barista“');
+    expect(sichtbar(beispiel)).toContain('<td>Barista: Bestellung sehen · Barista: zubereiten</td><td>Barista: bereitstellen</td><td>Barista: kassieren</td>');
+    for (const t of ['Bestellung sehen', 'zubereiten', 'bereitstellen', 'kassieren']) expect(handout(beispiel)).toContain(`„Barista: ${t}“`);
+    expect(handout(beispiel)).toContain('„System: zeigt ‚Fertig 7:31‘“');
+    expect(seite).not.toMatch(/(?<!Barista: )(?<![„‚])\b(Bestellung sehen|zubereiten|bereitstellen|kassieren)\b(?!“)/);
+
+    expect(folie('schritt-loecher')).toContain('Wer sieht die Bestellung? → „Barista: Bestellung sehen“.');
+    const vorlage = seite.slice(seite.indexOf('<h2 id="vorlage">'), seite.indexOf('<h2 id="pruefen">'));
+    expect(vorlage).toContain('Tasks anderer Personen stehen unter den Tasks eurer Person – mit deren Namen vorn („Barista: …“)');
+
+    const n = NOTIZEN_STORY_MAP['schritt-reihen'];
+    const kern = n.kern ?? [];
+    expect(kern.map((k) => k.quelle)).toStrictEqual([
+      'Jeff Patton, User Story Mapping (2014), Kap. 2, Map in a Narrative Flow Across Many Users and Systems',
+      'Jeff Patton, User Story Mapping (2014), Kap. 5, 4. Distill Your Map to Make a Backbone',
+      'Teresa Torres, Continuous Discovery Habits, S. 120–121',
+      'Kurs; Jeff Patton, User Story Mapping (2014), Kap. 2 und 5; Torres, S. 120–121',
+    ]);
+    expect(kern[2].text).toContain('Swimlanes');
+    expect(kern.at(-1)?.text).toMatch(/^Vorsicht beim Erzählen: Der Name vorn auf dem Sticky \(„Barista: zubereiten“\) ist eine Schreibweise des Kurses, aus keiner der beiden Quellen\./);
+    expect(kern.at(-1)?.text).toContain('Der Kurs mischt beides: oben Pattons Kopf, darunter Torres’ zweite Zeile');
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual([
+      'Warum nicht eine Zeile je Person wie bei Torres heute früh?',
+      'Bekommt die zweite Person ein eigenes grünes Sticky?',
+    ]);
+    expect(JSON.stringify(n)).not.toContain('Kursregel');
   });
 
   it('Begleiter: Warm-up-Notiz erinnert ans Teilen des eigenen Boards, ohne Link', () => {

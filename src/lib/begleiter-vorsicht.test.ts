@@ -45,6 +45,7 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
       'methoden/experiment#test-arten | Vorsicht beim Erzählen: Der Concierge der Kaffeebar – Hallen',
       'methoden/experiment#karte-e1 | Nicht behaupten: Bland nenne den Eintrag einen mittleren Bel',
       'methoden/experiment#lernkarte | Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ ist unsere',
+      'methoden/story-map#schritt-reihen | Vorsicht beim Erzählen: Der Name vorn auf dem Sticky („Baris',
       'methoden/story-map#schritt-schneiden | Nicht behaupten: „Slice 1 hat selten mehr als ein, zwei Stic',
       'methoden/usage-story#nahe-am-ende | Vorsicht beim Erzählen: Die Peak-End-Regel nur benennen (Tag',
       'methoden/usage-story#nahe-am-ende | Nicht behaupten: Lichaw sage, ein Satz reiche als Boom. Sie',
