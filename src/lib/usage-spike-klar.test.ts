@@ -92,7 +92,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
       'schritt-papier', 'schritt-kriterien', 'schritt-karte', 'schritt-trockenlauf', 'uebertrag']);
     expect(seite(PS)).not.toMatch(/id="schritt-(zeitbox|bauen|ansehen)"/);
   });
-  it('worum: heute auf Papier, an Tag 5 baut Claude Code; Papier-Skizzen und Test auf Papier erklärt, Kursregel gekennzeichnet', () => {
+  it('worum: heute auf Papier, an Tag 5 baut Claude Code; Papier-Skizzen und Test auf Papier erklärt, Papier vor Claude mit Grund', () => {
     const b = beamer(folie(PS, 'worum'));
     expect(b).toContain('<p class="folie-satz">Heute auf Papier oder lo-fi in Figma – an Tag 5 baut Claude Code daraus.</p>');
     expect(b).toContain("{ t: 'Usage Story', sub: 'Stationen 2 bis 6', icon: BookOpen }");
@@ -100,7 +100,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(b).toContain("{ t: 'Tag 5: bauen', sub: 'Claude Code baut nach euren Skizzen', icon: Code }");
     expect(b).toContain('<strong>Skizzen:</strong> Jeden Bildschirm auf ein Blatt, oder je ein Graustufen-Frame in Figma – was steht drauf, welcher Knopf führt wohin.</li>');
     expect(b).toContain('<strong>Testen auf Papier:</strong> Jemand „tippt“ auf ein Blatt, ihr legt das nächste hin oder wechselt den Frame – so seht ihr, wo der Ablauf hakt.');
-    expect(b).toContain('<strong>Kursregel – Papier vor Claude:</strong> Jeden Bildschirm entscheidet ihr selbst.');
+    expect(b).toContain('<strong>Papier vor Claude:</strong> Jeden Bildschirm entscheidet ihr selbst. An Tag 5 baut Claude Code genau das.');
     expect(b).not.toMatch(/Zeitbox|40 Minuten|Wegwerf/);
     // Bland wörtlich, mit Seite: Definition (S. 182) und das Paar mit dem Klick-Prototyp (S. 185).
     expect(folie(PS, 'worum')).toContain('„Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction“');
@@ -157,14 +157,17 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     const b = beamer(folie(PS, 'beispiel'));
     expect(b).toContain('<h2 id="beispiel">Am Beispiel: der Prototyp der Kaffeebar – auf Papier oder lo-fi in Figma</h2>');
     expect([...b.matchAll(/<li(?: class="[^"]+")?><span>([^<]+)<\/span>([^<]+)<span class="inhalt">([^<]+)<\/span><\/li>/g)].map((m) => `${m[1]}: ${m[2]} | ${m[3]}`)).toStrictEqual([
-      'Bildschirm 1: Getränk wählen | 3 Getränke → 2',
-      'Bildschirm 2: Zug wählen | Abfahrt · Weiter → 3',
-      'Bildschirm 3 · Höhepunkt: „Fertig 7:31. Dein Zug fährt 7:38.“ | Bestellen → 4',
+      'Bildschirm 1: Getränk wählen | 3 Getränke → 2',
+      'Bildschirm 2: Zug wählen | Abfahrt · Weiter → 3',
+      'Bildschirm 3 · Höhepunkt: „Fertig 7:31. Dein Zug fährt 7:38.“ | Bestellen → 4',
       'Bildschirm 4: Abholnummer | 17 · Express-Ausgabe',
       'Bildschirm 5: Ansicht für die Bar | sortiert nach Abfahrt',
     ]);
     expect(b).toContain('<li class="gipfel"><span>Bildschirm 3 · Höhepunkt</span>');
     expect(b).toContain('<li class="bar"><span>Bildschirm 5</span>');
+    // Eine Zeile nur im Beamer; auf der Seite mit Seitenleiste sind die Kästen ~130 px schmal und müssen umbrechen dürfen.
+    expect(seite(PS)).toContain(':global(html[data-beamer]) .blaetter li .inhalt { white-space: nowrap; }');
+    expect(seite(PS).match(/white-space: nowrap/g)).toHaveLength(2); // dazu nur .befunde td:nth-child(3)
     expect(b).not.toMatch(/Blatt \d/);
     expect(b).toContain('<strong>Er läuft</strong> heute auf Papier oder lo-fi in Figma, an Tag 5 am Handy.');
     expect(b).not.toMatch(/40 Minuten|nicht echt|an der Bar abholen/);
@@ -184,6 +187,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     const png = new URL('../../public/quellen/kurs/kaffeebar-prototyp-figma.png', import.meta.url);
     expect(existsSync(png), 'PNG in public/quellen/kurs/').toBe(true);
     expect(readFileSync(png).subarray(1, 4).toString()).toBe('PNG');
+    expect(h).toContain('<p class="small"><a href="/quellen/kurs/kaffeebar-prototyp-figma.png" target="_blank" rel="noopener">Bild in voller Größe öffnen <ExternalLink');
     const n = NOTIZEN_PROTOTYP_SPIKE.beispiel;
     expect(n?.live).toContain('Figma-Modell kurz zeigen: so roh darf es sein.');
     for (const z of n?.live ?? []) expect(z.split(/\s+/).length, z).toBeLessThanOrEqual(12);
@@ -246,7 +250,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(t).toContain('<p class="folie-satz">Drei Runden: Ihr prüft, ob der Ablauf verständlich ist – nicht, ob er gefällt.</p>');
     expect(t).toContain('<tr><th>1</th><td>Produkt 2</td><td>Produkt 1</td><td>Produkt 3</td></tr>');
     expect(t).toContain('<strong>Wem der Prototyp gehört:</strong> Blatt 1 in die Kamera oder Frame 1 teilen, Aufgabe vorlesen, dann das Blatt legen oder den Frame wechseln, zu dem der angesagte Knopf führt. Sonst schweigen.');
-    expect(t).toContain('<strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Nächste Runde.');
+    expect(t).toContain('<strong>Keine Kritik:</strong> kein Feedback danach – geprüft wird der Ablauf. Nächste Runde.');
     expect(t).toContain('<strong>Wo:</strong> Teams (Kamera oder Bildschirm teilen) und Feld „4 · Tests“, Zeile 0');
     expect(folie(PS, 'schritt-trockenlauf')).toContain('Der Trockenlauf ist heute euer Test des Prototyps.');
     expect(folie(PS, 'schritt-trockenlauf')).toContain('„Test it internally to make sure the flow works“');
@@ -271,15 +275,15 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
   });
   // Entscheidung Markus 27.11.2026: Bildschirme auf Papier oder lo-fi in Figma; Figma nur Graustufen, ohne Komponenten
   // und Klick-Verbindungen (sonst wäre es der Klick-Prototyp, den Bland nach dem Papier stellt, S. 185).
-  it('Kursregel Papier oder Figma: im Handout mit Bland-Grund, im Begleiter als live-Stichwort und Frage', () => {
+  it('Papier oder Figma: im Handout mit Bland-Grund, im Begleiter als live-Stichwort und Frage', () => {
     const w = folie(PS, 'worum');
-    expect(w).toContain('<p><strong>Kursregel – Papier oder Figma:</strong> In Figma nur Graustufen-Rahmen: Kästen, Text, Pfeile. Keine Farben, keine Komponenten, keine Klick-Verbindungen. Ein Frame pro Bildschirm, als Bild in euren Miro-Frame.');
+    expect(w).toContain('<p><strong>Papier oder Figma:</strong> In Figma nur Graustufen-Rahmen: Kästen, Text, Pfeile. Keine Farben, keine Komponenten, keine Klick-Verbindungen. Ein Frame pro Bildschirm, als Bild in euren Miro-Frame.');
     expect(w).toContain('„ideal for rapidly testing the concept“ ({BLAND}, S. 182) –, der klickbare Prototyp kommt danach (S. 185)');
     expect(w).toContain('wechselt zum nächsten Frame – wie beim Blätter legen.</p>');
     const n = NOTIZEN_PROTOTYP_SPIKE.worum;
-    expect(n.live).toContain('Kursregel: Figma nur lo-fi – Graustufen, keine Komponenten, keine Klicks.');
+    expect(n.live).toContain('Figma nur lo-fi: Graustufen, keine Komponenten, keine Klicks – Ablauf zählt.');
     const figma = n.fragen?.find((f) => f.frage === 'Dürfen wir Figma nehmen?');
-    expect(figma?.antwort).toContain('Keine Farben, keine Komponenten, keine Klick-Verbindungen (Kursregel).');
+    expect(figma?.antwort).toContain('Keine Farben, keine Komponenten, keine Klick-Verbindungen. Der Grund: Heute zählen Ablauf und Inhalt');
     expect(figma?.antwort).toContain('„ideal for rapidly testing the concept“ (S. 182)');
     expect(beamer(folie(PS, 'schritt-papier'))).toContain('Ein Blatt (oder Figma-Frame) je Bildschirm');
     // Markus 27.11.2026: Schritt 1 und Befund-IDs ohne „Kursregel“-Label, mit dem Warum.
@@ -288,10 +292,20 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(sp).toContain('<li data-schritt><strong>Foto je Blatt</strong> (oder Bild je Frame) in Feld 1 eures Frames – daraus baut Claude Code an Tag 5.</li>');
     expect(sp).toContain('Papier vor Claude heißt: Ihr legt fest, was auf jedem Bildschirm steht, und Claude Code baut an Tag 5 genau das');
     expect(sp).not.toContain('Kursregel');
+    expect(sp).toContain('Nummer (und Stern am Höhepunkt) oben im Blatt oder Frame – so kommen sie beim Foto oder „Copy as PNG“ mit.');
+    expect(sp).not.toContain('oben rechts');
     const bf = folie(PS, 'beispiel-befunde');
     expect(bf).toContain('<p data-schritt><strong>Jeder Befund</strong> bekommt eine ID – U wie Usability-Test: U1, U2 … –, eine Zahl und eine Folge.</p>');
     expect(bf).not.toContain('Kursregel');
     expect(NOTIZEN_PROTOTYP_SPIKE['schritt-trockenlauf'].live).toContain('Wem er gehört: Blatt/Frame zeigen, Aufgabe vorlesen, nächstes Blatt/Frame.');
+  });
+  // Markus 27.11.2026: keine „Kursregel“-Labels – was zu tun ist und warum.
+  it('prototyp-spike: kein „Kursregel“ in Beamer, Handout und live-Stichworten', () => {
+    const imBeamer = ids(PS).map((id) => beamer(folie(PS, id))).join('\n');
+    expect(imBeamer.match(/Kursregel/g) ?? []).toStrictEqual([]);
+    expect(seite(PS).match(/Kursregel/g) ?? []).toStrictEqual([]);
+    const live = Object.entries(NOTIZEN_PROTOTYP_SPIKE).flatMap(([id, n]) => n.live.map((z) => `${id}: ${z}`));
+    expect(live.filter((z) => z.includes('Kursregel'))).toStrictEqual([]);
   });
   it('höchstens fünf live-Stichworte je Folie, auf beiden Seiten', () => {
     const zuViele = [...Object.entries(NOTIZEN_USAGE_STORY), ...Object.entries(NOTIZEN_PROTOTYP_SPIKE)].filter(([, n]) => n.live.length > 5).map(([id]) => id);
