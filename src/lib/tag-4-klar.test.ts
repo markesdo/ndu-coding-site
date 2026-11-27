@@ -20,7 +20,7 @@ const T4 = '/innolab/tag-4';
 describe('Tag 4: „Was bauen wir?“ konkret', () => {
   it('Satz definiert Slice 1; die drei Zuläufe sagen, woher und was daraus wird', () => {
     const f = folie(T4, 'was-bauen-wir');
-    expect(f).toContain('<p class="folie-satz">Bis zum Nachmittag einen klickbaren Prototyp von Slice 1 – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.</p>');
+    expect(f).toContain('<p class="folie-satz">Heute einen Prototyp von Slice 1 auf Papier – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht. An Tag 5 baut Claude Code daraus die echte Version.</p>');
     expect(f).not.toContain('die Tests davon');
     expect(f).toContain('beleg="liefert den Inhalt: den Weg eurer Person – aus Interviews und Experience Map."');
     expect(f).toContain('outcome="liefert das Maß: was Menschen danach anders tun – aus eurem Brief."');
@@ -81,12 +81,11 @@ describe('Tag 4: Ablauf-Texte und Namen (Durchsicht 26.11.)', () => {
     expect(bloecke.map((b) => b.titel)).toContain('Geschäftsmodell');
     expect(text('Geschäftsmodell')).toBe('Wer, Was, Wie, Wert; die Linie vom Outcome zum Geld; die wirtschaftliche Annahme für die Map.');
   });
-  // Seit 26.11. abends: kein Übertrag in docs/STORYS.md; der Testprompt liest einen Screenshot des Frames, mit Opus.
-  it('11:00: Claude Pro und Claude Code mit Opus, Testprompt mit Screenshot des Concept-Story-Frames', () => {
-    const t = text('Claude Pro und Claude Code, gemeinsam');
-    expect(t).toContain('mit Opus (<code>/model opus</code>)');
-    expect(t).toContain('Screenshot eures Concept-Story-Frames einfügen – „Sag mir in einem Satz, worum es in meiner Concept Story geht.“');
-    expect(t).not.toContain('docs/');
+  // Seit 26.11.2026 nachts: Claude Pro und Claude Code an Tag 5 (tag-5-claude-pro.test.ts); Tag 4 hat stattdessen einen Puffer.
+  it('kein Claude-Block mehr an Tag 4; der Puffer nach dem Prototyp auf Papier sagt, was nachzuholen ist', () => {
+    expect(bloecke.map((b) => b.titel)).not.toContain('Claude Pro und Claude Code, gemeinsam');
+    expect(text('Prototyp auf Papier')).toBe('Papier-Skizzen, Abnahmekriterien, Karte E2, Trockenlauf auf Papier. Gebaut wird an Tag 5.');
+    expect(text('Puffer: nachholen, was offen ist')).toBe('Allein fertig machen, was heute offen blieb – zuerst Papier-Prototyp und Karte E2, dann Story Map und Usage Story; Markus kommt ins 1:1.');
   });
   it('kein „Geschäftsmodell-Karten“ mehr auf Tag 4, Concept Story und Value Map; Pitch ohne Gebäck', () => {
     for (const p of [T4, '/innolab/methoden/concept-story', '/innolab/methoden/value-map']) {
@@ -126,10 +125,11 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
     }
   });
 
-  it('Hausaufgabe: Checkliste -v7 nennt Miro-Frames, der Spike bleibt in seinem Branch', () => {
+  it('Hausaufgabe: Checkliste -v8 nennt Miro-Frames und Claude Code bis Tag 5', () => {
     const f = folie(T4, 'hausaufgabe');
-    expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v7" items={[');
-    for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 7 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Produkt n“', 'Der Spike liegt in seinem eigenen Branch auf GitHub']) expect(f, w).toContain(w);
+    expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v8" items={[');
+    for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 7 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Produkt n“', 'Claude Code auf eurem Mac installiert']) expect(f, w).toContain(w);
+    expect(f.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')).not.toMatch(/Spike/);
   });
 
   // Jeder Frame-Name „T4 · …“ auf diesen Seiten steht in miro-frames.ts (bei „Produkt n“: mit Produkt 1) – oder in OFFEN, solange
@@ -191,7 +191,7 @@ describe('Tag 5 liest Tag 4 von Miro', () => {
 // Schritt dort schreibt.
 describe('So geht ihr vor: Frames, Anleitung und Werkstatt verlinkt', () => {
   const M = (s: string) => `/innolab/methoden/${s}`;
-  const PS = ['vorgehen', 'schritt-papier', 'schritt-kriterien', 'schritt-zeitbox', 'schritt-ansehen', 'schritt-karte', 'schritt-trockenlauf'];
+  const PS = ['vorgehen', 'schritt-papier', 'schritt-kriterien', 'schritt-karte', 'schritt-trockenlauf'];
   const FOLIEN: { p: string; id: string; produkt: string[]; frames: string[] }[] = [
     { p: M('value-map'), id: 'vorgehen', produkt: ['T3 · 4 · Canvas', 'T3 · 4 · Anleitung Value Map'], frames: ['T3 · 4 · Anleitung Value Map · Kaffeebar'] },
     { p: M('value-map'), id: 'vorgehen-fit', produkt: ['T3 · 4 · Canvas', 'Baum'], frames: [] },

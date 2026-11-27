@@ -25,14 +25,13 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 <Layout title="Tag 4 · Prototyp & Scrum">
   <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:30 · online in Teams</span>
   <h1>Tag 4 · Prototyp & Scrum</h1>
-  <p class="lead">Der Tag beginnt mit dem, was von Tag 3 offen ist: Value Map und Fit. Dann zeigen wir, was ihr heute baut – Slice 1 – und wo er in eurem Baum hängt; danach schreibt ihr eure Concept Story. Danach das Geschäftsmodell und die Karte, die die riskanteste Annahme eures Spitzenreiters testet. Dann wird aus ihm ein geschnittener Plan, ein Kernablauf mit Höhepunkt und ein Prototyp, den ihr testen könnt. Am Nachmittag lernt ihr Scrum kennen und baut am Prototyp weiter.</p>
-  <p>Heute seid ihr online in einer Teams-Besprechung; den Link findet ihr in Teams. Miro, Werkstatt und Claude Code nutzt ihr auf eurem Laptop.</p>
+  <p class="lead">Der Tag beginnt mit dem, was von Tag 3 offen ist: Value Map und Fit. Dann zeigen wir, was ihr heute baut – Slice 1 – und wo er in eurem Baum hängt; danach schreibt ihr eure Concept Story. Danach das Geschäftsmodell und die Karte, die die riskanteste Annahme eures Spitzenreiters testet. Dann wird aus ihm ein geschnittener Plan, ein Kernablauf mit Höhepunkt und ein Prototyp auf Papier, den ihr testen könnt. Am Nachmittag lernt ihr Scrum kennen. Claude Code braucht ihr heute nicht: Gebaut wird an Tag 5.</p>
+  <p>Heute seid ihr online in einer Teams-Besprechung; den Link findet ihr in Teams. Miro und Werkstatt nutzt ihr auf eurem Laptop; legt Papier und Stift bereit.</p>
   <Orientierung seite="innolab/tag-4" />
-  <Callout type="warn" title="Vor Tag 4: Claude Code installieren">
-    <p>Heute ist niemand neben euch, wenn die Einrichtung hängt – und ab der Story Map braucht ihr Claude Code. Installiert es darum schon vorher auf eurem Mac (<a href="/setup#lokal-schnellweg">mit dem Setup-Skript</a>); am Ende zeigt das Skript die Version von <code>claude</code>, dann ist es da. Anmelden (<a href="/setup#claude-code-browser">wie</a>) könnt ihr euch erst, wenn Claude Pro wieder läuft – das machen wir gemeinsam um 11:00.</p>
-  </Callout>
-  <Callout type="info" title="Claude Pro: um 11:00 gemeinsam, nicht vorher">
-    <p>Claude Pro schließt ihr nicht vorher allein ab, sondern gemeinsam in der Besprechung: um 11:00, als eigener Block vor der Experiment-Karte; Claude Code braucht ihr dann ab der Story Map um 11:50 (<a href="/innolab/methoden/experiment#claude-pro-jetzt">Folie</a>). Mit demselben Konto neu abschließen und gleich wieder kündigen (<a href="/setup#claude-pro">wie</a>); der Monat läuft dann bis etwa 28. Dezember – über Tag 5 und Tag 6 hinaus. Haltet eure Kredit- oder Debitkarte bereit.</p>
+  {/* Seit 26.11.2026 nachts (Dozent): Tag 4 ohne Claude. Der Prototyp entsteht auf Papier; Claude Pro und Claude Code
+      richten alle an Tag 5 gemeinsam ein (tag-5#claude-pro-jetzt), dort baut Claude Code Slice 1 aus den Skizzen. */}
+  <Callout type="info" title="Heute ohne Claude – Claude Code ab Tag 5">
+    <p>Heute arbeitet ihr auf Papier, auf Miro und in der Werkstatt; Claude Code braucht ihr erst an Tag 5. Installiert es bis Tag 5 auf eurem Mac (<a href="/setup#lokal-schnellweg">mit dem Setup-Skript</a>). Claude Pro schließt ihr nicht vorher allein ab, sondern an Tag 5 gemeinsam in der Besprechung (<a href="/innolab/tag-5#claude-pro-jetzt">Folie</a>); haltet dann eure Kredit- oder Debitkarte bereit.</p>
   </Callout>
 
   <h2 id="ablauf">Ablauf</h2>
@@ -43,15 +42,15 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     <Block time="09:40–10:30" type="uebung" title="Story-Bogen + Concept Story" href="/innolab/methoden/concept-story#story-bogen">Theorie, alle Folien (etwa 20 min): sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben, allein, auf Miro in „T4 · 0 · Concept Story · Produkt n“: sieben Stationen mit Flach-Probe als Check, festhalten.</Block>
     <Block time="10:30–10:40" type="pause" title="Pause" />
     <Block time="10:40–11:00" type="uebung" title="Geschäftsmodell" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; die Linie vom Outcome zum Geld; die wirtschaftliche Annahme für die Map.</Block>
-    <Block time="11:00–11:10" type="plenum" title="Claude Pro und Claude Code, gemeinsam" href="/innolab/methoden/experiment#claude-pro-jetzt">Alle zugleich: Claude Pro mit demselben Konto neu abschließen und gleich kündigen, Claude Code starten und anmelden, mit Opus (<code>/model opus</code>). Testprompt: Screenshot eures Concept-Story-Frames einfügen – „Sag mir in einem Satz, worum es in meiner Concept Story geht.“</Block>
-    <Block time="11:10–11:50" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment#annahmen-der-idee">Schritte der Idee, Annahmen, Map, Karte E1 mit Schwelle; Annahme und E1 in den Baum.</Block>
-    <Block time="11:50–13:15" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Slice 1 nach Outcome und Lernziel.</Block>
-    <Block time="13:15–14:15" type="pause" title="Mittagspause" />
-    <Block time="14:15–14:45" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Der Kernablauf mit Höhepunkt nahe am Ende.</Block>
-    <Block time="14:45–16:25" type="uebung" title="Prototyp-Spike" href="/innolab/methoden/prototyp-spike">Papier, dann Claude Code; Karte E2, Trockenlauf.</Block>
+    <Block time="11:00–11:40" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment#annahmen-der-idee">Schritte der Idee, Annahmen, Map, Karte E1 mit Schwelle; Annahme und E1 in den Baum.</Block>
+    <Block time="11:40–13:05" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Slice 1 nach Outcome und Lernziel.</Block>
+    <Block time="13:05–14:05" type="pause" title="Mittagspause" />
+    <Block time="14:05–14:35" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Der Kernablauf mit Höhepunkt nahe am Ende.</Block>
+    <Block time="14:35–15:30" type="uebung" title="Prototyp auf Papier" href="/innolab/methoden/prototyp-spike">Papier-Skizzen, Abnahmekriterien, Karte E2, Trockenlauf auf Papier. Gebaut wird an Tag 5.</Block>
+    <Block time="15:30–16:25" type="uebung" title="Puffer: nachholen, was offen ist">Allein fertig machen, was heute offen blieb – zuerst Papier-Prototyp und Karte E2, dann Story Map und Usage Story; Markus kommt ins 1:1.</Block>
     <Block time="16:25–16:35" type="pause" title="Pause" />
     <Block time="16:35–17:15" type="konzept" title="Agil & Scrum" href="/innolab/methoden/scrum#foliensatz">Theorie aus dem <a href={FOLIENSATZ_URL} target="_blank" rel="noopener noreferrer">Foliensatz</a>: Wasserfall, Agiles Manifest, Scrum nach dem Guide. Dann hier: wo wir abweichen, Kaffeebar auf der Scrum-Karte (Miro), Auflösung am Gleis-1-Express.</Block>
-    <Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie eine Person den Wert eures Produkts zum ersten Mal sieht; Origin Story und Karte E1 fertig. Freiwillig: den Prototyp weiterbauen und Usability-Tests.</Block>
+    <Block time="17:15–17:30" type="plenum" title="Origin Story & Hausaufgabe" href="#abschluss">Wie eine Person den Wert eures Produkts zum ersten Mal sieht; Origin Story und Karte E1 fertig. Freiwillig: Usability-Tests mit dem Papier-Prototyp.</Block>
   </div>
 
   {/* 9:00: Im Beamer kommt nach dem Ablauf der Arbeitsfluss (dieselbe Folie wie auf /innolab/arbeitsfluss), dann → zur Value Map
@@ -67,7 +66,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
   {/* 9:35, nach der Value Map: ← führt zurück zu ihrer letzten Folie, nicht zum Arbeitsfluss von 9:00. */}
   <Folie zurueck="/innolab/methoden/value-map#uebertrag">
     <h2 id="was-bauen-wir">Was bauen wir?</h2>
-    <p class="folie-satz">Bis zum Nachmittag einen klickbaren Prototyp von Slice 1 – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.</p>
+    <p class="folie-satz">Heute einen Prototyp von Slice 1 auf Papier – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht. An Tag 5 baut Claude Code daraus die echte Version.</p>
     {/* Die drei Zuläufe konkret für heute (Durchsicht 26.11.): woher jede Linie kommt und was daraus wird. Auf
         /innolab/arbeitsfluss bleiben sie tagneutral (Vorgaben in WasBauenWir.astro). */}
     <WasBauenWir
@@ -75,7 +74,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
       beleg="liefert den Inhalt: den Weg eurer Person – aus Interviews und Experience Map."
       outcome="liefert das Maß: was Menschen danach anders tun – aus eurem Brief."
       annahme="liefert das Lernziel: was der Slice zeigen muss – daraus wird Test E1."
-    >Heute Mittag steht Slice 1 auf eurer Story Map, am Nachmittag als Prototyp. An Tag 5 besprecht ihr, ob er hält.</WasBauenWir>
+    >Heute Mittag steht Slice 1 auf eurer Story Map, am Nachmittag als Prototyp auf Papier. An Tag 5 besprecht ihr, ob er hält – und baut ihn.</WasBauenWir>
   </Folie>
 
   {/* Letzte Folie des Morgens: → am Ende führt zur Concept Story (9:40); die Folien des Abschlusses weiter unten kommen erst
@@ -89,18 +88,18 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
       <p>Slice 1 ist kein Knoten im Baum. Unter einer Lösung hängen bei Teresa Torres nur die Annahmen-Tests ({TORRES}, S. 26–27). Slice 1 liegt auf eurem Story-Map-Frame und verbindet beides: Er macht den Spitzenreiter so konkret, dass ihr seine Annahmen seht. Genau dafür nutzt Torres die Story Map: „Story mapping forces you to get specific about how an idea will work and what you expect your end-users will do. While many teams use story mapping to align around product requirements, it’s also a great technique for helping us to surface underlying assumptions“ (S. 119). Danach geht man die Map Schritt für Schritt durch – „you can use your story map to uncover hidden assumptions“ (S. 122); in ihrem Beispiel: „From a simple 5-step story map, we generated 20 assumptions“ (S. 124).</p>
       <p>Die drei Linien kommen aus dem Baum. <strong>Outcome</strong> ist seine Wurzel, derselbe Satz wie im Produkt-Brief. Auf der Story Map steht er im Rahmen über der Map, und links neben Slice 1 steht als Ziel-Outcome, wer danach was anders tut. <strong>Beleg</strong> sind die Chancen: aus den Momenten der Experience Map, belegt mit Zitat-IDs. Slice 1 folgt dem Pfad zur Ziel-Chance mit Stern. <strong>Annahme</strong> sind die Tests unter der Lösung: Das Lern-Sticky „Wir lernen, ob … (A5)“ trägt dieselben IDs wie die Knoten im Baum, und E1 testet A5.</p>
       <p>An der Kaffeebar steht im Rahmen „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“, links neben Slice 1 „Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt“ (<a href="/innolab/methoden/story-map#beispiel">Story Map</a>). Die Barista bekommt dort eine eigene Reihe – ohne sie kommt kein Kaffee an –, und im Lern-Sticky steht neben A5 auch A2: Schafft die Bar 40 Bestellungen in 30 Minuten? Im Baum hängt nur die riskanteste Annahme, A5 mit E1.</p>
-      <p>Nach den Tests markiert ihr an Tag 5 E1 und E2 im Baum (<a href="/innolab/tag-5#debrief">Test-Debrief</a>). Stützen sie die Annahmen, bleibt Slice 1, und an Tag 5 werden daraus die ersten Issues. Was ein Test widerlegt, fliegt aus dem Slice. Trägt der Spitzenreiter nicht mehr, geht ihr zurück in den Baum: zu einer der anderen beiden Lösungen unter der Ziel-Chance oder zu einer anderen Chance.</p>
+      <p>Nach den Tests markiert ihr an Tag 5 E1 und E2 im Baum (<a href="/innolab/tag-5#debrief">Test-Debrief</a>). Stützen sie die Annahmen, bleibt Slice 1, und an Tag 5 werden daraus die ersten Issues, die Claude Code nach euren Papier-Skizzen baut. Was ein Test widerlegt, fliegt aus dem Slice. Trägt der Spitzenreiter nicht mehr, geht ihr zurück in den Baum: zu einer der anderen beiden Lösungen unter der Ziel-Chance oder zu einer anderen Chance.</p>
     </div>
   </Folie>
 
   <hr />
   <h2 id="faden">Wo ihr im roten Faden steht</h2>
-  <p>Heute werden aus der <strong>Lösung</strong> <strong>Experimente</strong>. Zuerst holt ihr nach, was von Tag 3 offen ist: Value Map und Fit eures Spitzenreiters. Dann schreibt ihr eure Concept Story – warum jemand in Sekunden versteht, dass euer Spitzenreiter besser ist als das, was er heute tut. Das Geschäftsmodell zeigt, wer dafür zahlt; die Experiment-Karte, an welcher Annahme er hängt – daraus wird E1. Die Story Map zeigt, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll. Den Prototyp könnt ihr nach dem Kurstag mit echten Menschen testen (freiwillig); E1 beschreibt, wie ihr die riskanteste Annahme prüfen würdet. Am Nachmittag beginnt der Schritt vom Entdecken zum Liefern: Ihr lernt Scrum kennen, so wie Produktteams in Unternehmen arbeiten. Als Team für eure drei Produkte stellt ihr euch zu Beginn von Tag 5 auf. Das Entdecken hört dabei nicht auf: Euer Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
+  <p>Heute werden aus der <strong>Lösung</strong> <strong>Experimente</strong>. Zuerst holt ihr nach, was von Tag 3 offen ist: Value Map und Fit eures Spitzenreiters. Dann schreibt ihr eure Concept Story – warum jemand in Sekunden versteht, dass euer Spitzenreiter besser ist als das, was er heute tut. Das Geschäftsmodell zeigt, wer dafür zahlt; die Experiment-Karte, an welcher Annahme er hängt – daraus wird E1. Die Story Map zeigt, was ihr zuerst baut; die Usage Story, wie es sich anfühlen soll; der Prototyp auf Papier, ob der Ablauf trägt – gebaut wird er an Tag 5. Den Papier-Prototyp könnt ihr nach dem Kurstag mit echten Menschen testen (freiwillig); E1 beschreibt, wie ihr die riskanteste Annahme prüfen würdet. Am Nachmittag beginnt der Schritt vom Entdecken zum Liefern: Ihr lernt Scrum kennen, so wie Produktteams in Unternehmen arbeiten. Als Team für eure drei Produkte stellt ihr euch zu Beginn von Tag 5 auf. Das Entdecken hört dabei nicht auf: Euer Sprint endet mit einem Review, in dem ihr wieder lernt.</p>
   <p class="small">Den Plan mit „Ihr seid hier“ zeigt die Folie <a href="#arbeitsfluss">Arbeitsfluss</a> oben, zu Beginn des Tages im Beamer gleich nach dem Ablauf.</p>
-  <p><strong>Der Baum wächst heute um Lösungen und Tests.</strong> Euer Baum auf Miro („Baum · Produkt n“) endet bisher bei der Ziel-Chance mit Stern. Nach der Value Map hängt ihr eure drei Ideen als Lösungen darunter und markiert den Spitzenreiter; nach der Experiment-Karte kommen unter ihn die riskanteste Annahme und E1, nach dem Spike E2. Je etwa zwei Minuten. So steht der Baum, wie Teresa Torres ihn zeichnet: Outcome, Chancen, mehrere Lösungen unter einer Chance und darunter die Annahmen-Tests, die zeigen, ob eine Lösung trägt ({TORRES}, S. 25–27).</p>
+  <p><strong>Der Baum wächst heute um Lösungen und Tests.</strong> Euer Baum auf Miro („Baum · Produkt n“) endet bisher bei der Ziel-Chance mit Stern. Nach der Value Map hängt ihr eure drei Ideen als Lösungen darunter und markiert den Spitzenreiter; nach der Experiment-Karte kommen unter ihn die riskanteste Annahme und E1, nach dem Papier-Prototyp E2. Je etwa zwei Minuten. So steht der Baum, wie Teresa Torres ihn zeichnet: Outcome, Chancen, mehrere Lösungen unter einer Chance und darunter die Annahmen-Tests, die zeigen, ob eine Lösung trägt ({TORRES}, S. 25–27).</p>
   <Baum knoten={KAFFEEBAR_BAUM_TAG_4} label="Baum der Kaffeebar ab Tag 4: Outcome, darunter die Ziel-Chance „Geht sich ein Kaffee noch aus?“, darunter drei Lösungen – Wartezeit-Anzeige, Im Gehen bestellen als Spitzenreiter, Kaffeewagen am Bahnsteig –, unter dem Spitzenreiter A5 mit dem Test E1" />
   <Callout type="info" title="Wenn die Story Map länger dauert">
-    <p>Wer bei der Story Map hinterherhängt, kürzt bei der Usage Story auf die Stationen 4 und 5: Krise und Höhepunkt reichen für den Prototyp.</p>
+    <p>Wer bei der Story Map hinterherhängt, kürzt bei der Usage Story auf die Stationen 4 und 5: Krise und Höhepunkt reichen für den Prototyp auf Papier. Was offen bleibt, holt ihr im Puffer nach.</p>
   </Callout>
 
   <h2 id="methoden">Die Methoden von heute</h2>
@@ -111,7 +110,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     <li><a href="/innolab/methoden/experiment">Experiment-Karte & Origin Story</a> – Annahmen testen, nicht Ideen; die Origin Story folgt im <a href="#abschluss">Abschluss</a></li>
     <li><a href="/innolab/methoden/story-map">Story Map</a> – der Plan, nach Outcome geschnitten</li>
     <li><a href="/innolab/methoden/usage-story">Usage Story</a> – der Kernablauf mit Höhepunkt</li>
-    <li><a href="/innolab/methoden/prototyp-spike">Prototyp-Spike & Usability-Test</a> – lernen mit Wegwerf-Code</li>
+    <li><a href="/innolab/methoden/prototyp-spike">Prototyp auf Papier & Usability-Test</a> – ein Blatt je Bildschirm, getestet, bevor eine Zeile Code steht; gebaut wird an Tag 5</li>
     <li><a href="/innolab/methoden/scrum">Scrum im Team</a> – Agil und Scrum, die Theorie aus dem Foliensatz (Lego4Scrum ist dieses Kursjahr nicht dabei); Teamaufstellung und Definition of Done folgen an Tag 5</li>
   </ul>
 
@@ -165,46 +164,46 @@ Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
     <h2 id="hausaufgabe">Hausaufgabe bis Tag 5</h2>
     <p class="folie-satz">Bis Tag 5: Origin Story und eure Karte E1 fertig – Tests mit Menschen sind freiwillig.</p>
     {/* Die Schritte nur im Beamer; im Handout steht die Checkliste, aus der sie stammen. Seit 27.11.2026 (Dozent): E1 läuft
-        nicht, die Karte bleibt Theorie; Reihenfolge Origin Story → Karte E1 → freiwillig Usability-Tests → Aufräumen → Linear. */}
+        nicht, die Karte bleibt Theorie; Reihenfolge Origin Story → Karte E1 → freiwillig Usability-Tests → Aufräumen → bis Tag 5 (seit Code-Review #459 ohne Linear: das braucht Claude Code und kommt an Tag 5). */}
     <ol class="gross dicht nur-beamer">
       <li data-schritt><strong>Origin Story</strong> auf Miro – der Text, mit dem E1 laufen würde: „T4 · 6 · Origin Story · Produkt n“ (<MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">3</MiroLink> · <MiroLink name="T4 · 6 · Anleitung Origin Story">Anleitung</MiroLink>).</li>
       <li data-schritt><strong>Karte E1 fertig machen,</strong> falls offen – mit „Wir entscheiden vorher“, im Frame „T4 · 0 · Annahmen der Idee“ (<MiroLink name="T4 · 0 · Annahmen der Idee">Miro</MiroLink>).</li>
-      <li data-schritt><strong>Freiwillig: Usability-Tests</strong> mit dem Prototyp – Karte E2, Befunde in „T4 · 5 · Prototyp · Produkt n“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>); fünf sind ideal, auch zwei, drei helfen.</li>
-      <li data-schritt><strong>Fertig machen, was heute offen blieb</strong> – auch den Prototyp, wenn ihr wollt (ganze Liste im Handout).</li>
-      <li data-schritt><strong>Linear einrichten,</strong> die anderen beiden als Collaborator ins Repo; der Spike bleibt in seinem Branch.</li>
+      <li data-schritt><strong>Freiwillig: Usability-Tests</strong> mit dem Papier-Prototyp – Karte E2, Befunde in „T4 · 5 · Prototyp · Produkt n“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>); fünf sind ideal, auch zwei, drei helfen.</li>
+      <li data-schritt><strong>Fertig machen, was heute offen blieb</strong> – auch Skizzen und Abnahmekriterien: An Tag 5 baut Claude Code danach (ganze Liste im Handout).</li>
+      <li data-schritt><strong>Bis Tag 5:</strong> Claude Code installieren, noch nicht anmelden; die anderen beiden als Collaborator ins Repo. Linear richtet ihr an Tag 5 gemeinsam ein.</li>
     </ol>
     <div class="nur-handout">
-      <p>Bei uns läuft E1 nicht: Die Karte E1 (<MiroLink name="T4 · 0 · Annahmen der Idee">Miro, „T4 · 0 · Annahmen der Idee“</MiroLink>) beschreibt, wie ihr eure riskanteste Annahme prüfen würdet; an Tag 5 besprecht ihr, was sie gezeigt hätte (<a href="/innolab/methoden/experiment#so-liefe-e1">So würde E1 laufen</a>). Tests mit Menschen sind freiwillig – mit dem Prototyp, als Usability-Test mit Karte E2.</p>
+      <p>Bei uns läuft E1 nicht: Die Karte E1 (<MiroLink name="T4 · 0 · Annahmen der Idee">Miro, „T4 · 0 · Annahmen der Idee“</MiroLink>) beschreibt, wie ihr eure riskanteste Annahme prüfen würdet; an Tag 5 besprecht ihr, was sie gezeigt hätte (<a href="/innolab/methoden/experiment#so-liefe-e1">So würde E1 laufen</a>). Tests mit Menschen sind freiwillig – mit dem Papier-Prototyp, als Usability-Test mit Karte E2. Claude Code installiert ihr bis Tag 5 (<a href="/setup#lokal-schnellweg">Setup-Skript</a>); Claude Pro schließt ihr erst an Tag 5 gemeinsam ab.</p>
       <p>Anleitung auf Miro: <MiroLink name="T4 · 6 · Anleitung Origin Story">Origin Story</MiroLink>; für E2, falls ihr testet: <MiroLink name="T4 · 6 · Anleitung Lernkarten">Lernkarten</MiroLink>.</p>
       <p>Eure Frames auf Miro – Origin Story: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">Produkt 3</MiroLink>; Prototyp: <MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">Produkt 3</MiroLink>; Lernkarten (freiwillig, für E2, falls ihr testet): <MiroLink name="T4 · 6 · Lernkarten · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 3">Produkt 3</MiroLink>.</p>
       <p>Zum Abhaken:</p>
     {/* -v7: Häkchen je Position; seit 12.11.2026 mit Geschäftsmodell und Karte E1, ohne docs/TEAM.md (-v2); seit 25.11.2026
         mit Value Map, Concept Story und Baum (-v3) und ohne Lego-Zettel (-v4, NDU-72); seit 26.11.2026 abends ohne docs/*.md
         (-v5) und in der Reihenfolge Origin Story → E1 → Lernkarte, Usability-Tests optional (-v6); seit 27.11.2026 ohne E1 und
-        ohne Lernkarte E1 (E1 bleibt Theorie), Prototyp weiterbauen freiwillig (-v7) – alte Häkchen sollen nicht an
-        verschobenen Punkten hängen. */}
-    <Checklist id="il-tag4-hausaufgabe-5-v7" items={[
+        ohne Lernkarte E1 (E1 bleibt Theorie), Prototyp weiterbauen freiwillig (-v7); seit 26.11.2026 nachts Prototyp auf
+        Papier, gebaut wird an Tag 5: ohne „Prototyp weiterbauen“ und „Spike im Branch“, dafür Claude Code bis Tag 5 (-v8) –
+        alte Häkchen sollen nicht an verschobenen Punkten hängen. */}
+    <Checklist id="il-tag4-hausaufgabe-5-v8" items={[
       'Origin Story auf Miro in „T4 · 6 · Origin Story · Produkt n“ – der Text für Aufsteller oder Landingpage, mit dem E1 laufen würde',
       'Karte E1 fertig im Frame „T4 · 0 · Annahmen der Idee“, mit Schwelle und „Wir entscheiden vorher“',
-      'Freiwillig: Usability-Tests mit dem Prototyp und Karte E2, Befunde als U1, U2 … auf Miro in „T4 · 5 · Prototyp · Produkt n“, Lernkarte E2 in „T4 · 6 · Lernkarten · Produkt n“ – fünf sind ideal, auch zwei, drei helfen',
+      'Freiwillig: Usability-Tests mit dem Papier-Prototyp und Karte E2, Befunde als U1, U2 … auf Miro in „T4 · 5 · Prototyp · Produkt n“, Lernkarte E2 in „T4 · 6 · Lernkarten · Produkt n“ – fünf sind ideal, auch zwei, drei helfen',
       'Value Map und Fit des Spitzenreiters im Canvas auf Miro (T3 · 4 · Canvas · Produkt n), jedes „?“ mit Frage',
       'Concept Story auf Miro in „T4 · 0 · Concept Story · Produkt n“ (sieben Stationen und Flach-Probe); der Satz daraus in Abschnitt 3 des <a href="/innolab/mappe?bearbeiten=brief">Produkt-Briefs</a> in der Werkstatt, die fallende Handlung als Annahme in der <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a>',
       'Euer Baum auf Miro: drei Ideen als Lösungen unter der Ziel-Chance, der Spitzenreiter markiert, darunter die riskanteste Annahme mit E1 (und E2, wenn ihr testet)',
       'Geschäftsmodell auf Miro in „T4 · 7 · Geschäftsmodell · Produkt n“; die neuen Annahmen der Idee in der <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map der Werkstatt</a>',
       'Story Map mit Slice 1 auf Miro in „T4 · 1 · Story Map“, die Usage Story in „T4 · 4 · Usage Story · Produkt n“',
-      'Freiwillig: den Prototyp im Spike-Branch weiterbauen, was heute offen blieb – Höhepunkt-Bildschirm zuerst; Claude Code mit Opus',
-      'Linear eingerichtet: ein Team, ein Projekt pro Produkt (<a href="/innolab/methoden/scrum#team">wie</a>); Rollen und Definition of Done folgen an Tag 5',
+      'Prototyp auf Papier in „T4 · 5 · Prototyp · Produkt n“: ein Foto je Blatt, der Höhepunkt mit Stern, die drei Abnahmekriterien – danach baut Claude Code an Tag 5',
       'Die anderen beiden als Collaborator in eurem GitHub-Repo',
-      'Der Spike liegt in seinem eigenen Branch auf GitHub',
+      'Claude Code auf eurem Mac installiert, noch nicht angemeldet (<a href="/setup#lokal-schnellweg">Setup-Skript</a>) – Claude Pro und Linear richtet ihr an Tag 5 gemeinsam ein',
     ]} />
     </div>
   </Folie>
 
   <Folie ende>
     <h2 id="ende-tag-4">Ende Tag 4</h2>
-    <p class="folie-satz">Eure Karte E1 steht – und wer Zeit hat, testet den Prototyp mit Menschen.</p>
+    <p class="folie-satz">Eure Karte E1 und euer Papier-Prototyp stehen – wer Zeit hat, testet ihn mit Menschen.</p>
     <p class="nur-beamer">Tag 5 beginnt am 12. Dezember mit dem <a href="/innolab/tag-5#debrief">Test-Debrief</a>: Was hätte E1 gezeigt – und was eure Tests?</p>
-    <p class="nur-handout"><a href="/innolab/tag-5">Tag 5</a> am 12. Dezember beginnt mit dem Test-Debrief: Was hätte E1 gezeigt – und was haben eure Tests gezeigt, falls ihr getestet habt? Danach stellt ihr euch als Team auf und schreibt eure Definition of Done. Aus euren Story Maps entstehen drei Backlogs in Linear, und ihr plant den Sprint. Am Nachmittag wird gebaut.</p>
+    <p class="nur-handout"><a href="/innolab/tag-5">Tag 5</a> am 12. Dezember beginnt mit dem Test-Debrief: Was hätte E1 gezeigt – und was haben eure Tests gezeigt, falls ihr getestet habt? Danach stellt ihr euch als Team auf und schreibt eure Definition of Done. Claude Pro und Claude Code richtet ihr gemeinsam ein. Aus euren Story Maps entstehen drei Backlogs in Linear, und ihr plant den Sprint. Am Nachmittag baut Claude Code Slice 1 nach euren Papier-Skizzen.</p>
   </Folie>
 
   <FooterNav prev={{ href: '/innolab/tag-3', t: 'Tag 3 · Lösung & Story' }} next={{ href: '/innolab/methoden/value-map#vorgehen', t: 'Value Map & Fit (Nachholen)' }} />

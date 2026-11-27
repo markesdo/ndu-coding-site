@@ -34,15 +34,15 @@ describe('Ab Tag 4 online (NDU-72)', () => {
     expect(texte.flatMap((x) => x.match(raum) ?? [])).toStrictEqual([]);
   });
 
-  it('vor Tag 4: Claude Code vorher installieren (anmelden um 11:00) – auf Tag 4 vor dem Ablauf und in der Tag-3-Hausaufgabe', () => {
+  // Seit 26.11.2026 nachts: Tag 4 ohne Claude Code – installieren bis Tag 5, anmelden an Tag 5 gemeinsam.
+  it('Claude Code bis Tag 5 installieren (anmelden an Tag 5) – auf Tag 4 vor dem Ablauf und in der Tag-3-Hausaufgabe', () => {
     const t4 = seite('/innolab/tag-4');
-    const hinweis = t4.indexOf('<Callout type="warn" title="Vor Tag 4: Claude Code installieren">');
+    const hinweis = t4.indexOf('<Callout type="info" title="Heute ohne Claude – Claude Code ab Tag 5">');
     expect(hinweis).toBeGreaterThan(0);
     expect(hinweis).toBeLessThan(t4.indexOf('<h2 id="ablauf">'));
-    for (const q of [t4, seite('/innolab/tag-3')]) {
-      expect(q).toContain('href="/setup#lokal-schnellweg"');
-      expect(q).toContain('href="/setup#claude-code-browser"');
-    }
+    for (const q of [t4, seite('/innolab/tag-3')]) expect(q).toContain('href="/setup#lokal-schnellweg"');
+    expect(seite('/innolab/tag-3')).toContain('href="/setup#claude-code-browser"');
+    expect(t4.slice(hinweis, t4.indexOf('</Callout>', hinweis))).toContain('href="/innolab/tag-5#claude-pro-jetzt"');
     // Tag 3 sagt es einmal, im Hinweis zur Einrichtung (Code-Review #437).
     expect(seite('/innolab/tag-3').match(/Tag 4 ist online/g)).toHaveLength(1);
   });
@@ -101,8 +101,8 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
     expect(ab).toContain('<h2 id="weiter-tag-4">Weiter heute: Origin Story und Hausaufgabe</h2>');
     // Satz und Uhrzeit nur im Beamer (Review 2 #448): im Handout läse sich „Jetzt: Origin Story“ an Tag 5 falsch.
     expect(ab).toContain('<p class="folie-satz nur-beamer">Teamaufstellung und Definition of Done folgen an Tag 5.</p>');
-    expect(ab).toContain('<p class="nur-beamer">Jetzt: Origin Story und Hausaufgabe. Den Prototyp baut ihr zu Hause weiter, wenn ihr wollt.</p>');
-    expect(ab).toContain('An Tag 4 folgt jetzt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a>; den Prototyp weiterzubauen ist freiwillige Hausaufgabe (<a href="/innolab/tag-4#hausaufgabe">Hausaufgabe</a>).');
+    expect(ab).toContain('<p class="nur-beamer">Jetzt: Origin Story und Hausaufgabe. Den Prototyp baut Claude Code an Tag 5 aus euren Skizzen.</p>');
+    expect(ab).toContain('An Tag 4 folgt jetzt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a> (<a href="/innolab/tag-4#hausaufgabe">Hausaufgabe</a>). Gebaut wird der Prototyp an Tag 5: Claude Code baut Slice 1 aus euren Papier-Skizzen (<a href="/innolab/tag-5#bauen-skizzen">Tag 5, Bauen</a>).');
   });
 
   it('die Lego-Auflösungen springen dieses Kursjahr nicht von selbst auf: Zeitpunkt nach dem letzten Kurstag', () => {

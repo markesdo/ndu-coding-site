@@ -181,7 +181,7 @@ describe('methoden', () => {
       'experiment-annahmen-arten', 'experiment-eine-annahme', 'experiment-wer-wo-was', 'experiment-schwelle', 'experiment-schnellster', 'experiment-danach', 'experiment-origin', 'experiment-lernkarte',
       'story-map-rahmen', 'story-map-schritte', 'story-map-erzaehlbar', 'story-map-alternativen', 'story-map-slice-ziel', 'story-map-slice-durchgehend', 'story-map-kein-software',
       'usage-story-person', 'usage-story-ausloeser', 'usage-story-schritte', 'usage-story-krise', 'usage-story-hoehepunkt', 'usage-story-nach-gipfel', 'usage-story-ende',
-      'prototyp-spike-skizzen', 'prototyp-spike-branch', 'prototyp-spike-karte', 'prototyp-spike-aufgabe', 'prototyp-spike-trockenlauf', 'prototyp-spike-protokoll', 'prototyp-spike-lernkarte',
+      'prototyp-spike-skizzen', 'prototyp-spike-branch', 'prototyp-spike-kriterien', 'prototyp-spike-karte', 'prototyp-spike-aufgabe', 'prototyp-spike-trockenlauf', 'prototyp-spike-protokoll', 'prototyp-spike-lernkarte',
       'scrum-produkte', 'scrum-rollen', 'scrum-termine', 'scrum-dod', 'scrum-dod-messung', 'scrum-abweichungen', 'scrum-lego',
       'backlog-herkunft', 'backlog-titel-ziel', 'backlog-senkrecht', 'backlog-nicht-im-umfang', 'backlog-reihenfolge', 'backlog-erzaehlt',
       'akzeptanzkriterien-szenario', 'akzeptanzkriterien-gegeben-zustand', 'akzeptanzkriterien-grenzfall', 'akzeptanzkriterien-kein-bau', 'akzeptanzkriterien-zeigbar', 'akzeptanzkriterien-ki',
@@ -193,7 +193,8 @@ describe('methoden', () => {
     // 19.11.2026: Ulwick nur noch Theorie (keine Rechnung); der Lückensatz gehört seitdem zur Ideation (ideation-drei).
     // 25.11.2026 (NDU-72): Lego4Scrum dieses Kursjahr stillgelegt.
     // 26.11.2026: Geschäftsmodell ohne Musterkarten-Runde (Karten nur noch zum Nachschlagen).
-    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz', 'ziel-chance-ulwick', 'value-map-lueckensatz', 'scrum-lego', 'geschaeftsmodell-muster'];
+    // 26.11.2026 nachts: Prototyp auf Papier statt Spike – kein Branch, kein Link an Tag 4 (gebaut wird an Tag 5).
+    const GESTRICHEN: string[] = ['sprint-nicht-mehr', 'sprint-retro-kurz', 'ziel-chance-ulwick', 'value-map-lueckensatz', 'scrum-lego', 'geschaeftsmodell-muster', 'prototyp-spike-branch'];
     const jetzt = METHODEN.flatMap((m) => m.pruefliste ?? []).map((p) => p.id);
     for (const id of jetzt) expect(VERGEBEN, `${id}: neue ID in VERGEBEN eintragen`).toContain(id);
     for (const id of VERGEBEN) {
@@ -276,7 +277,7 @@ describe('methoden', () => {
   it('neu geschriebene Prüflisten bekommen eine neue Checklisten-ID – alte Häkchen hängen sonst an neuen Punkten', () => {
     const id = (slug: string) => pruefChecklisteId(METHODEN.find((m) => m.slug === slug)!);
     expect(['experiment', 'prototyp-spike', 'scrum', 'sprint', 'backlog', 'akzeptanzkriterien', 'schneiden', 'pitch'].map(id)).toStrictEqual(
-      ['il-experiment-2', 'il-prototyp-spike-2', 'il-scrum-2', 'il-sprint-2', 'il-backlog-2', 'il-akzeptanzkriterien-2', 'il-schneiden-2', 'il-pitch-2'],
+      ['il-experiment-2', 'il-prototyp-spike-3', 'il-scrum-2', 'il-sprint-2', 'il-backlog-2', 'il-akzeptanzkriterien-2', 'il-schneiden-2', 'il-pitch-2'],
     );
     const ids = METHODEN.map(pruefChecklisteId);
     expect(new Set(ids).size).toBe(ids.length);
@@ -604,11 +605,12 @@ describe('methoden', () => {
       expect(minuten(alt, slug), slug).toBe(0);
     }
     // Experiment-Karte: 40 Minuten an Tag 4 (seit 27.11.2026; 30 bis dahin), die Origin Story (10 Minuten Input) im Abschluss
-    // desselben Tags. Seit 26.11.2026 davor ein eigener Block (10 min) für Claude Pro, dessen Folie auf der Experiment-Seite
-    // steht; er zählt hier mit, die Origin Story (Abschluss auf der Tagesseite) auch in dauer.
-    expect(bloecke(4).find((x) => x.titel === 'Experiment-Karte')).toMatchObject({ von: 11 * 60 + 10, bis: 11 * 60 + 50 });
-    expect(bloecke(4).find((x) => x.href === '/innolab/methoden/experiment#claude-pro-jetzt')).toMatchObject({ von: 11 * 60, bis: 11 * 60 + 10 });
-    expect(minuten(4, 'experiment')).toBe(40 + 10);
+    // desselben Tags. Seit 26.11.2026 nachts ohne den Claude-Pro-Block davor (10 min, jetzt an Tag 5 auf der Tagesseite):
+    // Die Experiment-Karte beginnt direkt nach dem Geschäftsmodell um 11:00.
+    expect(bloecke(4).find((x) => x.titel === 'Experiment-Karte')).toMatchObject({ von: 11 * 60, bis: 11 * 60 + 40 });
+    expect(bloecke(4).some((x) => /claude/i.test(x.titel + x.href))).toBe(false);
+    expect(bloecke(5).find((x) => x.href === '#claude-pro-jetzt')).toMatchObject({ von: 9 * 60 + 25, bis: 9 * 60 + 40 });
+    expect(minuten(4, 'experiment')).toBe(40);
     expect(METHODEN.find((x) => x.slug === 'experiment')!.dauer).toBe(minuten(4, 'experiment'));
     expect(minuten(3, 'experiment')).toBe(0);
     // Concept Story seit 25.11.2026 (NDU-66) an Tag 4: seit 27.11.2026 20 min Theorie (alle Folien), 30 min Schreiben; an Tag 3
@@ -623,14 +625,15 @@ describe('methoden', () => {
     // Story Map 85 min seit 27.11.2026 (65 bis dahin, 75 bis 26.11., davor 105); tag-4-ablauf.test.ts bindet sie an die Timer.
     expect(minuten(4, 'story-map')).toBe(METHODEN.find((x) => x.slug === 'story-map')!.dauer);
     expect(minuten(4, 'story-map')).toBe(85);
-    // Prototyp-Spike 100 min seit 27.11.2026 (90 bis dahin); Usage Story bleibt 30.
+    // Prototyp auf Papier 55 min seit 26.11.2026 nachts (Spike 100 bis dahin, 90 davor); Usage Story bleibt 30.
     expect(minuten(4, 'prototyp-spike')).toBe(METHODEN.find((x) => x.slug === 'prototyp-spike')!.dauer);
-    expect(minuten(4, 'prototyp-spike')).toBe(100);
+    expect(minuten(4, 'prototyp-spike')).toBe(55);
     expect(minuten(4, 'usage-story')).toBe(30);
     // Scrum: Agil an Tag 4 (Lego4Scrum seit 25.11.2026 stillgelegt, NDU-72), Teamaufstellung und Definition of Done an Tag 5 – zusammen die Dauer der Methode.
     expect(minuten(4, 'scrum')).toBe(40);
     expect(bloecke(4).some((x) => x.href.includes('#lego'))).toBe(false);
-    expect(bloecke(5).find((x) => x.href === '/innolab/methoden/scrum#team')).toMatchObject({ von: 9 * 60 + 25, bis: 10 * 60 + 5 });
+    // Seit Code-Review #459: Claude Pro, Claude Code und Linear (15 min) vor der Teamaufstellung, die darum um 9:40 beginnt.
+    expect(bloecke(5).find((x) => x.href === '/innolab/methoden/scrum#team')).toMatchObject({ von: 9 * 60 + 40, bis: 10 * 60 + 20 });
     expect(minuten(4, 'scrum') + minuten(5, 'scrum')).toBe(METHODEN.find((x) => x.slug === 'scrum')!.dauer);
   });
 });

@@ -80,29 +80,44 @@ describe('Usage Story: drei Storys vorn, sieben Stationen, Boom-Probe allein', (
   it('uebertrag: Erklärung und Übergabe im Beamer', () => {
     const b = beamer(folie(US, 'uebertrag'));
     expect(b).toContain('<p>Der eine Satz oder das eine Bild, in dem eure Person merkt, dass es sich gelohnt hat.</p>');
-    expect(b).toContain('<p class="nur-beamer"><strong>Weiter:</strong> Prototyp-Spike – ihr baut die Stationen 2 bis 6.</p>');
+    expect(b).toContain('<p class="nur-beamer"><strong>Weiter:</strong> Prototyp auf Papier – ein Blatt je Bildschirm für die Stationen 2 bis 6.</p>');
   });
 });
 
-describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenlauf ohne Kritik', () => {
+// Seit 26.11.2026 nachts (Dozent): Tag 4 ohne Claude – aus dem Spike wird der Prototyp auf Papier. Zeitbox, Bauen und
+// Ansehen sind weg (gebaut wird an Tag 5, tag-5#bauen-skizzen); der Trockenlauf läuft auf Papier.
+describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Trockenlauf auf Papier ohne Kritik', () => {
   it('Folienordnung', () => {
     expect(ids(PS)).toStrictEqual(['worum', 'was-er-zeigt', 'usability-test', 'fuenf', 'test-ablauf', 'karte-e2', 'beispiel', 'beispiel-befunde', 'vorgehen',
-      'schritt-papier', 'schritt-kriterien', 'schritt-zeitbox', 'schritt-bauen', 'schritt-ansehen', 'schritt-karte', 'schritt-trockenlauf', 'uebertrag']);
+      'schritt-papier', 'schritt-kriterien', 'schritt-karte', 'schritt-trockenlauf', 'uebertrag']);
+    expect(seite(PS)).not.toMatch(/id="schritt-(zeitbox|bauen|ansehen)"/);
   });
-  it('worum: Weg von der Usage Story, Papier-Skizzen erklärt, Kursregel gekennzeichnet, Abnahmekriterien erklärt', () => {
+  it('worum: heute auf Papier, an Tag 5 baut Claude Code; Papier-Skizzen und Test auf Papier erklärt, Kursregel gekennzeichnet', () => {
     const b = beamer(folie(PS, 'worum'));
+    expect(b).toContain('<p class="folie-satz">Heute auf Papier – an Tag 5 baut Claude Code daraus.</p>');
     expect(b).toContain("{ t: 'Usage Story', sub: 'Stationen 2 bis 6', icon: BookOpen }");
     expect(b).toContain("{ t: 'Papier-Skizzen', sub: 'ein Blatt pro Bildschirm, von Hand', icon: PenLine }");
-    expect(b).toContain('<strong>Papier-Skizzen:</strong> Jeden Bildschirm eures Ablaufs von Hand auf ein Blatt – was steht drauf, welcher Knopf führt wohin. Foto in euren Miro-Frame; Claude Code baut genau das.');
-    expect(b).toContain('<strong>Kursregel – Papier vor Claude:</strong> Jeden Bildschirm entscheidet ihr selbst. Sonst testet ihr Claudes Vorstellung von eurem Produkt.');
-    expect(b).toContain('<strong>Abnahmekriterien und Zeitbox:</strong> drei Sätze, was er zeigen muss und was nicht – 40 Minuten, dann ist Schluss.');
+    expect(b).toContain("{ t: 'Tag 5: bauen', sub: 'Claude Code baut nach euren Blättern', icon: Code }");
+    expect(b).toContain('<strong>Papier-Skizzen:</strong> Jeden Bildschirm eures Ablaufs von Hand auf ein Blatt – was steht drauf, welcher Knopf führt wohin. Foto in euren Miro-Frame.');
+    expect(b).toContain('<strong>Testen auf Papier:</strong> Jemand „tippt“ auf ein Blatt, ihr legt das nächste hin – so seht ihr, wo der Ablauf hakt.');
+    expect(b).toContain('<strong>Kursregel – Papier vor Claude:</strong> Jeden Bildschirm entscheidet ihr selbst.');
+    expect(b).not.toMatch(/Zeitbox|40 Minuten|Wegwerf/);
+    // Bland wörtlich, mit Seite: Definition (S. 182) und das Paar mit dem Klick-Prototyp (S. 185).
     expect(folie(PS, 'worum')).toContain('„Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction“');
-    expect(b).not.toContain('gestrahlt');
+    expect(folie(PS, 'worum')).toContain('„to inform your clickable prototype design“ ({BLAND}, S. 185)');
     expect(JSON.stringify([seite(PS), NOTIZEN_PROTOTYP_SPIKE]).match(/Papierbildschirm/g) ?? []).toStrictEqual([]);
+  });
+  it('was-er-zeigt: E2 mit dem Papier-Prototyp; Belege nach Bland S. 182 und 184, nicht mehr der Klick-Prototyp', () => {
+    const f = folie(PS, 'was-er-zeigt');
+    expect(beamer(f)).toContain('<b>E2 · Prototyp auf Papier</b><span class="frage">Kommen sie zurecht?</span>');
+    expect(f).toContain('„not ideal as a replacement for proper usability with customers“ ({BLAND}, S. 182)');
+    expect(f).toContain('„Manual task completion is not necessarily strong evidence, but it will provide glimpses into where customers could get confused“ (S. 184)');
+    expect(f).not.toContain('higher fidelity than paper');
   });
   it('usability-test: eine Testperson, eine Aufgabe, keine Meinungsfragen, Grenze zu E1', () => {
     const b = beamer(folie(PS, 'usability-test'));
     expect(b).toContain('<p class="folie-satz">Eine Testperson, eine Aufgabe, euer Prototyp – ihr schaut zu.</p>');
+    expect(b).toContain('<strong>Eine Testperson</strong> mit dem Pain, vor ihr euer Papier-Prototyp – online über die Kamera.');
     expect(b).toContain('Keine Meinungsfragen wie „Gefällt dir das?“');
     expect(b).toContain('<strong>Ergebnis: Bedienprobleme</strong> – nicht, ob sie es haben will. Das prüft E1.');
   });
@@ -116,42 +131,46 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect(b).not.toContain('N(1 − (1 − L)ⁿ)');
     expect(f).toContain('„where N is the total number of usability problems in the design and L is the proportion of usability problems discovered while testing a single user. The typical value of L is 31%, averaged across a large number of projects we studied.“');
     expect(f).toContain('„After the first study with five participants has found 85% of the usability problems, you will want to fix these problems in a redesign.“');
-    // „Testperson“, nicht „User“ – außer in englischen Zitaten.
     expect(b.replace(/„[^“]*“/g, '').match(/\bUser\b/g) ?? []).toStrictEqual([]);
   });
   // Entscheidung des Dozenten (26.11. abends): Die fünf Tests sind freiwillig bis Tag 5; im Kurs ist der Trockenlauf der
-  // eine Test des Prototyps. Befunde und Lernkarte E2 – falls getestet – im Frame „T4 · 5 · Prototyp · Produkt n“.
-  it('Tests mit der Zielgruppe freiwillig: Beamer sagt heute Trockenlauf, bis Tag 5 freiwillig', () => {
-    expect(beamer(folie(PS, 'usability-test'))).toContain('<strong>Heute</strong> testet ihr einmal: im Trockenlauf untereinander. <strong>Bis Tag 5, freiwillig:</strong> mit Menschen, die den Pain haben.');
-    expect(beamer(folie(PS, 'worum'))).toContain("{ t: 'Testen', sub: 'heute ein Trockenlauf; bis Tag 5 freiwillig mehr', icon: Users }");
-    expect(beamer(folie(PS, 'uebertrag'))).toContain('<strong>Bis Tag 5, freiwillig:</strong> Tests mit Menschen, die den Pain haben – fünf sind ideal.');
+  // eine Test des Prototyps – seit 26.11. nachts auf Papier.
+  it('Tests mit der Zielgruppe freiwillig: Beamer sagt heute Trockenlauf auf Papier, bis Tag 5 freiwillig', () => {
+    expect(beamer(folie(PS, 'usability-test'))).toContain('<strong>Heute</strong> testet ihr einmal: im Trockenlauf untereinander, auf Papier. <strong>Bis Tag 5, freiwillig:</strong> mit Menschen, die den Pain haben.');
+    expect(beamer(folie(PS, 'worum'))).toContain("{ t: 'Testen auf Papier', sub: 'heute ein Trockenlauf; bis Tag 5 freiwillig mehr', icon: Users }");
+    expect(beamer(folie(PS, 'vorgehen'))).toContain('<strong>Bis dahin, freiwillig:</strong> Tests mit Menschen, die den Pain haben.');
     const s = seite(PS);
     expect(s).toContain('<Karte text={`Lernkarte E2 – falls ihr testet\n');
     expect(s).not.toContain('T4 · 6 · Lernkarten');
-    // Keine Folie und keine Notiz macht die fünf Tests zur Pflicht.
     const texte = [s, JSON.stringify(NOTIZEN_PROTOTYP_SPIKE)];
     expect(texte.flatMap((x) => x.match(/Bis Tag 5: fünf Tests|Fünf Tests', sub|alle fünf haben/g) ?? [])).toStrictEqual([]);
   });
-  it('test-ablauf: gute und schlechte Aufgabe, laut denken erklärt, wer was wo notiert', () => {
+  it('test-ablauf: gute und schlechte Aufgabe, laut denken erklärt, wer führt, legt die Blätter', () => {
     const t = beamer(folie(PS, 'test-ablauf'));
     expect(t).toContain('<b>So</b><span>„Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“</span>');
     expect(t).toContain('<b>Nicht so</b><span>„Scanne den Code und tippe auf Bestellen.“</span>');
     expect(t).toContain('<strong>Laut denken:</strong> Sie sagt, was sie sieht, sucht und vorhat. Ihr schweigt; stockt sie, höchstens: „Was würdest du jetzt tun?“');
-    expect(t).toContain('<strong>Zu zweit:</strong> eine*r führt, eine*r notiert in „T4 · 5 · Prototyp · Produkt n“ – geschafft?, Zeit, wo gehangen; daraus U1, U2 …');
+    expect(t).toContain('<strong>Zu zweit:</strong> eine*r führt und legt die Blätter, eine*r notiert in „T4 · 5 · Prototyp · Produkt n“ – geschafft?, Zeit, wo gehangen; daraus U1, U2 …');
+    expect(folie(PS, 'test-ablauf')).toContain('„Have one person conduct the interviews and interact with the customer“, „Have another person write notes and act as a scribe“');
   });
-  it('beispiel: fünf nummerierte Blätter, Blatt 3 ist der Höhepunkt', () => {
+  it('beispiel: fünf nummerierte Blätter, Blatt 3 ist der Höhepunkt; Kriterien heute auf Papier, an Tag 5 am Handy', () => {
     const b = beamer(folie(PS, 'beispiel'));
     expect([...b.matchAll(/<li(?: class="[^"]+")?><span>([^<]+)<\/span>([^<]+)<\/li>/g)].map((m) => `${m[1]}: ${m[2]}`)).toStrictEqual([
       'Blatt 1: Getränk wählen', 'Blatt 2: Zug wählen', 'Blatt 3 · Höhepunkt: „Fertig 7:31. Dein Zug fährt 7:38.“', 'Blatt 4: Abholnummer', 'Blatt 5: Ansicht für die Bar',
     ]);
+    expect(b).toContain('<strong>Er läuft</strong> heute auf Papier, an Tag 5 am Handy.');
+    expect(b).not.toMatch(/40 Minuten|nicht echt/);
   });
-  it('karte-e2: Annahme ohne Zeitgrenze, Zeit als Richtwert, „Wir entscheiden vorher“ auf Karte und in der Vorlage', () => {
+  it('karte-e2: Papier-Prototyp statt Klick-Prototyp, Zeit nur notiert, „Wir entscheiden vorher“ auf Karte und in der Vorlage', () => {
     const f = folie(PS, 'karte-e2');
+    expect(f).toContain('E2 · A3 (bedienbar) · mit dem Prototyp auf Papier\n');
+    expect(f).toContain('Um das zu prüfen, geben wir fünf Pendler*innen den Papier-Prototyp – sie tippen auf ein Blatt, wir legen das nächste hin – mit der Aufgabe:');
+    expect(f).not.toMatch(/Klick-Prototyp|am Handy mit der Aufgabe|läuft bis Tag 5|innerhalb von 20 Sekunden/);
     expect(f).toContain('Wir glauben, dass Pendler*innen im Gehen ohne Hilfe bis zur Fertig-Zeit bestellen können.');
-    expect(f).not.toContain('innerhalb von 20 Sekunden');
-    expect(f).toContain('Zeit bis dahin (Richtwert aus A3: 20 Sekunden)');
+    expect(f).toContain('Bland nennt „Time to complete tasks“ unter den Belegen des Papier-Prototyps ({BLAND}, S. 184)');
     expect(f).toContain('Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen`} />');
     const s = seite(PS);
+    expect(s).toContain('<Karte text={`3 · Karte E2 · A[n] (bedienbar) · mit dem Prototyp auf Papier\n');
     expect(s).toContain('Wir haben recht, wenn [x] von 5 den Höhepunkt ohne Hilfe erreichen.\nWir entscheiden vorher: ab [x] → [...] · [...] → [...] · unter [...] → [...]`} />');
     expect(s).toContain('Beleg: gestützt / widerlegt / unklar / neue Einsicht → darum: [...]\nWeicht ab von „Wir entscheiden vorher“? Grund: [...]\n');
   });
@@ -161,57 +180,62 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
     expect(b).toContain('<tr data-schritt><th>U3</th><td>Unklar, wo die Express-Ausgabe ist</td><td>3 von 5</td><td>Hinweis auf dem Höhepunkt-Bildschirm</td></tr>');
     expect(b).toContain('Ausgedacht');
   });
-  // Rezept (Consult „Spike als Schritt-Folien“, 26.11.): Übersicht und sieben Schritt-Folien, Timer 10/3/2/40/10/10,
-  // jede mit „Wo“ und „Fertig, wenn“.
-  it('vorgehen: Übersicht mit sechs Schritten, dann sieben Schritt-Folien mit Wo, Fertig-wenn und Timer 10/3/2/40/10/10', () => {
+  // Rezept: Übersicht und vier Schritt-Folien, Timer 10/3/10/10 (33 min), jede mit „Wo“ und „Fertig, wenn“. Der Block im
+  // Ablauf von Tag 4 ist 55 min: rund 20 Theorie und Beispiel + 33 Übung + 2 Übergang.
+  it('vorgehen: Übersicht mit vier Schritten, dann vier Schritt-Folien mit Wo, Fertig-wenn und Timer 10/3/10/10', () => {
     const timer = (f: string) => [...f.matchAll(/<Timer minuten=\{(\d+)\}(?: gruppe="([^"]+)")? \/>/g)].map((m) => (m[2] ? `${m[1]} ${m[2]}` : Number(m[1])));
-    const schritte = ['schritt-papier', 'schritt-kriterien', 'schritt-zeitbox', 'schritt-bauen', 'schritt-ansehen', 'schritt-karte', 'schritt-trockenlauf'];
-    expect(folie(PS, 'vorgehen')).toContain('<h2 id="vorgehen">So geht ihr vor (75 min)</h2>');
-    expect(timer(folie(PS, 'vorgehen'))).toStrictEqual([]);
-    // Schritt 4 erstreckt sich über zwei Folien: eine Uhr (gruppe), auf beiden sichtbar – zusammen 10 + 3 + 2 + 40 + 10 + 10.
-    expect(schritte.flatMap((id) => timer(folie(PS, id)))).toStrictEqual([10, 3, 2, '40 spike-bauen', '40 spike-bauen', 10, 10]);
-    expect(beamer(folie(PS, 'schritt-ansehen'))).toContain('<span class="wo-fertig-hinweis">Rest der 40 min · bei 5:00: Spike sichern</span>');
+    const schritte = ['schritt-papier', 'schritt-kriterien', 'schritt-karte', 'schritt-trockenlauf'];
+    const v = folie(PS, 'vorgehen');
+    expect(v).toContain('<h2 id="vorgehen">So geht ihr vor (33 min)</h2>');
+    expect(timer(v)).toStrictEqual([]);
+    expect([...v.matchAll(/\{ t: '([^']+)', sub: '([^']+)' \}/g)].map((m) => `${m[1]} | ${m[2]}`)).toStrictEqual([
+      '1 Papier | 10 min<br>allein, Stift', '2 Abnahme-kriterien | 3 min<br>Miro', '3 Karte E2 | 10 min<br>Miro', '4 Trockenlauf | 10 min<br>zu dritt, Teams',
+    ]);
+    expect(schritte.flatMap((id) => timer(folie(PS, id)))).toStrictEqual([10, 3, 10, 10]);
+    expect(v).toContain('zusammen 53 Minuten, der Block hat 55');
     for (const id of schritte) {
       const b = beamer(folie(PS, id));
       expect(b, id).toMatch(/<p class="wo-fertig"><span><strong>Wo:<\/strong> [^<]+/);
       expect(b, id).toContain('<span><strong>Fertig, wenn:</strong> ');
     }
-    expect(schritte.map((id) => NOTIZEN_PROTOTYP_SPIKE[id]?.uebung?.dauer ?? null)).toStrictEqual(['10 min', '3 min', '2 min', '40 min (Schritt 4, zwei Folien)', null, '10 min', '10 min']);
+    // Die Felder auf Miro heißen wie die Schritte: 1 Papier-Skizzen, 2 Abnahmekriterien, 3 Karte E2, 4 Tests.
+    expect(['schritt-papier', 'schritt-kriterien', 'schritt-karte', 'schritt-trockenlauf'].map((id) => beamer(folie(PS, id)).match(/Feld „(\d · [^“]+)“/)?.[1])).toStrictEqual([
+      '1 · Papier-Skizzen', '2 · Abnahmekriterien', '3 · Karte E2', '4 · Tests',
+    ]);
+    expect(schritte.map((id) => NOTIZEN_PROTOTYP_SPIKE[id]?.uebung?.dauer ?? null)).toStrictEqual(['10 min', '3 min', '10 min', '10 min']);
   });
-  it('Schritt 2 und 3: Abnahmekriterien als „zeigt / läuft / hat nicht“, Zeitbox als eigenes Feld', () => {
+  it('Schritt 2: Abnahmekriterien als „zeigt / läuft / hat nicht“ – heute fürs Papier, an Tag 5 der Auftrag für Claude Code', () => {
     const k = beamer(folie(PS, 'schritt-kriterien'));
     expect([...k.matchAll(/<li data-schritt><strong>(„[^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['„Der Prototyp zeigt …“', '„Er läuft …“', '„Er hat nicht …“']);
-    expect(k).toContain('<strong>Wo:</strong> Feld „2 · Abnahmekriterien“');
-    expect(beamer(folie(PS, 'schritt-zeitbox'))).toContain('<strong>Wo:</strong> Feld „3 · Zeitbox“');
-    expect(seite(PS)).toContain('<Karte text={`3 · Zeitbox\nZeitbox: bis [Uhrzeit] (40 Minuten)\nZuerst gebaut: [Höhepunkt-Bildschirm]\nBei null fehlt noch: [...]`} />');
+    expect(k).toContain('<p class="folie-satz">Was der Prototyp zeigen muss – heute auf Papier, an Tag 5 als Auftrag für Claude Code.</p>');
+    expect(k).toContain('<p>Er läuft heute auf Papier, an Tag 5 am Handy im Browser.</p>');
+    expect(seite(PS)).not.toMatch(/3 · Zeitbox|Zeitbox: bis/);
   });
-  it('Schritt 4: Fenster von 11:00, Opus mit Ausweich-Zeile, Bilder, Vorlesen vor dem Bauen; Sichern mit Link', () => {
-    const b = beamer(folie(PS, 'schritt-bauen'));
-    expect(b).toContain('<strong>Claude Code öffnen:</strong> dasselbe Fenster wie beim Einrichten am Vormittag – euer Repo, Terminal, <code>claude</code>. Dann <code>/model opus</code>.');
-    expect(b).toContain('Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen.');
-    expect(folie(PS, 'schritt-bauen')).toContain('Eine Datei öffnet oder schreibt ihr nicht');
-    expect(beamer(folie(PS, 'schritt-ansehen'))).toContain('<strong>Fünf Minuten vor Schluss:</strong> Prompt „Spike sichern“ – Claude gibt euch den Link fürs Handy.');
-  });
-  it('Schritt 5 und 6: Karte E2 mit „Wir entscheiden vorher“; Trockenlauf in drei Runden, keine Kritik', () => {
+  it('Schritt 3 und 4: Karte E2 mit „Wir entscheiden vorher“; Trockenlauf auf Papier in drei Runden, wer besitzt, legt die Blätter, keine Kritik', () => {
     expect(beamer(folie(PS, 'schritt-karte'))).toContain('<strong>„Wir entscheiden vorher“:</strong> drei Bänder, je eine Handlung.');
     const t = beamer(folie(PS, 'schritt-trockenlauf'));
+    expect(t).toContain('<h2 id="schritt-trockenlauf">Schritt 4: Trockenlauf auf Papier</h2>');
+    expect(t).toContain('<p class="folie-satz">Drei Runden: Ihr prüft, ob der Ablauf verständlich ist – nicht, ob er gefällt.</p>');
     expect(t).toContain('<tr><th>1</th><td>Produkt 2</td><td>Produkt 1</td><td>Produkt 3</td></tr>');
+    expect(t).toContain('<strong>Wem der Prototyp gehört:</strong> Blatt 1 in die Kamera, Aufgabe vorlesen, dann das Blatt hinlegen, zu dem der angesagte Knopf führt. Sonst schweigen.');
     expect(t).toContain('<strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Nächste Runde.');
+    expect(t).toContain('<strong>Wo:</strong> Teams (Kamera oder Bildschirm teilen) und Feld „4 · Tests“, Zeile 0');
     expect(folie(PS, 'schritt-trockenlauf')).toContain('Der Trockenlauf ist heute euer Test des Prototyps.');
+    expect(folie(PS, 'schritt-trockenlauf')).toContain('„Test it internally to make sure the flow works“');
   });
-  it('uebertrag: Übergabe an Scrum im Beamer', () => {
-    expect(beamer(folie(PS, 'uebertrag'))).toContain('<strong>Nach der Pause:</strong> Agil und Scrum.');
+  it('uebertrag: Übergabe an den Puffer und nach der Pause an Scrum im Beamer', () => {
+    expect(beamer(folie(PS, 'uebertrag'))).toContain('<p class="nur-beamer"><strong>Weiter:</strong> Puffer – fertig machen, was heute offen blieb. <strong>Nach der Pause:</strong> Agil und Scrum.</p>');
   });
-  it('Spike-Prompt: Screenshots der Miro-Frames, keine Dateien; Branch legt Claude Code an', () => {
+  it('kein Bau an Tag 4: kein Spike-Prompt, kein Branch, kein /spike; die Prompts stehen auf tag-5#bauen-skizzen', () => {
     const s = seite(PS);
-    expect(s).toContain('Unter dieser Nachricht stehen Bilder aus Miro: meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien mit Zeitbox und Fotos meiner Papier-Skizzen, ein Blatt je Bildschirm.');
-    expect(s).toContain('Bevor du baust: Zähl mir in höchstens sechs Zeilen auf, welche Bildschirme du baust');
-    expect(s).toContain('- Der Prototyp liegt unter der Adresse /spike; die bestehende App änderst du nicht.');
-    expect(s).not.toContain('[Bilder einfügen]');
-    expect(s).toContain('Schickt den Prompt erst, wenn die Bilder darunter eingefügt sind.');
-    expect(s).toContain('<Prompt label="Spike sichern · Claude Code">Committe den Stand auf dem aktuellen Spike-Branch und push ihn zu GitHub. Merge nichts nach main und öffne keinen Pull Request. Gib mir dann die Vorschau-Adresse, die Vercel für diesen Branch baut, mit /spike am Ende.');
+    expect(s).not.toMatch(/<Prompt label="Spike|spike\/\[vorname\]|\/spike\b|Der Spike bleibt im Branch|<Timer[^>]*gruppe=/);
+    expect(s).toContain('<Callout type="info" title="An Tag 5 baut Claude Code daraus">');
+    expect(s).toContain('(<a href="/innolab/tag-5#bauen-skizzen">Tag 5, Bauen</a>)');
     expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(s).toContain('<Karte label="Miro · T4 · 5 · Prototyp · Produkt n" text={`1 · Papier-Skizzen');
+    expect(s).toContain('<Karte text={`5 · Tag 5: gebaut\n');
+    expect(s).toContain('<Karte text={`Für Claude Code (an Tag 5, mit Opus – /model opus)\n');
+    expect(quellen['/innolab/tag-5']).toContain('<h2 id="bauen-skizzen">');
   });
   it('höchstens fünf live-Stichworte je Folie, auf beiden Seiten', () => {
     const zuViele = [...Object.entries(NOTIZEN_USAGE_STORY), ...Object.entries(NOTIZEN_PROTOTYP_SPIKE)].filter(([, n]) => n.live.length > 5).map(([id]) => id);
@@ -221,7 +245,7 @@ describe('Prototyp-Spike: geteilte Folien, Karte E2 entscheidet vorher, Trockenl
 
 // NACHTRAG 26.11. (abends): Studierende schreiben keine docs/*.md mehr – Usage Story, Karte E2, Abnahmekriterien und Befunde
 // stehen auf Miro; Claude und Claude Code immer mit Opus.
-describe('Usage Story und Prototyp-Spike: Miro statt Repo-Dateien, Opus', () => {
+describe('Usage Story und Prototyp auf Papier: Miro statt Repo-Dateien, Opus', () => {
   it('keine docs/-Datei auf den Seiten und in den Notizen', () => {
     const texte = [seite(US), seite(PS), JSON.stringify(NOTIZEN_USAGE_STORY), JSON.stringify(NOTIZEN_PROTOTYP_SPIKE)];
     expect(texte.every((x) => x.length > 1000)).toBe(true);
@@ -232,12 +256,12 @@ describe('Usage Story und Prototyp-Spike: Miro statt Repo-Dateien, Opus', () => 
     expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(s).toContain('<Karte label="Miro · T4 · 4 · Usage Story · Produkt n" text={`Titel: Usage Story');
   });
-  it('Opus, ohne Versionsnummer: Spike-Schritt und beide Prüfungen', () => {
-    expect(seite(PS).match(/\/model opus/g)?.length).toBeGreaterThanOrEqual(3);
-    // Prüfen an einem Bild in claude.ai (ClaudePruefung, Weg Miro): Opus im Modellmenü, steht in „So geht’s“.
-    expect(seite(US)).toContain('<p>Eure Usage Story liegt nur auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>');
-    expect(seite(PS)).toContain('in eurem Frame „T4 · 5 · Prototyp · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.</p>');
-    expect(readFileSync(new URL('../components/ClaudePruefung.astro', import.meta.url), 'utf8')).toContain('Im Modellmenü Opus wählen – meldet Claude ein Limit oder gibt es Opus nicht, das vorgeschlagene Standardmodell.');
+  // Seit 26.11.2026 nachts: Tag 4 ohne Claude Code; Prüfen zu Hause in claude.ai mit dem besten verfügbaren Modell, ab Tag 5 Opus.
+  it('Opus, ohne Versionsnummer: beide Prüfungen zu Hause in claude.ai; /model opus nur noch für Tag 5', () => {
+    expect(seite(PS).match(/\/model opus/g) ?? []).toStrictEqual(['/model opus']);
+    expect(seite(US)).toContain('<p>Eure Usage Story liegt nur auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.</p>');
+    expect(seite(PS)).toContain('in eurem Frame „T4 · 5 · Prototyp · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.</p>');
+    expect(readFileSync(new URL('../components/ClaudePruefung.astro', import.meta.url), 'utf8')).toContain('Im Modellmenü das beste Modell wählen, das euch zur Verfügung steht – mit Claude Pro (ab Innolab-Tag 5) Opus; meldet Claude ein Limit oder gibt es Opus nicht, das vorgeschlagene Standardmodell.');
     expect([seite(US), seite(PS)].flatMap((x) => x.match(/Opus \d|opus-\d/gi) ?? [])).toStrictEqual([]);
   });
   // Seit 27.11.2026 haben die Frames IDs: beide Seiten verlinken sie je Produkt (wie concept-story#vorgehen) und das Beispiel.

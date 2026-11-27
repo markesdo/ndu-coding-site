@@ -158,7 +158,7 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(seite).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(seite).not.toContain('<Prompt label="Vorlage · docs/STORYS.md">');
     // Seit 27.11.: Prüfen an einem Bild des Frames (ClaudePruefung, Weg Miro) – nicht mehr über den Ausweichweg „Ohne Claude Code“.
-    expect(seite).toContain('Eure Story liegt nur auf Miro, in eurem Frame „T4 · 0 · Concept Story · Produkt n“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.');
+    expect(seite).toContain('Eure Story liegt nur auf Miro, in eurem Frame „T4 · 0 · Concept Story · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.');
     expect(seite).not.toContain('Ohne Claude Code');
     expect(NOTIZEN_CONCEPT_STORY.vorgehen.miro?.frame).toBe('T4 · 0 · Concept Story · Produkt 1');
   });

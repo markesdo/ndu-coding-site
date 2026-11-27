@@ -268,7 +268,7 @@ describe('Werkzeuge', () => {
     // Miro-Ergebnisse (Experience Map, Baum) per Bild: Momente schreibt Claude nie, Befundregeln gelten auch für das Bild.
     expect(anweisung).toContain('keine Problemsätze, Annahmen, Interviewfragen, Momente, Chancen, Entscheidungen oder Karten auf Miro,');
     // Regel 6 gilt für jedes Ergebnis auf Miro (seit 21.11.2026 auch alles von Tag 3, seit 26.11.2026 abends Tag 4 ohne Scrum): mit dem Slug der Methode.
-    expect(anweisung).toContain(`6. Fügt die Person ein Bild eines Ergebnisses von Miro ein (Experience Map: journey-map, Opportunity Solution Tree: baum, Ziel-Chance wählen: ziel-chance, Kundenprofil: kundenprofil, How Might We: hmw, Ideation: ideation, Value Map & Fit: value-map, Concept Story: concept-story, Geschäftsmodell: geschaeftsmodell, Experiment-Karte & Origin Story: experiment, Story Map: story-map, Usage Story: usage-story und Prototyp-Spike & Usability-Test: prototyp-spike), ruf ${MCP_WERKZEUGE.methodeErklaeren} mit dem Slug dieser Methode auf und prüf das Bild gegen ihre Prüfliste`);
+    expect(anweisung).toContain(`6. Fügt die Person ein Bild eines Ergebnisses von Miro ein (Experience Map: journey-map, Opportunity Solution Tree: baum, Ziel-Chance wählen: ziel-chance, Kundenprofil: kundenprofil, How Might We: hmw, Ideation: ideation, Value Map & Fit: value-map, Concept Story: concept-story, Geschäftsmodell: geschaeftsmodell, Experiment-Karte & Origin Story: experiment, Story Map: story-map, Usage Story: usage-story und Prototyp auf Papier & Usability-Test: prototyp-spike), ruf ${MCP_WERKZEUGE.methodeErklaeren} mit dem Slug dieser Methode auf und prüf das Bild gegen ihre Prüfliste`);
     expect(anweisung).toContain('jeder mit der ID des Prüfpunkts, einem wörtlichen Zitat von einer Karte im Bild und einer Frage');
     // Kundenprofil und Value Map teilen den Canvas: nachfragen, welche Prüfung gemeint ist.
     expect(anweisung).toContain('Kundenprofil und Value Map & Fit liegen im selben Frame „T3 · 4 · Canvas · Produkt n“: Ist bei einem Bild dieses Canvas unklar, welche Prüfung gemeint ist, frag nach – ist die linke Hälfte leer, ist es das Kundenprofil.');
@@ -277,7 +277,7 @@ describe('Werkzeuge', () => {
     // Regel 6 verweist auf keine andere Regel per Nummer (Regel 4 nennt artefakt_pruefen mit pruefpunkt, das am Bild nicht geht).
     expect(anweisung.split('\n').find((z) => z.startsWith('6. '))).not.toMatch(/Regel \d/);
     // Ändern: Mappe in der Werkstatt, Ergebnisse auf Miro auf Miro.
-    expect(anweisung).toContain('Ergebnisse auf Miro (Experience Map, Opportunity Solution Tree, Ziel-Chance wählen, Kundenprofil, How Might We, Ideation, Value Map & Fit, Concept Story, Geschäftsmodell, Experiment-Karte & Origin Story, Story Map, Usage Story und Prototyp-Spike & Usability-Test) ändert sie auf Miro.');
+    expect(anweisung).toContain('Ergebnisse auf Miro (Experience Map, Opportunity Solution Tree, Ziel-Chance wählen, Kundenprofil, How Might We, Ideation, Value Map & Fit, Concept Story, Geschäftsmodell, Experiment-Karte & Origin Story, Story Map, Usage Story und Prototyp auf Papier & Usability-Test) ändert sie auf Miro.');
     expect(anweisung).toContain('Die Person hat ihr Artefakt in der Werkstatt oder auf Miro vor sich.');
     expect(anweisung).toMatch(/\n11\. Manchmal hat eine Lehrperson/);
   });

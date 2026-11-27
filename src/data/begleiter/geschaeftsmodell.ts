@@ -1,8 +1,8 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu /innolab/methoden/geschaeftsmodell (Tag 4, 20-min-Block). Seit 26.11.2026 ohne Musterkarten-Runde:
-// rund 8 min Theorie an fünf Folien (warum-jetzt bis annahme), dann 10 min Übung (vorgehen), 2 min Übertrag als Brücke zum
-// Claude-Pro-Block danach (experiment#claude-pro-jetzt). Zeiten in den Stichworten nur relativ: Der Tagesplan verschiebt
+// rund 8 min Theorie an fünf Folien (warum-jetzt bis annahme), dann 10 min Übung (vorgehen), 2 min Übertrag als Brücke zur
+// Experiment-Karte (seit 26.11.2026 nachts direkt danach; der Claude-Pro-Block steht jetzt auf tag-5#claude-pro-jetzt). Zeiten in den Stichworten nur relativ: Der Tagesplan verschiebt
 // sich noch, folienPlan verteilt die 10 min ohne Übung auf die sechs übrigen Folien (je knapp 2 min). Die Karten stehen nur noch zum Nachschlagen im Handout.
 // Vorwissen: „bekannt“ aus dem Entrepreneur Lab (vorwissen.ts) – Theorie kurz, das Dreieck nur abgleichen.
 // Seiten: VPD nach PDF, Cagan gedruckt, Gassmann (EPUB) nach Abschnitt.
@@ -197,13 +197,13 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
       'Fragen: An welcher Zahl hängt euer Modell?',
       'Zahlt niemand: Wozu trägt es bei? Loss Leader ist erlaubt.',
       'Bei Bedarf: Musterkarten unten im Handout, keine Kurszeit.',
-      'Zeit: Übertrag 2 min, dann Claude Pro auf der Experiment-Seite.',
+      'Zeit: Übertrag 2 min, dann gleich die Experiment-Karte.',
     ],
     verstaendnis: {
       frage: 'Muss jede Idee selbst Geld bringen?',
       antwort: 'Nein. Manche Ideen sind Loss Leader und tragen zu einem anderen Ziel bei (Torres S. 118) – dann steht bei Wert?, zu welchem.',
     },
-    ueberleitung: 'Bevor es an die Experiment-Karte geht: zehn Minuten, um Claude Pro abzuschließen und Claude Code zu starten.',
+    ueberleitung: 'Jetzt die Experiment-Karte: An welcher Annahme hängt euer Spitzenreiter?',
     kern: [
       {
         text: 'Checkliste Wer?: „Wer sind unsere Zielkunden?“, gleich danach „Für wen generieren wir (zusätzlichen) Wert?“',

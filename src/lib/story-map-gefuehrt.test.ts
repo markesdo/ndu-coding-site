@@ -107,11 +107,13 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     for (const t of ['Grün: Aktivität', 'Gelb: Task', 'Blau: Details, Varianten', 'Rot: geht schief', 'Grau: System', 'Pink: Outcome', 'Cyan: „Wir lernen, ob“', 'Violett: wer handelt', '* kein Software-Schritt', 'Sprechblase: offene Frage → <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a>']) expect(s, t).toContain(t);
   });
 
-  it('alles auf Miro: keine docs-Datei; Claude Code mit Opus liest einen Screenshot und die Annahmen-Map der Werkstatt', () => {
+  // Seit 26.11.2026 nachts: Tag 4 ohne Claude Code – Schritt 11 fragt Claude nicht mehr; „Annahmen hinter Slice 1“ bleibt
+  // als freiwillige Hausaufgabe in claude.ai (Screenshot plus Werkstatt-Connector), nur im Handout.
+  it('alles auf Miro: keine docs-Datei; „Annahmen hinter Slice 1“ zu Hause in claude.ai, mit Screenshot und Annahmen-Map', () => {
     expect(seite).not.toMatch(/docs\/|STORY-MAP\.md/);
     const f = sichtbar(folie('schritt-festhalten'));
-    expect(f).toContain('<code>/model opus</code>');
-    expect(f).toContain('Screenshot eures Bereichs');
+    expect(f).not.toMatch(/Claude|\/model opus/);
+    expect(seite).toContain('<Prompt label="Annahmen hinter Slice 1 · zu Hause, freiwillig, in claude.ai" note="In claude.ai mit dem Werkstatt-Connector und dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Screenshot eures Bereichs im Frame „T4 · 1 · Story Map“ unter dem Prompt einfügen');
     expect(seite).toContain('const ANNAHMEN_SLICE = `Im Bild: meine Story Map von Miro (Frame „T4 · 1 · Story Map“, mein Bereich)');
     expect(seite).toContain('Lies aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen})');
     expect(seite).toContain('<h2 id="vorlage">So sieht euer Bereich im Frame aus</h2>');
@@ -123,9 +125,9 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(sichtbar(folie('schritt-loecher'))).toContain('<strong>Prüft:</strong> Wo springt eure Geschichte zwischen zwei Stickies – und was ist, wenn …?');
     expect(handout(folie('sechs-schritte'))).toContain('Übungsschritt 10 und 11 – Durchgehen und Festhalten');
     const pruefen = seite.slice(seite.indexOf('<h2 id="pruefen">'), seite.indexOf('<ClaudePruefung'));
-    expect(pruefen).toContain('in eurer Spalte im Frame „T4 · 1 · Story Map“. Claude prüft es an einem Bildschirmfoto, in claude.ai mit dem Werkstatt-Connector und mit Opus – Schritt für Schritt unter „So geht’s“.');
+    expect(pruefen).toContain('in eurer Spalte im Frame „T4 · 1 · Story Map“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.');
     const n = NOTIZEN['/innolab/methoden/story-map'];
-    expect(n['schritt-durchgehen'].ueberleitung).toBe('Zum Schluss: fertig auf Miro – und Claude nach Annahmen fragen.');
+    expect(n['schritt-durchgehen'].ueberleitung).toBe('Zum Schluss: fertig auf Miro.');
     expect(n['schritt-tasks'].live).toContain('Fragen: Hat jeder Pain vom Rand einen Task, der ihn löst?');
     expect(JSON.stringify(n)).not.toMatch(/ins Repo|docs\//);
   });

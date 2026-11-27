@@ -22,9 +22,10 @@ const folie = (id: string) => {
 const sichtbar = (id: string) => folie(id).replace(/<div class="nur-handout">[\s\S]*?<\/div>\s*(?=<\/?[A-Za-z]|$)/g, '').replace(/<p class="nur-handout">[\s\S]*?<\/p>/g, '');
 
 describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
-  it('20 Folien (seit 27.11. mit annahmen-finden und so-liefe-e1) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
+  // Seit 26.11.2026 nachts ohne claude-pro-jetzt und claude-code-opus: Tag 4 läuft ohne Claude, die Folien stehen auf tag-5.
+  it('18 Folien (seit 27.11. mit annahmen-finden und so-liefe-e1) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
     expect(folienAus(EX, seite(EX)).map((f) => f.id)).toStrictEqual([
-      'claude-pro-jetzt', 'claude-code-opus', 'annahmen-der-idee', 'schritte-der-idee', 'spitzenreiter', 'map', 'karte', 'ergebnis-gilt',
+      'annahmen-der-idee', 'schritte-der-idee', 'spitzenreiter', 'map', 'karte', 'ergebnis-gilt',
       'vorher-entscheiden', 'welcher-test', 'test-arten', 'annahmen-finden', 'beispiel', 'beispiel-map', 'karte-e1', 'vorgehen', 'so-liefe-e1', 'lernkarte',
       'gegen-den-beleg', 'uebertrag',
     ]);
@@ -109,9 +110,10 @@ describe('Pre-Mortem und Gegenprobe', () => {
     expect(q.indexOf('<strong>Pre-Mortem:</strong>')).toBeLessThan(q.indexOf('dazu das Pre-Mortem'));
   });
 
-  it('der Claude-Prompt am Ende des Tages heißt „Gegenprobe zu E1“, liest Screenshot und Werkstatt, mit Opus', () => {
+  it('der Claude-Prompt am Ende des Tages heißt „Gegenprobe zu E1“, liest Screenshot und Werkstatt – zu Hause, in claude.ai', () => {
     const q = seite(EX);
-    expect(q).toContain('<Prompt label="Gegenprobe zu E1 · Claude-App, mit Opus">{GEGENPROBE}</Prompt>');
+    expect(q).toContain('<Prompt label="Gegenprobe zu E1 · zu Hause, in claude.ai">{GEGENPROBE}</Prompt>');
+    expect(q).toContain('Zu Hause, in claude.ai oder der Claude-App, mit der Werkstatt verbunden und im Modellmenü auf dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus');
     expect(q).toContain('const GEGENPROBE = `Im Bild: meine Karte E1 vom Miro-Frame „T4 · 0 · Annahmen der Idee“. Lies aus der Werkstatt meine Annahmen-Map');
     expect(q).not.toMatch(/PRE_MORTEM\}|label="Pre-Mortem/);
   });
@@ -218,26 +220,15 @@ describe('Tests zur Auswahl und Beispiel', () => {
   });
 });
 
-describe('10:50: Opus und ein Test mit Screenshot', () => {
-  it('kein Übertrag in docs/STORYS.md; Opus-Schritt nach dem Anmelden; Test mit Screenshot des Concept-Story-Frames', () => {
-    const pro = sichtbar('claude-pro-jetzt');
-    const opus = sichtbar('claude-code-opus');
-    expect(pro + opus).not.toMatch(/STORYS|Concept Story ins Repo/);
-    expect(opus).toContain('<li data-schritt><strong>Modell auf Opus stellen:</strong> in Claude Code <code>/model opus</code>. In der Claude-App: im Modellmenü Opus wählen.</li>');
-    expect(opus).toContain('Screenshot eures Frames „T4 · 0 · Concept Story · Produkt n“ einfügen, dazu: „Sag mir in einem Satz, worum es in meiner Concept Story geht.“');
-    expect(opus).not.toMatch(/Opus \d|Opus-\d/);
-    const f = folie('claude-code-opus');
-    expect(f).toContain('<Prompt label="Test · Claude Code, mit Opus">Sag mir in einem Satz, worum es in meiner Concept Story geht.</Prompt>');
-    for (const n of [1, 2, 3]) expect(f).toContain(`<MiroLink name="T4 · 0 · Concept Story · Produkt ${n}">`);
-  });
-
-  it('Rückfall, wenn Opus nicht geht: auf der Folie und überall im Handout, wo Opus steht (Review #456)', () => {
+// Die Folien „claude-pro-jetzt“ und „claude-code-opus“ stehen seit 26.11.2026 nachts auf tag-5 (tag-5-claude-pro.test.ts).
+describe('Experiment-Seite ohne Claude-Pro-Block', () => {
+  it('Rückfall, wenn Opus nicht geht: überall im Handout, wo Opus steht (Review #456)', () => {
     const rueckfall = 'Meldet Claude ein Limit oder gibt es Opus nicht:';
-    expect(sichtbar('claude-code-opus')).toContain(`<p class="small">${rueckfall} <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.</p>`);
     // Jeder Handout-Absatz, der sagt, wie man Opus wählt (Modellmenü, /model opus), nennt auch den Rückfall.
     const absaetze = (seite(EX).match(/<p>[^]*?<\/p>/g) ?? []).filter((p) => /Opus/.test(p) && /Modellmenü|\/model opus/.test(p));
-    expect(absaetze.length).toBeGreaterThanOrEqual(2);
+    expect(absaetze.length).toBeGreaterThanOrEqual(1);
     expect(absaetze.filter((p) => !p.includes(rueckfall))).toStrictEqual([]);
+    expect(seite(EX)).not.toMatch(/\/model opus/);
   });
 
   it('FooterNav: zurück zum Geschäftsmodell', () => {

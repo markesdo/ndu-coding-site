@@ -1,8 +1,9 @@
 import type { Notiz } from './typen';
 
-// Begleiter-Notizen zu src/pages/innolab/methoden/prototyp-spike.astro (Tag 4, 28.11., 14:45–16:25: rund 22 min Theorie und
-// Beispiel, 75 min Übung als Rezept: Übersicht plus sieben Schritt-Folien, Timer 10 + 3 + 2 + 40 + 10 + 10; was offen
-// bleibt, freiwillig zu Hause). Bland = gedruckte
+// Begleiter-Notizen zu src/pages/innolab/methoden/prototyp-spike.astro (Tag 4, 28.11., 14:35–15:30, Prototyp auf Papier:
+// rund 20 min Theorie und Beispiel, 33 min Übung als Rezept: Übersicht plus vier Schritt-Folien, Timer 10 + 3 + 10 + 10;
+// danach Puffer bis 16:25). Seit 26.11.2026 nachts ohne Claude: Zeitbox, Bauen und Ansehen sind weg, gebaut wird an
+// Tag 5 (Notiz tag-5 bauen-skizzen). Bland = gedruckte
 // Seiten (PDF-Seite − 16); Torres = PDF-Seiten wie in quellen/torres/text.txt; Nielsen = NN/g-Artikel, wörtlich geprüft
 // am 26.11.2026.
 const BLAND = 'David J. Bland & Alexander Osterwalder, Testing Business Ideas';
@@ -13,17 +14,18 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     live: [
       'Anknüpfen: Usage Story, Stationen 2 bis 6 – daraus werden Bildschirme.',
       'Papier-Skizzen: ein Blatt pro Bildschirm, von Hand; Pfeile, wohin jeder Knopf führt.',
-      'Kursregel: Papier vor Claude – sonst wird Claudes Vorstellung getestet.',
-      'Abnahmekriterien = drei Sätze; Zeitbox = 40 min, dann Schluss.',
+      'Kursregel: Papier vor Claude – an Tag 5 baut Claude genau das.',
+      'Testen auf Papier: jemand tippt, ihr legt das nächste Blatt hin.',
+      '„Heute auf Papier – an Tag 5 baut Claude Code daraus.“',
     ],
     verstaendnis: {
-      frage: 'Wozu zeichnet ihr erst auf Papier, wenn Claude Code den Prototyp ohnehin baut?',
-      antwort: 'Damit ihr jeden Bildschirm selbst entscheidet: was draufsteht und welcher Knopf wohin führt. Claude Code baut nach dem Foto der Blätter. Ohne Papier testet ihr Claudes Vorstellung von eurem Produkt.',
+      frage: 'Wozu zeichnet ihr erst auf Papier, wenn Claude Code den Prototyp an Tag 5 ohnehin baut?',
+      antwort: 'Damit ihr jeden Bildschirm selbst entscheidet und den Ablauf testet, bevor eine Zeile Code steht. An Tag 5 baut Claude Code nach den Fotos der Blätter. Ohne Papier bekämt ihr Claudes Vorstellung von eurem Produkt.',
     },
     kern: [
       {
-        text: 'Extreme Programming Spike: „Define your acceptance criteria. Define your time box for the spike.“ – „not ideal for scaling the solution, as it is typically thrown away and re-created afterwards.“',
-        quelle: `${BLAND}, S. 306–307`,
+        text: 'Pairing nach dem Papier-Prototyp: Clickable Prototype – „Use what you learned from the paper prototype testing to inform your clickable prototype design.“',
+        quelle: `${BLAND}, S. 185`,
       },
       {
         text: 'Paper Prototype: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction.“ – „ideal for rapidly testing the concept of your product quickly with customers.“',
@@ -40,14 +42,14 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Falle: Er belegt Bedienbarkeit, nicht ob jemand es will (E1).',
     ],
     verstaendnis: {
-      frage: 'Was zeigt euch der Klick-Prototyp – und was nicht?',
+      frage: 'Was zeigt euch der Papier-Prototyp – und was nicht?',
       antwort: 'Ob Menschen in einer Testsituation mit dem Ablauf zurechtkommen: Aufgabe geschafft, Zeit, wo gehangen. Nicht, ob sie es im echten Leben wollen – das prüft E1.',
-      falsch: '„Ob das Produkt ankommt“ – ob jemand es will, zeigt E1. Und laut Bland ersetzt der Klick-Prototyp auch keinen richtigen Usability-Test mit Kund*innen (S. 236).',
+      falsch: '„Ob das Produkt ankommt“ – ob jemand es will, zeigt E1. Und laut Bland ersetzt der Papier-Prototyp auch keinen richtigen Usability-Test mit Kund*innen (S. 182).',
     },
     kern: [
       {
-        text: '„Clickable prototype is ideal for rapidly testing the concept of your product quickly with customers at a higher fidelity than paper.“ – „not ideal as a replacement for proper usability with customers.“ Beleg: geschaffte Aufgaben, „a bit stronger than using paper“.',
-        quelle: `${BLAND}, S. 236–238`,
+        text: 'Paper Prototype: „not ideal as a replacement for proper usability with customers.“ Beleg: „Manual task completion is not necessarily strong evidence, but it will provide glimpses into where customers could get confused.“',
+        quelle: `${BLAND}, S. 182, 184`,
       },
       {
         text: '„What people say in an interview or survey is not necessarily what they do in real life or will do in the future.“ – darum misst E1 eine Handlung im echten Leben, E2 die Bedienung im Test.',
@@ -62,7 +64,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Eine Testperson, eine Aufgabe, der Prototyp – alle schauen nur zu.',
       'Falle: Meinungsfragen („Gefällt dir das?“) – gemessen wird, was sie tut.',
       'Ergebnis sind Bedienprobleme; ob sie es will, zeigt E1.',
-      'Heute nur der Trockenlauf; Tests mit Zielgruppe freiwillig bis Tag 5.',
+      'Heute Trockenlauf auf Papier; Zielgruppe freiwillig bis Tag 5.',
     ],
     verstaendnis: {
       frage: 'Eine Testperson sagt am Ende: „Coole App, würde ich nutzen.“ Was davon notiert ihr?',
@@ -101,7 +103,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Zwei Aufgaben vergleichen: Situation und Ziel gegen Bedienschritte.',
       'Laut denken vormachen: sagen, was man sieht, sucht, vorhat.',
       'Stockt sie: nur „Was würdest du jetzt tun?“ – nicht helfen.',
-      'Zu zweit: eine*r führt, eine*r notiert im Frame; daraus U1, U2 …',
+      'Zu zweit: eine*r führt und legt Blätter, eine*r notiert.',
     ],
     verstaendnis: {
       frage: 'Ist „Scanne den Code und tippe auf Bestellen“ eine gute Testaufgabe?',
@@ -124,7 +126,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     live: [
       'Dieselben Zeilen wie E1, jetzt für A3 (bedienbar).',
       'Gemessen: Höhepunkt ohne Hilfe erreicht – ja oder nein.',
-      'Die 20 Sekunden aus A3 notieren – Richtwert, nicht Schwelle.',
+      'Zeit nur notieren – auf Papier dauert das Umlegen mit.',
       'Vorher entschieden: ab 4 bauen · 3 nachtesten · unter 3 neu skizzieren.',
       'Testpersonen mit dem Pain, nicht die bequemsten.',
     ],
@@ -148,13 +150,13 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
         antwort: 'Eine Setzung der Kaffeebar in der Form von Karte E1 (Vorher entscheiden): ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit drei weiteren testen · unter 3 → Ablauf neu skizzieren, E2 wiederholen. Weicht ihr später davon ab, steht der Grund auf der Lernkarte.',
       },
     ],
-    ueberleitung: 'Wie das für die Kaffeebar aussieht: erst der Spike, dann ausgedachte Befunde.',
+    ueberleitung: 'Wie das für die Kaffeebar aussieht: erst die Blätter, dann ausgedachte Befunde.',
   },
 
   beispiel: {
     live: [
       'Fünf Blätter zeigen: eines pro Bildschirm; Blatt 3 ist der Höhepunkt.',
-      'Abnahmekriterien: drei Tipps, läuft am Handy, „Prototyp – nicht echt“.',
+      'Abnahmekriterien: drei Tipps, heute auf Papier, an Tag 5 am Handy.',
       'Nicht drin: Login, Zahlung, Datenbank.',
     ],
     ueberleitung: 'Angenommen, die Kaffeebar testet mit fünf Menschen: Das käme dabei heraus.',
@@ -173,15 +175,15 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 140`,
       },
     ],
-    ueberleitung: 'Jetzt ihr: 75 Minuten, sechs Schritte.',
+    ueberleitung: 'Jetzt ihr: 33 Minuten, vier Schritte.',
   },
 
   vorgehen: {
     live: [
-      'Sechs Schritte zeigen: Dauer und Ort je Schritt.',
-      'Wo: Frame „T4 · 5 · Prototyp · Produkt n“, Felder 1 bis 6.',
-      'Schritte 1–5 allein, nur Trockenlauf zu dritt.',
-      'Tests mit Zielgruppe freiwillig bis Tag 5.',
+      'Vier Schritte zeigen: Dauer und Ort je Schritt.',
+      'Wo: Frame „T4 · 5 · Prototyp · Produkt n“, Felder 1 bis 4.',
+      'Schritte 1–3 allein, nur Trockenlauf zu dritt.',
+      '„Gebaut wird heute nichts – an Tag 5 baut Claude Code daraus.“',
     ],
     ueberleitung: 'Schritt 1: ein Blatt je Bildschirm.',
   },
@@ -191,17 +193,17 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Timer 10 min: ein Blatt je Bildschirm, Stationen 2 bis 6.',
       'Höhepunkt = eigenes Blatt mit Stern und wörtlichem Satz.',
       'Pfeil an jedem Knopf zur Nummer des nächsten Blatts.',
-      'Falle: direkt bauen lassen, ohne Papier – Kursregel.',
+      'Blätter für den Trockenlauf bereitlegen, Fotos in Feld 1.',
     ],
     uebung: { dauer: '10 min', form: 'allein, Papier und Stift; Foto je Blatt in Feld 1' },
-    ueberleitung: 'Woran seht ihr, dass der Prototyp fertig genug ist? Drei Sätze.',
+    ueberleitung: 'Was muss der Prototyp zeigen? Drei Sätze – heute fürs Papier, an Tag 5 für Claude Code.',
   },
 
   'schritt-kriterien': {
     live: [
       'Timer 3 min: „zeigt … / läuft … / hat nicht …“.',
-      'Prüfbar: jede Zeile später am Handy mit Ja oder Nein.',
-      'Format in drei Sätzen ist Kursregel; Bland verlangt Kriterien vorab.',
+      'Prüfbar: Ja oder Nein – heute am Papier, Tag 5 am Handy.',
+      'Drei Sätze sind Kursregel; an Tag 5 Auftrag für Claude Code.',
     ],
     uebung: { dauer: '3 min', form: 'allein, Feld 2 auf Miro' },
     kern: [
@@ -209,62 +211,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
         text: '„If we build what we agree to, what will we check to see that we’re done? The answer to this question is usually a short list of things to check. This list is often called acceptance criteria, or story tests.“',
         quelle: 'Jeff Patton, User Story Mapping, Kap. 6, 3. Confirmation',
       },
-      {
-        text: '„Define your acceptance criteria.“ – „Determine if the acceptance criteria were successfully met.“',
-        quelle: `${BLAND}, S. 307`,
-      },
     ],
-    ueberleitung: 'Und wann hört ihr auf? Die Zeitbox.',
-  },
-
-  'schritt-zeitbox': {
-    live: [
-      'Timer 2 min: jetzt plus 40 Minuten eintragen.',
-      'Zuerst der Höhepunkt-Bildschirm, dann der Weg dorthin.',
-      'Bei null aufhören; Fehlendes ins Feld 3.',
-    ],
-    uebung: { dauer: '2 min', form: 'allein, Feld 3 auf Miro' },
-    kern: [
-      {
-        text: '„Before performing a spike, clearly define the acceptance criteria and time box so that everyone is clear on the goal before getting started. These can turn into never-ending research projects if left unchecked.“ – „It is aggressively time boxed for a reason“.',
-        quelle: `${BLAND}, S. 308`,
-      },
-    ],
-    ueberleitung: 'Jetzt baut Claude Code – nach euren Bildern.',
-  },
-
-  'schritt-bauen': {
-    live: [
-      'Timer 40 min starten; dieselbe Uhr steht auf der nächsten Folie.',
-      'Fenster von 11:00, dann /model opus; kein Opus: /model, Standard.',
-      'Bilder mit ctrl + V: Usage Story, Slice 1, Kriterien, Skizzen.',
-      'Claude zählt erst die Bildschirme auf – dann „Ja, los.“',
-    ],
-    uebung: { dauer: '40 min (Schritt 4, zwei Folien)', form: 'allein, Claude Code im eigenen Repo' },
-    ablauf: {
-      achten: [
-        'Niemand öffnet oder schreibt eine Datei; VS Code ist nur der Rahmen ums Claude-Terminal.',
-        'Story Map nur mit Backbone und Slice 1 abfotografieren; Skizzen-Fotos zusätzlich direkt einfügen.',
-        'Nur Oberfläche, Route /spike, die bestehende App bleibt unverändert.',
-      ],
-    },
-    ueberleitung: 'Ansehen, nachbessern, sichern – der Timer läuft weiter.',
-  },
-
-  'schritt-ansehen': {
-    live: [
-      'Weg bis zum Höhepunkt selbst klicken, Fenster schmal.',
-      'Ein Satz je Fehler, mit dem Namen des Blatts.',
-      'Fünf Minuten vor Schluss: Prompt „Spike sichern“ – Link fürs Handy.',
-      'Bei null aufhören, drei Kriterien in Feld 4 ankreuzen.',
-      'Bei Bedarf: Vercel-Anmeldung aus (Deployment Protection).',
-    ],
-    ablauf: {
-      achten: [
-        'Dreht sich Claude zweimal am selben Fehler: hingehen, nicht weiter probieren lassen.',
-        'Scheitern Push oder Vorschau um 15:55: weiter mit der Adresse auf dem Mac, Link zu Hause.',
-      ],
-    },
     ueberleitung: 'Bevor jemand testet: Karte E2.',
   },
 
@@ -274,26 +221,32 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Probe: Aufgabe laut lesen – kein Wort von den Knöpfen.',
       'Karte heute, auch wenn die Tests freiwillig sind.',
     ],
-    uebung: { dauer: '10 min', form: 'allein, Feld 5 auf Miro' },
-    ueberleitung: 'Und jetzt der eine Test heute: der Trockenlauf.',
+    uebung: { dauer: '10 min', form: 'allein, Feld 3 auf Miro' },
+    ueberleitung: 'Und jetzt der eine Test heute: der Trockenlauf auf Papier.',
   },
 
   'schritt-trockenlauf': {
     live: [
       'Timer 10 min, drei Runden à gut drei Minuten nach Tabelle.',
-      'Wem er gehört: teilt, liest vor, klickt nur Angesagtes.',
-      'Dritte Person notiert in Zeile 0 des fremden Frames.',
+      'Wem er gehört: Blatt in die Kamera, Aufgabe vorlesen, nächstes Blatt legen.',
+      'Dritte Person notiert in Feld 4, Zeile 0 des fremden Frames.',
       'Kursregel – keine Kritik: kein Feedback, nächste Runde.',
     ],
-    uebung: { dauer: '10 min', form: 'zu dritt in Teams, drei Runden; keine Kritik' },
+    uebung: { dauer: '10 min', form: 'zu dritt in Teams, drei Runden, Blätter vor der Kamera; keine Kritik' },
+    ablauf: {
+      achten: [
+        'Kamera zeigt nur Hände und Blätter? Sonst Bildschirm teilen, Fotos in Feld 1 auf Miro.',
+        'Knopf führt nirgendwohin: wer die Blätter legt, sagt nur „Da passiert nichts.“',
+      ],
+    },
     kern: [
       {
         text: '„Test it internally to make sure the flow works.“ Der Trockenlauf ist heute der Test des Prototyps; für die Schwelle von E2 zählt er nicht (Testpersonen mit dem Pain, freiwillig bis Tag 5).',
         quelle: `${BLAND}, S. 183`,
       },
       {
-        text: 'Online-Form des Trockenlaufs (Bildschirm teilen, die Testperson sagt an, wem der Prototyp gehört, klickt) und „keine Kritik“ sind Kursregeln: Die Testperson erfüllt eine Aufgabe, beurteilt wird nichts.',
-        quelle: 'Kurs: prototyp-spike.astro, Folie schritt-trockenlauf (Handout)',
+        text: 'Paper Prototype: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction.“ Online-Form (Blätter vor der Kamera, die Testperson sagt an, wem der Prototyp gehört, legt das nächste Blatt) und „keine Kritik“ sind Kursregeln.',
+        quelle: `${BLAND}, S. 182; Kurs: prototyp-spike.astro, Folie schritt-trockenlauf (Handout)`,
       },
     ],
     ueberleitung: 'Zum Schluss noch eine Frage an eure Tests.',
@@ -306,6 +259,6 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Bis Tag 5 freiwillig: Tests mit Menschen mit dem Pain; fünf ideal.',
       'Bedienbar sagt E2 – ob jemand es will, sagt E1.',
     ],
-    ueberleitung: 'Nach der Pause: Agil und Scrum – wie ihr ab Tag 5 im Takt baut.',
+    ueberleitung: 'Jetzt Puffer: fertig machen, was offen ist. Nach der Pause Agil und Scrum – wie ihr ab Tag 5 im Takt baut.',
   },
 };
