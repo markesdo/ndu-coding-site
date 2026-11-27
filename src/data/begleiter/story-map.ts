@@ -141,7 +141,39 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Ein Tag Mapping – dann Pattons Frage nach dem Gebauten.',
       '„Nearly none of it“ – die Liste hatte den falschen Anfang.',
     ],
-    kern: [{ text: '„You’ve been building a lot of software so far, but how much of the software you’ve built is on this map we’ve created?“ – „Nearly none of it.“', quelle: `${PATTON}, Kap. 1, Gary and the Tragedy of the Flat Backlog` }],
+    kern: [
+      { text: '„You’ve been building a lot of software so far, but how much of the software you’ve built is on this map we’ve created?“ – „Nearly none of it.“', quelle: `${PATTON}, Kap. 1, Explore Details and Options` },
+      { text: 'Das Problem der Liste: „A common way to use stories is to build a list of them, prioritize them, and begin talking about them and then turning them into software one at a time. That sounds pretty reasonable when you hear about it. But it can create some big problems.“', quelle: `${PATTON}, Kap. 1, Telling the Whole Story` },
+      { text: 'Was Gary verloren hatte: „He’d written a bunch of story titles, put them in a list, and talked about them one at a time. The conversations were more about the details of what to build and less about this big picture. And there were a lot of holes in Gary’s big picture.“', quelle: `${PATTON}, Kap. 1, Tell Your Users’ Stories` },
+      { text: 'Eine Liste hat nur eine Richtung: „If I put two cards down, one above the other, then people assume that the one above is more important.“ Die Map hat zwei: „if I put one to the left and another to the right, without saying a word I’ve indicated sequence“; und „One card above another can indicate priority. But it can also mean decomposition“.', quelle: `${PATTON}, Kap. 1, Frame Your Idea; Tell Your Users’ Stories` },
+      { text: 'Die Map als Ganzes: „The part that most people look at is the map—that left-to-right shape with the steps people take to tell a big story. The top to bottom is about the details. But the critical parts that frame the product and give more context are often hung above and around the map.“', quelle: `${PATTON}, Kap. 1, Explore Details and Options` },
+      { text: 'Der Backbone erzählt: „When you read the backbone of the map from left to right, it tells a story about all the people who use the system and what they do“ – „The left-to-right order is what I call a narrative flow“. Bei Globo.com, kurz vor der „flat backlog trap“: „You can’t plan a release until you can see it all together.“', quelle: `${PATTON}, Kap. 2, Map in a Narrative Flow Across Many Users and Systems; Mapping Helps Big Groups Build Shared Understanding` },
+      { text: 'Was minimal ist, sieht man erst am Ganzen: „The goal is to minimize the amount we build.“ Patton zu Gary vor der Map: „if we built this much and you launched your product and just did this, that looks like it’d be a valuable product.“', quelle: `${PATTON}, Kap. 1, Describe Your Customers and Users; Explore Details and Options` },
+      { text: 'Gemeinsames Verständnis: „No, it’s not that pile of cards on the floor. The something that’s really important is shared understanding.“ – „Shared documents aren’t shared understanding.“', quelle: `${PATTON}, Kap. 1, Tell Your Users’ Stories; Read This First, The Telephone Game` },
+    ],
+    geschichte: {
+      text: 'Gary Levitt ist Musiker mit eigener Band, managt Bands und produziert im Studio – an dem Tag gerade Dutzende Intros und Outros für die Oprah-Winfrey-Show. Seine Idee: eine große Anwendung für Musiker*innen und Bandmanager, Mad Mimi, kurz für „music industry marketing interface“. Wer für ihn entwickelt, arbeitet agil und rät: alles auflisten, priorisieren, das Wichtigste zuerst bauen. Gary zahlt jedes Stück, das Geld rinnt davon, und die Software kommt seiner Vision kaum näher. Patton besucht ihn in Manhattan, mitten im Büro-Umzug. Sie reden und schreiben Karten: erst Garys Ziele, dann die Nutzertypen, dann ein Tag im Leben eines Bandmanagers, von links nach rechts – auf dem Boden, bis die Map an die Wand stößt. Am Ende fragt Patton, wie viel vom Gebauten auf der Map steht. Gary: „Nearly none of it … I was thinking about the whole big vision of this thing, the vision that would have taken me years to reach, and now that we’ve had this discussion I wouldn’t have started there at all.“ Danach konzentriert er sich zuerst auf den Bandmanager, der seine Fans per E-Mail bewirbt; Patton verspricht „a very happy ending“.',
+      quelle: `${PATTON}, Kap. 1, Gary and the Tragedy of the Flat Backlog bis Explore Details and Options; Kap. 14, The secret to prioritization`,
+    },
+    verstaendnis: {
+      frage: 'Was zeigt die Map, das eine priorisierte Liste nicht zeigen kann?',
+      antwort: 'Die Reihenfolge der Geschichte: Von links nach rechts steht, was die Person nacheinander tut, mit Anfang und Ende; von oben nach unten Details und Wichtigkeit. Eine Liste hat nur eine Richtung, oben heißt wichtiger. Darum sieht man an ihr nicht, welche Schritte zusammen erst etwas Nutzbares ergeben – und nicht die Löcher dazwischen.',
+      falsch: '„Die Map ist einfach übersichtlicher.“ – Es geht nicht um Optik: Gary hatte nach Wichtigkeit gebaut und trotzdem fast nichts von dem, was auf der Map stand.',
+    },
+    fragen: [
+      {
+        frage: 'Ist eine Liste dann falsch?',
+        antwort: 'Nein, nur die flache Liste als Anfang. Auch die Karten einer Map sind ein Backlog: „The bunch of cards that describes the whole product … is called a product backlog“ (Kap. 6, 1. Card). Bei Eric ist das Backlog selbst eine Map – „Eric’s backlog is organized as a story map“ –, die Karten des obersten Slice wandern aufs Task-Board (Kap. 3, Build to Learn). Globo „sliced up its backlog“ (Kap. 14, There’s always too much). Zu einem guten Backlog: „it definitely isn’t the result of capturing a list of things people want built“ (Kap. 14, Einleitung).',
+      },
+      {
+        frage: 'Ich baue allein und habe alles im Kopf – brauche ich das?',
+        antwort: 'Gerade dann: „Even Gary—the guy who held the vision of the product in his head—didn’t have a clear understanding of the size and complexity of his product“ (Kap. 14, Discovery Is for Building Shared Understanding). „No matter how clear you are about your story, talking through it while you map will help you discover the holes in your own thinking“ (Kap. 1, Tell Your Users’ Stories).',
+      },
+      {
+        frage: 'Was hat das mit unserem Produkt zu tun?',
+        antwort: 'Kursübertrag, nicht aus dem Buch: Bisher steht euer Spitzenreiter als Lösung im Baum. Heute legt ihr ihn als Geschichte von links nach rechts, mit Slice 1 oben. An Tag 5 werden aus den Karten von Slice 1 eure ersten Issues für Claude Code – das Backlog kommt aus der Map, nicht umgekehrt.',
+      },
+    ],
     ueberleitung: 'Was zählt am Ende – das Gebaute oder was Menschen danach tun?',
   },
 
@@ -202,7 +234,38 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Drei Linien im Bild: läuft – besser – auslieferbar.',
       '„Ist es produktionsreif, habt ihr zu viel gebaut.“',
     ],
-    kern: [{ text: '„what you build early may not be production ready. In fact, if it is, you’ve likely done too much“.', quelle: `${PATTON}, Kap. 3, Build to Learn` }],
+    kern: [
+      { text: '„what you build early may not be production ready. In fact, if it is, you’ve likely done too much“.', quelle: `${PATTON}, Kap. 3, Really Minimize Your Experiments` },
+      { text: 'Was der erste Slice ist: „The first slice cuts all the way through the functionality. Once they build all those pieces, they can see the functionality working from end to end. It wouldn’t work in all the situations it needs to, and if they shipped to users this way, those users would howl.“', quelle: `${PATTON}, Kap. 4, Plan to Build Piece by Piece` },
+      { text: 'Wozu: „They can learn a lot about the technical risks that might cause them trouble later on.“ – „I call this first slice a functional walking skeleton—a term I borrowed from Alistair Cockburn. I’ve heard others call this a ‚steel thread‘ or a ‚tracer bullet.‘“', quelle: `${PATTON}, Kap. 4, Plan to Build Piece by Piece` },
+      { text: 'Eröffnung: „Focus on the essential features or user steps that cross through the entire product. Focus on things that are technically challenging or risky. Skip the optional things users might do. … Build just enough to see the product working end-to-end.“ Dann Mittelspiel (auffüllen, Regeln, Leistung testen) und Endspiel (verfeinern, Feedback einarbeiten).', quelle: `${PATTON}, Kap. 4, Opening-, Mid-, and Endgame Strategy` },
+      { text: 'Kein Release: „Each of these slices isn’t a release to customers and users: it’s a milestone the team members will use to stop and take stock of where they are.“ – „Think of these slices as three different buckets with different learning goals for each.“', quelle: `${PATTON}, Kap. 4, Don’t Release Each Slice` },
+      { text: 'Riskantes zuerst: Eric und sein Team „put the risky bits first—the parts that Eric or his team wanted to see working sooner so that they could course-correct before they put it in front of their customers.“', quelle: `${PATTON}, Kap. 4, It’s All About Risk` },
+      { text: 'Lernen als Ziel: „Treat every release as an experiment and be mindful of what you want to learn.“ – Patton nennt das „a minimum viable product experiment—or MVPe for short. It’s the smallest thing I could build to learn something.“', quelle: `${PATTON}, Kap. 3, How to Do It the Wrong Way; Validated Learning` },
+    ],
+    geschichte: {
+      text: 'Aaron und Mike von Workiva haben ein neues Feature in etwa drei Tagen erkundet: Kund*innen befragt, Prototypen in Axure gebaut und remote getestet, bis sie sicher waren, dass es gebraucht wird – und zwar ganz. Weglassen wie Globo.com können sie nicht mehr. Trotzdem schneiden sie ihre Map in drei Slices. Der erste geht quer durch alles: Sie sehen die Funktion einmal von Anfang bis Ende laufen, mit echten Daten und automatischen Tests. Nutzer*innen „would howl“, aber das Team lernt früh die technischen Risiken. Der zweite Slice baut auf, der dritte verfeinert. Keiner geht an Kund*innen; jeder ist ein Halt, um Bilanz zu ziehen. Ihre Map erzählen sie dem ganzen Team, und das findet technische Abhängigkeiten, die die beiden nie gefunden hätten.',
+      quelle: `${PATTON}, Kap. 4, Einleitung bis Don’t Release Each Slice`,
+    },
+    verstaendnis: {
+      frage: 'Ihr habt wenig Zeit: Baut ihr zuerst „Bestellen“ richtig gut – oder alle fünf Aktivitäten ganz dünn?',
+      antwort: 'Einmal dünn durch alle fünf Aktivitäten – Handarbeit mit * eingeschlossen (bar zahlen, zum Zug gehen). Erst wenn es einmal von „In die Halle“ bis „Zum Zug“ durchgeht, seht ihr, ob es durchläuft: „Build just enough to see the product working end-to-end“ (Kap. 4, Opening-, Mid-, and Endgame Strategy). Dass ihr damit auch lernt, ob Pendler*innen im Gehen bestellen, kommt von Eric: „something less than minimal—just enough that potential users could do something useful with it“, ein „minimum viable product experiment“ (Kap. 3, Build to Learn; Validated Learning). Euer Slice 1 verbindet beides.',
+      falsch: '„Erst das Wichtigste fertig.“ – So baut nach Patton ein Maurer eine Wand, Stück für Stück; das klappt nur, wenn jedes Teil so klar ist wie ein Ziegel (Kap. 4, What Would da Vinci Do?).',
+    },
+    fragen: [
+      {
+        frage: 'Ist das laufende Skelett schon das MVP?',
+        antwort: 'Nein. Bei Workiva ist es ein interner Meilenstein gegen technisches Risiko, nicht für Kund*innen (Kap. 4, Don’t Release Each Slice; It’s All About Risk). Bei Eric geht der erste Slice an ausgewählte Entwicklungspartner: „something less than minimal—just enough that potential users could do something useful with it“ (Kap. 3, Build to Learn). Für den Kurs: Euer Slice 1 steht näher bei Eric – links steht, was ihr lernen wollt („Wir lernen, ob …“).',
+      },
+      {
+        frage: 'Warum nicht ein Teil fertig bauen und dann das nächste?',
+        antwort: 'Weil das voraussetzt, dass die Vision stimmt: „This way of creating things assumes our vision is correct and accurate.“ Patton zeichnete als Kind erst den Kopf perfekt, am Ende stimmten die Proportionen nicht; besser sei „sketching the whole composition first“ (Kap. 4, What Would da Vinci Do?). Dazu Knibergs Skateboard statt Rad für Rad (Kap. 3, How to Do It the Wrong Way) – kennt ihr von Tag 1.',
+      },
+      {
+        frage: 'Was heißt das für unseren Slice 1 heute?',
+        antwort: 'Kursübertrag, nicht aus dem Buch: Slice 1 ist euer dünner Weg durch alle Aktivitäten, links Outcome und „Wir lernen, ob …“. Nach der Pause erzählt ihr ihn als Usage Story, am Nachmittag baut ihr ihn als Prototyp auf Papier. An Tag 5 besprecht ihr im Test-Debrief, was Karte E1 gezeigt hätte (und E2, falls ihr getestet habt); dann werden aus seinen Karten die ersten Issues, die Claude Code nach euren Skizzen baut. Schritte mit * bleiben Handarbeit, etwa bar zahlen.',
+      },
+    ],
     ueberleitung: 'So sieht das an der Kaffeebar aus.',
   },
 
@@ -231,10 +294,9 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
     live: [
       'Elf Schritte, jeder mit eigener Folie, Uhr und Prüffrage.',
       'Farblegende zeigen – gilt auf allen Story-Map-Frames.',
-      'Kursregel: allein, du kommst ab Schritt 7 ins 1:1.',
-      'Keine Runde über die Maps der anderen.',
+      'Kursregel: jede*r allein an der eigenen Map.',
     ],
-    uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein, 1:1 mit Markus' },
+    uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein' },
     miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
     ueberleitung: 'Schritt 1: der Rahmen.',
   },
@@ -304,10 +366,9 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'schritt-loecher': {
     live: [
       'Timer 5 min: allein „Was ist, wenn …?“ und „Was dazwischen?“.',
-      'Du gehst von Map zu Map, 1:1, je gut eine Minute.',
-      'Ergänzen, nicht verteidigen.',
+      'Offene Fragen als Sprechblase.',
     ],
-    uebung: { dauer: '5 min', form: 'allein, 1:1 mit Markus' },
+    uebung: { dauer: '5 min', form: 'allein' },
     ueberleitung: 'Bevor ihr schneidet: Was soll Slice 1 bewirken?',
   },
 
