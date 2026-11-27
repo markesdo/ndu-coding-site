@@ -2,11 +2,11 @@ import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/concept-story.astro.
 // Tag 3 (21.11.): Story-Bogen nur als Theorie. Tag 4 (28.11., NDU-66): Die Theorie läuft als eigener Teil vor der Übung,
-// alle 16 Folien von story-bogen bis drei-storys, in dieser Reihenfolge (Fable-Durchsicht 26.11.: concept-story vor flach,
+// alle 17 Folien von story-bogen bis drei-storys, in dieser Reihenfolge (Fable-Durchsicht 26.11.: concept-story vor flach,
 // hoehepunkt darin aufgegangen, flach – hoch – hoch-lehre – baut-mit als iPhone-Strang, drei-storys als Ausblick am Ende).
 // Danach 30 min Übung (vorgehen): sieben Stationen auf Miro in „T4 · 0 · Concept Story · Produkt n“ mit der Flach-Probe als Check (seit 27.11.),
 // festhalten – allein, Markus 1:1, keine Erzählrunde. Die Story bleibt auf Miro – keine Datei (Entscheidung 26.11. abends).
-// Zeit: Die Sprechzeiten in den live-Stichworten ergeben zusammen rund 22 min; die Uhrzeiten des Blocks stehen in tag-4.astro.
+// Zeit: Die Sprechzeiten in den live-Stichworten ergeben zusammen rund 23 min; die Uhrzeiten des Blocks stehen in tag-4.astro.
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
 // selbst kommt bei der Usage Story, hier geht es um den Bogen dahinter.
 // Lichaw liegt als EPUB vor: Quellen mit Kapitel + Abschnitt + Seite nach den Seitenmarken der Druckausgabe im EPUB.
@@ -233,8 +233,8 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 8, Conflict Is Key, S. 136`,
       },
       {
-        text: 'Für Produkte: „it is not your job to place obstacles in the way, but instead to consider them and plan around them“. Die Hürden gibt es schon; ihr plant sie ein. Dass sie in euren Interviews stehen, ist ein Übertrag des Kurses (Kursregel im Handout).',
-        quelle: `${LICHAW}, Kap. 8, Conflict Is Key, S. 136; Übertrag: Kursregel`,
+        text: 'Für Produkte: „it is not your job to place obstacles in the way, but instead to consider them and plan around them“. Die Hürden gibt es schon; ihr plant sie ein. Dass sie in euren Interviews stehen, ist ein Übertrag des Kurses (im Handout).',
+        quelle: `${LICHAW}, Kap. 8, Conflict Is Key, S. 136; Übertrag des Kurses`,
       },
     ],
     ablauf: {
@@ -275,6 +275,32 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       {
         frage: 'Warum „mal“ und nicht „plus“?',
         antwort: 'Lichaw begründet es nicht; sie nennt es eine Formel, „you didn’t learn in math class“. Als Bild lesen: Fehlt eine der Kräfte, gibt es keinen Gipfel.',
+      },
+    ],
+    ueberleitung: 'Rechnet die Formel einmal nach – an Pinocchio.',
+  },
+
+  'pinocchio-abc': {
+    live: [
+      'Zeit: Sprechzeit ~1 min; A und B als Gegenkräfte zeigen, dann C.',
+      '„Jetzt steht etwas dazwischen. Erst dadurch ist die Verwandlung verdient.“',
+      'Quelle: Illustration des Kurses nach Disney 1940, nicht Lichaw.',
+      'Fragen: Was spricht für eure Figur dagegen, es anders zu machen?',
+      'Falle: Collodis Roman einmischen – die Folie folgt nur Disney.',
+    ],
+    verstaendnis: {
+      frage: 'Was ist bei Pinocchio B – und warum braucht C es?',
+      antwort: 'B sind Versuchungen und Lügen: Er lässt sich weglocken, seine Nase wächst. Erst weil er dagegen ankommt und Geppetto rettet, ist die Verwandlung der Höhepunkt – ohne B wäre es wieder „bought some magic“.',
+      falsch: '„Dass er aus Holz ist“ – das ist die Ausgangslage, nicht die Kraft, die ihn auf dem Weg bremst (wie „die Schlange“ bei der Kaffeebar).',
+    },
+    kern: [
+      {
+        text: 'Lichaw erzählt Pinocchio nur ohne Konflikt („bought some magic, and transformed into a boy. The end.“) und nennt keine Kraft gegen ihn; sie fordert nur: „Every character and every goal in a story should always have some kind of force working in opposition to it.“ Ihr Beispiel für A × B = C ist das iPhone.',
+        quelle: `${LICHAW}, Kap. 8, Conflict Is Key und Math Is Fun, S. 136–137`,
+      },
+      {
+        text: 'A – B – C bei Pinocchio ist eine Illustration des Kurses, nach Disneys Film (1940): Die Blaue Fee verlangt mutig, ehrlich, selbstlos; Stromboli und die Vergnügungsinsel locken ihn weg, beim Lügen wächst die Nase; er rettet Geppetto aus dem Wal Monstro und wird ein echter Junge. Collodis Roman (1883) erzählt anders – nicht mischen.',
+        quelle: 'Illustration des Kurses; Walt Disney, „Pinocchio“ (1940)',
       },
     ],
     ueberleitung: 'Wie sieht dieser Bogen aus, wenn er ein Produkt erzählt?',
