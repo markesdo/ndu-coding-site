@@ -257,6 +257,29 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect([...g.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Die Regel:', 'Die Ausnahme:', 'Nie:']);
   });
 
+  // 27.11.2026: Regel ohne „(Kohl’s)“; Begleiter erzählt Netflix nach Thomke S. 126–127 und baut die Brücke zu E1.
+  it('#gegen-den-beleg: „Die Regel: Das Ergebnis gilt.“; Begleiter mit Netflix-Fall, Umdeuten und Kaffeebar-Brücke', () => {
+    expect(sichtbar('gegen-den-beleg')).toContain('<li data-schritt><strong>Die Regel:</strong> Das Ergebnis gilt.</li>');
+    const n = NOTIZEN[EX]['gegen-den-beleg'];
+    expect(n.geschichte?.quelle).toBe('Stefan H. Thomke, The Scientific Mindset, S. 127');
+    for (const zitat of [
+      'has built a sophisticated infrastructure for large-scale experimentation',
+      'resulted in more clicks by potential viewers than promotions featuring both Tomlin and her costar Jane Fonda',
+      '„The content team worried that excluding Fonda would alienate the actress and possibly violate her contract.“',
+      'pitted empirical evidence against ‚strategic considerations,‘',
+      'Wer genau entschied, nennt er nicht',
+    ]) expect(n.geschichte?.text).toContain(zitat);
+    const kern = JSON.stringify(n.kern);
+    expect(kern).toContain('Wie Netflix Vorschaubilder testet und warum sie zählen, beschreibt er nicht');
+    expect(kern).toContain('„Sometimes those discussions might result in a conscious choice to overrule the data.“');
+    const [, , umdeuten, kaffeebar] = n.fragen!.map((f) => f.antwort);
+    expect(umdeuten).toContain('„commit to abide by results“ (S. 85)');
+    expect(kaffeebar).toContain('„Weicht ab von ‚Wir entscheiden vorher‘? Ja – die Bar kann um 7:30 keine Bestellungen von Hand annehmen.“');
+    expect(kaffeebar).toContain('Nicht in Ordnung: „12 ist eigentlich nicht genug“');
+    expect(n.live).toContain('Brücke: E1 mit 12, trotzdem kein Concierge – Grund auf die Lernkarte.');
+    expect(JSON.stringify(n)).not.toContain('Kursregel');
+  });
+
   // Dozent 27.11.2026: Karte E1 der Kaffeebar folgt der Vorlage (#vorlage) wie auf Miro; dazu der Kontakt (E-Mail).
   it('#karte-e1 folgt der Vorlage: „Wir messen, …“, „Danach erfahren die Testpersonen: … · Wir sammeln: …“, Zug und E-Mail', () => {
     const k = sichtbar('karte-e1');

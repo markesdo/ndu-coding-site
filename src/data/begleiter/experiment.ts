@@ -633,10 +633,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   'gegen-den-beleg': {
     live: [
       'Erst erklären: Serie, zwei Stars, Netflix testet Vorschaubilder.',
-      'Netflix in drei Schritten erzählen, Fluss links nach rechts.',
+      'Netflix erzählen: Tomlin allein klickt besser, trotzdem beide, Grund offen.',
       'Regel, Ausnahme, Nie – einzeln aufdecken.',
       '„Ihr dürft gegen einen Beleg entscheiden – aber nicht so tun, als gäbe es ihn nicht.“',
-      'Bezug: die Zeile „Weicht ab …? Grund“ unter der Karte.',
+      'Brücke: E1 mit 12, trotzdem kein Concierge – Grund auf die Lernkarte.',
     ],
     verstaendnis: {
       frage: 'Was hat der Test Netflix gebracht, obwohl die Entscheidung gegen die Daten ging?',
@@ -664,7 +664,19 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Umdeuten ist bei Thomke „cherry-picking data that supports a preferred point of view“.',
         quelle: `${THOMKE}, S. 86`,
       },
+      {
+        text: 'Was Thomke über Netflix’ Tests allgemein sagt: nur, dass die Firma „has built a sophisticated infrastructure for large-scale experimentation“. Wie Netflix Vorschaubilder testet und warum sie zählen, beschreibt er nicht; der Hintergrund dazu oben ist nicht von ihm. Seine Quelle für den Fall: Shalini Ramachandran und Joe Flint, „At Netflix: Who Wins When It’s Hollywood vs. the Algorithm?“, Wall Street Journal, 10.11.2018 (Anm. 17).',
+        quelle: `${THOMKE}, S. 127 und Anm. 17 zu Kap. 6`,
+      },
+      {
+        text: 'Wo der Fall im Buch steht: im Abschnitt „Insist That Data Overrides Opinions“. „The results of experiments must prevail when they clash with strong opinions, no matter whose opinions they are.“ „Nothing stalls experiments faster than a so-called HiPPO—highest-paid person’s opinion.“ „But if everything that can be tested is tested, experiments can become instrumental to management decisions and fuel healthy debates.“ Netflix folgt direkt darauf: „Sometimes those discussions might result in a conscious choice to overrule the data.“',
+        quelle: `${THOMKE}, S. 126–127`,
+      },
     ],
+    geschichte: {
+      text: 'Bei Thomke: Netflix, „which has built a sophisticated infrastructure for large-scale experimentation“, testete Werbung für die Comedyserie „Grace and Frankie“. „The company’s executives were torn when tests showed that a promotion featuring an image of only Lily Tomlin, one of the stars of Grace and Frankie, resulted in more clicks by potential viewers than promotions featuring both Tomlin and her costar Jane Fonda.“ Getestet wurde also ein Bild nur mit Tomlin gegen Bilder mit beiden; gemessen wurden Klicks möglicher Zuschauer*innen. Der Einwand kam aus dem Content-Team: „The content team worried that excluding Fonda would alienate the actress and possibly violate her contract.“ Ob der Vertrag wirklich verletzt worden wäre, sagt Thomke nicht – nur „possibly“. Entschieden hat Netflix nach Streit: „After heated debates that pitted empirical evidence against ‚strategic considerations,‘ Netflix chose to use images that included both actresses, even though customer data didn’t support the decision.“ Wer genau entschied, nennt er nicht; die Führung war „torn“. Sein Punkt ist die Offenheit: „However, the experimental evidence made the decision more transparent. Nobody could argue that Fonda should remain in the promotion because customers preferred it.“',
+      quelle: `${THOMKE}, S. 127`,
+    },
     fragen: [
       {
         frage: 'Wann ist es legitim, gegen den Beleg zu entscheiden?',
@@ -672,7 +684,15 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Muss so eine Zeile anders aussehen als die anderen?',
-        antwort: 'Nein: „Beleg: … → darum: …“ nennt den Beleg, der dagegen spricht; darunter „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ (Kursregel).',
+        antwort: 'Nein: „Beleg: … → darum: …“ nennt den Beleg, der dagegen spricht; darunter „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ (Anpassung des Kurses).',
+      },
+      {
+        frage: 'Was ist der Unterschied zwischen „gegen den Beleg entscheiden“ und „das Ergebnis umdeuten“?',
+        antwort: 'Wer umdeutet, ändert den Beleg: „When results align with our beliefs, we accept them without hesitation; when they don’t, we probe them relentlessly“ (S. 126) – am Ende steht da, das Ergebnis habe nicht gezählt. Netflix hat den Beleg stehen lassen – Tomlin allein brachte mehr Klicks – und offen einen anderen Grund dagegengestellt: die Sorge um Fonda und womöglich ihren Vertrag (S. 127). Darum bleibt die Regel von Kohl’s, „commit to abide by results“ (S. 85): Die Ausnahme ist „a conscious choice“ (S. 127), keine neue Lesart der Zahlen.',
+      },
+      {
+        frage: 'Kaffeebar: E1 ergibt 12 von 30, die Karte sagt Concierge. Was, wenn das Team nicht will?',
+        antwort: 'Das geht, wenn es offen dasteht. Beispiel des Kurses: Die Bar kann um 7:30 keine Bestellungen von Hand annehmen. Auf der Lernkarte: „Beleg: gestützt → darum: …“ mit dem, was ihr stattdessen tut, und „Weicht ab von ‚Wir entscheiden vorher‘? Ja – die Bar kann um 7:30 keine Bestellungen von Hand annehmen.“ Die 12 von 30 bleiben stehen. Nicht in Ordnung: „12 ist eigentlich nicht genug“ – die Schwelle war 10, das wäre Umdeuten. Offen festhalten heißt also: Ergebnis, Entscheidung dagegen und Grund stehen zusammen auf der Lernkarte (Hinweis des Kurses; Thomke verlangt Transparenz, S. 127, nicht diese Form).',
       },
     ],
     ueberleitung: 'Zum Schluss: Wo steht euer Aufsteller?',
