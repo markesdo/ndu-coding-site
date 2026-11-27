@@ -3,10 +3,9 @@ import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
-import ClaudePruefung from '../../../components/ClaudePruefung.astro';
+import Selbstpruefung from '../../../components/Selbstpruefung.astro';
 import Karte from '../../../components/bild/Karte.astro';
 import AnnahmenMap from '../../../components/bild/AnnahmenMap.astro';
-import Prompt from '../../../components/Prompt.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
@@ -16,16 +15,11 @@ import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import Fluss from '../../../components/Fluss.astro';
 import { Eye, FlaskConical, Gavel, Handshake, OctagonX } from '@lucide/astro';
-import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 const THOMKE = 'Stefan H. Thomke, „The Scientific Mindset“ (2027)';
-// Am Ende des Tages, wenn auch die Origin Story steht: Claude sucht Gründe, warum E1 in die Irre führen könnte. Kein
-// Pre-Mortem im Sinn von Torres/Klein (das gehört zum Sammeln der Annahmen, Folie „schritte-der-idee“), darum eigener Name.
-// Seit dem Nachtrag 26.11. abends ohne docs-Dateien: Karte E1 als Screenshot vom Miro-Frame, die Map aus der Werkstatt.
-const GEGENPROBE = `Im Bild: meine Karte E1 vom Miro-Frame „T4 · 0 · Annahmen der Idee“. Lies aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Stell dir vor, E1 ist gelaufen und hat uns in die Irre geführt. Nenn drei Gründe, warum das passiert sein könnte (zum Beispiel falsches Publikum, eine Schwelle, die zu leicht ist, ein Test, der die ganze Idee statt der Annahme prüft), und je einen kleineren oder genaueren Test. Ändere nichts.`;
 const PRE_MORTEM_FRAGE = 'Stellt euch vor: Es ist ein halbes Jahr später, euer Spitzenreiter ist komplett gescheitert. Was ist schiefgegangen?';
 
 // Lage der Annahmen der Kaffeebar auf der Map (#beispiel-map), wie im Handout von #beispiel (x, y in % von links bzw. oben).
@@ -254,7 +248,28 @@ const KAFFEEBAR_ANNAHMEN = [
     <p data-schritt><strong>Dazu die Pre-Mortem-Frage:</strong> Es ist gescheitert – woran lag es?</p>
     <div class="nur-handout">
       <p>Torres nennt fünf Arten von Annahmen, je mit ihrer Frage: „Desirability assumptions: Does anyone want it?“ – „Viability assumptions: Should we build it?“ – „Feasibility assumptions: Can we build it?“ – „Usability assumptions: Is it usable?“ – „Ethical assumptions: Is there any potential harm in building this idea?“ ({TORRES}, S. 118). Die deutschen Fragen auf der Folie sind die Kursfassung, auf einen einzelnen Schritt zugeschnitten: Statt „will das jemand?“ fragt ihr „wollen sie das <em>hier</em> tun?“.</p>
-      <p>Jede Antwort, bei der ihr „hoffentlich“ denkt, ist eine Annahme: als Satz „Wir glauben, dass …“, mit Art. Bei der Kaffeebar ergibt die erste Frage an Schritt 1 die Annahme A5 – sie wird später die riskanteste. Die übrigen Annahmen der Kaffeebar zeigt die nächste Folie. Danach die Pre-Mortem-Frage von vorhin: „{PRE_MORTEM_FRAGE}“ – sie findet Annahmen, die beim Gehen durch die Schritte fehlen.</p>
+      <p>Jede Antwort, bei der ihr „hoffentlich“ denkt, ist eine Annahme: als Satz „Wir glauben, dass …“, mit Art. Bei der Kaffeebar ergibt die erste Frage an Schritt 1 die Annahme A5 – sie wird später die riskanteste. Die nächste Folie geht einen Schritt mit allen fünf Fragen durch, die übernächste zeigt die Annahmen aller Schritte. Danach die Pre-Mortem-Frage von vorhin: „{PRE_MORTEM_FRAGE}“ – sie findet Annahmen, die beim Gehen durch die Schritte fehlen.</p>
+    </div>
+  </Folie>
+
+  <Folie>
+    <h2 id="ein-schritt-fuenf-fragen">Ein Schritt, fünf Fragen – nicht jede ergibt einen Zettel</h2>
+    <p class="folie-satz">Kaffeebar, <strong>Schritt 4:</strong> Bar zeigt „Fertig 7:31“ und bereitet zu.</p>
+    <table class="fuenf-fragen ein-schritt">
+      <thead><tr><th>Frage</th><th>Antwort an Schritt 4</th><th>Ergebnis</th></tr></thead>
+      <tbody>
+        <tr data-schritt><td>Wollen sie?</td><td>Gehen sie wegen einer Zeile an der Schlange vorbei? Hoffentlich.</td><td class="treffer"><strong>A6</strong> · S4 · wünschenswert</td></tr>
+        <tr data-schritt><td>Können sie?</td><td>Die Bar handelt, sie lesen nur eine Zeile – nichts zu hoffen.</td><td>kein Zettel</td></tr>
+        <tr data-schritt><td>Können wir?</td><td>Schafft die Bar 40 Bestellungen in 30 Minuten? Muss stimmen.</td><td class="treffer"><strong>A2</strong> · S4 · machbar</td></tr>
+        <tr data-schritt><td>Rechnet es sich?</td><td>Betrifft nicht diesen Schritt – steht bei Schritt 5 (A4).</td><td>weiter</td></tr>
+        <tr data-schritt><td>Schadet es jemandem?</td><td>Hier nicht – heikel ist Schritt 3 (A7).</td><td>kein Zettel</td></tr>
+      </tbody>
+    </table>
+    <p class="ein-schritt-regel" data-schritt><strong>Eine Frage darf leer bleiben – ein Schritt nicht.</strong> Je Schritt mindestens zwei; bleibt eine Art an allen Schritten leer: noch einmal fragen.</p>
+    <p class="small muted">{TORRES}, S. 122–124, 126, 131–132.</p>
+    <div class="nur-handout">
+      <p>Die fünf Fragen stellt ihr an jedem Schritt – aber nicht jede ergibt etwas. Drei Antworten sind möglich. <strong>Ein Zettel:</strong> Ihr denkt „hoffentlich“, oder der Schritt klappt nur, wenn es stimmt. An Schritt 4 sind das A6 und A2. A2 hat schon einen Beleg und bekommt trotzdem einen Zettel, weil der Schritt daran hängt; auf der Map liegt er links. <strong>Kein Zettel:</strong> Die Frage passt zum Schritt, aber hier gibt es nichts zu hoffen oder zu fürchten – die Pendler*innen lesen eine Zeile, mehr nicht; schaden kann das nicht, heikel ist erst die Abfahrtszeit an Schritt 3 (A7). <strong>Weiter:</strong> Die Frage betrifft gar nicht den einzelnen Schritt, sondern die ganze Idee – ob sich „Im Gehen bestellen“ rechnet, hängt bei der Kaffeebar an Schritt 5 (A4). Für leere Fragen schreibt ihr nichts auf, auch kein „–“.</p>
+      <p>Zwei Grenzen. Kein Schritt bleibt leer, je Schritt kommen mindestens zwei Annahmen zusammen: Bei Torres hat jeder Schritt drei bis fünf Annahmen, aus fünf Schritten werden zwanzig ({TORRES}, S. 123–124); zu wenige Annahmen sind der erste Fehler, vor dem sie warnt: „Not generating enough assumptions“ (S. 131). Und bleibt eine Art an allen Schritten leer, fragt ihr noch einmal: „Use the categories to catch your blind spots“ (S. 132). Für die ethische Frage sagt sie es deutlich: „Some teams struggle to come up with anything. But all products have some potential harm“ (S. 126).</p>
     </div>
   </Folie>
 
@@ -322,7 +337,7 @@ Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt 
     </ol>
     <div class="nur-handout">
       <p>Dazu Theorie und Beispiel vorab. Die Schritte kommen aus Lückensatz und Value Map des Spitzenreiters. Erste Kandidaten für Annahmen sind die „?“ aus Value Map und Fit (heute Morgen) auf Miro: am Satz im Feld „Ideen vergleichen und wählen“ (T3 · 4), aus dem Ideen-Vergleich aller drei Ideen, und am Zettel in eurem Canvas, aus dem Fit. Bei den Annahmen markiert ihr, welche auch für eure anderen beiden Ideen gelten – geteilte Annahmen sind oft die schnellsten Tests. Das Pre-Mortem ist die Frage von vorhin: „{PRE_MORTEM_FRAGE}“ Je Schritt mindestens zwei Annahmen. Neue Annahmen bekommen die nächste freie ID eurer Werkstatt – heute kamen schon welche aus Concept Story und Geschäftsmodell dazu. „S1“ auf dem Zettel nennt den Schritt, aus dem die Annahme kommt – eine Kursregel: Torres geht die Schritte der Story Map einzeln durch und findet zu jedem Annahmen ({TORRES}, S. 122–124), eine Kennzeichnung schreibt sie nicht vor. Jeder Zettel kommt gleich grob in das Feld der Map, in das er gehört; im Schritt danach schiebt ihr die Zettel relativ zueinander und holt eure bisherigen Annahmen aus der Werkstatt dazu, je ein Zettel. Überholtes rutscht nach unten (nicht mehr wichtig) – in der Werkstatt setzt ihr die Wichtigkeit herunter, gelöscht wird nichts. Die Schritte bleiben in ihrem Feld. In die Werkstatt tragt ihr jetzt nur die Annahmen in „Zuerst testen“ ein, mit Art, Wichtigkeit und Beleg; die übrigen bis zum Abend, denn alle Zeilen auszufüllen dauert länger als die drei Minuten. Unter die Karte kommt je eine Zeile für die anderen beiden Ideen: deren riskanteste Annahme.</p>
-      <p>Die Karte steht danach auf Miro, im Frame „T4 · 0 · Annahmen der Idee“, Feld „Karte E1 für die oberste rechts“ (<a href="#vorlage">so sieht sie aus</a>). Prüfen mit Claude am Ende des Tages, wenn auch die Origin Story steht.</p>
+      <p>Die Karte steht danach auf Miro, im Frame „T4 · 0 · Annahmen der Idee“, Feld „Karte E1 für die oberste rechts“ (<a href="#vorlage">so sieht sie aus</a>). Prüft sie selbst mit der Liste unter <a href="#pruefen">Prüfen</a> am Ende des Tages, wenn auch die Origin Story steht.</p>
       <p><strong>Euer Baum – Tests:</strong> In eurem Baum auf Miro („Baum · Produkt n“) hängen seit der Value Map die drei Ideen unter der Ziel-Chance. Unter den Spitzenreiter kommen jetzt die riskanteste Annahme und die Karte E1; nach dem Papier-Prototyp kommt E2 dazu. Bei Torres hängen unter jeder Lösung die Annahmen-Tests, die zeigen, ob sie trägt ({TORRES}, S. 25–27). Scheitert der Spitzenreiter, sind die beiden Geschwister-Ideen noch da – mit der Zeile „Falls E1 scheitert“ unter eurer Karte.</p>
     </div>
   </Folie>
@@ -349,10 +364,8 @@ Weicht ab von „Wir entscheiden vorher“? Grund: …
 Nur beim Umschwenken – gilt weiter: [...] · neu zu testen: [...]`} />
 
   <h2 id="pruefen">Prüfen</h2>
-  <p>Karte E1 und Origin Story liegen nur auf Miro: die Karte in eurer Spalte im Frame „T4 · 0 · Annahmen der Idee“, die Origin Story in „T4 · 6 · Origin Story · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.</p>
-  <ClaudePruefung slug="experiment" />
-  <p>Am Ende des Tages, wenn auch die Origin Story steht: die Gegenprobe zu E1. Claude sucht Gründe, warum E1 euch in die Irre führen könnte – das ist nicht das Pre-Mortem vom Morgen, das Annahmen sammelt, sondern ein Blick auf den Test selbst. Zu Hause, in claude.ai oder der Claude-App, mit der Werkstatt verbunden und im Modellmenü auf dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus: einen Screenshot eurer Karte E1 von Miro einfügen, dann dieser Prompt. Meldet Claude ein Limit oder gibt es Opus nicht: im Modellmenü das vorgeschlagene Standardmodell wählen, dann weiter.</p>
-  <Prompt label="Gegenprobe zu E1 · zu Hause, in claude.ai">{GEGENPROBE}</Prompt>
+  <p>Karte E1 und Origin Story liegen nur auf Miro: die Karte in eurer Spalte im Frame „T4 · 0 · Annahmen der Idee“, die Origin Story in „T4 · 6 · Origin Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>
+  <Selbstpruefung slug="experiment" />
   </div>
 
   {/* Die Folie zur Origin Story steht im Abschluss von Tag 4 (tag-4#abschluss, 17:15) – nicht hier im Fluss der
@@ -460,6 +473,12 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
   .fuenf-fragen td:last-child { white-space: nowrap; color: var(--muted); }
   :global(html[data-beamer]) .fuenf-fragen td { padding-top: .25rem; padding-bottom: .25rem; }
   .fuenf-bsp { margin: .3rem 0; }
+  /* #ein-schritt-fuenf-fragen: dieselbe Tabelle mit Antwort-Spalte; Treffer in voller Farbe, leere Fragen gedämpft. */
+  .ein-schritt td:first-child { white-space: nowrap; }
+  .ein-schritt td.treffer { color: var(--fg); }
+  .ein-schritt-regel { margin: .6rem 0 .3rem; }
+  /* Fit von Hand geprüft (27.11., 1280×720 / 1728×1117), kein Test: die Regel in einer Zeile statt mit Trennung. */
+  :global(html[data-beamer] .folie:has(> h2#ein-schritt-fuenf-fragen) .ein-schritt-regel) { max-width: none; }
   /* #karte-e1, #vorher-entscheiden: was „Concierge“ heißt, als eine Zeile unter der Karte. */
   .concierge-zeile { font-size: .95rem; margin: .4rem 0; }
   /* #so-liefe-e1: je Schritt die Kaffeebar als kleine zweite Zeile. */
@@ -523,5 +542,6 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
     .baender li { grid-row: auto; grid-column: auto; }
     .band-unter { order: 1; } .band-mitte { order: 2; } .band-ueber { order: 3; }
     .test-arten th, .beispiel-schritte td:last-child { white-space: normal; }
+    .ein-schritt td:first-child, .ein-schritt td:last-child { white-space: normal; }
   }
 </style>

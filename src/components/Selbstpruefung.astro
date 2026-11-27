@@ -1,0 +1,12 @@
+---
+// Abschnitt „Prüfen“ ohne Claude (Tag-4-Methoden, Entscheidung 27.11.2026: keine Claude-Hausaufgabe an Tag 4): nur die
+// Prüfliste der Methode (methoden.ts) zum Abhaken. Dieselbe Checklisten-ID wie in ClaudePruefung.astro, damit gesetzte
+// Häkchen bleiben. Methoden von Tag 1 bis 3 prüfen weiter mit ClaudePruefung.
+import Checklist from './Checklist.astro';
+import { METHODEN, pruefChecklisteId } from './methoden';
+
+const { slug } = Astro.props as { slug: string };
+const m = METHODEN.find((x) => x.slug === slug);
+if (!m?.pruefliste) throw new Error(`Selbstpruefung: Methode „${slug}“ hat keine Prüfliste`);
+---
+<Checklist id={pruefChecklisteId(m)} items={m.pruefliste.map((p) => p.text)} ids={m.pruefliste.map((p) => p.id)} />
