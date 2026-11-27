@@ -15,7 +15,8 @@ const folie = (id: string) => {
 describe('Story-Bogen (Entscheidung 66; seit 26.11. Theorie an Tag 4)', () => {
   it('Folie 1 hat das Warum fürs eigene Produkt, die drei Fragen und den Ausblick auf den Prototyp', () => {
     const f = folie('story-bogen');
-    expect(f).toContain('<li data-schritt><strong>Warum für euch:</strong> Ihr wisst nicht, ob eure Idee gut ist? „That’s a story.“</li>');
+    expect(f).toContain('<li data-schritt><strong>Warum für euch:</strong> Ihr wisst nicht, ob eure Idee gut ist? Erzählt sie als Geschichte – wo die Geschichte nicht trägt, trägt die Idee nicht. („That’s a story.“)</li>');
+    expect(f).toContain('„Wo die Geschichte nicht trägt, trägt die Idee nicht“ ist die Lesart dieses Kurses von Lichaws Satz.');
     expect(f).toContain('<li data-schritt><strong>Drei Fragen:</strong> Was ist die Geschichte? Wer ist die Hauptfigur? Was ist ihr Ziel?</li>');
     expect(f).toContain('<li data-schritt><strong>Kursregel:</strong> Am Bogen prüft ihr danach, was in euren Prototyp kommt.</li>');
     expect(f).toContain('„What’s the story? Who is the hero? What is the hero’s goal?“ ({LICHAW}, Introduction vor Kap. 1, S. xiii–xiv)');

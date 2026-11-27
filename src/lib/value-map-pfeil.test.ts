@@ -125,7 +125,17 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     // 27.11.: Products & Services = was es braucht, damit die Idee passiert (statt „Idee zerlegen“).
     expect(folie('ps-finden')).toContain('<strong>Kaffeebar:</strong> Damit „Bestellen im Gehen“ passiert, braucht es: QR-Code an der Hallentür, Bestellung im Browser ohne App · Express-Ausgabe mit drei Standardgetränken.</p>');
     expect(folie('vom-satz')).toContain('<td>Products & Services <span style="font-size:.8em">– was es braucht, damit die Idee passiert</span></td>');
-    expect(vm.match(/zerleg/g) ?? []).toStrictEqual(['zerleg']);
+    // Nur der Buchsatz „Die Value Map zerlegt ein Wertversprechen …“ bleibt; die alte Rahmung ist weg, auf der Seite und im Begleiter.
+    expect(vm.match(/zerleg/gi) ?? []).toStrictEqual(['zerleg']);
+    const begleiterVm = JSON.stringify(NOTIZEN['/innolab/methoden/value-map'] ?? {});
+    expect(begleiterVm.match(/zerleg/gi) ?? []).toStrictEqual([]);
+    for (const alt of ['Idee zerlegen', 'in die ihr die Idee zerlegt', 'in die ihr sie zerlegt', 'Schaufenster-Frage', 'Was läge im Schaufenster']) {
+      expect(vm, alt).not.toContain(alt);
+      expect(begleiterVm, alt).not.toContain(alt);
+    }
+    expect(folie('ps-finden')).toContain('<p class="folie-satz">Was braucht es, damit eure Idee passiert – für genau dieses Segment?</p>');
+    expect(folie('vom-satz')).toContain('Die Idee wird in der Value Map zur Liste dessen, was es braucht, damit sie passiert – so fragt dieser Kurs; das Buch nennt diese Liste das, was im Schaufenster steht (S. 83).');
+    expect(NOTIZEN['/innolab/methoden/value-map']?.['ps-finden']?.live).toContain('Fragen: Was braucht es, damit eure Idee passiert?');
     expect(folie('vorgehen')).toContain('den gelben Ideen-Zettel ersetzt ihr durch die Produkte und Dienste, die es braucht, damit die Idee passiert – diese Frage ist das Vorgehen dieses Kurses');
     expect(JSON.stringify(NOTIZEN['/innolab/methoden/value-map']?.vorgehen ?? {})).toContain('die Idee wird zu Products & Services (ersetzt durch die Produkte, die es braucht, damit die Idee passiert)');
     // A4: Website-Frage entscheidet beim Wählen und kommt beim Füllen als Check wieder.

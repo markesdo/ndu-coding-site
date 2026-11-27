@@ -101,12 +101,12 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   'ps-finden': {
     live: [
       'Nachschlage-Folie: an Tag 4 nur zeigen, wenn jemand fragt.',
-      'Schaufenster-Frage: Was gibt es bei euch zu sehen?',
+      'Fragen: Was braucht es, damit eure Idee passiert?',
       'Gelb, ohne ID im Quadrat – die ID kommt erst beim Fit.',
       'Kaffeebar: QR-Code mit Browser-Bestellung, Express-Ausgabe.',
     ],
     kern: [
-      { text: 'Products & Services: „all the items your customers can see in your shop window“; sie schaffen nur im Verhältnis zu einem Segment Wert. Vier Arten: physisch, immateriell, digital, finanziell.', quelle: `${VPD}, S. 83–84` },
+      { text: 'Products & Services: „all the items your customers can see in your shop window“; sie schaffen nur im Verhältnis zu einem Segment Wert. Vier Arten: physisch, immateriell, digital, finanziell. Die Frage „Was braucht es, damit eure Idee passiert?“ ist eine Regel dieses Kurses; das Buch listet, was im Schaufenster liegt.', quelle: `${VPD}, S. 83–84` },
       { text: 'Erster Schritt der Übung: „List products and services“. Fehler: alle eigenen Produkte statt nur die für dieses Segment.', quelle: `${VPD}, S. 99, 105` },
     ],
     ueberleitung: 'Jetzt das Hellgrüne: je Pain von oben.',
