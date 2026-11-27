@@ -644,13 +644,14 @@ describe('Zwei Blöcke: Stopp nach Schritt 3', () => {
     expect(ids.indexOf('karte-e1')).toBeGreaterThanOrEqual(0);
     expect(ids.indexOf('vorgehen-karte')).toBe(ids.indexOf('karte-e1') + 1);
   });
-  // Review #480: „Nicht fertig?“ erst nach Schritt 5 aufdecken – sonst steht es schon beim ersten Klick da.
-  it('#vorgehen-karte: „Nicht fertig?“ ist ein eigener Schritt nach Schritt 5', () => {
+  // Markus 27.11.2026: Die Zeile „Nicht fertig? …“ ist gestrichen – auf der Folie und im Begleiter.
+  it('#vorgehen-karte: ohne „Nicht fertig?“, die Folie endet mit Schritt 5', () => {
     const k = sichtbar('vorgehen-karte');
-    const zeile = '<p class="stopp" data-schritt><strong>Nicht fertig?</strong>';
-    expect(k).toContain(zeile);
-    expect(k.indexOf(zeile)).toBeGreaterThan(k.indexOf('</ol>'));
+    expect(k).not.toContain('Nicht fertig?');
+    expect(k).not.toContain('class="stopp"');
+    expect(k.trimEnd().endsWith('</ol>')).toBe(true);
     expect(k.indexOf('</ol>')).toBeGreaterThan(k.indexOf('<strong>Euer Baum – Tests, auf Miro:</strong>'));
+    expect(JSON.stringify(NOTIZEN['/innolab/methoden/experiment']['vorgehen-karte'])).not.toContain('Nicht fertig');
   });
   // Review #480: „Karte“ heißt auf diesen Folien nur die Experiment-Karte; die Anleitung auf Miro hat Punkte 1–5, wie ihre
   // nummerierten Kreise (Frame „T4 · 0 · Anleitung Annahmen der Idee“, gelesen am 27.11.2026).

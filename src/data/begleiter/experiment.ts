@@ -669,7 +669,6 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Nach 3 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
       'Nach 5 min: Annahme und E1 in den Baum – Timer 2 min.',
       'Wenn hinten: Lernkarte und „Gegen den Beleg“ überspringen, weiter bei Übertrag.',
-      '„Nicht fertig? Karte E1 bis Tag 5 – das steht in der Hausaufgabe.“',
     ],
     uebung: { dauer: '7 min (5 + 2)', form: 'allein' },
     miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Karte E1 im Feld „Karte E1 für die oberste rechts“, mit Schwelle und „Wir entscheiden vorher“.', 'Riskanteste Annahme und E1 in „Baum · Produkt n“ unter den Spitzenreiter.'] },
