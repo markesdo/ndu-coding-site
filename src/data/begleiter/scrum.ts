@@ -43,6 +43,14 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         text: '„That is, while there is value in the items on the right, we value the items on the left more.“',
         quelle: MANIFEST,
       },
+      {
+        text: 'Vorsicht beim Erzählen: „3-5-3“ (Foliensatz 42) ist eine Merkhilfe, kein Begriff des Guides. Die Zahlen stimmen: drei Verantwortlichkeiten, fünf Events (der Sprint enthält die vier anderen), drei Artefakte.',
+        quelle: `${GUIDE}, S. 5, 7`,
+      },
+      {
+        text: 'Nicht behaupten: Royce habe den Wasserfall empfohlen (Foliensatz 3 und 11). In unseren Quellen steht kein Urheber – die Folie bleibt beim Modell.',
+        quelle: `Foliensatz; ${JEFFRIES}, S. 20–23 (ohne Urheber)`,
+      },
     ],
     ueberleitung: 'So weit der Guide. Jetzt: wo wir zu dritt mit drei Produkten davon abweichen.',
   },
@@ -52,7 +60,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
       'Zeit: 2 min.',
       '„Drei Produkte, drei Personen: drei Scrum-Teams mit denselben Köpfen.“',
       'Je Produkt PO, Produktziel, Sprint-Ziel – gemeinsamer Takt.',
-      'Ein Sprint, eine Woche; Daily dazwischen schriftlich in Linear.',
+      'Nur ein Sprint (eine Woche ist erlaubt); Daily dazwischen schriftlich in Linear.',
       'Warum offen sagen: Transparenz ist die erste Säule.',
     ],
     verstaendnis: {
@@ -70,8 +78,12 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         quelle: `${GUIDE}, S. 13`,
       },
       {
-        text: 'Abweichungen gegen den Guide: Sprints sind „fixed length events“ (S. 7) – bei uns nur einer, 12.12.–19.12.; das Daily „at the same time and place every working day“ (S. 9) – zwischen den Kurstagen schriftlich. Eine gemeinsame Definition of Done für alle drei Produkte ist eine Kursregel; der Guide verlangt sie nur für mehrere Teams am selben Produkt (S. 12).',
-        quelle: `${GUIDE}, S. 7, 9, 12; Kursregel`,
+        text: 'Abweichungen gegen den Guide: Sprints sind „fixed length events“ (S. 7) – bei uns nur einer, 12.12.–19.12.; das Daily „at the same time and place every working day“ (S. 9) – zwischen den Kurstagen schriftlich. Eine gemeinsame Definition of Done für alle drei Produkte ist eine Setzung des Kurses; der Guide verlangt sie nur für mehrere Teams am selben Produkt (S. 12).',
+        quelle: `${GUIDE}, S. 7, 9, 12; DoD für alle drei: Setzung des Kurses`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: Eine Woche ist nach dem Guide erlaubt (höchstens ein Monat). Die Abweichung ist, dass es nur einen Sprint gibt und kein nächster sofort folgt.',
+        quelle: `${GUIDE}, S. 7 („fixed length events of one month or less“)`,
       },
     ],
     ueberleitung: 'Passen die Begriffe schon? Probe an der Kaffeebar.',

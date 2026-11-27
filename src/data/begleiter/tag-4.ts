@@ -8,7 +8,8 @@ import type { Notiz } from './typen';
 // Zitate wie auf der Seite (Durchsicht 26.11.: Torres S. 26–27, 119; Lichaw Kap. 4; Bland S. 261). Was nicht aus den
 // Quellen stammt, ist als „Kursformulierung“ oder „Kursregel“ markiert. #slice-im-baum (27.11.): Zitate gegen das PDF
 // (Torres, gedruckte Seiten) und das EPUB (Patton, Kapitel und Abschnitt) geprüft; was die Quellen nicht sagen, steht
-// dort als „Vorsicht beim Erzählen: …“, ohne Etikett (begleiter-tag-4.test.ts).
+// dort als „Vorsicht beim Erzählen: …“, ohne Etikett (begleiter-tag-4.test.ts). Vorsicht-Hinweise (Audit 27.11.) stehen als
+// letzte kern-Einträge und beginnen mit „Vorsicht beim Erzählen:“ oder „Nicht behaupten:“ (begleiter-vorsicht.test.ts).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 const PATTON = 'Jeff Patton, User Story Mapping';
 const LICHAW = 'Donna Lichaw, The User’s Journey';
@@ -44,6 +45,10 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
       {
         text: 'Die drei Zuläufe: Beleg (Interviews, Experience Map) liefert den Inhalt, Outcome (Produkt-Brief) das Maß, Annahme das Lernziel – daraus wird E1. Wie Slice 1 nach Outcome geschnitten wird, kommt erst in der Story Map; hier nur die Vorschau.',
         quelle: 'Kursformulierung; Arbeitsfluss (/innolab/arbeitsfluss)',
+      },
+      {
+        text: 'Vorsicht beim Erzählen: Alle Zahlen und Zitate der Kaffeebar sind ausgedacht, auch 40 in 30 Minuten, 20 Sekunden und 8 von 30. Nie als Beleg oder Erfahrungswert erzählen.',
+        quelle: 'Kaffeebar: ausgedachtes Beispiel des Kurses, seit Tag 1 so markiert (tag-1, problem-rahmen)',
       },
     ],
     ueberleitung: 'Und wo hängt Slice 1 in eurem Baum?',
@@ -134,6 +139,10 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
         text: 'Am Ende genau eine Handlung und ihre Messung: „you call your main character to action and determine how to measure that action“. Die Handlung benennt das Ziel der Person: „start training“ statt „sign up“.',
         quelle: `${LICHAW}, Kap. 4 (FitCounter)`,
       },
+      {
+        text: 'Vorsicht beim Erzählen: FitCounter hat Lichaw fiktionalisiert – kein echtes Start-up, keine echten Zahlen. Nur die Lehre zitieren: Die Handlung benennt das Ziel der Person.',
+        quelle: `${LICHAW}, Kap. 3 („It is not a real company, nor a real product.“); Kap. 4`,
+      },
     ],
     ueberleitung: 'Wie das aussieht, zeigt der Aufsteller der Kaffeebar.',
   },
@@ -148,8 +157,12 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
     ],
     kern: [
       {
-        text: 'Dieselbe Reihenfolge empfiehlt Bland für eine Landingpage: Wertversprechen, Handlung, darunter Pains, Lösung, Gains.',
-        quelle: `${BLAND}, S. 261`,
+        text: 'Pain zuerst ist die Lesart des Kurses von Lichaws Bogen der Origin Story (Abb. 4.3): Dort kommen erst Ausgangslage und Problem, dann wie sie vom Produkt erfährt, die Hürde, und erst dann sieht sie den Wert.',
+        quelle: `Lesart des Kurses; ${LICHAW}, Kap. 4, Abb. 4.3`,
+      },
+      {
+        text: 'Nicht behaupten: Bland empfehle dieselbe Reihenfolge. Bei ihm steht oben das Wertversprechen, darunter die Handlung, erst darunter Pains, Lösung und Gains (S. 261). Den Aufsteller mit dem Pain zu eröffnen, ist die Lesart des Kurses von Lichaws Bogen (Abb. 4.3).',
+        quelle: `${BLAND}, Simple Landing Page, S. 261`,
       },
     ],
     ueberleitung: 'Und das ist eure Hausaufgabe – sie beginnt mit genau diesem Text.',

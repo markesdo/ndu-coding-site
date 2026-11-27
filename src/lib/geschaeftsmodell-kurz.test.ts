@@ -98,7 +98,7 @@ describe('Geschäftsmodell: Warum vor der Experiment-Karte, Links (27.11.2026)',
     expect(f).toContain('mitte="Im Gehen bestellen" ideeSichtbar hervor={2}');
     expect([...f.matchAll(/<li data-schritt>(.*?)<\/li>/g)].map((m) => m[1])).toStrictEqual([
       '<strong>Wirtschaftlich heißt:</strong> Die Idee funktioniert für die Kundschaft – trägt sie sich auch für euch? („Should we build it?“)',
-      '<strong>Oft vergessen:</strong> Kosten und Einnahmen – bei vielen Teams der blinde Fleck.',
+      '<strong>Oft vergessen:</strong> Kosten und Einnahmen – die meisten Teams haben einen blinden Fleck, manche genau diesen.',
       '<strong>Kaffeebar:</strong> Rechnen sich die zusätzlichen Bestellungen? – gleich als Annahme A4.',
       '<strong>Ein Satz, keine Kalkulation</strong> – getestet wird zuerst, ob es jemand will.',
     ]);

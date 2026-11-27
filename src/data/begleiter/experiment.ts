@@ -33,6 +33,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: '„Our first test was designed to be completed in a day or two. This test will take up to two weeks“ – „Design your tests to be completed in a day or two, or a week, at most.“',
         quelle: `${TORRES}, S. 138, 144`,
       },
+      {
+        text: 'Vorsicht beim Erzählen: „Wochen“ ist unsere Schätzung; Torres sagt nur, dass man drei Ideen nicht bauen und vergleichen kann (S. 117). Belegt ist die andere Hälfte: Tests in „a day or two“ (S. 138, 144).',
+        quelle: `${TORRES}, S. 117, 138, 144`,
+      },
     ],
     ueberleitung: 'Woher kommen die Annahmen? Aus den Schritten eurer Idee.',
   },
@@ -220,6 +224,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Bland ordnet dasselbe als Achse der Belegstärke: „What people say in an interview or survey is not necessarily what they do in real life or will do in the future.“',
         quelle: `${BLAND}, S. 52`,
       },
+      {
+        text: 'Vorsicht beim Erzählen: Thomke spricht von „two versions of the software“ – ob beide Knöpfe nebeneinander standen, sagt er nicht eindeutig. Sicher ist: Keine*r der 20 im Usability-Test wollte es, 58 % wählten „Pay employees first“, die Conversion stieg um 14 %.',
+        quelle: `${THOMKE}, S. 72`,
+      },
     ],
     fragen: [
       {
@@ -304,22 +312,54 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 63`,
       },
       {
-        text: 'Kursregeln: drei Bänder als Form für die Entscheidungsmatrix; „knapp darunter“ = unklar, „deutlich darunter“ = widerlegt; Grenze etwa die halbe Schwelle. Die Quellen geben dafür keine Zahl.',
+        text: 'Setzungen des Kurses: drei Bänder als Form für die Entscheidungsmatrix; „knapp darunter“ = unklar, „deutlich darunter“ = widerlegt; Grenze etwa die halbe Schwelle. Die Quellen geben dafür keine Zahl.',
         quelle: 'Kurs (Entscheidung Markus 26.11.2026)',
       },
       {
         text: 'Warum drei Bänder: Die Zahlen sind „a subjective decision“ – sie sollen Risiko senken, nicht beweisen. 9 von 30 ist nicht das Gegenteil von 10 von 30.',
         quelle: `${TORRES}, S. 137`,
       },
+      {
+        text: 'Wie viele Menschen, sagt Torres nicht als Zahl, sondern als Abwägung: „We want to define both how many people we’ll test with and how many people need to exhibit the behavior that we expect to see.“ Wie man die Zahlen wählt: „This is a subjective decision. … You want to test your assumption with as few people as possible (as it will be faster) but with the number of people that still gives your team the information they need to act on the data.“ Die Frage ans Team: „How many people would convince you this assumption is more known? That’s the negotiation you are having as a team.“',
+        quelle: `${TORRES}, S. 136–137`,
+      },
+      {
+        text: 'Klein anfangen: „we want to start small. You’ll be pleasantly surprised by how much you can learn from getting feedback from a handful of customers.“ Mit kleinen Zahlen gibt es Fehlalarme in beide Richtungen („false positives and false negatives“); dagegen hilft Streuung bei der Auswahl (S. 139). Als Anzahl, nicht als Prozent: „Be explicit from the get-go about how many people you will test with when defining your success criteria.“ Und ist der Test schwächer als die echte Lage, passt man die Schwelle an: „you might lower your threshold for success to account for that“ (S. 137).',
+        quelle: `${TORRES}, S. 137–139, 144–145`,
+      },
+      {
+        text: 'Bland: Der vierte Teil der Test Card ist „Criteria“ – „The success criteria for your experiment metrics“ (S. 45), im Beispiel „16 of the 20 parents“ (S. 46). Eine Regel für die Zahl der Testpersonen gibt er nicht, nur: „The more data points you have, the better. Five quotes from personal customer interviews is obviously weaker than 100 quotes.“ (S. 56). Quoten nennt er je Test: Landingpage „For early stage validation we recommend 10% –15%“ der Aufrufe (S. 262), Broschüre mit Handlungsaufruf „a strong signal of 15% or more“ (S. 196).',
+        quelle: `${BLAND}, S. 45–46, 56, 196, 262`,
+      },
+      {
+        text: 'So kommt die Kaffeebar auf 30, 10 und 5. 30: so viele Pendler*innen wählen an drei Morgen zwischen 7:15 und 7:45 bei Schlange – genug für eine Zahl, schnell genug für eine Woche. 10, ein Drittel: Gezählt wird nur, wer bei Schlange wählt (Automat oder Aufsteller), nicht jede*r, die vorbeigeht – darum liegt die Schwelle weit über Blands 10–15 % aller Aufrufe; das Verhältnis liegt nahe an Torres’ „At least 3 out of 10“. 5: die halbe Schwelle, damit zwischen widerlegt und gestützt ein Band zum Weitertesten bleibt.',
+        quelle: `Kaffeebar: Setzung des Kurses; vgl. ${TORRES}, S. 136; ${BLAND}, S. 262`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: 30, 10 und 5 hat der Kurs gesetzt – keine Quelle nennt eine Mindestzahl oder „ein Drittel“. Nicht als „so viele braucht man“ erzählen, sondern als Beispiel, wie ein Team seine Zahlen vorher aushandelt.',
+        quelle: `Kurs; ${TORRES}, S. 137; ${BLAND}, S. 56`,
+      },
     ],
     fragen: [
+      {
+        frage: 'Warum 30? Warum ab 10?',
+        antwort: 'Keine Quelle schreibt eine Zahl vor; Torres nennt die Wahl „a subjective decision“: so wenige Menschen wie möglich, aber so viele, dass das Team danach handelt (S. 137). Die Kaffeebar hat gesetzt: 30, weil so viele an drei Morgen bei Schlange zwischen Automat und Aufsteller wählen; 10, ein Drittel, weil nur zählt, wer wählt – nicht alle, die vorbeigehen. Wären wir uns bei 10 von 30 einig, dass A5 „more known“ ist? Das ist die Frage, die das Team vorher beantwortet. Bland hat Quoten nur pro Aufruf: 10–15 % auf einer Landingpage (S. 262).',
+      },
+      {
+        frage: 'Wie finden wir unsere eigenen Zahlen?',
+        antwort: 'In vier Schritten, vor dem Test: (1) Wer zählt? Nur wer die Wahl hat, die eure Annahme behauptet – das ist der Nenner. (2) Wie viele erreicht ihr in ein, zwei Tagen, höchstens einer Woche (Torres S. 144)? (3) Die Schwelle als Anzahl, nicht als Prozent (S. 144–145): Bei wie vielen wärt ihr alle überzeugt (S. 137)? Ist der Test schwächer als die echte Lage, senkt ihr sie (S. 137). (4) Die Grenze bei etwa der halben Schwelle – Setzung des Kurses. Testet zuerst mit den Menschen, bei denen es am ehesten klappt: „design your assumption tests such that they are likely to pass“ (S. 145).',
+      },
       {
         frage: 'Ist das nicht dasselbe wie die Schwelle?',
         antwort: 'Die Schwelle sagt, wann ihr recht habt. Die Zeile daneben sagt, was ihr dann tut – auch wenn ihr nicht recht habt. Thomke verlangt beides vor den Daten (S. 86).',
       },
       {
         frage: 'Woher wissen wir, wo „knapp darunter“ endet?',
-        antwort: 'Kursregel: etwa bei der halben Schwelle, vor dem Test als Zahl festgelegt. Bei der Kaffeebar 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
+        antwort: 'Setzung des Kurses: etwa bei der halben Schwelle, vor dem Test als Zahl festgelegt. Bei der Kaffeebar 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
+      },
+      {
+        frage: 'Was heißt „ab 10 → Concierge“ genau?',
+        antwort: 'Der nächste, stärkere Test: Ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar – echter Kaffee, noch ohne Software, und die Pendler*innen sehen, wer ihn holt. Bei Bland folgt der Concierge auf die Landingpage (S. 251), und „Payments are strong evidence, even if you are manually delivering value“ (S. 250). Ablauf, Messgrößen und Fall: Begleiter zur Folie „Vier Tests zur Auswahl“.',
       },
       {
         frage: 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?',
@@ -374,7 +414,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 142–144; Kaffeebar und Einordnung: Kurs`,
       },
       {
-        text: 'Landingpage / Aufsteller – Aufbau: „A simple, digital web page that clearly illustrates your Value Proposition with a call to action.“ Das Angebot steht da, das Produkt noch nicht, und die Seite sagt das (Kursregel). Testpersonen: wer vorbeikommt – Bland rechnet mit „about 100 unique visitors a day“; beim Aufsteller die Menschen in der Halle.',
+        text: 'Landingpage / Aufsteller – Aufbau: „A simple, digital web page that clearly illustrates your Value Proposition with a call to action.“ Das Angebot steht da, das Produkt noch nicht, und die Seite sagt das (Vorgabe des Kurses). Testpersonen: wer vorbeikommt – Bland rechnet mit „about 100 unique visitors a day“; beim Aufsteller die Menschen in der Halle.',
         quelle: `${BLAND}, Simple Landing Page, S. 260, 262`,
       },
       {
@@ -390,12 +430,44 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 250`,
       },
       {
+        text: 'Concierge – Bewertung: In Blands Grafik Kosten 1 von 5 Punkten, Aufbau 2, Laufzeit 3, Belegstärke 5 – für alle drei Arten von Annahmen (desirability, feasibility, viability). „Concierge is ideal for learning firsthand about steps needed to create, capture, and deliver value to a customer.“ – „Concierge is not ideal for scaling a product or business.“ Billig, „As long as you keep the concierge experiments small and simple“; der Aufbau dauert länger, „because you have to manually plan out all of the steps and acquire customers for it“; Laufzeit „days to weeks“.',
+        quelle: `${BLAND}, Concierge, S. 248, 250`,
+      },
+      {
+        text: 'Concierge – Ablauf: Vorbereiten – „Plan the steps of creating the product manually.“ „Create a board to track the orders and steps needed.“ „Test the steps with someone first to make sure they work.“ Durchführen – Bestellungen annehmen, die Zahlen „on grid paper or excel“ festhalten, die Dauer jeder Aufgabe notieren, dann „Gather feedback from customers with interviews and surveys.“ Auswerten – Zeit pro Aufgabe, „Where you experienced delays in the process.“, „How many purchased.“ – und daraus, „where to automate the process“.',
+        quelle: `${BLAND}, S. 249`,
+      },
+      {
+        text: 'Concierge – gemessen, und warum stark: Zufriedenheit zählt, „because you are asking for feedback after the value was delivered to the customer, instead of a hypothetical situation“; Käufe – „What are they willing to pay for a manual experience?“; die Durchlaufzeit (Lead Time: Bestellung bis Lieferung; Cycle Time: reine Arbeitszeit) ist „very strong“, weil man jeden Schritt aus erster Hand kennt. Wie viele Kund*innen, sagt Bland nicht als Zahl: Die Laufzeit hängt davon ab, „how many customers you involve“; B2B-Dienstleister liefern „manually to a handful of customers before scaling“.',
+        quelle: `${BLAND}, S. 250; S. 98`,
+      },
+      {
+        text: 'Concierge – davor und danach: Davor ein Trichter – Simple Landing Page („to collect interest in your concierge experiment“), Broschüre mit Handlungsaufruf oder Feature Stub. Danach Wizard of Oz („deliver the value manually, without making the human steps visible to the end customer“), Mash-Up („Automate manual steps from your concierge experiment with existing technology.“) oder Referral Program. Für Dienstleistungen an Endkund*innen: „Once they’ve conducted a few presales, B2C services can deliver the value manually to refine it before scaling.“ Bei der Kaffeebar also: Aufsteller (E1), dann Concierge.',
+        quelle: `${BLAND}, S. 251 (Pairings), S. 99`,
+      },
+      {
+        text: 'Concierge – Blands Fall, Realtor.com: Hypothese, dass Verkäufer*innen im selben Jahr auch kaufen. Ein Handlungsaufruf auf der Seite, ein paar Fragen; dann stellte der Produktmanager Dave Masters jede Auswertung von Hand als PDF zusammen und schickte sie per E-Mail, mit Link für ein Gespräch. Erwartet: 30 Anmeldungen in 3 Stunden; es kamen „more than 80 signups in a few minutes, faster than they could even shut it off.“ Lehre: „High volume could be a good sign but might require you to do a lot more manual work than you initially set out to do.“',
+        quelle: `${BLAND}, Fallstudie Concierge, S. 252–253`,
+      },
+      {
+        text: 'Concierge – Kaffeebar: Ab 10 von 30 bei E1 folgt der Concierge. Ein paar Morgen, 7:15–7:45, steht eine Person aus dem Team an der Hallentür, schreibt Getränk und Zug auf einen Bestellzettel (Blands „board“) und gibt die Bestellung an die Bar; die Bar bereitet zu, abgeholt und bezahlt wird an der Express-Ausgabe. Gemessen: Bestellungen und Zahlungen, ob der Kaffee vor dem Zug fertig war (Bestellung bis Übergabe), wo es stockte, und ein Satz zur Zufriedenheit bei der Übergabe. Erfolg steht vorher auf der nächsten Karte, als x von y – etwa: Von den ersten 30 Bestellungen sind mindestens 24 vor dem Zug fertig.',
+        quelle: `Kaffeebar: Kurs (Folie karte-e1); Messgrößen nach ${BLAND}, S. 249–250`,
+      },
+      {
         text: 'Mock Sale – Aufbau: „Presenting a sale for your product without processing any payment information.“ Online: nach dem Klick auf den Preis ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Gemessen: Kaufklicks, E-Mails, eingegebene Zahlungsdaten – „Purchase clicks are relatively strong“, „Payment info submissions are very strong evidence.“',
         quelle: `${BLAND}, Mock Sale, S. 288–290`,
       },
       {
-        text: 'Mock Sale – Achtung: Bland lässt im Laden „intercept and explain that the product is not yet available“ und die Kundschaft „with a gift card for the inconvenience“ entschädigen; online kommt der Hinweis sofort nach dem Klick. Zahlungsdaten nicht speichern ist Kursregel. Kaffeebar: Knopf „Vorbestellen für 2,90 €“, danach „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“.',
+        text: 'Mock Sale – Achtung: Bland lässt im Laden „intercept and explain that the product is not yet available“ und die Kundschaft „with a gift card for the inconvenience“ entschädigen; online kommt der Hinweis sofort nach dem Klick. Zahlungsdaten nicht speichern ist eine Vorgabe des Kurses. Kaffeebar: Knopf „Vorbestellen für 2,90 €“, danach „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“.',
         quelle: `${BLAND}, S. 289; Kaffeebar und Speicherregel: Kurs`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: „bis mittel“ gilt nur für den Aufsteller und ist unsere Einordnung, weil er in der echten Situation steht. Die Landingpage online bleibt „eher schwach“ – Bland: „Email is a rather weak strength of evidence“ (S. 262).',
+        quelle: `${BLAND}, S. 52, 262; Einordnung: Kurs`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: Der Concierge der Kaffeebar – Hallentür, ein paar Morgen, Bestellzettel, Express-Ausgabe, „24 von 30“ – ist ein Beispiel des Kurses, nicht Blands. Von Bland sind Definition, Ablauf, Messgrößen, die Punkte der Grafik und der Fall Realtor.com.',
+        quelle: `Kurs; ${BLAND}, S. 248–253`,
       },
     ],
     verstaendnis: {
@@ -410,7 +482,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Was ist ein Mock Sale?',
-        antwort: 'Ein Angebot mit Preis und Kaufen-Knopf für etwas, das es noch nicht gibt: „Presenting a sale for your product without processing any payment information.“ Nach dem Klick erfährt die Person, dass es das noch nicht gibt – online ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Es fließt kein Geld (Bland, Mock Sale, S. 288–289). Gut für Preise: „Mock sale is ideal for determining different price points for your product“ (S. 288). Kaffeebar: „Vorbestellen für 2,90 €“ → „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“ (E-Mail-Feld wie bei Bland, S. 289). Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks – „relatively strong, although not as strong as subsequent email and payment submissions“ – und, wer Bescheid will, die E-Mails danach, ebenfalls „relatively strong“ (S. 290); „sehr stark“ wäre er erst mit Zahlungsdaten.',
+        antwort: 'Ein Angebot mit Preis und Kaufen-Knopf für etwas, das es noch nicht gibt: „Presenting a sale for your product without processing any payment information.“ Nach dem Klick erfährt die Person, dass es das noch nicht gibt – online ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Es fließt kein Geld (Bland, Mock Sale, S. 288–289). Gut für Preise: „Mock sale is ideal for determining different price points for your product“ (S. 288). Kaffeebar: „Vorbestellen für 2,90 €“ → „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“ (E-Mail-Feld wie bei Bland, S. 289). Ohne Zahlungsdaten (Vorgabe des Kurses: nie speichern) zählt euer Mock Sale die Kaufklicks – „relatively strong, although not as strong as subsequent email and payment submissions“ – und, wer Bescheid will, die E-Mails danach, ebenfalls „relatively strong“ (S. 290); „sehr stark“ wäre er erst mit Zahlungsdaten.',
       },
       {
         frage: 'Sind die Testpersonen schon echte Kund*innen?',
@@ -418,15 +490,27 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
-        antwort: 'Unehrlich wäre es, wenn die Person es nicht erfährt. Bland löst sofort auf: im Laden „intercept and explain that the product is not yet available“, nach Rückmeldung fragen und die Person „with a gift card for the inconvenience“ entschädigen; Ladenleitung und Personal kennen Dauer und Art des Tests vorher. Online kommt der Hinweis direkt nach dem Klick (S. 289). Grundsatz: „Are you experimenting with your customers or on them?“ – das Buch sei kein Grund „to scam people out of their money … In short, don’t be evil“ (S. 86). Beim Pop-up-Store schreibt Bland zum Mock Sale „do not collect payment information“ (S. 303). Kursregel: Zahlungsdaten nie speichern, und am Ende klar sagen, dass es ein Test war. Torres’ ethische Frage passt dazu: „Do your customers understand that you’ll be collecting that data?“ (S. 127) – darum die E-Mail nur, wenn die Person nach dem Hinweis Bescheid haben will.',
+        antwort: 'Unehrlich wäre es, wenn die Person es nicht erfährt. Bland löst sofort auf: im Laden „intercept and explain that the product is not yet available“, nach Rückmeldung fragen und die Person „with a gift card for the inconvenience“ entschädigen; Ladenleitung und Personal kennen Dauer und Art des Tests vorher. Online kommt der Hinweis direkt nach dem Klick (S. 289). Grundsatz: „Are you experimenting with your customers or on them?“ – das Buch sei kein Grund „to scam people out of their money … In short, don’t be evil“ (S. 86). Beim Pop-up-Store schreibt Bland zum Mock Sale „do not collect payment information“ (S. 303). Vorgabe des Kurses: Zahlungsdaten nie speichern, und am Ende klar sagen, dass es ein Test war. Torres’ ethische Frage passt dazu: „Do your customers understand that you’ll be collecting that data?“ (S. 127) – darum die E-Mail nur, wenn die Person nach dem Hinweis Bescheid haben will.',
       },
       {
         frage: 'Welcher Test passt zu uns?',
-        antwort: 'Blands Faustregeln von der Folie davor: am Anfang schnell und billig, dann der stärkste Beleg, den ihr euch leisten könnt (S. 93). Habt ihr keinen Ort und keine Besucher*innen, bleibt der simulierte Moment: Bild am Handy, Situation in einem Satz (Torres, S. 135, 142–144). Concierge kostet vor allem Zeit (Bland S. 250); ein Mock Sale braucht einen durchgerechneten Preis – „If you test a ridiculously low price, then you’ll receive false positives“ (S. 290). Kursregel: E1 führt ihr nicht durch. Heute beschreibt ihr auf der Karte, welcher Test es wäre und wie er liefe; an Tag 5 besprecht ihr, was er gezeigt hätte.',
+        antwort: 'Blands Faustregeln von der Folie davor: am Anfang schnell und billig, dann der stärkste Beleg, den ihr euch leisten könnt (S. 93). Habt ihr keinen Ort und keine Besucher*innen, bleibt der simulierte Moment: Bild am Handy, Situation in einem Satz (Torres, S. 135, 142–144). Concierge kostet vor allem Zeit (Bland S. 250); ein Mock Sale braucht einen durchgerechneten Preis – „If you test a ridiculously low price, then you’ll receive false positives“ (S. 290). Vorgabe des Kurses: E1 führt ihr nicht durch. Heute beschreibt ihr auf der Karte, welcher Test es wäre und wie er liefe; an Tag 5 besprecht ihr, was er gezeigt hätte.',
       },
       {
         frage: 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
         antwort: 'Ort: am selben Ort wie E1, als eigener Durchlauf nach E1 – der Aufsteller an der Hallentür, jetzt mit Angebot und Preis: „Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“, darunter der QR-Code. Wer: Pendler*innen, die morgens ankommen und die Schlange sehen. Angeworben wird niemand – es ist die Zielgruppe in einer echten Kaufsituation; Bland: „target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290). Ablauf: scannen; auf der ersten Seite steht „Fährt dein Zug in weniger als 5 Minuten? Dann bitte nicht jetzt.“ (Hinweis des Kurses: niemand soll durchs Tippen den Zug verpassen). Dann Getränk wählen, Abfahrtszeit eintragen, auf „Vorbestellen für 2,90 €“ tippen. Sofort danach: „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“. Die Person: Sie bekommt durch den Test keinen Kaffee, und es fließt kein Geld. Sie erfährt es sofort, noch in der Halle und bevor sie das Anstellen aufgibt; ihren Kaffee holt sie wie sonst an der Bar oder am Automaten. Als Dank, nach Blands „gift card for the inconvenience“ (S. 289): Mit der Seite bekommt sie an der Bar eine kleine Aufmerksamkeit, etwa einen Gutschein – der Gutschein ist eine Anpassung des Kurses, Bland beschreibt die Entschädigung für den Test im Laden. Gezählt: Kaufklicks pro Besucher*in der Seite, dazu die E-Mails – und wie bei E1 gegen die Alternative: die Strichliste am Automaten in derselben Zeit, damit sichtbar wird, ob die Vorbestellung den Automaten verdrängt; gemessen wird die Wahl, nicht nur das Interesse am Neuen (wie bei Kohl’s: der ganze Laden zählt, nicht nur das Neue; Anpassung des Kurses). „Purchase clicks are relatively strong“, die E-Mails danach ebenfalls „relatively strong“ (S. 290); ohne Zahlungsdaten nicht „very strong“. Warum vertretbar: mit der Kundschaft, nicht an ihr – „Are you experimenting with your customers or on them?“ (S. 86). Die Person kostet es knapp eine Minute, und sie erfährt es sofort.',
+      },
+      {
+        frage: 'Ist Concierge nicht einfach das Produkt ohne App?',
+        antwort: 'Nein – es ist ein Test auf Zeit, kein Start. Ihr liefert echten Wert, aber von Hand, für wenige und nur ein paar Morgen, um zu lernen, welche Schritte es braucht: „Concierge is ideal for learning firsthand about steps needed to create, capture, and deliver value to a customer“, aber „not ideal for scaling a product or business“ (Bland, S. 248). Ergebnis sind Befunde, keine Kundschaft: wo es stockt, wie lange es dauert, wie viele kaufen – und daraus, „where to automate the process“ (S. 249). Wer ihn einfach weiterlaufen lässt, betreibt ein Geschäft von Hand; Realtor.com merkte, wie schnell die Handarbeit wächst (S. 253).',
+      },
+      {
+        frage: 'Warum ist ein Kauf beim Concierge ein starker Beleg, obwohl alles von Hand läuft?',
+        antwort: 'Weil die Person für Wert zahlt, den sie wirklich bekommt, nicht für ein Versprechen: „Payments are strong evidence, even if you are manually delivering value.“ Ebenso die Zufriedenheit, erfragt „after the value was delivered to the customer, instead of a hypothetical situation“ (Bland, S. 250). Auf Blands Achsen ist das Tun statt Sagen, echte Lage statt Labor und ein großer Einsatz (S. 52). Dass die Person die Menschen sieht, kann sie freundlicher machen – darum zählt der Kauf mehr als das Lob (Lesart des Kurses).',
+      },
+      {
+        frage: 'Warum Concierge und nicht gleich Wizard of Oz?',
+        antwort: 'Beim Concierge sieht die Kundschaft die Menschen, bei Wizard of Oz nicht: „Unlike Concierge, the people involved aren’t visible to the customer“ (Bland, S. 284). Sichtbar heißt: Ihr könnt fragen, zusehen und nachbessern – genau richtig, um die Schritte selbst zu lernen. Wizard of Oz kommt bei Bland danach: „Use what you’ve learned from the concierge experiment to deliver the value manually, without making the human steps visible to the end customer“ (S. 251). Dann zeigt sich, ob die Leute es auch ohne sichtbare Menschen nutzen (Lesart des Kurses).',
       },
     ],
     ueberleitung: 'Alles zusammen an der Kaffeebar: die Karte E1 für A5.',
@@ -552,6 +636,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Die Zeile verbindet jedes mögliche Ergebnis mit einer Handlung, bevor gezählt wird: „a decision matrix that links possible outcomes to predetermined actions before any data comes in.“ Ab 10 der Concierge, 5–9 denselben Test wiederholen und eine Sache ändern, unter 5 umschwenken auf die Wartezeit-Anzeige (A6). Die Grenze 5 ist eine Setzung der Kaffeebar.',
         quelle: `${THOMKE}, S. 86`,
       },
+      {
+        text: 'Nicht behaupten: Bland nenne den Eintrag einen mittleren Beleg. Bei ihm ist er „relatively weak“ (S. 52). „Mittel“ auf der Lernkarte ist unsere Einordnung: kleiner Einsatz (schwach), aber echte Situation, kein Labor (S. 52, Punkt 3).',
+        quelle: `${BLAND}, S. 52, 262; Einordnung: Kurs`,
+      },
     ],
     fragen: [
       {
@@ -581,7 +669,6 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Nach 3 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
       'Nach 5 min: Annahme und E1 in den Baum – Timer 2 min.',
       'Wenn hinten: Lernkarte und „Gegen den Beleg“ überspringen, weiter bei Übertrag.',
-      '„Nicht fertig? Karte E1 bis Tag 5 – das steht in der Hausaufgabe.“',
     ],
     uebung: { dauer: '7 min (5 + 2)', form: 'allein' },
     miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Karte E1 im Feld „Karte E1 für die oberste rechts“, mit Schwelle und „Wir entscheiden vorher“.', 'Riskanteste Annahme und E1 in „Baum · Produkt n“ unter den Spitzenreiter.'] },
@@ -640,6 +727,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         text: 'Zeile „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ – macht die Ausnahme prüfbar. E1 läuft in diesem Kurs nicht (Entscheidung 27.11.); eine Lernkarte schreibt nur, wer E2 mit dem Prototyp testet.',
         quelle: 'Kurs (Entscheidungen Markus 26. und 27.11.2026)',
+      },
+      {
+        text: 'Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ ist unsere Einordnung. Bland nennt einen Eintrag „relatively weak evidence“ (S. 52) und rechnet die vier Achsen nicht zu einer Stufe zusammen; mittel wird es bei uns, weil der Aufsteller in der echten Situation steht.',
+        quelle: `${BLAND}, S. 52; Einordnung: Kurs`,
       },
     ],
     ueberleitung: 'Und wenn man nach dem Test anders entscheiden will, als die Karte sagt? Das geht – aber offen.',
