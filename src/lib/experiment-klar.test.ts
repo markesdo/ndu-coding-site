@@ -502,7 +502,8 @@ describe('E1 nur Theorie: Spitzenreiter-Handout, Slice im Baum, Umschwenken', ()
     expect(t4).toContain('<p class="nur-beamer">An Tag 5, im Debrief: Hätte die Annahme gehalten, bleibt der Slice. Sonst geht ihr zurück in den Baum.</p>');
     expect(t4).not.toContain('Nach den Tests');
     expect(t4).toContain('An Tag 5 markiert ihr im Baum, was E1 gezeigt hätte (und E2, falls getestet)');
-    expect(NOTIZEN['/innolab/tag-4']['slice-im-baum'].live).toContain('Tag 5, Debrief: hätte die Annahme gehalten → Slice bleibt; sonst Baum.');
+    // Seit Review #483: Die live-Zeile nennt die drei Bänder der Karte E1 statt zwei Ausgänge; der Konjunktiv steht in kern.
+    expect(NOTIZEN['/innolab/tag-4']['slice-im-baum'].live).toContain('Tag 5: ab 10 Slice bleibt, 5–9 weiter testen, unter 5 Baum.');
   });
   it('tag-5 #umschwenken: die geteilte Annahme ist A8, nicht „zuerst getestet“', () => {
     const t5 = seite('/innolab/tag-5');
