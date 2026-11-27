@@ -149,6 +149,63 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect([...e.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Die Falle:', 'Darum:']);
   });
 
+  // 27.11.2026: Begleiter erzählt Kohl’s ganz – wer, warum begeistert, Aufbau, Mechanismus, Reaktion, Lehre (Thomke S. 13–14, 66–67, 85–87, 126).
+  it('Begleiter #ergebnis-gilt: die Kohl’s-Geschichte mit Mechanismus, Reaktion und Brücke zu E1', () => {
+    const n = NOTIZEN[EX]['ergebnis-gilt'];
+    expect(n.geschichte?.quelle).toBe('Stefan H. Thomke, The Scientific Mindset, S. 13, 66–67, 86–87');
+    for (const zitat of [
+      '„the large US retailer“ (S. 66)',
+      'anticipating significant additional revenue',
+      'test sales at seventy stores over six months',
+      '„Products that now had less floor space (to make room for the furniture) experienced a drop in sales, and Kohl’s was actually losing customers overall.“',
+      'a huge disappointment for the program’s advocates',
+      'people with organizational clout',
+    ]) expect(n.geschichte?.text).toContain(zitat);
+    const kern = JSON.stringify(n.kern);
+    expect(kern).toContain('„(1) commit to abide by results“ (S. 85)');
+    expect(kern).toContain('done deal');
+    expect(kern).toContain('Ob auch feststand, was bei welchem Ergebnis folgt, sagt Thomke nicht.');
+    expect(kern).toContain('willing to walk away from a project if a hypothesis is not supported“ (S. 86)');
+    // Review #478: keine Bänder vor #vorher-entscheiden – die 8-von-30-Frage steht dort.
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual(['Was hat der Test bei Kohl’s gemessen – die Möbel oder den ganzen Laden?']);
+    expect(JSON.stringify(n)).not.toMatch(/5–9|unter 5|8 von 30/);
+    expect(n.live).toStrictEqual([
+      'Kohl’s: Führung begeistert, Möbel, 70 Läden, sechs Monate, gestoppt.',
+      'Warum der Umsatz sank: Möbel nahmen anderen Waren die Fläche.',
+      '„Gute Ergebnisse glaubt man sofort – schlechte prüft man so lange nach, bis sie zur eigenen Erwartung passen.“',
+      'Falle: Kohl’s eine Matrix vorab andichten – belegt ist der vereinbarte Test.',
+      'Brücke: Darum steht die Handlung vorher auf der Karte.',
+    ]);
+    const v = NOTIZEN[EX]['vorher-entscheiden'].fragen?.find((f) => f.frage === 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?');
+    expect(v?.antwort).toContain('„unter 5 → Wartezeit-Anzeige“');
+    expect(JSON.stringify(n)).not.toContain('Kursregel');
+  });
+
+  // 27.11.2026: Mock Sale an der Kaffeebar als Szene – Ort, wer, Ablauf, was mit der Person passiert (Bland S. 86, 289–290).
+  it('Begleiter #test-arten: Mock Sale an der Kaffeebar – Person sofort aufgeklärt, Kaffee wie sonst, Dankeschön', () => {
+    const n = NOTIZEN[EX]['test-arten'];
+    expect(n.live).toContain('Mock Sale: Klick, sofort aufgeklärt, Kaffee wie sonst, kleines Dankeschön.');
+    const f = n.fragen?.find((x) => x.frage === 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?');
+    for (const teil of [
+      'am selben Ort wie E1, als eigener Durchlauf nach E1',
+      '„Fährt dein Zug in weniger als 5 Minuten? Dann bitte nicht jetzt.“ (Hinweis des Kurses',
+      '„Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“',
+      'die Strichliste am Automaten in derselben Zeit',
+      'Die Person kostet es knapp eine Minute',
+      '„Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“',
+      'Angeworben wird niemand',
+      '„target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290)',
+      'auf „Vorbestellen für 2,90 €“ tippen',
+      'keinen Kaffee, und es fließt kein Geld',
+      'ihren Kaffee holt sie wie sonst an der Bar oder am Automaten',
+      '„gift card for the inconvenience“ (S. 289)',
+      'der Gutschein ist eine Anpassung des Kurses',
+      'ohne Zahlungsdaten nicht „very strong“',
+      '„Are you experimenting with your customers or on them?“ (S. 86)',
+    ]) expect(f?.antwort).toContain(teil);
+    expect(f?.antwort).not.toContain('Kursregel');
+  });
+
   it('#vorher-entscheiden: Bänder auf E1-Zahlen, aufgedeckt ab 10 → unter 5 → 5–9, Grenze bei der halben Schwelle', () => {
     const v = sichtbar('vorher-entscheiden');
     // 27.11.2026: die 30 sind Menschen, die wählen (wie auf Karte E1 und der Lernkarte: 8 Einträge + 22 am Automaten).
@@ -220,6 +277,31 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect([...g.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Die Regel:', 'Die Ausnahme:', 'Nie:']);
   });
 
+  // 27.11.2026: Regel ohne „(Kohl’s)“; Begleiter erzählt Netflix nach Thomke S. 126–127 und baut die Brücke zu E1.
+  it('#gegen-den-beleg: „Die Regel: Das Ergebnis gilt.“; Begleiter mit Netflix-Fall, Umdeuten und Kaffeebar-Brücke', () => {
+    expect(sichtbar('gegen-den-beleg')).toContain('<li data-schritt><strong>Die Regel:</strong> Das Ergebnis gilt.</li>');
+    expect(folie('gegen-den-beleg')).toContain('sagt, warum ihr trotzdem so entscheidet – so bleiben Beleg und Grund für alle sichtbar, wie bei Netflix.</p>');
+    expect(folie('gegen-den-beleg')).not.toContain('Kursregel');
+    const n = NOTIZEN[EX]['gegen-den-beleg'];
+    expect(n.geschichte?.quelle).toBe('Stefan H. Thomke, The Scientific Mindset, S. 127');
+    for (const zitat of [
+      'has built a sophisticated infrastructure for large-scale experimentation',
+      'resulted in more clicks by potential viewers than promotions featuring both Tomlin and her costar Jane Fonda',
+      '„The content team worried that excluding Fonda would alienate the actress and possibly violate her contract.“',
+      'pitted empirical evidence against ‚strategic considerations,‘',
+      'Wer genau entschied, nennt er nicht',
+    ]) expect(n.geschichte?.text).toContain(zitat);
+    const kern = JSON.stringify(n.kern);
+    expect(kern).toContain('Wie Netflix Vorschaubilder testet und warum sie zählen, beschreibt er nicht');
+    expect(kern).toContain('„Sometimes those discussions might result in a conscious choice to overrule the data.“');
+    const [, , umdeuten, kaffeebar] = n.fragen!.map((f) => f.antwort);
+    expect(umdeuten).toContain('„commit to abide by results“ (S. 85)');
+    expect(kaffeebar).toContain('„Weicht ab von ‚Wir entscheiden vorher‘? Ja – die Bar kann um 7:30 keine Bestellungen von Hand annehmen.“');
+    expect(kaffeebar).toContain('Nicht in Ordnung: „12 ist eigentlich nicht genug“');
+    expect(n.live).toContain('Brücke: E1 mit 12, trotzdem kein Concierge – Grund auf die Lernkarte.');
+    expect(JSON.stringify(n)).not.toContain('Kursregel');
+  });
+
   // Dozent 27.11.2026: Karte E1 der Kaffeebar folgt der Vorlage (#vorlage) wie auf Miro; dazu der Kontakt (E-Mail).
   it('#karte-e1 folgt der Vorlage: „Wir messen, …“, „Danach erfahren die Testpersonen: … · Wir sammeln: …“, Zug und E-Mail', () => {
     const k = sichtbar('karte-e1');
@@ -262,14 +344,17 @@ describe('Tests zur Auswahl und Beispiel', () => {
       'Sind die Testpersonen schon echte Kund*innen?',
       'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
       'Welcher Test passt zu uns?',
+      'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
     ]);
     const [mock, personen, ehrlich, wahl] = n.fragen!.map((f) => f.antwort);
     // Review #465: Der Hinweis nach dem Klick sagt, dass es ein Test ist, und fragt nach der E-Mail (Bland S. 289).
-    const hinweis = '„Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“';
+    const hinweis = '„Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“';
     expect(mock).toContain(`„Vorbestellen für 2,90 €“ → ${hinweis}`);
     expect(n.geschichte?.text).toContain(hinweis);
     expect(n.kern?.[7].text).toContain(hinweis);
     expect(JSON.stringify(n)).not.toContain('wir sagen dir Bescheid“');
+    // 27.11.2026: überall derselbe Hinweis mit Dankeschön, kein kurzer mehr.
+    expect(JSON.stringify(n)).not.toContain('noch nicht. Sollen wir');
     expect(mock).toContain('Es fließt kein Geld (Bland, Mock Sale, S. 288–289)');
     // Ohne Zahlungsdaten: Kaufklicks und E-Mails, „relatively strong“ – nicht „sehr stark“.
     expect(mock).toContain('Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks');
@@ -305,6 +390,43 @@ describe('Seite am Handy in den Schritten (27.11.2026)', () => {
   });
   it('#schritte-der-idee: Handout nennt die Seite als Beteiligte, mit Torres S. 120 und Kursregel', () => {
     expect(folie('schritte-der-idee')).toContain('Bei euch ist die Seite am Handy einer der Beteiligten: „the interface or software itself may be an actor in your map“ (S. 120). Kursregel: Mindestens ein Schritt passiert auf der Seite.');
+  });
+});
+
+describe('#schritte-der-idee: Begleiter erklärt Torres’ Streaming-Beispiel (27.11.2026)', () => {
+  const n = NOTIZEN[EX]['schritte-der-idee'];
+  const frage = (f: string) => n.fragen?.find((x) => x.frage === f)?.antwort ?? '';
+  it('die drei Zeilen: Kund*in, Software selbst, Partner mit Inhalt – mit Seiten', () => {
+    const a = frage('Was sind Subscriber, Platform und Local Channel?');
+    expect(a).toContain('Subscriber ist die Kundin oder der Kunde mit Abo, die Sport schauen will: „the sports consumer (i.e., our subscriber)“ (S. 121).');
+    expect(a).toContain('Platform ist der Streamingdienst selbst, die Software als eigene Zeile: „the interface or software itself may be an actor in your map“ (S. 120).');
+    expect(a).toContain('Local Channel ist ein Partner von außen, ein lokaler Fernsehsender (Torres nennt ABC, CBS, NBC, S. 120), der das Live-Programm liefert: „any number of local TV channel partners“ (S. 121).');
+    expect(n.live).toContain('Bei Bedarf: Zeilen erklären – Kund*in, Software selbst, Partner mit Inhalt.');
+  });
+  it('Hintergrund: Firma, Outcome, Chance, gemappte Idee, mit Seiten', () => {
+    expect(n.geschichte?.text).toContain('„if we worked at a streaming-entertainment company (e.g., Netflix, Hulu)“ (S. 52)');
+    expect(n.geschichte?.text).toContain('„Increase weekly viewer minutes“ (S. 126)');
+    expect(n.geschichte?.text).toContain('„to grab some of this market“ (S. 100)');
+    expect(n.geschichte?.text).toContain('„1. Integrate local networks (e.g., ABC, CBS, NBC) into our service');
+    expect(n.geschichte?.quelle).toBe('Teresa Torres, Continuous Discovery Habits, S. 52, 100, 120–121, 126, 154');
+  });
+  it('Leserichtung, abgeleitete Annahmen und Kaffeebar-Zuordnung', () => {
+    expect(frage('Wie liest man die Map?')).toContain('Subscriber: Visits platform → Platform: Shows sports options → Subscriber: Browses options, Chooses sport → Local Channel: Delivers content → Subscriber: Watches sport.');
+    const ann = frage('Welche Annahmen leitet Torres aus dieser Map ab?');
+    for (const z of ['„Desirability: Our subscriber wants to watch sports.“', '„Feasibility: The local provider’s source content will be available.“ (S. 124)',
+      '„Viability: Integrating a local channel feed won’t be too expensive.“', '„Ethical: Subscribers will be okay with us sharing viewership data with their local channels.“ (S. 124)']) expect(ann).toContain(z);
+    const kb = frage('Wo stecken die drei Zeilen bei der Kaffeebar?');
+    expect(kb).toMatch(/^Pendler\*in wie Subscriber: [\s\S]* Seite am Handy wie Platform: [\s\S]* Bar wie Local Channel: /);
+    expect(kb).toContain('Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.');
+  });
+  it('Review #477: keine Überdehnung von S. 122–124; die Seite handelt nicht für die Pendler*in', () => {
+    const lesen = frage('Wie liest man die Map?');
+    expect(lesen).toContain('Gerade dort stehen Machbarkeits-Annahmen: „Feasibility: We know what sports are available right now.“ (S. 123)');
+    expect(lesen).not.toMatch(/vor allem|genau diesen/);
+    const ann = frage('Welche Annahmen leitet Torres aus dieser Map ab?');
+    expect(ann).toContain('Wünschbarkeit, Bedienbarkeit und Machbarkeit stecken überall dort, wo jemand etwas tun muss – „every time you assume that an end-user will do something“ (S. 122)');
+    expect(ann).not.toContain('in jedem Schritt');
+    expect(frage('Wo stecken die drei Zeilen bei der Kaffeebar?')).toContain('sie öffnet sich nach dem Scan und nimmt Getränk und Abfahrtszeit entgegen (Schritte 2 und 3); Code scannen und wählen tut die Pendler*in.');
   });
 });
 
