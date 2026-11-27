@@ -167,7 +167,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
       '„Jetzt Origin Story; den Prototyp baut Claude Code an Tag 5.“',
       'Pfeil → Abschluss Tag 4; das Panel zeigt die nächste Folie der Seite.',
     ],
-    ueberleitung: 'Gleich: Origin Story und Hausaufgabe im Abschluss.',
+    ueberleitung: 'Scrum beginnt an Tag 5. Für heute fehlt noch ein Stück vom Vormittag: der Text, mit dem E1 laufen würde.',
   },
 
   // Tag 5 (12.12., 09:40–10:20): Einstieg von tag-5#linear-einrichten; ← führt dorthin zurück.

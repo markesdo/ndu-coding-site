@@ -1,8 +1,8 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/tag-4.astro (Sa 28.11.2026, online in Teams). Die Seite hat drei Stellen am Tag:
-// 9:00 #arbeitsfluss (→ zur Value Map), nach der Value Map #was-bauen-wir und #slice-im-baum (→ zur Concept Story), um 17:15
-// über scrum#weiter-tag-4 der Abschluss: #abschluss, #origin-beispiel, #hausaufgabe, #ende-tag-4. Der Begleiter findet jede
+// 9:00 #arbeitsfluss (→ zur Value Map), 9:35 nach der Value Map #was-bauen-wir (→ zur Concept Story), 14:05 nach der
+// Story Map #slice-im-baum (→ zur Usage Story; seit 28.11.2026), um 17:15 über scrum#weiter-tag-4 der Abschluss: #abschluss, #origin-beispiel, #hausaufgabe, #ende-tag-4. Der Begleiter findet jede
 // Folie über die Beamer-Position; „nächste Folie der Seite“ im Panel stimmt darum nur innerhalb dieser Stellen – die
 // Überleitungen nennen, wohin → wirklich führt.
 // Zitate wie auf der Seite (Durchsicht 26.11.: Torres S. 26–27, 119; Lichaw Kap. 4; Bland S. 261). Was nicht aus den
@@ -30,7 +30,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
   // 9:35–9:40, nach value-map#uebertrag: Erst jetzt ist der Spitzenreiter bestätigt. Vorschau, ohne Schritte.
   'was-bauen-wir': {
     live: [
-      'Zeit: 5 min zusammen mit „Slice 1 im Baum“.',
+      'Zeit: 3 min; danach direkt die Concept Story.',
       '„Slice 1 ist die kleinste Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.“',
       'Drei Zuläufe zeigen: je woher die Linie kommt, was daraus wird.',
       'Falle: Slice 1 als Feature-Liste; gemeint ist ein ganzer Weg.',
@@ -51,16 +51,17 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
         quelle: 'Kaffeebar: ausgedachtes Beispiel des Kurses, seit Tag 1 so markiert (tag-1, problem-rahmen)',
       },
     ],
-    ueberleitung: 'Und wo hängt Slice 1 in eurem Baum?',
+    ueberleitung: 'Bevor ihr Slice 1 schneidet: Versteht jemand in Sekunden, warum euer Spitzenreiter besser ist als das, was eure Person heute tut?',
   },
 
-  // Letzte Folie des Morgens: → führt zur Concept Story (story-bogen), nicht in den Abschluss.
+  // 14:05, Wiedereinstieg nach der Mittagspause (seit 28.11.2026): von story-map#uebertrag; → führt zur Usage Story
+  // (usage-story#drei-storys), ← zurück zur Story Map. Steht in der Datei weiter direkt nach #was-bauen-wir.
   'slice-im-baum': {
     live: [
       'Zeilenweise lesen: links der Baum, rechts Slice 1 – je ein Gegenstück.',
       'Wer tut danach was anders? Brief oben, Slice 1 enger.',
       '„Slice 1 ist kein Knoten im Baum – er macht den Spitzenreiter konkret.“',
-      'Annahme nur ankündigen: gewählt wird an der Experiment-Karte.',
+      'A5 ist die Kaffeebar – bei euch die ID eurer Karte E1.',
       'Tag 5: ab 10 Slice bleibt, 5–9 weiter testen, unter 5 Baum.',
     ],
     kern: [
@@ -123,7 +124,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
         antwort: 'Ihr wisst es nicht, und der Debrief tut auch nicht so. Geübt wird die Entscheidung, nicht das Ergebnis: Weil auf der Karte vor dem Test steht, was jedes Band bedeutet („Wir entscheiden vorher“), könnt ihr an Tag 5 durchspielen, was ihr bei 12, 7 oder 3 von 30 getan hättet. Die Entscheidung trifft jede Product Ownerin selbst und hält sie unter der Karte E1 und im Baum fest. Wer mit dem Prototyp getestet hat (E2), bringt dazu einen echten Befund mit.',
       },
     ],
-    ueberleitung: 'Damit Slice 1 überzeugt, braucht er eine Geschichte: eure Concept Story.',
+    ueberleitung: 'Slice 1 steht und hängt am Baum – jetzt erzählt ihr den Weg durch ihn: die Usage Story.',
   },
 
   // 17:15–17:30, von scrum#weiter-tag-4; ← führt dorthin zurück.

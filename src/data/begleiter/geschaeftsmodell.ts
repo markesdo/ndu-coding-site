@@ -16,6 +16,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
   'warum-jetzt': {
     live: [
       'Zeit: rund 8 min Theorie, knapp 2 min je Folie.',
+      '„Die Concept Story sagt, warum jemand wechselt. Offen ist, ob es sich für euch trägt.“',
       'Bild von unten nach oben lesen: Papier, Markt, Bank.',
       '„Fit 1 habt ihr seit der Value Map heute Morgen auf Papier.“',
       '„Fit 3 erreicht ihr heute nicht. Ihr schreibt auf, woran er hängt.“',

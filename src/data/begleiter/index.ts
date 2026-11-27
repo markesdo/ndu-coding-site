@@ -45,7 +45,7 @@ export const NOTIZEN: Record<string, Record<string, Notiz>> = {
   '/innolab/methoden/hmw': NOTIZEN_HMW,
   '/innolab/tag-2/abschluss': NOTIZEN_TAG_2_ABSCHLUSS,
   '/innolab/methoden/ideation': NOTIZEN_IDEATION,
-  // Tag 4 beginnt auf der Tagesseite (9:00 #arbeitsfluss); deren Folien von 9:35 und 17:15 findet der Begleiter über die Beamer-Position.
+  // Tag 4 beginnt auf der Tagesseite (9:00 #arbeitsfluss); deren Folien von 9:35 (Was bauen wir?), 14:05 (Slice 1 im Baum, nach der Story Map) und 17:15 findet der Begleiter über die Beamer-Position.
   '/innolab/tag-4': NOTIZEN_TAG_4,
   '/innolab/methoden/value-map': NOTIZEN_VALUE_MAP,
   '/innolab/methoden/concept-story': NOTIZEN_CONCEPT_STORY,

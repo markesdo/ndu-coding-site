@@ -385,6 +385,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       '„[Wer] tut [was] statt [was bisher].“',
       'Cyan daneben: „Wir lernen, ob … (A_)“ mit Annahmen-ID.',
       'Falle: „können“, „wird informiert“, „Umsatz“.',
+      'A5 im Beispiel ist die Kaffeebar – bei euch eure eigene ID.',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
     ueberleitung: 'Jetzt die Linie – und schieben, nicht kopieren.',
@@ -430,8 +431,8 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Slice 1 steht: Outcome, Lernfrage, eine Abkürzung mit *.',
-      'Nach der Pause: Usage Story durch Slice 1.',
+      'Nach der Pause: erst Slice 1 im Baum, dann Usage Story.',
     ],
-    ueberleitung: 'Nach der Pause erzählt ihr den Weg durch Slice 1 als Geschichte.',
+    ueberleitung: 'Nach der Pause: erst ein Blick, wo Slice 1 in eurem Baum hängt – dann die Usage Story.',
   },
 };

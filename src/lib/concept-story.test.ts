@@ -79,7 +79,7 @@ describe('Tag 4: Concept Story schreiben (NDU-66)', () => {
     expect(timer).toStrictEqual([25, 5]);
     expect(f).toContain('<h2 id="vorgehen">So geht ihr vor (30 min)</h2>');
     expect([...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Sieben Stationen, allein:', 'Festhalten:']);
-    expect(f).toContain('<span class="fertig-wenn"><strong>Fertig, wenn:</strong> Krise und Höhepunkt stehen – sonst ist eure Story eine Linie (Flach-Probe, Kursregel).</span>');
+    expect(f).toContain('<span class="fertig-wenn"><strong>Fertig, wenn:</strong> Krise und Höhepunkt stehen – sonst ist eure Story eine Linie (Flach-Probe).</span>');
     expect(f).toContain('<li data-schritt><strong>Festhalten:</strong> den Satz in Abschnitt 3 eures <a href="/innolab/mappe?bearbeiten=brief">Produkt-Briefs</a>, Station 6 als Annahme in die <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a> (beides in der Werkstatt).');
     // Seit 26.11. abends: keine docs-Dateien für Studierende – die Story bleibt auf Miro.
     expect(f).toContain('Die Story bleibt auf Miro in eurem Frame – eine Datei schreibt ihr nicht.');
@@ -176,12 +176,15 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(f).toContain('Warum Kopieren und Einfügen die Story nicht stützte, führt Lichaw nicht aus.');
   });
 
-  it('Kursregel-Etiketten: Flach-Probe in beispiel und vorgehen, Zeilen 6 und 7 in woher', () => {
-    expect(folie('beispiel')).toContain('<p data-schritt><strong>Kursregel – Flach-Probe:</strong>');
-    expect(lis('vorgehen')).not.toContain('Kursregel – Flach-Probe:');
-    expect(folie('vorgehen')).toContain('(Flach-Probe, Kursregel)');
-    const zeilen = folie('woher').split('<tr data-schritt>').slice(1);
-    expect(zeilen.map((z) => z.includes('(Kursregel)'))).toStrictEqual([false, false, false, false, false, true, true]);
+  // 28.11. (Markus 27.11.: was tun und warum, keine „Kursregel“-Markierung im Beamer): Flach-Probe und Zeilen 6 und 7 ohne Etikett.
+  it('ohne Kursregel-Etiketten: Flach-Probe in beispiel und vorgehen, Zeilen 6 und 7 in woher', () => {
+    expect(folie('beispiel')).toContain('<p data-schritt><strong>Flach-Probe:</strong> „Geht sich ein Kaffee aus?“');
+    expect(lis('vorgehen')).not.toContain('Flach-Probe:');
+    expect(folie('vorgehen')).toContain('sonst ist eure Story eine Linie (Flach-Probe).</span>');
+    const zeilen = folie('woher').split('<tr data-schritt>').slice(1).map((z) => z.split('</tr>')[0]);
+    expect(zeilen).toHaveLength(7);
+    expect(zeilen.filter((z) => /Kursregel/.test(z))).toStrictEqual([]);
+    expect(zeilen[5]).toContain('<strong>neu</strong> – als Annahme in die Annahmen-Map, zum Testen');
     expect(folie('woher')).toContain('Kap. 8, Goals Are Measurable, S. 135');
   });
 

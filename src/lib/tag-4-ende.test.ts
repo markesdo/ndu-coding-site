@@ -3,6 +3,13 @@ import { beforeAll, describe, expect, it } from 'vitest';
 import { ohneAbgeschaltet } from '../components/abgeschaltet';
 import { station } from '../components/arbeitsfluss';
 import { bloeckeAus, folienAus, quellenAusGlob } from './begleiter';
+import { NOTIZEN_CONCEPT_STORY } from '../data/begleiter/concept-story';
+import { NOTIZEN_EXPERIMENT } from '../data/begleiter/experiment';
+import { NOTIZEN_GESCHAEFTSMODELL } from '../data/begleiter/geschaeftsmodell';
+import { NOTIZEN_SCRUM } from '../data/begleiter/scrum';
+import { NOTIZEN_STORY_MAP } from '../data/begleiter/story-map';
+import { NOTIZEN_TAG_4 } from '../data/begleiter/tag-4';
+import { NOTIZEN_VALUE_MAP } from '../data/begleiter/value-map';
 
 // Audit 26.11.2026 (Tag 4 im Beamer, Punkte E und F): Tag 4 hatte kein Ende. Nach scrum#planen lief → in die Tag-5-Folien
 // (#team, #dod …) und weiter nach /methoden/backlog; die Origin Story (17:15) kam schon um 11:30 (heute 11:50) nach experiment#vorgehen.
@@ -13,6 +20,25 @@ const folie = (p: string, id: string) => {
   const a = q.indexOf(`<h2 id="${id}">`);
   return a < 0 ? '' : q.slice(q.lastIndexOf('<Folie', a), q.indexOf('</Folie>', a));
 };
+
+/** Was der Beamer von einer Folie zeigt: ohne Kommentare und ohne .nur-handout (div mit verschachtelten divs, p, span). */
+function imBeamer(f: string): string {
+  let s = f.replace(/\{\/\*[\s\S]*?\*\/\}/g, '').replace(/<(p|span|li)\b[^>]*\bclass="[^"]*\bnur-handout\b[^"]*"[^>]*>[\s\S]*?<\/\1>/g, '');
+  for (;;) {
+    const a = s.search(/<div\b[^>]*\bclass="[^"]*\bnur-handout\b[^"]*"[^>]*>/);
+    if (a < 0) return s;
+    const tags = /<div\b[^>]*>|<\/div>/g;
+    tags.lastIndex = a;
+    let tiefe = 0;
+    let ende = s.length;
+    for (let m = tags.exec(s); m; m = tags.exec(s)) {
+      if (m[0].endsWith('/>')) continue; // <div … /> öffnet nichts
+      tiefe += m[0] === '</div>' ? -1 : 1;
+      if (tiefe === 0) { ende = m.index + m[0].length; break; }
+    }
+    s = s.slice(0, a) + s.slice(ende);
+  }
+}
 
 type F = { id: string; weiter?: string; zurueck?: string; ende: boolean };
 /** ende als nacktes Attribut – nicht „ende“ in einem Wert wie weiter="…#ende-tag-4". */
@@ -72,21 +98,43 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
     const seiten = weg.map((w) => w.split('#')[0]).filter((p, i, a) => p !== a[i - 1]);
     expect(seiten).toStrictEqual([
       '/innolab/tag-4', '/innolab/methoden/value-map', '/innolab/tag-4', '/innolab/methoden/concept-story', '/innolab/methoden/geschaeftsmodell',
-      '/innolab/methoden/experiment', '/innolab/methoden/story-map', '/innolab/methoden/usage-story',
+      '/innolab/methoden/experiment', '/innolab/methoden/story-map', '/innolab/tag-4', '/innolab/methoden/usage-story',
       '/innolab/methoden/prototyp-spike', '/innolab/methoden/scrum', '/innolab/tag-4',
     ]);
     // Seit 26.11.2026: Value Map vor „Was bauen wir?“; von ihrer letzten Folie zurück auf tag-4, dann zur Concept Story.
     const vm = weg.indexOf('/innolab/methoden/value-map#uebertrag');
     expect(weg.slice(0, 2)).toStrictEqual(['/innolab/tag-4#arbeitsfluss', '/innolab/methoden/value-map#vorgehen']);
     expect(vm).toBeGreaterThan(1);
-    expect(weg.slice(vm, vm + 4)).toStrictEqual([
-      '/innolab/methoden/value-map#uebertrag', '/innolab/tag-4#was-bauen-wir', '/innolab/tag-4#slice-im-baum', '/innolab/methoden/concept-story#story-bogen',
+    expect(weg.slice(vm, vm + 3)).toStrictEqual([
+      '/innolab/methoden/value-map#uebertrag', '/innolab/tag-4#was-bauen-wir', '/innolab/methoden/concept-story#story-bogen',
     ]);
+    // Seit 28.11.2026: „Slice 1 im Baum“ erst, wenn Slice 1 auf der Story Map steht – zwischen Story Map und Usage Story.
+    const sm = weg.indexOf('/innolab/methoden/story-map#uebertrag');
+    expect(sm).toBeGreaterThan(vm);
+    expect(weg.slice(sm, sm + 3)).toStrictEqual([
+      '/innolab/methoden/story-map#uebertrag', '/innolab/tag-4#slice-im-baum', '/innolab/methoden/usage-story#drei-storys',
+    ]);
+    expect(weg.filter((w) => w === '/innolab/tag-4#slice-im-baum')).toHaveLength(1);
     // Seit der Durchsicht 26.11.: das Beispiel der Origin Story (Aufsteller der Kaffeebar) als eigene Folie.
     expect(weg.slice(-6)).toStrictEqual([
       '/innolab/methoden/scrum#planen', '/innolab/methoden/scrum#weiter-tag-4',
       '/innolab/tag-4#abschluss', '/innolab/tag-4#origin-beispiel', '/innolab/tag-4#hausaufgabe', '/innolab/tag-4#ende-tag-4',
     ]);
+  });
+
+  // Markus 27.11.: Folien sagen, was zu tun ist und warum – kein Etikett „Kursregel“ (Abgleich mit den Quellen nur im
+  // Begleiter). Geprüft wird jede Folie auf dem Weg von 9:00 bis „Ende Tag 4“, ohne Handout und Kommentare.
+  // Grenze: gelesen wird nur der .astro-Quelltext der Seite. Text aus eingebundenen Komponenten (z. B. SliceImBaum,
+  // WasBauenWir, VierArten) und aus Props, die erst beim Rendern entstehen, sieht der Test nicht.
+  it('keine Folie auf dem Weg trägt im Beamer das Etikett „Kursregel“', () => {
+    expect(weg.length).toBeGreaterThan(80);
+    const treffer = weg.filter((w) => {
+      const [p, id] = w.split('#');
+      const f = folie(p, id);
+      expect(f, w).not.toBe('');
+      return /Kursregel/.test(imBeamer(f));
+    });
+    expect(treffer).toStrictEqual([]);
   });
 
   it('keine Tag-5-Folie von scrum und keine Seite nach scrum außer dem Abschluss', () => {
@@ -103,19 +151,63 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
 });
 
 describe('Tag 4: Folien des Abschlusses', () => {
-  // Seit 26.11.2026: Arbeitsfluss → Value Map → zurück zu „Was bauen wir?“ → „Slice 1 im Baum“ → Concept Story.
-  it('der Morgen: Arbeitsfluss → value-map#vorgehen; value-map#uebertrag → „Was bauen wir?“; „Slice 1 im Baum“ → Concept Story, nicht in den Abschluss', () => {
+  // Seit 26.11.2026: Arbeitsfluss → Value Map → zurück zu „Was bauen wir?“ → Concept Story. Seit 28.11.2026 kommt „Slice 1 im
+  // Baum“ erst nach der Story Map (14:05) und führt zur Usage Story.
+  it('der Morgen: Arbeitsfluss → value-map#vorgehen; value-map#uebertrag → „Was bauen wir?“ → Concept Story; story-map#uebertrag → „Slice 1 im Baum“ → Usage Story', () => {
     const fs = folienMit('/innolab/tag-4');
     expect(fs.find((f) => f.id === 'arbeitsfluss')?.weiter).toBe('/innolab/methoden/value-map#vorgehen');
     expect(fs.filter((f) => f.weiter === '/innolab/methoden/value-map#vorgehen').map((f) => f.id)).toStrictEqual(['arbeitsfluss']);
     const vm = folienMit('/innolab/methoden/value-map');
     expect(vm.at(-1)).toStrictEqual({ id: 'uebertrag', weiter: '/innolab/tag-4#was-bauen-wir', zurueck: undefined, ende: false });
     expect(seite('/innolab/methoden/value-map')).toContain('<Folie weiter="/innolab/tag-4#was-bauen-wir" weiterTitel="Was bauen wir?">');
-    // „Was bauen wir?“: → auf „Slice 1 im Baum“ (kein weiter), ← zurück zur Value Map statt zum Arbeitsfluss.
-    expect(fs.find((f) => f.id === 'was-bauen-wir')).toStrictEqual({ id: 'was-bauen-wir', weiter: undefined, zurueck: '/innolab/methoden/value-map#uebertrag', ende: false });
+    // „Was bauen wir?“: → direkt zur Concept Story, ← zurück zur Value Map statt zum Arbeitsfluss.
+    expect(fs.find((f) => f.id === 'was-bauen-wir')).toStrictEqual({ id: 'was-bauen-wir', weiter: '/innolab/methoden/concept-story#story-bogen', zurueck: '/innolab/methoden/value-map#uebertrag', ende: false });
     expect(zurueckVon('/innolab/tag-4', 'was-bauen-wir')).toBe('/innolab/methoden/value-map#uebertrag');
-    expect(fs.find((f) => f.id === 'slice-im-baum')?.weiter).toBe('/innolab/methoden/concept-story#story-bogen');
-    expect(seite('/innolab/tag-4')).toContain('<Folie weiter="/innolab/methoden/concept-story#story-bogen" weiterTitel="Story-Bogen + Concept Story">');
+    expect(fs.find((f) => f.id === 'slice-im-baum')).toStrictEqual({ id: 'slice-im-baum', weiter: '/innolab/methoden/usage-story#drei-storys', zurueck: '/innolab/methoden/story-map#uebertrag', ende: false });
+    expect(zurueckVon('/innolab/tag-4', 'slice-im-baum')).toBe('/innolab/methoden/story-map#uebertrag');
+    expect(folienMit('/innolab/methoden/story-map').at(-1)).toStrictEqual({ id: 'uebertrag', weiter: '/innolab/tag-4#slice-im-baum', zurueck: undefined, ende: false });
+  });
+
+  // 28.11.2026: ← läuft beide Wege zurück, wie → sie hin läuft – nicht an den Anfang der Seite davor (FooterNav).
+  it('← zurück: Concept Story → „Was bauen wir?“ → Value Map; Usage Story → „Slice 1 im Baum“ → Story Map', () => {
+    expect(zurueckVon('/innolab/methoden/concept-story', 'story-bogen')).toBe('/innolab/tag-4#was-bauen-wir');
+    expect(zurueckVon('/innolab/tag-4', 'was-bauen-wir')).toBe('/innolab/methoden/value-map#uebertrag');
+    expect(zurueckVon('/innolab/methoden/usage-story', 'drei-storys')).toBe('/innolab/tag-4#slice-im-baum');
+    expect(zurueckVon('/innolab/tag-4', 'slice-im-baum')).toBe('/innolab/methoden/story-map#uebertrag');
+    // Gegenprobe: Ohne zurueck führte ← an den Anfang der Value Map bzw. der Story Map.
+    expect(vorigeSeite('/innolab/methoden/concept-story')).toBe('/innolab/methoden/value-map');
+    expect(vorigeSeite('/innolab/methoden/usage-story')).toBe('/innolab/methoden/story-map');
+  });
+
+  // Consult 28.11.2026 (consult-tag4-reihenfolge.md, Abschnitte 3 und 4): Überleitungen an den Nahtstellen, wörtlich.
+  it('Überleitungen an den Nahtstellen des Tages', () => {
+    expect(NOTIZEN_VALUE_MAP.uebertrag.ueberleitung).toBe('Euer Spitzenreiter steht auf Papier – was wird heute daraus?');
+    expect(NOTIZEN_TAG_4['was-bauen-wir'].ueberleitung).toBe('Bevor ihr Slice 1 schneidet: Versteht jemand in Sekunden, warum euer Spitzenreiter besser ist als das, was eure Person heute tut?');
+    expect(NOTIZEN_STORY_MAP.uebertrag.ueberleitung).toBe('Nach der Pause: erst ein Blick, wo Slice 1 in eurem Baum hängt – dann die Usage Story.');
+    expect(NOTIZEN_TAG_4['slice-im-baum'].ueberleitung).toBe('Slice 1 steht und hängt am Baum – jetzt erzählt ihr den Weg durch ihn: die Usage Story.');
+    // Concept Story → Geschäftsmodell (10:40): die Folie danach öffnet mit dem Fit der Value Map, darum die Brücke.
+    const brueckeGm = 'Die Concept Story sagt, warum jemand wechselt. Offen ist, ob es sich für euch trägt.';
+    expect(NOTIZEN_CONCEPT_STORY.vorgehen.ueberleitung).toBe(`Nach der Pause: ${brueckeGm}`);
+    expect(NOTIZEN_GESCHAEFTSMODELL['warum-jetzt'].live).toContain(`„${brueckeGm}“`);
+    expect(folie('/innolab/methoden/geschaeftsmodell', 'warum-jetzt')).toContain(`<p class="folie-satz">${brueckeGm}</p>`);
+    // Scrum → Origin Story (17:15): zurück zum Vormittag, im Begleiter und sichtbar im Beamer.
+    expect(NOTIZEN_SCRUM['weiter-tag-4'].ueberleitung).toBe('Scrum beginnt an Tag 5. Für heute fehlt noch ein Stück vom Vormittag: der Text, mit dem E1 laufen würde.');
+    expect(folie('/innolab/methoden/scrum', 'weiter-tag-4')).toContain('<p class="nur-beamer">Für heute fehlt noch ein Stück vom Vormittag: der Text, mit dem E1 laufen würde.</p>');
+    // Was um 9:35 nicht mehr stimmt, steht nicht mehr da.
+    const live = [NOTIZEN_VALUE_MAP.uebertrag, NOTIZEN_TAG_4['was-bauen-wir'], NOTIZEN_TAG_4['slice-im-baum']].flatMap((n) => n.live).join(' | ');
+    expect(live).not.toMatch(/Slice 1 im Baum|zusammen mit|Annahme nur ankündigen|ab Tag 4/);
+    expect(NOTIZEN_TAG_4['slice-im-baum'].live).toContain('A5 ist die Kaffeebar – bei euch die ID eurer Karte E1.');
+    // tag-4#faden: E1 beschreibt den Test nur, getestet wird freiwillig nach dem Kurstag – also „plant“, nicht „getestet“.
+    expect(folie('/innolab/methoden/value-map', 'uebertrag')).toContain('Ab heute plant ihr, wie ihr testet');
+    expect(folie('/innolab/methoden/value-map', 'uebertrag')).not.toMatch(/Getestet wird ab/);
+    // Die letzte Story-Map-Folie kündigt an, was → wirklich zeigt: erst Slice 1 im Baum, dann die Usage Story.
+    expect(imBeamer(folie('/innolab/methoden/story-map', 'uebertrag'))).toContain('<p class="nur-beamer"><strong>Nach der Pause:</strong> erst Slice 1 im Baum, dann die Usage Story.</p>');
+    expect(NOTIZEN_STORY_MAP.uebertrag.live).toContain('Nach der Pause: erst Slice 1 im Baum, dann Usage Story.');
+    expect(folie('/innolab/methoden/story-map', 'uebertrag')).toContain('<a href="/innolab/tag-4#slice-im-baum">„Slice 1 im Baum“</a>');
+    // Begleiter der Folien, die das Etikett verloren haben: live und Ablauf ohne „Kursregel“ (Herkunft nur in kern/quelle).
+    const ohneEtikett = [NOTIZEN_CONCEPT_STORY.beispiel, NOTIZEN_CONCEPT_STORY.woher, NOTIZEN_EXPERIMENT.spitzenreiter]
+      .flatMap((n) => [...n.live, ...(n.ablauf?.schritte ?? [])]);
+    expect(ohneEtikett.filter((t) => /Kursregel/.test(t))).toStrictEqual([]);
   });
 
   // Review #448: ← auf tag-4#abschluss ging zu „Was bauen wir?“ (9:00) statt zurück auf scrum.
@@ -196,6 +288,13 @@ describe('Tag 5 im Beamer: rund um scrum#team keine Tag-4-Folie', () => {
 });
 
 describe('Hilfen des Tests', () => {
+  it('imBeamer entfernt Handout mit verschachtelten divs und Kommentare, behält den Rest', () => {
+    const f = '<h2 id="x">X</h2>{/* Kursregel */}<p>sichtbar</p><div class="nur-handout"><div class="b"><p>a</p></div><p>Kursregel</p></div><p class="nur-handout">Kursregel</p><p>danach</p>';
+    expect(imBeamer(f)).toBe('<h2 id="x">X</h2><p>sichtbar</p><p>danach</p>');
+    // Ein selbstschließendes <div … /> im Handout zählt nicht als offen – sonst liefe das Handout bis zum Ende weiter.
+    const g = '<div class="nur-handout"><div class="trenner" /><p>Kursregel</p></div><p>danach</p>';
+    expect(imBeamer(g)).toBe('<p>danach</p>');
+  });
   it('ende nur als nacktes Attribut; der Ausdruck für Folien läuft nicht über </Folie> hinaus', () => {
     expect(hatEnde(' ende')).toBe(true);
     expect(hatEnde(' weiter="/innolab/tag-4#ende-tag-4" weiterTitel="x"')).toBe(false);
@@ -231,7 +330,7 @@ describe('Origin Story: Vorlage verlinkt', () => {
   });
 });
 
-// 26.11.: Wie hängt Slice 1 mit dem Baum von Tag 2/3 zusammen? Eine Folie direkt nach „Was bauen wir?“ (9:00).
+// 26.11.: Wie hängt Slice 1 mit dem Baum von Tag 2/3 zusammen? In der Datei direkt nach „Was bauen wir?“; gezeigt seit 28.11. um 14:05.
 describe('Tag 4: Folie „Slice 1 im Baum“', () => {
   it('steht direkt nach „Was bauen wir?“, als letzte Folie vor dem Abschluss', () => {
     const ids = folienMit('/innolab/tag-4').map((f) => f.id);
@@ -258,7 +357,7 @@ describe('Tag 4: Folie „Slice 1 im Baum“', () => {
     const bild = roh.replace(/^---[\s\S]*?\n---/, '').replace(/\/\*[\s\S]*?\*\//g, '').replace(/<!--[\s\S]*?-->/g, '');
     expect(bild).toContain('<figure class="slice-baum"');
     for (const w of ['LINIE.outcome.name', 'LINIE.beleg.name', 'LINIE.annahme.name', 'Ziel-Chance', 'Spitzenreiter', '<strong>Slice 1</strong>', '„Wir lernen, ob …“ – die riskanteste Annahme']) expect(bild, w).toContain(w);
-    // Durchsicht 26.11.: rechts nur Begriffe, die um 9:35 bekannt sind – das Layout der Story Map kommt erst ab 11:50.
+    // Durchsicht 26.11. (damals 9:35): rechts keine Layout-Wörter der Story Map – die Zeilen nennen, was dort steht.
     expect(bild.match(/Lern-Sticky|links neben Slice 1/g) ?? []).toStrictEqual([]);
     expect(bild).not.toMatch(/\bdata-schritt\b/);
   });

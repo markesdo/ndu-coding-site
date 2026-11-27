@@ -25,7 +25,7 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
 <Layout title="Tag 4 · Prototyp & Scrum">
   <span class="eyebrow">Innolab · Tag 4 · Samstag, 28. November 2026 · 09:00–17:30 · online in Teams</span>
   <h1>Tag 4 · Prototyp & Scrum</h1>
-  <p class="lead">Der Tag beginnt mit dem, was von Tag 3 offen ist: Value Map und Fit. Dann zeigen wir, was ihr heute baut – Slice 1 – und wo er in eurem Baum hängt; danach schreibt ihr eure Concept Story. Danach das Geschäftsmodell und die Karte, die die riskanteste Annahme eures Spitzenreiters testet. Dann wird aus ihm ein geschnittener Plan, ein Kernablauf mit Höhepunkt und ein Prototyp auf Papier, den ihr testen könnt. Am Nachmittag lernt ihr Scrum kennen. Claude Code braucht ihr heute nicht: Gebaut wird an Tag 5.</p>
+  <p class="lead">Der Tag beginnt mit dem, was von Tag 3 offen ist: Value Map und Fit. Dann zeigen wir, was ihr heute baut – Slice 1; danach schreibt ihr eure Concept Story. Danach das Geschäftsmodell und die Karte, die die riskanteste Annahme eures Spitzenreiters testet. Dann wird aus ihm ein geschnittener Plan, ein Kernablauf mit Höhepunkt und ein Prototyp auf Papier, den ihr testen könnt. Am Nachmittag lernt ihr Scrum kennen. Claude Code braucht ihr heute nicht: Gebaut wird an Tag 5.</p>
   <p>Heute seid ihr online in einer Teams-Besprechung; den Link findet ihr in Teams. Miro und Werkstatt nutzt ihr auf eurem Laptop; legt Papier und Stift bereit – oder zeichnet die Bildschirme am Nachmittag lo-fi in Figma.</p>
   <Orientierung seite="innolab/tag-4" />
   {/* Seit 26.11.2026 nachts (Dozent): Tag 4 ohne Claude. Der Prototyp entsteht auf Papier; Claude Pro und Claude Code
@@ -38,14 +38,14 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
   <div class="schedule" data-kurstag="2026-11-28">
     <Block time="09:00–09:05" type="plenum" title="Arbeitsfluss – ihr seid hier" href="#arbeitsfluss">Was ihr von Tag 1 bis 3 mitbringt und was heute daraus wird.</Block>
     <Block time="09:05–09:35" type="uebung" title="Value Map & Fit (Nachholen von Tag 3)" href="/innolab/methoden/value-map#vorgehen">Den Vorschlag in T3 · 4 bestätigen oder ändern – Was davon ist die Website, die ihr baut – und trifft sie allein noch P1? Dann füllen, ordnen, Fit, festhalten; zum Schluss die drei Ideen als Lösungen in euren Baum, der Spitzenreiter markiert.</Block>
-    <Block time="09:35–09:40" type="plenum" title="Was bauen wir?" href="#was-bauen-wir">Slice 1 und der Baum: Was ihr heute baut, hängt am Spitzenreiter, den ihr gerade markiert habt.</Block>
+    <Block time="09:35–09:40" type="plenum" title="Was bauen wir?" href="#was-bauen-wir">Slice 1: die kleinste Version eures Spitzenreiters, die von Anfang bis Ende durchgeht – heute auf Papier.</Block>
     <Block time="09:40–10:30" type="uebung" title="Story-Bogen + Concept Story" href="/innolab/methoden/concept-story#story-bogen">Theorie, alle Folien (etwa 20 min): sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben, allein, auf Miro in „T4 · 0 · Concept Story · Produkt n“: sieben Stationen mit Flach-Probe als Check, festhalten.</Block>
     <Block time="10:30–10:40" type="pause" title="Pause" />
     <Block time="10:40–11:00" type="uebung" title="Geschäftsmodell" href="/innolab/methoden/geschaeftsmodell">Wer, Was, Wie, Wert; die Linie vom Outcome zum Geld; die wirtschaftliche Annahme für die Map.</Block>
     <Block time="11:00–11:40" type="uebung" title="Experiment-Karte" href="/innolab/methoden/experiment#annahmen-der-idee">Schritte der Idee, Annahmen, Map, Karte E1 mit Schwelle; Annahme und E1 in den Baum.</Block>
     <Block time="11:40–13:05" type="uebung" title="Story Map" href="/innolab/methoden/story-map">Warm-up „euer Morgen“, Backbone, Slice 1 nach Outcome und Lernziel.</Block>
     <Block time="13:05–14:05" type="pause" title="Mittagspause" />
-    <Block time="14:05–14:35" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Der Kernablauf mit Höhepunkt nahe am Ende.</Block>
+    <Block time="14:05–14:35" type="uebung" title="Usage Story" href="/innolab/methoden/usage-story">Zuerst: wo Slice 1 in eurem Baum hängt. Dann der Kernablauf mit Höhepunkt nahe am Ende.</Block>
     <Block time="14:35–15:30" type="uebung" title="Prototyp auf Papier" href="/innolab/methoden/prototyp-spike">Papier-Skizzen oder lo-fi in Figma, Abnahmekriterien, Karte E2, Trockenlauf. Gebaut wird an Tag 5.</Block>
     <Block time="15:30–16:25" type="uebung" title="Puffer: nachholen, was offen ist">Allein fertig machen, was heute offen blieb – zuerst Papier-Prototyp und Karte E2, dann Story Map und Usage Story; Markus kommt ins 1:1.</Block>
     <Block time="16:25–16:35" type="pause" title="Pause" />
@@ -54,8 +54,8 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
   </div>
 
   {/* 9:00: Im Beamer kommt nach dem Ablauf der Arbeitsfluss (dieselbe Folie wie auf /innolab/arbeitsfluss), dann → zur Value Map
-      (9:05). Erst dort wird der Spitzenreiter bestätigt; darum kommen „Was bauen wir?“ und „Slice 1 im Baum“ danach, um 9:35:
-      → von value-map#uebertrag führt hierher zurück. */}
+      (9:05). Erst dort wird der Spitzenreiter bestätigt; darum kommt „Was bauen wir?“ danach, um 9:35: → von value-map#uebertrag
+      führt hierher zurück. „Slice 1 im Baum“ kommt seit 28.11.2026 erst um 14:05, nach der Story Map. */}
   <Folie weiter="/innolab/methoden/value-map#vorgehen" weiterTitel="Value Map & Fit (Nachholen)">
     <h2 id="arbeitsfluss">Arbeitsfluss – ihr seid hier</h2>
     <p class="folie-satz">Was ihr mitbringt und was heute daraus wird.</p>
@@ -63,8 +63,8 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     <p class="nur-handout small">Die drei Fäden an der Kaffeebar und alle Stationen mit einem Satz: <a href="/innolab/arbeitsfluss?tag=4#beleg">Fäden im Detail</a>.</p>
   </Folie>
 
-  {/* 9:35, nach der Value Map: ← führt zurück zu ihrer letzten Folie, nicht zum Arbeitsfluss von 9:00. */}
-  <Folie zurueck="/innolab/methoden/value-map#uebertrag">
+  {/* 9:35, nach der Value Map: ← führt zurück zu ihrer letzten Folie, nicht zum Arbeitsfluss von 9:00; → direkt zur Concept Story. */}
+  <Folie zurueck="/innolab/methoden/value-map#uebertrag" weiter="/innolab/methoden/concept-story#story-bogen" weiterTitel="Story-Bogen + Concept Story">
     <h2 id="was-bauen-wir">Was bauen wir?</h2>
     <p class="folie-satz">Heute einen Prototyp von Slice 1 auf Papier – der kleinsten Version eures Spitzenreiters, die von Anfang bis Ende durchgeht. An Tag 5 baut Claude Code daraus die echte Version.</p>
     {/* Die drei Zuläufe konkret für heute (Durchsicht 26.11.): woher jede Linie kommt und was daraus wird. Auf
@@ -77,9 +77,11 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
     >Heute Mittag steht Slice 1 auf eurer Story Map, am Nachmittag als Prototyp auf Papier. An Tag 5 besprecht ihr, ob er hält – und baut ihn.</WasBauenWir>
   </Folie>
 
-  {/* Letzte Folie des Morgens: → am Ende führt zur Concept Story (9:40); die Folien des Abschlusses weiter unten kommen erst
-      um 17:15, über scrum#weiter-tag-4. Darum ohne data-schritt (SliceImBaum.astro). */}
-  <Folie weiter="/innolab/methoden/concept-story#story-bogen" weiterTitel="Story-Bogen + Concept Story">
+  {/* 14:05, Wiedereinstieg nach der Mittagspause (seit 28.11.2026; vorher 9:35): Hierher führt → von story-map#uebertrag, ← dorthin
+      zurück, → weiter zur Usage Story. Erst jetzt stehen Slice 1, Annahme und E1 auf Miro. Die Folie steht in der Datei weiter
+      nach „Was bauen wir?“; die Folien des Abschlusses weiter unten kommen um 17:15, über scrum#weiter-tag-4. Ohne data-schritt
+      (SliceImBaum.astro). */}
+  <Folie zurueck="/innolab/methoden/story-map#uebertrag" weiter="/innolab/methoden/usage-story#drei-storys" weiterTitel="Usage Story">
     <h2 id="slice-im-baum">Slice 1 im Baum</h2>
     <p class="folie-satz">Slice 1 ist der Spitzenreiter, konkret gemacht.</p>
     <SliceImBaum />
