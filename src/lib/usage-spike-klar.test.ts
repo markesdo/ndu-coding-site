@@ -150,7 +150,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(t).toContain('<b>So</b><span>„Du bist um 7:27 in der Halle, dein Zug fährt um 7:38. Hol dir einen Cappuccino.“</span>');
     expect(t).toContain('<b>Nicht so</b><span>„Scanne den Code und tippe auf Bestellen.“</span>');
     expect(t).toContain('<strong>Laut denken:</strong> Sie sagt, was sie sieht, sucht und vorhat. Ihr schweigt; stockt sie, höchstens: „Was würdest du jetzt tun?“');
-    expect(t).toContain('<strong>Zu zweit:</strong> eine*r führt und legt die Blätter, eine*r notiert in „T4 · 5 · Prototyp · Produkt n“ – geschafft?, Zeit, wo gehangen; daraus U1, U2 …');
+    expect(t).toContain('<strong>Zu zweit:</strong> eine*r führt und legt die Blätter oder wechselt die Frames, eine*r notiert in „T4 · 5 · Prototyp · Produkt n“ – geschafft?, Zeit, wo gehangen; daraus U1, U2 …');
     expect(folie(PS, 'test-ablauf')).toContain('„Have one person conduct the interviews and interact with the customer“, „Have another person write notes and act as a scribe“');
   });
   it('beispiel: fünf nummerierte Blätter, Blatt 3 ist der Höhepunkt; Kriterien heute auf Papier, an Tag 5 am Handy', () => {
@@ -198,9 +198,9 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
       expect(b, id).toMatch(/<p class="wo-fertig"><span><strong>Wo:<\/strong> [^<]+/);
       expect(b, id).toContain('<span><strong>Fertig, wenn:</strong> ');
     }
-    // Die Felder auf Miro heißen wie die Schritte: 1 Papier-Skizzen, 2 Abnahmekriterien, 3 Karte E2, 4 Tests.
+    // Die Felder auf Miro heißen wie die Schritte: 1 Skizzen (Papier oder Figma), 2 Abnahmekriterien, 3 Karte E2, 4 Tests.
     expect(['schritt-papier', 'schritt-kriterien', 'schritt-karte', 'schritt-trockenlauf'].map((id) => beamer(folie(PS, id)).match(/Feld „(\d · [^“]+)“/)?.[1])).toStrictEqual([
-      '1 · Papier-Skizzen', '2 · Abnahmekriterien', '3 · Karte E2', '4 · Tests',
+      '1 · Skizzen: Papier oder Figma (lo-fi)', '2 · Abnahmekriterien', '3 · Karte E2', '4 · Tests',
     ]);
     expect(schritte.map((id) => NOTIZEN_PROTOTYP_SPIKE[id]?.uebung?.dauer ?? null)).toStrictEqual(['10 min', '3 min', '10 min', '10 min']);
   });
@@ -232,7 +232,9 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(s).toContain('<Callout type="info" title="An Tag 5 baut Claude Code daraus">');
     expect(s).toContain('(<a href="/innolab/tag-5#bauen-skizzen">Tag 5, Bauen</a>)');
     expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
-    expect(s).toContain('<Karte label="Miro · T4 · 5 · Prototyp · Produkt n" text={`1 · Papier-Skizzen');
+    expect(s).toContain('<Karte label="Miro · T4 · 5 · Prototyp · Produkt n" text={`1 · Skizzen: Papier oder Figma (lo-fi)\nJe Bildschirm ein Blatt oder ein Graustufen-Frame in Figma – Foto oder Bild hier rein');
+    expect(s).toContain('Aufgabe vorlesen · Blatt legen oder Frame wechseln, schweigen');
+    expect(s).toContain('Abnahmekriterien und eure Skizzen (Fotos oder Figma-Bilder)');
     expect(s).toContain('<Karte text={`5 · Tag 5: gebaut\n');
     expect(s).toContain('<Karte text={`Für Claude Code (an Tag 5, mit Opus – /model opus)\n');
     expect(quellen['/innolab/tag-5']).toContain('<h2 id="bauen-skizzen">');

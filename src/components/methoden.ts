@@ -410,7 +410,7 @@ export const METHODEN: Methode[] = [
     frage: 'Erreichen fünf Menschen mit dem Prototyp auf Papier den Höhepunkt, ohne dass ihr helft?',
     braucht: ['usage', 'storymap', 'annahmen'], ergibt: ['spike'],
     pruefliste: [
-      { id: 'prototyp-spike-skizzen', text: 'Papierskizzen für jeden Bildschirm der Usage Story liegen als Foto im Feld „1 · Papier-Skizzen“; der Höhepunkt ist ein eigenes Blatt mit Stern, und an jedem Knopf zeigt ein Pfeil, zu welchem Blatt er führt.' },
+      { id: 'prototyp-spike-skizzen', text: 'Skizzen für jeden Bildschirm der Usage Story (Papier oder lo-fi in Figma) liegen als Foto oder Bild im Feld „1 · Skizzen: Papier oder Figma (lo-fi)“; der Höhepunkt ist ein eigenes Blatt oder Frame mit Stern, und an jedem Knopf zeigt ein Pfeil, wohin er führt.' },
       { id: 'prototyp-spike-kriterien', text: 'Im Feld „2 · Abnahmekriterien“ stehen drei Sätze – „Der Prototyp zeigt …“ mit Zahl, „Er läuft …“, „Er hat nicht …“ –, jeder mit Ja oder Nein prüfbar.' },
       { id: 'prototyp-spike-karte', text: 'Die Karte E2 im Feld „3 · Karte E2“ nennt die Annahme (ID, Art) und die Schwelle „x von 5“, bevor jemand testet.' },
       { id: 'prototyp-spike-aufgabe', text: 'Die Aufgabe beschreibt Situation und Ziel, keine Bedienschritte und keine Begriffe aus der Oberfläche.' },
