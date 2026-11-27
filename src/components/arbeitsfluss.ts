@@ -156,7 +156,7 @@ const ROH: Omit<Station, 'zeile'>[] = [
     gebrauchtIn: 'Annahmen der Idee (Tag 4)',
   },
   // Tag 4 (Ablauf ab 25.11., seit 26.11. nachts ohne Claude: 9:05 Value Map & Fit nachholen, 9:35 Was bauen wir?, 9:40 Concept
-  // Story, 10:40 Geschäftsmodell, 11:00 Experiment-Karte, 11:40 Story Map, 14:05 Usage Story, 14:35 Prototyp auf Papier, 15:30 Puffer,
+  // Story, 10:40 Geschäftsmodell, 11:00 Experiment-Karte, 11:40 Story Map, 14:05 Slice 1 im Baum und Usage Story, 14:35 Prototyp auf Papier, 15:30 Puffer,
   // 16:35 Agil & Scrum, 17:15 Origin Story). Der Baum wächst über den Tag mit (Ideen, Annahme, E1, E2) und steht nach dem
   // Papier-Prototyp; gebaut wird an Tag 5.
   {

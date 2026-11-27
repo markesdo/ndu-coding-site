@@ -115,7 +115,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   spitzenreiter: {
     live: [
       'Torres testet alle drei Ideen parallel – wir den Spitzenreiter.',
-      'Kursregel: Abweichung von Torres, weil drei Personen, eine Idee für heute.',
+      'Warum nur der Spitzenreiter: Story Map und Prototyp brauchen eine Idee.',
       'Gemeinsame Annahmen zuerst: Scheitern sie, fallen alle drei.',
       'Unter die Karte: je eine Zeile für die anderen Ideen.',
       'Bei Bedarf: Portland von Tag 1 aufgreifen, siehe Geschichte.',

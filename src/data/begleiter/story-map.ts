@@ -431,7 +431,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   uebertrag: {
     live: [
       'Slice 1 steht: Outcome, Lernfrage, eine Abkürzung mit *.',
-      'Nach der Pause: Usage Story durch Slice 1.',
+      'Nach der Pause: erst Slice 1 im Baum, dann Usage Story.',
     ],
     ueberleitung: 'Nach der Pause: erst ein Blick, wo Slice 1 in eurem Baum hängt – dann die Usage Story.',
   },

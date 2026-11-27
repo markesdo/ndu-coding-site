@@ -346,7 +346,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
       'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
-      'Aufdecken: Fit auf Papier ist kein Beweis – getestet wird ab heute.',
+      'Aufdecken: Fit auf Papier ist kein Beweis – ab heute plant ihr Tests.',
       'Ausblick: gleich „Was bauen wir?“ – dann die Concept Story.',
     ],
     kern: [

@@ -4,6 +4,7 @@ import { ohneAbgeschaltet } from '../components/abgeschaltet';
 import { station } from '../components/arbeitsfluss';
 import { bloeckeAus, folienAus, quellenAusGlob } from './begleiter';
 import { NOTIZEN_CONCEPT_STORY } from '../data/begleiter/concept-story';
+import { NOTIZEN_EXPERIMENT } from '../data/begleiter/experiment';
 import { NOTIZEN_GESCHAEFTSMODELL } from '../data/begleiter/geschaeftsmodell';
 import { NOTIZEN_SCRUM } from '../data/begleiter/scrum';
 import { NOTIZEN_STORY_MAP } from '../data/begleiter/story-map';
@@ -31,6 +32,7 @@ function imBeamer(f: string): string {
     let tiefe = 0;
     let ende = s.length;
     for (let m = tags.exec(s); m; m = tags.exec(s)) {
+      if (m[0].endsWith('/>')) continue; // <div … /> öffnet nichts
       tiefe += m[0] === '</div>' ? -1 : 1;
       if (tiefe === 0) { ende = m.index + m[0].length; break; }
     }
@@ -122,6 +124,8 @@ describe('Tag 4 im Beamer: → von 9:00 bis „Ende Tag 4“', () => {
 
   // Markus 27.11.: Folien sagen, was zu tun ist und warum – kein Etikett „Kursregel“ (Abgleich mit den Quellen nur im
   // Begleiter). Geprüft wird jede Folie auf dem Weg von 9:00 bis „Ende Tag 4“, ohne Handout und Kommentare.
+  // Grenze: gelesen wird nur der .astro-Quelltext der Seite. Text aus eingebundenen Komponenten (z. B. SliceImBaum,
+  // WasBauenWir, VierArten) und aus Props, die erst beim Rendern entstehen, sieht der Test nicht.
   it('keine Folie auf dem Weg trägt im Beamer das Etikett „Kursregel“', () => {
     expect(weg.length).toBeGreaterThan(80);
     const treffer = weg.filter((w) => {
@@ -193,7 +197,17 @@ describe('Tag 4: Folien des Abschlusses', () => {
     const live = [NOTIZEN_VALUE_MAP.uebertrag, NOTIZEN_TAG_4['was-bauen-wir'], NOTIZEN_TAG_4['slice-im-baum']].flatMap((n) => n.live).join(' | ');
     expect(live).not.toMatch(/Slice 1 im Baum|zusammen mit|Annahme nur ankündigen|ab Tag 4/);
     expect(NOTIZEN_TAG_4['slice-im-baum'].live).toContain('A5 ist die Kaffeebar – bei euch die ID eurer Karte E1.');
-    expect(folie('/innolab/methoden/value-map', 'uebertrag')).toContain('Getestet wird ab heute');
+    // tag-4#faden: E1 beschreibt den Test nur, getestet wird freiwillig nach dem Kurstag – also „plant“, nicht „getestet“.
+    expect(folie('/innolab/methoden/value-map', 'uebertrag')).toContain('Ab heute plant ihr, wie ihr testet');
+    expect(folie('/innolab/methoden/value-map', 'uebertrag')).not.toMatch(/Getestet wird ab/);
+    // Die letzte Story-Map-Folie kündigt an, was → wirklich zeigt: erst Slice 1 im Baum, dann die Usage Story.
+    expect(imBeamer(folie('/innolab/methoden/story-map', 'uebertrag'))).toContain('<p class="nur-beamer"><strong>Nach der Pause:</strong> erst Slice 1 im Baum, dann die Usage Story.</p>');
+    expect(NOTIZEN_STORY_MAP.uebertrag.live).toContain('Nach der Pause: erst Slice 1 im Baum, dann Usage Story.');
+    expect(folie('/innolab/methoden/story-map', 'uebertrag')).toContain('<a href="/innolab/tag-4#slice-im-baum">„Slice 1 im Baum“</a>');
+    // Begleiter der Folien, die das Etikett verloren haben: live und Ablauf ohne „Kursregel“ (Herkunft nur in kern/quelle).
+    const ohneEtikett = [NOTIZEN_CONCEPT_STORY.beispiel, NOTIZEN_CONCEPT_STORY.woher, NOTIZEN_EXPERIMENT.spitzenreiter]
+      .flatMap((n) => [...n.live, ...(n.ablauf?.schritte ?? [])]);
+    expect(ohneEtikett.filter((t) => /Kursregel/.test(t))).toStrictEqual([]);
   });
 
   // Review #448: ← auf tag-4#abschluss ging zu „Was bauen wir?“ (9:00) statt zurück auf scrum.
@@ -277,6 +291,9 @@ describe('Hilfen des Tests', () => {
   it('imBeamer entfernt Handout mit verschachtelten divs und Kommentare, behält den Rest', () => {
     const f = '<h2 id="x">X</h2>{/* Kursregel */}<p>sichtbar</p><div class="nur-handout"><div class="b"><p>a</p></div><p>Kursregel</p></div><p class="nur-handout">Kursregel</p><p>danach</p>';
     expect(imBeamer(f)).toBe('<h2 id="x">X</h2><p>sichtbar</p><p>danach</p>');
+    // Ein selbstschließendes <div … /> im Handout zählt nicht als offen – sonst liefe das Handout bis zum Ende weiter.
+    const g = '<div class="nur-handout"><div class="trenner" /><p>Kursregel</p></div><p>danach</p>';
+    expect(imBeamer(g)).toBe('<p>danach</p>');
   });
   it('ende nur als nacktes Attribut; der Ausdruck für Folien läuft nicht über </Folie> hinaus', () => {
     expect(hatEnde(' ende')).toBe(true);

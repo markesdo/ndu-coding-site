@@ -605,7 +605,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Fragen: Was muss der Höhepunkt auflösen? Antworten laut.',
       'Aufdecken: „Fertig 7:31. Dein Zug fährt 7:38.“',
       'Fragen: Was denkt die Pendlerin danach?',
-      'Kursregel – Flach-Probe zeigen: Wartezeit-Anzeige an der Tür – eine Linie.',
+      'Flach-Probe zeigen: Wartezeit-Anzeige an der Tür – eine Linie.',
     ],
     verstaendnis: {
       frage: 'Warum ist die Wartezeit-Anzeige eine Linie?',
@@ -627,7 +627,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         'Stationen 1–4 aufdecken.',
         'Antworten laut: Was muss der Höhepunkt auflösen? Dann Station 5 aufdecken.',
         'Antworten laut: Was denkt die Pendlerin danach? Dann 6 und 7.',
-        'Flach-Probe (Kursregel) aufdecken und die Linie neben die Story stellen.',
+        'Flach-Probe aufdecken und die Linie neben die Story stellen.',
       ],
       achten: [
         'Jede Behauptung hat eine ID – das ist die Messlatte für die eigene Story.',
@@ -642,7 +642,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       '„Sechs von sieben Stationen stehen schon in euren Unterlagen.“',
       'Zeit: Sprechzeit ~1 min; Tabelle Zeile für Zeile.',
       'Betonen: Nur Station 6 ist neu – und eine Annahme.',
-      'Zeilen 6 und 7 sind Kursregeln: Annahmen-Map, Messgröße.',
+      'Zeilen 6 und 7: Annahme zum Testen, Ende mit Messgröße.',
       'Falle: Krise aus dem Kopf – sie steht in den Interviews.',
     ],
     verstaendnis: {
