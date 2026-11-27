@@ -6,9 +6,12 @@ import type { Notiz } from './typen';
 // Folie über die Beamer-Position; „nächste Folie der Seite“ im Panel stimmt darum nur innerhalb dieser Stellen – die
 // Überleitungen nennen, wohin → wirklich führt.
 // Zitate wie auf der Seite (Durchsicht 26.11.: Torres S. 26–27, 119; Lichaw Kap. 4; Bland S. 261). Was nicht aus den
-// Quellen stammt, ist als „Kursformulierung“ oder „Kursregel“ markiert. Vorsicht-Hinweise (Audit 27.11.) stehen als letzte
-// kern-Einträge und beginnen mit „Vorsicht beim Erzählen:“ oder „Nicht behaupten:“ (begleiter-vorsicht.test.ts).
+// Quellen stammt, ist als „Kursformulierung“ oder „Kursregel“ markiert. #slice-im-baum (27.11.): Zitate gegen das PDF
+// (Torres, gedruckte Seiten) und das EPUB (Patton, Kapitel und Abschnitt) geprüft; was die Quellen nicht sagen, steht
+// dort als „Vorsicht beim Erzählen: …“, ohne Etikett (begleiter-tag-4.test.ts). Vorsicht-Hinweise (Audit 27.11.) stehen als
+// letzte kern-Einträge und beginnen mit „Vorsicht beim Erzählen:“ oder „Nicht behaupten:“ (begleiter-vorsicht.test.ts).
 const TORRES = 'Teresa Torres, Continuous Discovery Habits';
+const PATTON = 'Jeff Patton, User Story Mapping';
 const LICHAW = 'Donna Lichaw, The User’s Journey';
 const BLAND = 'David J. Bland & Alexander Osterwalder, Testing Business Ideas';
 
@@ -54,19 +57,61 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
   // Letzte Folie des Morgens: → führt zur Concept Story (story-bogen), nicht in den Abschluss.
   'slice-im-baum': {
     live: [
-      'Links der Pfad im Baum, rechts was bei Slice 1 steht.',
+      'Zeilenweise lesen: links der Baum, rechts Slice 1 – je ein Gegenstück.',
       '„Slice 1 ist kein Knoten im Baum – er macht den Spitzenreiter konkret.“',
       'Annahme nur ankündigen: gewählt wird an der Experiment-Karte.',
-      'Tag 5, Debrief: hätte die Annahme gehalten → Slice bleibt; sonst Baum.',
+      'Tag 5: ab 10 Slice bleibt, 5–9 weiter testen, unter 5 Baum.',
     ],
     kern: [
       {
-        text: 'Unter einer Lösung hängen bei Torres nur die Annahmen-Tests; Slice 1 ist darum kein Knoten im Baum, sondern liegt auf der Story Map.',
-        quelle: `${TORRES}, S. 26–27`,
+        text: 'Zeile 1 – Outcome. Im Baum ist er die Wurzel: „The root of the tree is your desired outcome“. Auf der Story Map steht derselbe Satz aus dem Brief im Rahmen über der Map, und links an Slice 1 steht, wer danach was anders tut. So schneidet Patton: „Focus on outcomes—what users need to do and see when the system comes out—and slice out releases that will get you those outcomes.“ Links an jedem Slice hängen „their target outcomes“, und die Liste ist „a list of real-world benefits“, keine Feature-Liste. An der Kaffeebar: Wurzel „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“, links an Slice 1 „Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt“.',
+        quelle: `${TORRES}, S. 26; ${PATTON}, Kap. 2, Slice Out a Minimum Viable Product Release und Slice Out a Release Roadmap`,
       },
       {
-        text: '„Story mapping forces you to get specific about how an idea will work and what you expect your end-users will do. While many teams use story mapping to align around product requirements, it’s also a great technique for helping us to surface underlying assumptions“',
-        quelle: `${TORRES}, S. 119`,
+        text: 'Zeile 2 – Ziel-Chance. Unter der Wurzel liegt bei Torres der Chancenraum: „the customer needs, pain points, and desires that, if addressed, will drive your desired outcome“. Ihr habt eine Chance mit Stern gewählt. Auf der Story Map wird daraus der Weg eurer Person bis zum Höhepunkt, mit Zitat-IDs an den Tasks. Patton sagt, was hinter einem Outcome steht: „specific behavior changes for specific people engaged in specific activities“. An der Kaffeebar wird aus „Geht sich ein Kaffee noch aus?“ der Weg durch die Halle bis zum Zug. Der erste Task, Schlange und Tafel anschauen, trägt I2-4, eines der Zitate, die im Baum die Chance belegen (I2-4, I3-1, I5-2).',
+        quelle: `${TORRES}, S. 26; ${PATTON}, Kap. 2, Don’t Prioritize Features—Prioritize Outcomes; Kaffeebar: story-map#beispiel`,
+      },
+      {
+        text: 'Zeile 3 – Lösung, und warum „kein Knoten im Baum“. Unter dem Chancenraum liegt bei Torres „the solution space. This is where we’ll visually depict the solutions we are exploring“, darunter: „Below the solution space are assumption tests.“ Im Baum stehen mehrere Lösungen nebeneinander, damit man sie vergleicht: „Which of these three ideas best delivers on our target opportunity?“ Slice 1 ist keine vierte Idee in diesem Vergleich. Er ist der Bauplan des Spitzenreiters, die kleinste Menge Tasks, mit der der Outcome eintreten könnte. Patton: „Use slices to identify all the tasks and details relevant to a specific outcome“ und „The minimum viable solution is the smallest solution release that successfully achieves its desired outcomes.“ Der Baum vergleicht Lösungen, die Story Map macht eine davon baubar. Darum steht Slice 1 neben dem Spitzenreiter und nicht unter ihm.',
+        quelle: `${TORRES}, S. 26–27, 113; ${PATTON}, Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome; Kap. 2, Why We Argue So Much About MVP`,
+      },
+      {
+        text: 'Zeile 4 – Test, und warum „Wir lernen, ob …“ die riskanteste Annahme ist. Unter dem Spitzenreiter hängt A5 mit E1. A5 („Wer die Schlange sieht, bestellt am Aufsteller statt am Automaten“) steht oben rechts auf der Annahmen-Map: wünschenswert, ohne Beleg, und I2-3 spricht sogar dagegen. Genau dort fängt Torres an: „your most important assumptions with the weakest evidence—the assumptions that Bland calls your ‚leap of faith‘ assumptions“. Patton schneidet nach dem Release eine Lernstrategie, denn auch eine minimale Lösung ist „a hypothesis until you prove otherwise. Use the map and discussion to help you find your biggest risks.“ Eric von Liquidnet hängt links an jeden Slice „a few words about what they want to learn in this release“. E1 prüft A5 vorab, ohne das Produkt: mit einem Aufsteller und einer Seite statt der Bestell-App. Slice 1 ist das erste Gebaute, an dem A5 sich im echten Ablauf zeigen würde. Dass die Lernfrage an Slice 1 selbst hängt und nicht an einem eigenen, kleineren Lern-Slice, ist eine Vereinfachung des Kurses (siehe unten).',
+        quelle: `${TORRES}, S. 130; ${PATTON}, Kap. 5, Six Simple Steps to Story Mapping; Kap. 3, Build to Learn; A5, Map und Karte E1: experiment#beispiel-map`,
+      },
+      {
+        text: 'Warum „Hätte … gehalten“: E1 läuft in diesem Kurs nicht. Im Debrief an Tag 5 wird die Karte E1 als Gedankenexperiment besprochen: Welches Band hättet ihr erwartet, und was hättet ihr dann getan? Im Baum wird E1 als „nicht gelaufen“ markiert. Was aus jedem Band folgt, steht schon auf der Karte, in der Zeile „Wir entscheiden vorher“. Ab 10 von 30 wäre A5 gestützt: Slice 1 bleibt, der nächste Test wäre ein Concierge. Bei 5 bis 9 ist es unklar: derselbe Test mit einer Änderung, Slice 1 bleibt vorerst. Unter 5 wäre A5 widerlegt: zurück in den Baum zur Geschwister-Idee Wartezeit-Anzeige an der Tür (sie hängt an A6), so steht es in „Wir entscheiden vorher“. Der Kaffeewagen am Bahnsteig ist erst der weitere Ausweg aus der Zeile „Falls E1 scheitert“ unter der Karte. Torres fasst die Wege so zusammen: „Failing faster is what allows us to quickly move on to the next assumption, idea, or opportunity.“ Stärkerer Test oder nächste Annahme heißt, der Slice bleibt. Nächste Idee heißt, eine Geschwister-Lösung unter derselben Ziel-Chance. Nächste Chance heißt, ein anderer Ast.',
+        quelle: `Kursseiten: experiment (Karte E1, „Wir entscheiden vorher“, „Falls E1 scheitert“), tag-5#debrief und #debrief-ablauf; ${TORRES}, S. 139`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: Torres hängt keine Slices in ihren Baum, und ihre Story Map hat eine andere Aufgabe. Sie mappt jede Idee „assuming the solution already exists“, um Annahmen zu finden („From a simple 5-step story map, we generated 20 assumptions“), und zwar für alle drei Ideen: „You’ll want to story map, generate assumptions, and assumption map for each of your three ideas.“ Pattons Slices kommen bei ihr nicht vor. Dass jede Zeile des Baums ein Gegenstück auf der Story Map hat, ist eine Verbindung, die der Kurs zieht.',
+        quelle: `${TORRES}, S. 119, 124, 130`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: Patton kennt keinen Opportunity Solution Tree. Sein Lernschnitt ist ein eigener, noch kleinerer Slice („Slice the map into even smaller minimum viable product experiments“). Dass Outcome und Lernfrage am selben Slice 1 hängen, ist eine Vereinfachung des Kurses (story-map#sechs-schritte). Auch „riskanteste Annahme“ als Ecke oben rechts auf der Map stammt von Torres und Bland. Patton fragt nur: „What are our biggest, riskiest assumptions? Where is the uncertainty?“',
+        quelle: `${PATTON}, Kap. 5, Six Simple Steps to Story Mapping; Kap. 2, The New MVP Isn’t a Product at All!`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: „derselbe Satz wie im Brief“ gilt für den Rahmen über der Map. Das Outcome-Sticky links an Slice 1 ist enger, an der Kaffeebar nennt es, wer im Gehen bestellt, statt zum Automaten auszuweichen. Im Lern-Sticky der Kaffeebar steht neben A5 auch A2 (40 Bestellungen in 30 Minuten), im Baum hängt nur A5 mit E1. Und die Folie kennt zwei Ausgänge, die Karte E1 drei: Im mittleren Band wird weiter getestet, wie in der Lernkarte E1 der Kaffeebar (8 von 30, unklar, Spitzenreiter bleibt).',
+        quelle: 'Kursseiten: story-map#beispiel, tag-4#slice-im-baum (Handout), tag-5#debrief (Lernkarte E1)',
+      },
+      {
+        text: 'Vorsicht beim Erzählen: „Zurück in den Baum“ heißt bei Torres mehr, als die nächste Idee zu nehmen: „When we learn through testing that an idea won’t work, it’s not enough to move on to the next idea. We need to take time to reflect.“ Sie fragt dann: „What did I misunderstand about my customer?“ Ein widerlegtes A5 kann also auch die Ziel-Chance selbst in Frage stellen. Und auf einen einzelnen Test hin gibt Torres eine Chance nicht auf: „we aren’t likely to make this decision based on one failed test“.',
+        quelle: `${TORRES}, S. 33, 139`,
+      },
+    ],
+    geschichte: {
+      text: 'Zum Vorlesen, von oben nach unten: Oben im Baum der Kaffeebar steht „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“. Derselbe Satz steht über der Story Map, und links an Slice 1 wird er konkret: Wer wenig Zeit hat, bestellt im Gehen, statt zum Automaten auszuweichen. Darunter die Ziel-Chance „Geht sich ein Kaffee noch aus?“. Auf der Story Map ist das der Weg der Pendlerin von der Halle, wo sie die Schlange sieht, bis zum ersten Schluck im Zug. Der Spitzenreiter „Im Gehen bestellen“ ist in Slice 1 ein Ablauf: Aufsteller sehen, scannen, eins aus drei wählen, Abfahrtszeit eintippen, „Fertig 7:31“ lesen, Becher nehmen, bar zahlen. Ganz unten hängt A5 mit E1, der Aufsteller an der Hallentür, und am Slice steht „Wir lernen, ob sie es tun (A5)“. An Tag 5 fragt ihr: Hätten 10 von 30 einen Zug eingetragen, bleibt der Slice; wären es unter 5 gewesen, ginge es zurück in den Baum, zur Wartezeit-Anzeige an der Tür.',
+      quelle: 'Kaffeebar: tag-4#faden (Baum ab Tag 4), story-map#beispiel (Slice 1), experiment (Karte E1)',
+    },
+    fragen: [
+      {
+        frage: 'Warum hängen wir Slice 1 nicht einfach als Knoten unter den Spitzenreiter?',
+        antwort: 'Weil der Baum Lösungen vergleicht und Slice 1 keine eigene Lösung ist. Unter einer Lösung hängen bei Torres nur die Annahmen-Tests (S. 27). Slice 1 beschreibt, wie der Spitzenreiter gebaut würde, und hätte im Baum kein Geschwister, mit dem man ihn vergleichen könnte. Verbunden sind beide über dieselbe ID: A5 hängt im Baum unter dem Spitzenreiter und steht am Lern-Sticky von Slice 1.',
+      },
+      {
+        frage: 'Wenn E1 gar nicht läuft, woher wissen wir dann, ob der Slice bleibt?',
+        antwort: 'Ihr wisst es nicht, und der Debrief tut auch nicht so. Geübt wird die Entscheidung, nicht das Ergebnis: Weil auf der Karte vor dem Test steht, was jedes Band bedeutet („Wir entscheiden vorher“), könnt ihr an Tag 5 durchspielen, was ihr bei 12, 7 oder 3 von 30 getan hättet. Die Entscheidung trifft jede Product Ownerin selbst und hält sie unter der Karte E1 und im Baum fest. Wer mit dem Prototyp getestet hat (E2), bringt dazu einen echten Befund mit.',
       },
     ],
     ueberleitung: 'Damit Slice 1 überzeugt, braucht er eine Geschichte: eure Concept Story.',

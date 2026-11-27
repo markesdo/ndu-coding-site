@@ -30,6 +30,10 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
   it('jeder Hinweis steht an seiner Folie, keiner fehlt, keiner doppelt', () => {
     expect(hinweise().map((h) => `${h.wo} | ${h.text.slice(0, 60).trimEnd()}`)).toStrictEqual([
       'tag-4#was-bauen-wir | Vorsicht beim Erzählen: Alle Zahlen und Zitate der Kaffeebar',
+      'tag-4#slice-im-baum | Vorsicht beim Erzählen: Torres hängt keine Slices in ihren B',
+      'tag-4#slice-im-baum | Vorsicht beim Erzählen: Patton kennt keinen Opportunity Solu',
+      'tag-4#slice-im-baum | Vorsicht beim Erzählen: „derselbe Satz wie im Brief“ gilt fü',
+      'tag-4#slice-im-baum | Vorsicht beim Erzählen: „Zurück in den Baum“ heißt bei Torre',
       'tag-4#abschluss | Vorsicht beim Erzählen: FitCounter hat Lichaw fiktionalisier',
       'tag-4#origin-beispiel | Nicht behaupten: Bland empfehle dieselbe Reihenfolge. Bei ih',
       'methoden/geschaeftsmodell#vor-experiment | Vorsicht beim Erzählen: Torres sagt, die meisten Teams haben',
