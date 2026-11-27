@@ -5,6 +5,7 @@ import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
 import Selbstpruefung from '../../../components/Selbstpruefung.astro';
 import Karte from '../../../components/bild/Karte.astro';
+import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import Callout from '../../../components/Callout.astro';
 import FooterNav from '../../../components/FooterNav.astro';
@@ -170,13 +171,14 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (33 min)</h2>
     <p class="folie-satz">Vier Schritte, einer nach dem anderen – jeder hat ein Feld auf Miro.</p>
+    <MiroFrame name="T4 · 5 · Anleitung Prototyp" />
     <Fluss label="Vier Schritte des Prototyps auf Papier mit Dauer und Ort" knoten={[
       { t: '1 Papier', sub: '10 min<br>allein, Stift oder Figma' },
       { t: '2 Abnahme-kriterien', sub: '3 min<br>Miro' },
       { t: '3 Karte E2', sub: '10 min<br>Miro' },
       { t: '4 Trockenlauf', sub: '10 min<br>zu dritt, Teams' },
     ]} />
-    <p class="gross"><strong>Wo:</strong> euer Frame „T4 · 5 · Prototyp · Produkt n“ – <MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">Produkt 3</MiroLink> · Beispiel <MiroLink name="T4 · 5 · Prototyp · Kaffeebar">Kaffeebar</MiroLink> · <MiroLink name="T4 · 5 · Anleitung Prototyp">Anleitung</MiroLink>. Die Felder 1 bis 4 heißen wie die Schritte.</p>
+    <p class="gross"><strong>Wo:</strong> euer Frame „T4 · 5 · Prototyp · Produkt n“ – <MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">Produkt 3</MiroLink> · Beispiel <MiroLink name="T4 · 5 · Prototyp · Kaffeebar">Kaffeebar</MiroLink>. Die Felder 1 bis 4 heißen wie die Schritte.</p>
     <p class="gross"><strong>An Tag 5:</strong> Claude Code baut daraus Slice 1. <strong>Bis dahin, freiwillig:</strong> Tests mit Menschen, die den Pain haben.</p>
     <div class="nur-handout">
       <p>Dazu rund 20 Minuten Theorie und Beispiel; zusammen 53 Minuten, der Block hat 55. Die Schritte 1 bis 3 macht jede*r allein für das eigene Produkt; nur der Trockenlauf läuft zu dritt. Geschrieben wird nur auf Miro, in eurem Frame „T4 · 5 · Prototyp · Produkt n“ (Produkt 1 bis 3). Gebaut wird heute nichts: An Tag 5 bekommt Claude Code eure Skizzen und Abnahmekriterien als Bilder (<a href="/innolab/tag-5#bauen-skizzen">Tag 5, Bauen</a>). Eine Zeitbox braucht ihr dafür nicht mehr – der Bau läuft im Sprint, und der hat seine eigene. Den Aufbau des Frames zeigt „So sieht euer Frame aus“ weiter unten. Was heute nicht fertig wird, holt ihr im Puffer nach dem Block nach.</p>

@@ -213,10 +213,23 @@ describe('Scrum-Seite: Links auf die Theorie-Anker', () => {
     expect(q).toContain('Still sortieren');
     for (const n of [1, 2, 3]) expect(q).toContain(`Produkt ${n}`);
     for (const n of [1, 2, 3]) expect(q).toContain(`<MiroLink name="T4 · 3 · Scrum · Kaffeebar sortieren · Produkt ${n}">Produkt ${n}</MiroLink>`);
-    // Die Lösung ist auf dem Board bis zur Auflösung versteckt: kein Link aus der Übung, sondern erst auf „Am Beispiel“.
-    expect(q).not.toContain('Kaffeebar · Lösung');
+    // Die Lösung ist auf dem Board bis zur Auflösung versteckt: Ihr Link steht nur in Schritt 2 „Auflösung“, und dort nur im
+    // Beamer (.nur-beamer) – der zeigt ihn erst mit diesem Schritt. Auf der Seite und im Handout stehen alle Schritte zugleich da;
+    // dort fehlt der Link in der Übung ganz. Seit 27.11. (Dozent) nicht mehr auf „Am Beispiel“: Links nur, wo gearbeitet wird.
+    const LOESUNG = '<MiroLink name="T4 · 3 · Scrum · Kaffeebar · Lösung">';
+    const schritte = [...q.matchAll(/<li data-schritt>([^]*?)<\/li>/g)].map((m) => m[1]);
+    expect(schritte.map((s) => s.includes(LOESUNG))).toStrictEqual([false, true]);
+    expect(schritte[1]).toContain(`<span class="nur-beamer"> (${LOESUNG}Lösung</MiroLink>)</span>`);
+    expect(q.split('Kaffeebar · Lösung')).toHaveLength(2);
+    // Ohne die Beamer-Teile (= Seite und Handout) steht kein Lösungs-Link mehr in der Übung.
+    expect(q.replace(/<span class="nur-beamer">[^]*?<\/span>/g, '')).not.toContain('Kaffeebar · Lösung');
+    // Wer nicht auf den Beamer schaut (Teams, eigener Laptop), findet die Lösung nach der Übung im Handout von „Am Beispiel“;
+    // im Beamer trägt die Theoriefolie keinen Link.
     const beispiel = QUELLE_SCRUM.slice(QUELLE_SCRUM.indexOf('<h2 id="beispiel">'), QUELLE_SCRUM.indexOf('</Folie>', QUELLE_SCRUM.indexOf('<h2 id="beispiel">')));
-    expect(beispiel).toContain('<MiroLink name="T4 · 3 · Scrum · Kaffeebar · Lösung">');
+    const handout = beispiel.slice(beispiel.indexOf('<div class="nur-handout">'));
+    expect(handout).toContain(`<p>Die Lösung auf Miro: ${LOESUNG}Kaffeebar · Lösung</MiroLink>.</p>`);
+    expect(beispiel.slice(0, beispiel.indexOf('<div class="nur-handout">'))).not.toMatch(/<Miro(Frame|Link)\b/);
+    expect(handout.match(/<Miro(Frame|Link)\b/g)).toHaveLength(1);
   }, 60_000);
 });
 
