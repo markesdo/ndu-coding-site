@@ -549,9 +549,26 @@ describe('Zwei Blöcke: Stopp nach Schritt 3', () => {
     const n = NOTIZEN[EX];
     expect(sichtbar('vorgehen')).toContain('<h2 id="vorgehen">Jetzt ihr: Schritte 1–3 (11 min)</h2>');
     expect(sichtbar('vorgehen-karte')).toContain('<h2 id="vorgehen-karte">Jetzt ihr: Schritte 4–5 (7 min)</h2>');
-    expect(sichtbar('vorgehen-karte')).toContain('<ol class="gross dicht" start="4">');
+    expect(sichtbar('vorgehen-karte')).toContain('<ol class="gross dicht ex-schritte" start="4">');
     expect(n.vorgehen.uebung?.dauer).toBe('11 min (3 + 5 + 3)');
     expect(n['vorgehen-karte'].uebung?.dauer).toBe('7 min (5 + 2)');
+  });
+});
+
+// Review #480: Das <style> dieser Seite landet in einem CSS-Stück, das rund 30 Seiten laden. Eine Regel auf
+// .folie:has(> h2#vorgehen) allein träfe jede Folie #vorgehen dort (usage-story, value-map, story-map …). Darum hängt jede Regel,
+// die #vorgehen nennt, zusätzlich an .ex-schritte, einer Klasse nur dieser Seite.
+describe('CSS für die Arbeitsfolien bleibt auf dieser Seite', () => {
+  it('jede Regel mit h2#vorgehen braucht .ex-schritte; die Klasse steht an beiden Schrittlisten', () => {
+    const q = seite(EX);
+    const css = q.slice(q.indexOf('<style>'));
+    const regeln = (css.match(/[^{}]*\{[^{}]*\}/g) ?? []).map((r) => r.slice(0, r.indexOf('{')).trim()).filter((s) => /h2#vorgehen\b/.test(s));
+    expect(regeln.length).toBeGreaterThanOrEqual(2);
+    expect(regeln.filter((s) => !s.includes('.ex-schritte'))).toStrictEqual([]);
+    expect(sichtbar('vorgehen')).toContain('<ol class="gross dicht ex-schritte">');
+    expect(sichtbar('vorgehen-karte')).toContain('<ol class="gross dicht ex-schritte" start="4">');
+    const andere = Object.entries(quellen).filter(([p, t]) => p !== EX && t.includes('ex-schritte')).map(([p]) => p);
+    expect(andere).toStrictEqual([]);
   });
 });
 

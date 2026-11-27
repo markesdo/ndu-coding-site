@@ -196,7 +196,7 @@ const KAFFEEBAR_ANNAHMEN = [
     <p class="folie-satz">Alles auf Miro – allein. Die Werkstatt kommt am Abend.</p>
     <p class="wozu"><strong>Wozu?</strong> Damit ihr vor dem Bauen wisst, an welcher Annahme eure Idee hängt – und diese zuerst testet.</p>
     <MiroFrame name="T4 · 0 · Annahmen der Idee" />
-    <ol class="gross dicht">
+    <ol class="gross dicht ex-schritte">
       <li data-schritt><strong>Schritte, auf Miro:</strong> vier bis sechs, als gäbe es euren Spitzenreiter schon – wer tut was, und wo kommt eure Seite am Handy ins Spiel? In eurer Spalte im Frame oben rechts. → <MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>, Punkt 1. <Timer minuten={3} /></li>
       <li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt, ab A7 („A7 · S1 · …“), gleich in die Felder der Map; dazu das Pre-Mortem. → Anleitung, Punkt 2, darunter „Fünf Fragen an jeden Schritt“ und „Pre-Mortem“. <Timer minuten={5} /></li>
       <li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts. Eure Annahmen von Tag 1 liegen schon in eurer Spalte („A1 · Tag 1 · …“), A5 (Concept Story) und A6 (Geschäftsmodell) kommen als Zettel dazu: Zieht jede in ein Feld – Überholtes nach unten. <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend. → Anleitung, Punkt 3. <Timer minuten={3} /></li>
@@ -342,7 +342,7 @@ Falls E1 scheitert: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt 
     <h2 id="vorgehen-karte">Jetzt ihr: Schritte 4–5 (7 min)</h2>
     <p class="folie-satz">Jetzt die Karte E1 – für die Annahme, die bei euch oben rechts liegt.</p>
     <MiroFrame name="T4 · 0 · Annahmen der Idee" />
-    <ol class="gross dicht" start="4">
+    <ol class="gross dicht ex-schritte" start="4">
       <li data-schritt><strong>Karte E1, auf Miro:</strong> im Feld „Karte E1 für die oberste rechts“ – „Um das zu prüfen“ beschreibt, wie E1 laufen würde; mit Schwelle und „Wir entscheiden vorher“. → <MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>, Punkt 4. <Timer minuten={5} /></li>
       <li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>). → Anleitung, Punkt 5. <Timer minuten={2} /></li>
     </ol>
@@ -507,9 +507,10 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
   :global(html[data-beamer]) .fuenf-fragen td, :global(html[data-beamer]) .fuenf-fragen th { font-size: .95rem; padding-top: .15rem; padding-bottom: .15rem; }
   :global(html[data-beamer]) .fuenf-bsp { margin: .15rem 0; font-size: .95rem; }
   :global(html[data-beamer] .annahmen-map .am-flaeche) { aspect-ratio: 2 / 1; }
-  :global(html[data-beamer] .folie:is(:has(> h2#vorgehen), :has(> h2#vorgehen-karte)) ol.gross > li) { font-size: .95rem; line-height: 1.35; margin-bottom: .25rem; }
+  /* Nur diese Seite: .ex-schritte. Ohne die Klasse träfe die Regel jede Folie #vorgehen auf allen Seiten, die dieses CSS laden (Review #480). */
+  :global(html[data-beamer] .folie:is(:has(> h2#vorgehen), :has(> h2#vorgehen-karte)) ol.gross.ex-schritte > li) { font-size: .95rem; line-height: 1.35; margin-bottom: .25rem; }
   /* Schritte 2–3 von #vorgehen und die ID-Zeile in #annahmen-finden sind länger; breiter statt einer Zeile mehr, sonst läuft die Folie bei 1280 × 720 über. Fit von Hand geprüft (27.11., 1280×720 / 1728×1117), kein Test. */
-  :global(html[data-beamer] .folie:is(:has(> h2#vorgehen), :has(> h2#vorgehen-karte)) ol.gross) { max-width: 46em; }
+  :global(html[data-beamer] .folie:is(:has(> h2#vorgehen), :has(> h2#vorgehen-karte)) ol.gross.ex-schritte) { max-width: 46em; }
   /* #vorgehen, #vorgehen-karte: die Stopp-Zeile unter den Schritten, ohne data-schritt – sichtbar ab dem ersten Klick. */
   .stopp { margin: .6rem 0 0; padding: .35rem .7rem; border-left: 4px solid var(--accent); }
   :global(html[data-beamer] .folie:has(> h2#annahmen-finden) .fuenf-bsp) { max-width: none; }
