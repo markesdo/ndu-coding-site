@@ -485,6 +485,8 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
   .ein-schritt td:first-child { white-space: nowrap; }
   .ein-schritt td.treffer { color: var(--fg); }
   .ein-schritt-regel { margin: .6rem 0 .3rem; }
+  /* Fit von Hand geprüft (27.11., 1280×720 / 1728×1117), kein Test: die Regel in einer Zeile statt mit Trennung. */
+  :global(html[data-beamer] .folie:has(> h2#ein-schritt-fuenf-fragen) .ein-schritt-regel) { max-width: none; }
   /* #karte-e1, #vorher-entscheiden: was „Concierge“ heißt, als eine Zeile unter der Karte. */
   .concierge-zeile { font-size: .95rem; margin: .4rem 0; }
   /* #so-liefe-e1: je Schritt die Kaffeebar als kleine zweite Zeile. */
