@@ -41,7 +41,7 @@ describe('Foliensatz: eine Adresse, 20 Folien', () => {
     expect(mit).toStrictEqual(['lib/foliensatz.ts']);
   });
 
-  it('Variante B: 20 Folien aus dem Teil Agile & Scrum (1–62), Inkremente gleich nach dem Wasserfall', () => {
+  it('Variante B: 20 Folien aus dem Teil Agile & Scrum (1–62), Inkremente hinter den Prinzipien', () => {
     const folien = AGIL_SCRUM_FOLIEN.split(', ').flatMap((t) => {
       const [von, bis = von] = t.split('–').map(Number);
       return Array.from({ length: bis - von + 1 }, (_, k) => von + k);
@@ -49,9 +49,10 @@ describe('Foliensatz: eine Adresse, 20 Folien', () => {
     expect(folien).toHaveLength(20);
     expect(new Set(folien).size).toBe(20);
     expect(folien.every((n) => n >= 1 && n <= 62)).toBe(true);
-    expect(folien.slice(0, 2)).toStrictEqual([3, 4]);
-    // Nummern seit 26.11.2026, als die Folie zu den Inkrementen hinter den Wasserfall rückte (alt: 3, 61, 11, 26, 27–28 …).
-    expect(AGIL_SCRUM_FOLIEN).toBe('3, 4, 12, 27–29, 38, 39, 42, 43, 44, 45, 47–49, 50, 51, 55, 57, 61');
+    expect(folien.slice(0, 6)).toStrictEqual([3, 11, 26, 27, 28, 32]);
+    // Nummern wie im Foliensatz am 27.11.2026: Traditional vs. Agile Increments auf 32, hinter den Prinzipien
+    // (am 26.11. kurz auf 4: 3, 4, 12, 27–29 …; davor 3, 61, 11, 26, 27–28 …).
+    expect(AGIL_SCRUM_FOLIEN).toBe('3, 11, 26–28, 32, 38, 39, 42, 43, 44, 45, 47–49, 50, 51, 55, 57, 61');
   });
 });
 
