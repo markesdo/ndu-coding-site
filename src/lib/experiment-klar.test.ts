@@ -159,12 +159,19 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect(kern).toContain('„(1) commit to abide by results“ (S. 85)');
     expect(kern).toContain('done deal');
     expect(kern).toContain('Ob auch feststand, was bei welchem Ergebnis folgt, sagt Thomke nicht.');
-    expect(n.fragen?.map((f) => f.frage)).toStrictEqual([
-      'Was hat der Test bei Kohl’s gemessen – die Möbel oder den ganzen Laden?',
-      'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?',
+    expect(kern).toContain('willing to walk away from a project if a hypothesis is not supported“ (S. 86)');
+    // Review #478: keine Bänder vor #vorher-entscheiden – die 8-von-30-Frage steht dort.
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual(['Was hat der Test bei Kohl’s gemessen – die Möbel oder den ganzen Laden?']);
+    expect(JSON.stringify(n)).not.toMatch(/5–9|unter 5|8 von 30/);
+    expect(n.live).toStrictEqual([
+      'Kohl’s: Führung begeistert, Möbel, 70 Läden, sechs Monate, gestoppt.',
+      'Warum der Umsatz sank: Möbel nahmen anderen Waren die Fläche.',
+      '„Gute Ergebnisse glaubt man sofort – schlechte prüft man so lange nach, bis sie zur eigenen Erwartung passen.“',
+      'Falle: Kohl’s eine Matrix vorab andichten – belegt ist der vereinbarte Test.',
+      'Brücke: Darum steht die Handlung vorher auf der Karte.',
     ]);
-    expect(n.fragen?.[1].antwort).toContain('„unter 5 → Wartezeit-Anzeige“');
-    expect(n.live).toContain('Brücke: E1 unter 5 heißt Wartezeit-Anzeige, nicht „ungewöhnlicher Morgen“.');
+    const v = NOTIZEN[EX]['vorher-entscheiden'].fragen?.find((f) => f.frage === 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?');
+    expect(v?.antwort).toContain('„unter 5 → Wartezeit-Anzeige“');
     expect(JSON.stringify(n)).not.toContain('Kursregel');
   });
 
@@ -174,7 +181,11 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect(n.live).toContain('Mock Sale: Klick, sofort aufgeklärt, Kaffee wie sonst, kleines Dankeschön.');
     const f = n.fragen?.find((x) => x.frage === 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?');
     for (const teil of [
-      'derselbe Aufsteller an der Hallentür wie bei E1',
+      'am selben Ort wie E1, als eigener Durchlauf nach E1',
+      '„Fährt dein Zug in weniger als 5 Minuten? Dann bitte nicht jetzt.“ (Hinweis des Kurses',
+      '„Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“',
+      'die Strichliste am Automaten in derselben Zeit',
+      'Die Person kostet es knapp eine Minute',
       '„Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“',
       'Angeworben wird niemand',
       '„target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290)',
@@ -185,7 +196,6 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
       'der Gutschein ist eine Anpassung des Kurses',
       'ohne Zahlungsdaten nicht „very strong“',
       '„Are you experimenting with your customers or on them?“ (S. 86)',
-      'Hinweis des Kurses: nicht in der letzten Minute vor einem Zug',
     ]) expect(f?.antwort).toContain(teil);
     expect(f?.antwort).not.toContain('Kursregel');
   });

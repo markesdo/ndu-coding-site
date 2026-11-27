@@ -232,11 +232,11 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   'ergebnis-gilt': {
     live: [
-      'Kohl’s erzählen: US-Händler, Möbel, 70 Läden, sechs Monate, gestoppt.',
+      'Kohl’s: Führung begeistert, Möbel, 70 Läden, sechs Monate, gestoppt.',
       'Warum der Umsatz sank: Möbel nahmen anderen Waren die Fläche.',
       '„Gute Ergebnisse glaubt man sofort – schlechte prüft man so lange nach, bis sie zur eigenen Erwartung passen.“',
-      'Falle: eine Matrix vorab behaupten – belegt ist der vereinbarte Test.',
-      'Brücke: E1 unter 5 heißt Wartezeit-Anzeige, nicht „ungewöhnlicher Morgen“.',
+      'Falle: Kohl’s eine Matrix vorab andichten – belegt ist der vereinbarte Test.',
+      'Brücke: Darum steht die Handlung vorher auf der Karte.',
     ],
     verstaendnis: {
       frage: 'Was hätte bei Kohl’s ohne vereinbarten Test passieren können?',
@@ -257,7 +257,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${THOMKE}, S. 126`,
       },
       {
-        text: 'Die Regel dahinter, Thomkes erste von vier: „(1) commit to abide by results“ (S. 85). „Before conducting any test, stakeholders must agree on how they’ll proceed once the results are in. … Most importantly, they must be willing to walk away from a project if a hypothesis is not supported.“',
+        text: 'Die Regel dahinter, Thomkes erste von vier: „(1) commit to abide by results“ (S. 85). „Before conducting any test, stakeholders must agree on how they’ll proceed once the results are in. … Most importantly, they must be willing to walk away from a project if a hypothesis is not supported“ (S. 86).',
         quelle: `${THOMKE}, S. 85–86`,
       },
       {
@@ -277,10 +277,6 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         frage: 'Was hat der Test bei Kohl’s gemessen – die Möbel oder den ganzen Laden?',
         antwort: 'Den Umsatz insgesamt: „a net decrease in revenue“ (S. 86). Die Möbel nahmen anderen Waren die Fläche, die verkauften weniger, und Kohl’s verlor Kundschaft (S. 86–87). Wer nur auf die Möbel schaut, sieht die Verdrängung nicht. Darum zählt E1 beides, Automat und Aufsteller: Gemessen wird die Wahl, nicht nur das Interesse am Neuen.',
-      },
-      {
-        frage: 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?',
-        antwort: 'Nicht, wenn es vorher auf der Karte stand: Für 5–9 heißt die Zeile „Wir entscheiden vorher“ schon „wiederholen, eine Sache ändern“ – den Ort ändern ist dann die vereinbarte Handlung. Prüffrage nach Thomke (S. 14): Hättet ihr den Ort auch bei 12 von 30 hinterfragt? Bei 3 von 30 gilt „unter 5 → Wartezeit-Anzeige“, auch wenn der Morgen ungewöhnlich wirkte.',
       },
     ],
     ueberleitung: 'Wie schreibt ihr vorher auf, was ihr dann tut? Mit drei Bändern.',
@@ -324,6 +320,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         frage: 'Woher wissen wir, wo „knapp darunter“ endet?',
         antwort: 'Kursregel: etwa bei der halben Schwelle, vor dem Test als Zahl festgelegt. Bei der Kaffeebar 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
+      },
+      {
+        frage: 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?',
+        antwort: 'Nicht, wenn es vorher auf der Karte stand: Für 5–9 heißt die Zeile „Wir entscheiden vorher“ schon „wiederholen, eine Sache ändern“ – den Ort ändern ist dann die vereinbarte Handlung. Prüffrage nach Thomke (S. 14): Hättet ihr den Ort auch bei 12 von 30 hinterfragt? Bei 3 von 30 gilt „unter 5 → Wartezeit-Anzeige“, auch wenn der Morgen ungewöhnlich wirkte.',
       },
       {
         frage: 'Und eine neue Einsicht?',
@@ -426,7 +426,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
-        antwort: 'Ort: derselbe Aufsteller an der Hallentür wie bei E1, aber mit Angebot und Preis: „Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“, darunter der QR-Code. Wer: Pendler*innen, die morgens ankommen und die Schlange sehen. Angeworben wird niemand – es ist die Zielgruppe in einer echten Kaufsituation; Bland: „target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290). Ablauf: scannen, Getränk wählen, Abfahrtszeit eintragen, auf „Vorbestellen für 2,90 €“ tippen. Sofort danach: „Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“. Die Person: Sie bekommt durch den Test keinen Kaffee, und es fließt kein Geld. Sie erfährt es sofort, noch in der Halle und bevor sie das Anstellen aufgibt; ihren Kaffee holt sie wie sonst an der Bar oder am Automaten. Als Dank, nach Blands „gift card for the inconvenience“ (S. 289): eine kleine Aufmerksamkeit an der Bar, etwa ein Gutschein – der Gutschein ist eine Anpassung des Kurses, Bland beschreibt die Entschädigung für den Test im Laden. Gezählt: Kaufklicks pro Besucher*in der Seite, dazu die E-Mails. „Purchase clicks are relatively strong“, die E-Mails danach ebenfalls „relatively strong“ (S. 290); ohne Zahlungsdaten nicht „very strong“. Warum vertretbar: mit der Kundschaft, nicht an ihr – „Are you experimenting with your customers or on them?“ (S. 86). Die Person kostet es ein paar Sekunden, und sie erfährt es sofort. Achtung, Hinweis des Kurses: nicht in der letzten Minute vor einem Zug anbieten – niemand soll durchs Tippen den Zug verpassen.',
+        antwort: 'Ort: am selben Ort wie E1, als eigener Durchlauf nach E1 – der Aufsteller an der Hallentür, jetzt mit Angebot und Preis: „Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“, darunter der QR-Code. Wer: Pendler*innen, die morgens ankommen und die Schlange sehen. Angeworben wird niemand – es ist die Zielgruppe in einer echten Kaufsituation; Bland: „target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290). Ablauf: scannen; auf der ersten Seite steht „Fährt dein Zug in weniger als 5 Minuten? Dann bitte nicht jetzt.“ (Hinweis des Kurses: niemand soll durchs Tippen den Zug verpassen). Dann Getränk wählen, Abfahrtszeit eintragen, auf „Vorbestellen für 2,90 €“ tippen. Sofort danach: „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“. Die Person: Sie bekommt durch den Test keinen Kaffee, und es fließt kein Geld. Sie erfährt es sofort, noch in der Halle und bevor sie das Anstellen aufgibt; ihren Kaffee holt sie wie sonst an der Bar oder am Automaten. Als Dank, nach Blands „gift card for the inconvenience“ (S. 289): Mit der Seite bekommt sie an der Bar eine kleine Aufmerksamkeit, etwa einen Gutschein – der Gutschein ist eine Anpassung des Kurses, Bland beschreibt die Entschädigung für den Test im Laden. Gezählt: Kaufklicks pro Besucher*in der Seite, dazu die E-Mails – und wie bei E1 gegen die Alternative: die Strichliste am Automaten in derselben Zeit, damit sichtbar wird, ob die Vorbestellung den Automaten verdrängt; gemessen wird die Wahl, nicht nur das Interesse am Neuen (wie bei Kohl’s: der ganze Laden zählt, nicht nur das Neue; Anpassung des Kurses). „Purchase clicks are relatively strong“, die E-Mails danach ebenfalls „relatively strong“ (S. 290); ohne Zahlungsdaten nicht „very strong“. Warum vertretbar: mit der Kundschaft, nicht an ihr – „Are you experimenting with your customers or on them?“ (S. 86). Die Person kostet es knapp eine Minute, und sie erfährt es sofort.',
       },
     ],
     ueberleitung: 'Alles zusammen an der Kaffeebar: erst die Schritte.',
