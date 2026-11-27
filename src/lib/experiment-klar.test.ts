@@ -115,6 +115,8 @@ describe('Pre-Mortem und Gegenprobe', () => {
     const q = seite(EX);
     expect(q).not.toMatch(/GEGENPROBE|Gegenprobe zu E1|claude\.ai|<Prompt\b|MCP_WERKZEUGE/);
     expect(q).not.toContain('Prüfen mit Claude am Ende des Tages');
+    // Code-Review #470: der Zeitpunkt bleibt – experiment-origin lässt sich erst nach dem Abschluss abhaken.
+    expect(q).toContain('Prüft sie selbst mit der Liste unter <a href="#pruefen">Prüfen</a> am Ende des Tages, wenn auch die Origin Story steht.</p>');
     expect(q).toContain('die Origin Story in „T4 · 6 · Origin Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>\n  <Selbstpruefung slug="experiment" />');
     expect(q).not.toMatch(/PRE_MORTEM\}|label="Pre-Mortem/);
   });

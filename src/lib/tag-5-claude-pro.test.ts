@@ -82,8 +82,10 @@ describe('Tag 4 ohne Claude (Markus 26.11.2026 nachts)', () => {
       expect(pruefen, slug).toContain('Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
       expect(pruefen.length, slug).toBeLessThan(400);
     }
-    // Die Methoden-Karte nennt für Tag 4 keine Aufgabe für Claude mehr.
-    for (const m of METHODEN.filter((x) => tag4.includes(x.slug))) expect(m.ki, m.slug).toMatch(/^Heute keine Rolle – /);
+    // Die Methoden-Karte (und methode_erklaeren im Werkstatt-Connector) nennt die gestrichenen Prompts nicht mehr. Was Claude
+    // mit Connector an einem Bild prüfen kann, bleibt dort beschrieben (Code-Review #470: kein „keine Rolle“ gegen die
+    // Server-Anweisung, die Tag-4-Bilder weiter prüfen lässt).
+    expect(METHODEN.filter((x) => tag4.includes(x.slug)).map((m) => m.ki).filter((ki) => /Gegenprobe|Annahmen hinter/.test(ki))).toStrictEqual([]);
     // Selbstprüfung hakt an derselben Liste wie ClaudePruefung ab (gleiche Checklisten-ID), ohne Prompt.
     const selbst = readFileSync(new URL('../components/Selbstpruefung.astro', import.meta.url), 'utf8');
     expect(selbst).toContain('<Checklist id={pruefChecklisteId(m)} items={m.pruefliste.map((p) => p.text)} ids={m.pruefliste.map((p) => p.id)} />');
