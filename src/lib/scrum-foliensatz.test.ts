@@ -223,8 +223,13 @@ describe('Scrum-Seite: Links auf die Theorie-Anker', () => {
     expect(q.split('Kaffeebar · Lösung')).toHaveLength(2);
     // Ohne die Beamer-Teile (= Seite und Handout) steht kein Lösungs-Link mehr in der Übung.
     expect(q.replace(/<span class="nur-beamer">[^]*?<\/span>/g, '')).not.toContain('Kaffeebar · Lösung');
+    // Wer nicht auf den Beamer schaut (Teams, eigener Laptop), findet die Lösung nach der Übung im Handout von „Am Beispiel“;
+    // im Beamer trägt die Theoriefolie keinen Link.
     const beispiel = QUELLE_SCRUM.slice(QUELLE_SCRUM.indexOf('<h2 id="beispiel">'), QUELLE_SCRUM.indexOf('</Folie>', QUELLE_SCRUM.indexOf('<h2 id="beispiel">')));
-    expect(beispiel).not.toMatch(/<Miro(Frame|Link)\b/);
+    const handout = beispiel.slice(beispiel.indexOf('<div class="nur-handout">'));
+    expect(handout).toContain(`<p>Die Lösung auf Miro: ${LOESUNG}Kaffeebar · Lösung</MiroLink>.</p>`);
+    expect(beispiel.slice(0, beispiel.indexOf('<div class="nur-handout">'))).not.toMatch(/<Miro(Frame|Link)\b/);
+    expect(handout.match(/<Miro(Frame|Link)\b/g)).toHaveLength(1);
   }, 60_000);
 });
 
