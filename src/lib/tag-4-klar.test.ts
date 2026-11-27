@@ -27,6 +27,16 @@ describe('Tag 4: „Was bauen wir?“ konkret', () => {
     expect(f).toContain('annahme="liefert das Lernziel: was der Slice zeigen muss – daraus wird Test E1."');
   });
 
+  // 28.11.2026 (Markus): Überleitung zur Concept Story als letzte Zeile im Beamer, als einziger Aufdeck-Schritt (die
+  // Komponente steht hier mit schritte={false}). Kurzfassung, weil die lange Frage bei 1280×720 nicht passt.
+  it('letzte Zeile im Beamer: zuerst die Frage, dafür die Concept Story', () => {
+    const b = beamer(folie(T4, 'was-bauen-wir'));
+    const zeile = '<p class="nur-beamer" data-schritt>Zuerst: Warum ist euer Spitzenreiter besser als heute? – die Concept Story.</p>';
+    expect(b).toContain(zeile);
+    expect(b.trimEnd().endsWith(zeile)).toBe(true);
+    expect(b.match(/data-schritt\b/g) ?? []).toHaveLength(1);
+  });
+
   it('die Komponente zeigt die Texte aus den Props; der Arbeitsfluss behält die neutralen Vorgaben', () => {
     const roh = readFileSync(new URL('../components/bild/WasBauenWir.astro', import.meta.url), 'utf8');
     for (const l of ['beleg', 'outcome', 'annahme']) expect(roh, l).toContain(`<strong>{LINIE.${l}.name}</strong> {${l}}</span>`);
