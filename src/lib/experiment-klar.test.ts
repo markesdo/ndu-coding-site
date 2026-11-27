@@ -86,7 +86,7 @@ describe('Annahmen-Map wie der Miro-Frame', () => {
     expect(v).not.toMatch(/Map:<\/strong> Beleg nach rechts/);
     const orte = [...v.matchAll(/<li data-schritt><strong>[^<]*?, (auf Miro|[^<:]+):<\/strong>/g)].map((x) => x[1]);
     expect(orte).toStrictEqual(['auf Miro', 'auf Miro', 'auf Miro', 'auf Miro', 'auf Miro']);
-    expect(v).toContain('in der <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map der Werkstatt</a> festhalten: ID, Art, Wichtigkeit, Beleg.');
+    expect(v).toContain('In die <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a> jetzt „Zuerst testen“');
     expect(v).toContain('<strong>Karte E1, auf Miro:</strong> im Feld „Karte E1 für die oberste rechts“');
     expect(v).toContain('<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">');
     expect(MIRO_FRAMES['T4 · 0 · Anleitung Annahmen der Idee']).toBe('3458764691725321671');
@@ -309,5 +309,31 @@ describe('E1 nur Theorie: Spitzenreiter-Handout, Slice im Baum, Umschwenken', ()
     const t5 = seite('/innolab/tag-5');
     expect(t5).toContain('und die geteilte Annahme (A8)');
     expect(t5).not.toContain('die ihr zuerst getestet habt');
+  });
+});
+
+describe('Weg von den Schritten zur Map (28.11.2026)', () => {
+  const NOTIZ = NOTIZEN['/innolab/methoden/experiment'] as Record<string, { live?: string[] }> | undefined;
+  it('#vorgehen Schritt 2: Art und Schritt auf dem Zettel, gleich in die Felder; im Handout ab der nächsten freien ID', () => {
+    expect(sichtbar('vorgehen')).toContain('<li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt („A7 · S1 · …“) gleich in die Felder der Map; dazu das Pre-Mortem. <Timer minuten={5} /></li>');
+    expect(folie('vorgehen')).toContain('Je Schritt mindestens zwei Annahmen, ab der nächsten freien ID: Die IDs zählen weiter wie in der Werkstatt, A5 und A6 habt ihr heute schon (Concept Story, Geschäftsmodell), die erste neue ist meist A7.');
+  });
+  it('#vorgehen Schritt 3: A1–A6 dazu, jetzt nur „Zuerst testen“ in die Werkstatt, Rest bis zum Abend als Kursregel', () => {
+    const v = sichtbar('vorgehen');
+    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts; A1–A6 dazu. In die <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a> jetzt „Zuerst testen“, Rest bis abends (Kursregel). <Timer minuten={3} /></li>');
+    expect(folie('vorgehen')).toContain('holt eure Annahmen A1–A6 aus der Werkstatt dazu, je ein Zettel. Die Schritte bleiben in ihrem Feld. In die Werkstatt tragt ihr jetzt nur die Annahmen in „Zuerst testen“ ein, mit Art, Wichtigkeit und Beleg; die übrigen bis zum Abend, vor der Prüfung mit Claude. Auch das ist eine Kursregel');
+    expect([...v.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([3, 5, 3, 5, 2]);
+    expect(folie('vorgehen')).toContain('die erste neue ist meist A7. „S1“ auf dem Zettel nennt den Schritt, aus dem die Annahme kommt – eine Kursregel');
+  });
+  it('#annahmen-finden: A5 ist die Kaffeebar-Nummer, mit A5 zusammen aufgedeckt', () => {
+    expect(sichtbar('annahmen-finden')).toContain('(wünschenswert)</span><br><span class="small muted">Kaffeebar-Nummer. Bei euch geht es in der Werkstatt weiter, meist ab A7.</span></p>');
+  });
+  it('#map: die Schritte bleiben in ihrem Feld', () => {
+    expect(folie('map')).toContain('Die Schritte bleiben in ihrem Feld; auf die Map kommen nur die Annahmen');
+  });
+  it('Begleiter: Check nach 11 min fragt nur nach „Zuerst testen“', () => {
+    const live = NOTIZ?.vorgehen?.live ?? [];
+    expect(live).toContain('Nach 11 min: „Zuerst testen“ in der Werkstatt? Rest bis abends.');
+    expect(live).not.toContain('Nach 11 min: Stehen die Annahmen in der Werkstatt?');
   });
 });
