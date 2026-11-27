@@ -5,7 +5,7 @@ import Begleiter from '../pages/innolab/begleiter.astro';
 
 // Markus 27.11.: Antworten im Begleiter stehen offen da, ohne Klick. Die Antwort zur Verständnisfrage gehört zum
 // Live-Block (bleibt also auch bei „Nur live“ sichtbar) und steckt in keinem <details>.
-const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
 describe('Begleiter: Antworten ohne Klick', () => {
   it('jede Antwort zur Verständnisfrage steht als „Antwort:“ im Live-Block, ohne <details>', async () => {
@@ -17,14 +17,19 @@ describe('Begleiter: Antworten ohne Klick', () => {
     const absaetze = [...html.matchAll(/<p class="antwort"[^>]*><span[^>]*>Antwort:<\/span>\s*([\s\S]*?)<\/p>/g)].map((m) => m[1].replace(/<!--[\s\S]*?-->/g, '').trim());
     for (const a of antworten) expect(absaetze, a).toContain(escape(a).trim());
 
-    // Kein Antwort-Klappteil mehr, und die einzigen <details> der Seite sind die Miro-Schritte.
+    // Kein Antwort-Klappteil mehr, auch kein anderes <details> im Frage-Kasten.
     expect(html).not.toMatch(/<summary[^>]*>\s*Antwort/);
-    const details = [...html.matchAll(/<details[^>]*>\s*<summary[^>]*>([^<]*)/g)].map((m) => m[1].trim());
-    expect(details.filter((s) => !s.startsWith('Schritte'))).toStrictEqual([]);
+    const kaesten = [...html.matchAll(/<div class="check"[^>]*>([\s\S]*?)<\/div>/g)].map((m) => m[1]);
+    expect(kaesten.length).toBe(absaetze.length);
+    expect(kaesten.filter((k) => k.includes('<details'))).toStrictEqual([]);
 
-    // Live-Block, nicht Vorbereitung: zwischen der Antwort und dem Ende ihres Abschnitts liegt keine .vorbereitung.
-    const i = html.indexOf('<p class="antwort"');
-    const davor = html.slice(0, i);
-    expect(davor.lastIndexOf('class="live"') > davor.lastIndexOf('class="vorbereitung"')).toBe(true);
+    // Live-Block, nicht Vorbereitung: vor jeder Antwort ist der nächste Abschnitt ein Live-Block.
+    const stellen = [...html.matchAll(/<p class="antwort"/g)].map((m) => m.index!);
+    expect(stellen.length).toBe(absaetze.length);
+    const imLive = stellen.filter((i) => {
+      const davor = html.slice(0, i);
+      return davor.lastIndexOf('class="live"') > davor.lastIndexOf('class="vorbereitung"');
+    });
+    expect(imLive.length).toBe(stellen.length);
   });
 });
