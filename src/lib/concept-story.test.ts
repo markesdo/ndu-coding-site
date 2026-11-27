@@ -232,3 +232,105 @@ describe('Concept Story: Satz im Brief, iPhone-Hintergrund', () => {
     expect(JSON.stringify(NOTIZEN_CONCEPT_STORY.hoch.kern)).toContain('Blackberrys and Palm Treos');
   });
 });
+
+// Wunsch des Dozenten (27.11.2026): Im Begleiter zu #stationen jede Station einzeln – was sie tut, Lichaws Frage, ihr Film-Beispiel,
+// die Kaffeebar wie auf den Seiten, eine Falle; zur Exposition weitere Beispiele des Kurses. Zu #hoch-lehre: wofür die zwei Fragen
+// da sind und was ihr heute damit tut.
+describe('Begleiter: sieben Stationen einzeln, zwei Fragen erklärt (27.11.)', () => {
+  const usage = quellen['/innolab/methoden/usage-story'] ?? '';
+  const usageBeispiel = usage.slice(usage.indexOf('<h2 id="beispiel">'), usage.indexOf('</Folie>', usage.indexOf('<h2 id="beispiel">')));
+  const st = NOTIZEN_CONCEPT_STORY.stationen;
+  const stationen = ['1 Exposition.', '2 Auslöser (Inciting incident).', '3 Steigende Handlung.', '4 Krise.', '5 Höhepunkt (Climax or resolution).', '6 Fallende Handlung (Denouement).', '7 Ende.'];
+  const abschnitte = ['Exposition', 'Inciting Incident or Problem', 'Rising Action', 'Crisis', 'Climax or Resolution', 'Falling Action or Denouement', 'End'];
+
+  it('stationen: ein Überblick, dann je Station ein Eintrag mit Aufgabe, Frage, Film, Kaffeebar und Falle', () => {
+    const k = st.kern ?? [];
+    expect(k).toHaveLength(8);
+    expect(k[0].text).toContain('Lichaw begründet die Zahl sieben nicht eigens');
+    expect(k.slice(1).map((e) => stationen.find((s) => e.text.startsWith(s)))).toStrictEqual(stationen);
+    k.slice(1).forEach((e, i) => {
+      for (const teil of ['Was ', 'Frage:', 'Film:', 'Kaffeebar (Kursbeispiel):', 'Falle:']) expect(e.text, `${stationen[i]} ${teil}`).toContain(teil);
+      expect(e.quelle, stationen[i]).toMatch(new RegExp(`Kap\\. 2, ${abschnitte[i]}, S\\. \\d+`));
+      expect(e.quelle, stationen[i]).toContain('Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)');
+    });
+  });
+
+  it('Exposition: Lichaws Fragen und Marty, nur so weit sie ihn beschreibt', () => {
+    const e = st.kern?.[1].text ?? '';
+    expect(e).toContain('Frage: Wer? Welche Ziele? Was steht im Weg?');
+    expect(e).toContain('„What is the problem or impediment standing in the way of this person meeting her goal?“');
+    expect(e).toContain('„His family isn’t very ambitious, but Marty has plans. He’s going to make something of himself.“');
+    expect(e).toContain('was Marty vor 1955 im Weg steht, nennt sie nicht');
+  });
+
+  it('die Kaffeebar-Stellen im Begleiter stehen wörtlich so auf concept-story#beispiel bzw. usage-story#beispiel', () => {
+    const kern = JSON.stringify(st.kern);
+    expect(usageBeispiel.length).toBeGreaterThan(500);
+    const seiten = { cs: folie('beispiel'), us: usageBeispiel };
+    const stellen: [string, 'cs' | 'us'][] = [
+      ['die Barista kennt die Stammgäste (G3, I3-6)', 'cs'],
+      ['ohne gehetzt in den Tag zu starten (J2)', 'cs'],
+      ['bei mehr als fünf Leuten reicht die Zeit nicht (P2)', 'cs'],
+      ['„Gleis-1-Express“ – bestellen im Browser, per QR-Code an der Hallentür, abholen an der Express-Ausgabe', 'cs'],
+      ['„halt Notlösung, aber er ist schnell“ (I1-3)', 'cs'],
+      ['„Fertig 7:31. Dein Zug fährt 7:38.“ – Gewissheit statt Glücksspiel', 'cs'],
+      ['„Wenn ich auf die Uhr schauen muss, geh ich“ (I2-2)', 'cs'],
+      ['gemessen an Bestellungen über den Code zwischen 7:15 und 7:45', 'cs'],
+      ['I1, Zug 7:38, „eigentlich immer knapp dran“ (I1-1); will Kaffee, ohne den Zug zu riskieren (J1, P1)', 'us'],
+      ['7:27, „Ich komme in die Halle und entscheide.“: Schlange bis zur Tür, an der Tür der Aufsteller', 'us'],
+      ['scannen → eins aus drei → 7:38 eintippen', 'us'],
+      ['der Zweifel, ob es reicht (P1, I3-3)', 'us'],
+      ['Express-Ausgabe, Nummer am Bildschirm, bar bezahlt', 'us'],
+      ['im Zug der erste Schluck (I1-4)', 'us'],
+    ];
+    expect(stellen.filter(([s, wo]) => !kern.includes(s) || !seiten[wo].includes(s)).map(([s]) => s)).toStrictEqual([]);
+  });
+
+  it('stationen: Fragen zu sieben, Höhepunkt, Kürze und Exposition; Beispiele außerhalb Lichaws markiert; kein „Kursregel“', () => {
+    expect(st.fragen?.map((f) => f.frage)).toStrictEqual([
+      'Warum sieben Stationen – reichen nicht Anfang, Mitte, Ende?',
+      'Warum hört die Geschichte nicht am Höhepunkt auf?',
+      'Warum sollen fallende Handlung und Ende so kurz sein?',
+      'Was gehört in eine gute Exposition? Gibt es Beispiele?',
+      'Reicht eine Persona-Beschreibung als Exposition?',
+    ]);
+    const f = (i: number) => st.fragen?.[i].antwort ?? '';
+    expect(f(1)).toContain('„Stories can’t just end on a high point, or they’re as unsatisfying as a cliffhanger.“');
+    expect(f(2)).toContain('„As much as humans need closure, they’re also impatient beings.“');
+    expect(f(3)).toContain('Beispiele des Kurses, nicht bei Lichaw: (a) Kaffeebar');
+    expect(f(3)).toContain('(b) Lern-App');
+    expect(f(3)).toContain('(c) Rechnungs-Tool');
+    expect(f(4)).toMatch(/^Nein\. Schwach \(Beispiel des Kurses\): .* Stark: /);
+    expect(st.live).toContain('Bei Bedarf: jede Station unten im Begleiter, mit Kaffeebar-Beispiel.');
+    expect(JSON.stringify(st).match(/Kursregel/g) ?? []).toStrictEqual([]);
+  });
+
+  it('hoch-lehre: iPhone, „Our brains don’t like flat“, die zwei Fragen und wann die Linie reicht – mit Quelle', () => {
+    const n = NOTIZEN_CONCEPT_STORY['hoch-lehre'];
+    const kern = JSON.stringify(n.kern);
+    expect(kern).toContain('„Are you getting it?“');
+    expect(kern).toContain('„Our brains don’t like flat. Our brains need structure in order to get excited about things');
+    expect(kern).toContain('„What is the straightforward solution to the problem?“ und „What is the awesome solution to the problem?“');
+    expect(kern).toContain('Ein festes Vorgehen für die zwei Fragen gibt sie nicht');
+    expect(n.kern?.find((k) => k.text.startsWith('Wann die naheliegende Lösung reicht'))?.quelle).toContain('Kap. 5, Micro-Stories: Core Tasks, S. 90');
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual([
+      'Wofür sind die zwei Fragen da?',
+      'Was machen wir heute konkret damit?',
+      'Wie sieht das bei der Kaffeebar aus?',
+      'Frage an den Raum: War ein iPod, der telefoniert, eine schlechte Idee?',
+      'Frage an den Raum: Wann dürft ihr bei der naheliegenden Lösung bleiben?',
+      'Vorsicht beim Erzählen: Was davon steht so bei Lichaw?',
+    ]);
+    const a = (i: number) => n.fragen?.[i].antwort ?? '';
+    expect(a(1)).toMatch(/^Übertrag des Kurses, nicht bei Lichaw/);
+    // Linie und Gipfel der Kaffeebar wie auf concept-story#beispiel.
+    for (const s of ['„Geht sich ein Kaffee aus?“ → Wartezeit-Anzeige an der Tür → Kaffee vor dem Zug', 'trifft P1, aber nicht P2, P3 und G1', '„Fertig 7:31. Dein Zug fährt 7:38.“']) {
+      expect(a(2), s).toContain(s);
+      expect(folie('beispiel'), s).toContain(s);
+    }
+    expect(a(5)).toContain('sind Lichaws Sätze');
+    expect(a(5)).toContain('ein Übertrag des Kurses, kein Schritt bei Lichaw');
+    expect(n.live).toContain('Bei Bedarf: Kaffeebar – Wartezeit-Anzeige als Linie, „Fertig 7:31“ als Gipfel.');
+    expect(JSON.stringify(n).match(/Kursregel/g) ?? []).toStrictEqual([]);
+  });
+});
