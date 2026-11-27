@@ -203,7 +203,7 @@ const probe = `Wir proben mein Interview. Lies meinen Produkt-Brief aus der Werk
     <h2 id="vorgehen">So geht ihr vor (90 min)</h2>
     <p class="folie-satz">Erst schreiben, dann proben – mit Claude und miteinander.</p>
     <MiroFrame name="T1 · 4 · Interviewleitfaden" />
-    <ol class="gross dicht">
+    <ol class="gross dicht iv-schritte">
       <li data-schritt><strong>Leitfaden allein schreiben:</strong> Ziel ist die Forschungsfrage aus eurer riskantesten Annahme. Dann 5–7 Fragen, die meisten nach dem letzten konkreten Mal, jede gegen die drei Regeln halten, in der Werkstatt speichern – „Bearbeiten“ unter <a href="#vorlage">In der Werkstatt speichern</a>, auf euren Laptops. <Timer minuten={20} /></li>
       <li data-schritt><strong>Prüfliste und Claude</strong> unter <a href="#pruefen">Prüfen</a>. <Timer minuten={10} /></li>
       <li data-schritt><strong>Probe mit Claude:</strong> Prompt unter <a href="#probe">Probe mit Claude</a>. Claude spielt eine zurückhaltende Person aus eurer Zielgruppe, danach Feedback. <Timer minuten={15} /></li>
@@ -275,4 +275,8 @@ const probe = `Wir proben mein Interview. Lies meinen Produkt-Brief aus der Werk
   .leitfaden-beispiel { border: 1px solid var(--border); border-radius: 8px; padding: .75rem 1rem; margin: 1rem 0; }
   .leitfaden-beispiel p { margin: .4rem 0; }
   .leitfaden-beispiel :is(ol, ul) { margin: .2rem 0 .6rem; }
+  /* #vorgehen im Beamer: bis 27.11.2026 kam diese Dichte ungewollt aus dem CSS von experiment.astro (Review #480);
+     ohne sie läuft die Folie bei 1280 × 720 um 8 px über. Jetzt nur für diese Seite (.iv-schritte). */
+  :global(html[data-beamer] .folie:has(> h2#vorgehen) ol.gross.iv-schritte > li) { font-size: .95rem; line-height: 1.35; margin-bottom: .25rem; }
+  :global(html[data-beamer] .folie:has(> h2#vorgehen) ol.gross.iv-schritte) { max-width: 46em; }
 </style>

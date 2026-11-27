@@ -23,11 +23,13 @@ const sichtbar = (id: string) => folie(id).replace(/<div class="nur-handout">[\s
 
 describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
   // Seit 26.11.2026 nachts ohne claude-pro-jetzt und claude-code-opus: Tag 4 läuft ohne Claude, die Folien stehen auf tag-5.
-  it('19 Folien (seit 27.11. mit annahmen-finden, ein-schritt-fuenf-fragen und so-liefe-e1) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
+  // Seit 27.11.2026 nachts: die Übung in zwei Blöcken – erst Annahmen und Map (#vorgehen), nach der Theorie zur Karte
+  // die Karte E1 und der Baum (#vorgehen-karte); #map steht direkt vor #beispiel-map.
+  it('20 Folien (seit 27.11. mit annahmen-finden, ein-schritt-fuenf-fragen, so-liefe-e1 und vorgehen-karte) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
     expect(folienAus(EX, seite(EX)).map((f) => f.id)).toStrictEqual([
-      'annahmen-der-idee', 'schritte-der-idee', 'spitzenreiter', 'map', 'karte', 'ergebnis-gilt',
-      'vorher-entscheiden', 'welcher-test', 'test-arten', 'annahmen-finden', 'ein-schritt-fuenf-fragen', 'beispiel', 'beispiel-map', 'karte-e1', 'vorgehen', 'so-liefe-e1', 'lernkarte',
-      'gegen-den-beleg', 'uebertrag',
+      'annahmen-der-idee', 'schritte-der-idee', 'spitzenreiter', 'annahmen-finden', 'ein-schritt-fuenf-fragen', 'beispiel', 'map', 'beispiel-map', 'vorgehen',
+      'karte', 'ergebnis-gilt', 'vorher-entscheiden', 'welcher-test', 'test-arten', 'karte-e1', 'vorgehen-karte',
+      'so-liefe-e1', 'lernkarte', 'gegen-den-beleg', 'uebertrag',
     ]);
     expect(seite(EX)).not.toMatch(/id="sagen-tun|NACH_INTUIT|<Aufloesung/);
     expect('NACH_INTUIT' in ZEITEN).toBe(false);
@@ -40,7 +42,8 @@ describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
     expect(n['vorher-entscheiden'].ueberleitung).toContain('Vier Faustregeln');
     expect(n.lernkarte.ueberleitung).toContain('aber offen');
     expect(n['so-liefe-e1'].ueberleitung).toBe('Und so sähe die Lernkarte danach aus – am Beispiel der Kaffeebar.');
-    expect(n.vorgehen.ueberleitung).toBe('Wie E1 laufen würde – Schritt für Schritt.');
+    expect(n['vorgehen-karte'].ueberleitung).toBe('Wie E1 laufen würde – Schritt für Schritt.');
+    expect(n.vorgehen.ueberleitung).toContain('Stopp');
     expect(n['gegen-den-beleg'].ueberleitung).toContain('Aufsteller');
     expect(JSON.stringify(n['gegen-den-beleg'])).not.toContain('gewonnen');
   });
@@ -82,15 +85,18 @@ describe('Annahmen-Map wie der Miro-Frame', () => {
     expect(folie('map')).toContain('leap-of-faith.jpg');
   });
 
-  it('#vorgehen: Beleg-Richtung wie #map („wenig Beleg nach rechts“), Ort je Schritt, Anleitung-Frame verlinkt', () => {
+  it('#vorgehen und #vorgehen-karte: Beleg-Richtung wie #map („wenig Beleg nach rechts“), Ort je Schritt, Anleitung-Frame verlinkt', () => {
     const v = sichtbar('vorgehen');
+    const k = sichtbar('vorgehen-karte');
     expect(v).toContain('wichtig nach oben, wenig Beleg nach rechts');
     expect(v).not.toMatch(/Map:<\/strong> Beleg nach rechts/);
-    const orte = [...v.matchAll(/<li data-schritt><strong>[^<]*?, (auf Miro|[^<:]+):<\/strong>/g)].map((x) => x[1]);
-    expect(orte).toStrictEqual(['auf Miro', 'auf Miro', 'auf Miro', 'auf Miro', 'auf Miro']);
+    const orte = (s: string) => [...s.matchAll(/<li data-schritt><strong>[^<]*?, (auf Miro|[^<:]+):<\/strong>/g)].map((x) => x[1]);
+    expect(orte(v)).toStrictEqual(['auf Miro', 'auf Miro', 'auf Miro']);
+    expect(orte(k)).toStrictEqual(['auf Miro', 'auf Miro']);
     expect(v).toContain('<a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend.');
-    expect(v).toContain('<strong>Karte E1, auf Miro:</strong> im Feld „Karte E1 für die oberste rechts“');
-    expect(v).toContain('<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">');
+    expect(k).toContain('<strong>Karte E1, auf Miro:</strong> im Feld „Karte E1 für die oberste rechts“');
+    expect(v).not.toContain('<strong>Karte E1, auf Miro:</strong>');
+    for (const s of [v, k]) expect(s).toContain('<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">');
     expect(MIRO_FRAMES['T4 · 0 · Anleitung Annahmen der Idee']).toBe('3458764691725321671');
   });
 
@@ -143,14 +149,75 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect([...e.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Die Falle:', 'Darum:']);
   });
 
-  it('#vorher-entscheiden: Bänder auf E1-Zahlen, aufgedeckt ab 10 → unter 5 → 5–9, Kursregel halbe Schwelle', () => {
+  // 27.11.2026: Begleiter erzählt Kohl’s ganz – wer, warum begeistert, Aufbau, Mechanismus, Reaktion, Lehre (Thomke S. 13–14, 66–67, 85–87, 126).
+  it('Begleiter #ergebnis-gilt: die Kohl’s-Geschichte mit Mechanismus, Reaktion und Brücke zu E1', () => {
+    const n = NOTIZEN[EX]['ergebnis-gilt'];
+    expect(n.geschichte?.quelle).toBe('Stefan H. Thomke, The Scientific Mindset, S. 13, 66–67, 86–87');
+    for (const zitat of [
+      '„the large US retailer“ (S. 66)',
+      'anticipating significant additional revenue',
+      'test sales at seventy stores over six months',
+      '„Products that now had less floor space (to make room for the furniture) experienced a drop in sales, and Kohl’s was actually losing customers overall.“',
+      'a huge disappointment for the program’s advocates',
+      'people with organizational clout',
+    ]) expect(n.geschichte?.text).toContain(zitat);
+    const kern = JSON.stringify(n.kern);
+    expect(kern).toContain('„(1) commit to abide by results“ (S. 85)');
+    expect(kern).toContain('done deal');
+    expect(kern).toContain('Ob auch feststand, was bei welchem Ergebnis folgt, sagt Thomke nicht.');
+    expect(kern).toContain('willing to walk away from a project if a hypothesis is not supported“ (S. 86)');
+    // Review #478: keine Bänder vor #vorher-entscheiden – die 8-von-30-Frage steht dort.
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual(['Was hat der Test bei Kohl’s gemessen – die Möbel oder den ganzen Laden?']);
+    expect(JSON.stringify(n)).not.toMatch(/5–9|unter 5|8 von 30/);
+    expect(n.live).toStrictEqual([
+      'Kohl’s: Führung begeistert, Möbel, 70 Läden, sechs Monate, gestoppt.',
+      'Warum der Umsatz sank: Möbel nahmen anderen Waren die Fläche.',
+      '„Gute Ergebnisse glaubt man sofort – schlechte prüft man so lange nach, bis sie zur eigenen Erwartung passen.“',
+      'Falle: Kohl’s eine Matrix vorab andichten – belegt ist der vereinbarte Test.',
+      'Brücke: Darum steht die Handlung vorher auf der Karte.',
+    ]);
+    const v = NOTIZEN[EX]['vorher-entscheiden'].fragen?.find((f) => f.frage === 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?');
+    expect(v?.antwort).toContain('„unter 5 → Wartezeit-Anzeige“');
+    expect(JSON.stringify(n)).not.toContain('Kursregel');
+  });
+
+  // 27.11.2026: Mock Sale an der Kaffeebar als Szene – Ort, wer, Ablauf, was mit der Person passiert (Bland S. 86, 289–290).
+  it('Begleiter #test-arten: Mock Sale an der Kaffeebar – Person sofort aufgeklärt, Kaffee wie sonst, Dankeschön', () => {
+    const n = NOTIZEN[EX]['test-arten'];
+    expect(n.live).toContain('Mock Sale: Klick, sofort aufgeklärt, Kaffee wie sonst, kleines Dankeschön.');
+    const f = n.fragen?.find((x) => x.frage === 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?');
+    for (const teil of [
+      'am selben Ort wie E1, als eigener Durchlauf nach E1',
+      '„Fährt dein Zug in weniger als 5 Minuten? Dann bitte nicht jetzt.“ (Hinweis des Kurses',
+      '„Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“',
+      'die Strichliste am Automaten in derselben Zeit',
+      'Die Person kostet es knapp eine Minute',
+      '„Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“',
+      'Angeworben wird niemand',
+      '„target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290)',
+      'auf „Vorbestellen für 2,90 €“ tippen',
+      'keinen Kaffee, und es fließt kein Geld',
+      'ihren Kaffee holt sie wie sonst an der Bar oder am Automaten',
+      '„gift card for the inconvenience“ (S. 289)',
+      'der Gutschein ist eine Anpassung des Kurses',
+      'ohne Zahlungsdaten nicht „very strong“',
+      '„Are you experimenting with your customers or on them?“ (S. 86)',
+    ]) expect(f?.antwort).toContain(teil);
+    expect(f?.antwort).not.toContain('Kursregel');
+  });
+
+  it('#vorher-entscheiden: Bänder auf E1-Zahlen, aufgedeckt ab 10 → unter 5 → 5–9, Grenze bei der halben Schwelle', () => {
     const v = sichtbar('vorher-entscheiden');
     // 27.11.2026: die 30 sind Menschen, die wählen (wie auf Karte E1 und der Lernkarte: 8 Einträge + 22 am Automaten).
     expect(v).toContain('<p class="setup-zeile">Kaffeebar, E1: Die ersten 30 Pendler*innen, die bei Schlange wählen – Automat oder Aufsteller: ab 10 Einträgen haben wir recht.</p>');
     expect(v).toContain('aria-label="Skala von 0 bis 30: Einträge von 30 Pendler*innen, die bei Schlange zwischen Automat und Aufsteller wählen; Marken bei 5 und 10');
     expect([...v.matchAll(/<li class="band-[a-z]+" data-schritt><b>([^<]+)<\/b>/g)].map((x) => x[1])).toStrictEqual(['ab 10 von 30', 'unter 5 von 30', '5–9 von 30']);
-    expect(v).toContain('<p data-schritt><strong>Zwei Zahlen, vor dem Test:</strong> die Schwelle (ab 10: gestützt) und die Grenze (unter 5: widerlegt) – dazwischen ist es unklar. Kursregel: Grenze etwa bei der halben Schwelle.</p>');
-    expect(v).toContain('Kursregel: drei Bänder für Thomkes Entscheidungsmatrix');
+    expect(v).toContain('<p data-schritt><strong>Zwei Zahlen, vor dem Test:</strong> die Schwelle (ab 10: gestützt) und die Grenze (unter 5: widerlegt) – dazwischen ist es unklar. Die Grenze legt ihr etwa bei der halben Schwelle fest – so bleibt dazwischen ein Band, in dem ihr weiter testet statt zu raten.</p>');
+    expect(v).toContain('<p class="small muted">Drei Bänder als Form für Thomkes Entscheidungsmatrix (S. 86, 103); Befunde nach Bland, S. 63.</p>');
+    // Markus 27.11.: was tun und warum, keine „Kursregel“-Markierung im Beamer; der Begleiter liest sie auch nicht vor.
+    expect(v).not.toContain('Kursregel');
+    expect(NOTIZEN[EX]['vorher-entscheiden'].live).toContain('Grenze: etwa die halbe Schwelle – vorher als Zahl.');
+    expect(NOTIZEN[EX]['vorher-entscheiden'].live.filter((s) => s.includes('Kursregel'))).toStrictEqual([]);
     expect(v).not.toContain('Kohl’s');
   });
 
@@ -194,7 +261,7 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect(sichtbar('lernkarte')).toContain('<strong>Bei uns läuft E1 nicht</strong> – an Tag 5 besprecht ihr, was eure Karte gezeigt hätte und was ihr dann entschieden hättet.');
     expect(seite(EX)).not.toMatch(/läuft bis|E1 laufen lassen|sobald E1 gelaufen/);
     expect(seite(EX)).toContain('<Karte label="Beispiel · Experiment-Karte E1" text={`E1 · A5 (wünschenswert)\n');
-    expect(sichtbar('vorgehen')).toContain('„Um das zu prüfen“ beschreibt, wie E1 laufen würde');
+    expect(sichtbar('vorgehen-karte')).toContain('„Um das zu prüfen“ beschreibt, wie E1 laufen würde');
   });
 
   it('Lernkarten-Vorlage hat die Zeile für die Abweichung; #gegen-den-beleg steht danach, Regel – Ausnahme – Nie', () => {
@@ -208,6 +275,31 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect([...g.matchAll(/\{ t: '([^']+)'/g)].map((x) => x[1])).toStrictEqual(['Test', 'Entscheidung', 'Offen']);
     expect(g).not.toContain('Gewonnen');
     expect([...g.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Die Regel:', 'Die Ausnahme:', 'Nie:']);
+  });
+
+  // 27.11.2026: Regel ohne „(Kohl’s)“; Begleiter erzählt Netflix nach Thomke S. 126–127 und baut die Brücke zu E1.
+  it('#gegen-den-beleg: „Die Regel: Das Ergebnis gilt.“; Begleiter mit Netflix-Fall, Umdeuten und Kaffeebar-Brücke', () => {
+    expect(sichtbar('gegen-den-beleg')).toContain('<li data-schritt><strong>Die Regel:</strong> Das Ergebnis gilt.</li>');
+    expect(folie('gegen-den-beleg')).toContain('sagt, warum ihr trotzdem so entscheidet – so bleiben Beleg und Grund für alle sichtbar, wie bei Netflix.</p>');
+    expect(folie('gegen-den-beleg')).not.toContain('Kursregel');
+    const n = NOTIZEN[EX]['gegen-den-beleg'];
+    expect(n.geschichte?.quelle).toBe('Stefan H. Thomke, The Scientific Mindset, S. 127');
+    for (const zitat of [
+      'has built a sophisticated infrastructure for large-scale experimentation',
+      'resulted in more clicks by potential viewers than promotions featuring both Tomlin and her costar Jane Fonda',
+      '„The content team worried that excluding Fonda would alienate the actress and possibly violate her contract.“',
+      'pitted empirical evidence against ‚strategic considerations,‘',
+      'Wer genau entschied, nennt er nicht',
+    ]) expect(n.geschichte?.text).toContain(zitat);
+    const kern = JSON.stringify(n.kern);
+    expect(kern).toContain('Wie Netflix Vorschaubilder testet und warum sie zählen, beschreibt er nicht');
+    expect(kern).toContain('„Sometimes those discussions might result in a conscious choice to overrule the data.“');
+    const [, , umdeuten, kaffeebar] = n.fragen!.map((f) => f.antwort);
+    expect(umdeuten).toContain('„commit to abide by results“ (S. 85)');
+    expect(kaffeebar).toContain('„Weicht ab von ‚Wir entscheiden vorher‘? Ja – die Bar kann um 7:30 keine Bestellungen von Hand annehmen.“');
+    expect(kaffeebar).toContain('Nicht in Ordnung: „12 ist eigentlich nicht genug“');
+    expect(n.live).toContain('Brücke: E1 mit 12, trotzdem kein Concierge – Grund auf die Lernkarte.');
+    expect(JSON.stringify(n)).not.toContain('Kursregel');
   });
 
   // Dozent 27.11.2026: Karte E1 der Kaffeebar folgt der Vorlage (#vorlage) wie auf Miro; dazu der Kontakt (E-Mail).
@@ -252,14 +344,17 @@ describe('Tests zur Auswahl und Beispiel', () => {
       'Sind die Testpersonen schon echte Kund*innen?',
       'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
       'Welcher Test passt zu uns?',
+      'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
     ]);
     const [mock, personen, ehrlich, wahl] = n.fragen!.map((f) => f.antwort);
     // Review #465: Der Hinweis nach dem Klick sagt, dass es ein Test ist, und fragt nach der E-Mail (Bland S. 289).
-    const hinweis = '„Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“';
+    const hinweis = '„Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“';
     expect(mock).toContain(`„Vorbestellen für 2,90 €“ → ${hinweis}`);
     expect(n.geschichte?.text).toContain(hinweis);
     expect(n.kern?.[7].text).toContain(hinweis);
     expect(JSON.stringify(n)).not.toContain('wir sagen dir Bescheid“');
+    // 27.11.2026: überall derselbe Hinweis mit Dankeschön, kein kurzer mehr.
+    expect(JSON.stringify(n)).not.toContain('noch nicht. Sollen wir');
     expect(mock).toContain('Es fließt kein Geld (Bland, Mock Sale, S. 288–289)');
     // Ohne Zahlungsdaten: Kaufklicks und E-Mails, „relatively strong“ – nicht „sehr stark“.
     expect(mock).toContain('Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks');
@@ -290,11 +385,48 @@ describe('Tests zur Auswahl und Beispiel', () => {
 describe('Seite am Handy in den Schritten (27.11.2026)', () => {
   it('#vorgehen Schritt 1 fragt im Beamer nach der Seite am Handy, mit Anleitung und Timer', () => {
     const schritt1 = sichtbar('vorgehen').match(/<li data-schritt><strong>Schritte, auf Miro:<\/strong>[\s\S]*?<\/li>/)?.[0] ?? '';
-    expect(schritt1).toContain('als gäbe es euren Spitzenreiter schon – wer tut was, und wo kommt eure Seite am Handy ins Spiel? In eurer Spalte im Frame oben rechts (<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>).');
+    expect(schritt1).toContain('als gäbe es euren Spitzenreiter schon – wer tut was, und wo kommt eure Seite am Handy ins Spiel? In eurer Spalte im Frame oben rechts. → <MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>, Punkt 1.');
     expect(schritt1).toContain('<Timer minuten={3} />');
   });
   it('#schritte-der-idee: Handout nennt die Seite als Beteiligte, mit Torres S. 120 und Kursregel', () => {
     expect(folie('schritte-der-idee')).toContain('Bei euch ist die Seite am Handy einer der Beteiligten: „the interface or software itself may be an actor in your map“ (S. 120). Kursregel: Mindestens ein Schritt passiert auf der Seite.');
+  });
+});
+
+describe('#schritte-der-idee: Begleiter erklärt Torres’ Streaming-Beispiel (27.11.2026)', () => {
+  const n = NOTIZEN[EX]['schritte-der-idee'];
+  const frage = (f: string) => n.fragen?.find((x) => x.frage === f)?.antwort ?? '';
+  it('die drei Zeilen: Kund*in, Software selbst, Partner mit Inhalt – mit Seiten', () => {
+    const a = frage('Was sind Subscriber, Platform und Local Channel?');
+    expect(a).toContain('Subscriber ist die Kundin oder der Kunde mit Abo, die Sport schauen will: „the sports consumer (i.e., our subscriber)“ (S. 121).');
+    expect(a).toContain('Platform ist der Streamingdienst selbst, die Software als eigene Zeile: „the interface or software itself may be an actor in your map“ (S. 120).');
+    expect(a).toContain('Local Channel ist ein Partner von außen, ein lokaler Fernsehsender (Torres nennt ABC, CBS, NBC, S. 120), der das Live-Programm liefert: „any number of local TV channel partners“ (S. 121).');
+    expect(n.live).toContain('Bei Bedarf: Zeilen erklären – Kund*in, Software selbst, Partner mit Inhalt.');
+  });
+  it('Hintergrund: Firma, Outcome, Chance, gemappte Idee, mit Seiten', () => {
+    expect(n.geschichte?.text).toContain('„if we worked at a streaming-entertainment company (e.g., Netflix, Hulu)“ (S. 52)');
+    expect(n.geschichte?.text).toContain('„Increase weekly viewer minutes“ (S. 126)');
+    expect(n.geschichte?.text).toContain('„to grab some of this market“ (S. 100)');
+    expect(n.geschichte?.text).toContain('„1. Integrate local networks (e.g., ABC, CBS, NBC) into our service');
+    expect(n.geschichte?.quelle).toBe('Teresa Torres, Continuous Discovery Habits, S. 52, 100, 120–121, 126, 154');
+  });
+  it('Leserichtung, abgeleitete Annahmen und Kaffeebar-Zuordnung', () => {
+    expect(frage('Wie liest man die Map?')).toContain('Subscriber: Visits platform → Platform: Shows sports options → Subscriber: Browses options, Chooses sport → Local Channel: Delivers content → Subscriber: Watches sport.');
+    const ann = frage('Welche Annahmen leitet Torres aus dieser Map ab?');
+    for (const z of ['„Desirability: Our subscriber wants to watch sports.“', '„Feasibility: The local provider’s source content will be available.“ (S. 124)',
+      '„Viability: Integrating a local channel feed won’t be too expensive.“', '„Ethical: Subscribers will be okay with us sharing viewership data with their local channels.“ (S. 124)']) expect(ann).toContain(z);
+    const kb = frage('Wo stecken die drei Zeilen bei der Kaffeebar?');
+    expect(kb).toMatch(/^Pendler\*in wie Subscriber: [\s\S]* Seite am Handy wie Platform: [\s\S]* Bar wie Local Channel: /);
+    expect(kb).toContain('Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.');
+  });
+  it('Review #477: keine Überdehnung von S. 122–124; die Seite handelt nicht für die Pendler*in', () => {
+    const lesen = frage('Wie liest man die Map?');
+    expect(lesen).toContain('Gerade dort stehen Machbarkeits-Annahmen: „Feasibility: We know what sports are available right now.“ (S. 123)');
+    expect(lesen).not.toMatch(/vor allem|genau diesen/);
+    const ann = frage('Welche Annahmen leitet Torres aus dieser Map ab?');
+    expect(ann).toContain('Wünschbarkeit, Bedienbarkeit und Machbarkeit stecken überall dort, wo jemand etwas tun muss – „every time you assume that an end-user will do something“ (S. 122)');
+    expect(ann).not.toContain('in jedem Schritt');
+    expect(frage('Wo stecken die drei Zeilen bei der Kaffeebar?')).toContain('sie öffnet sich nach dem Scan und nimmt Getränk und Abfahrtszeit entgegen (Schritte 2 und 3); Code scannen und wählen tut die Pendler*in.');
   });
 });
 
@@ -383,7 +515,7 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
   const NOTIZ = NOTIZEN['/innolab/methoden/experiment'] as Record<string, { live?: string[] }> | undefined;
   // 27.11. abends: neue IDs ab A7 (A1–A4 Tag 1, A5 Concept Story, A6 Geschäftsmodell), damit die Übung ohne Werkstatt läuft.
   it('#vorgehen Schritt 2: Art und Schritt auf dem Zettel, neue IDs ab A7, gleich in die Felder; im Handout, woher A1 bis A6 kommen', () => {
-    expect(sichtbar('vorgehen')).toContain('<li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt, ab A7 („A7 · S1 · …“), gleich in die Felder der Map; dazu das Pre-Mortem. <Timer minuten={5} /></li>');
+    expect(sichtbar('vorgehen')).toContain('<li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt, ab A7 („A7 · S1 · …“), gleich in die Felder der Map; dazu das Pre-Mortem. → Anleitung, Punkt 2, darunter „Fünf Fragen an jeden Schritt“ und „Pre-Mortem“. <Timer minuten={5} /></li>');
     expect(folie('vorgehen')).toContain('Je Schritt mindestens zwei Annahmen. Neue Annahmen zählt ihr ab A7: A1 bis A4 sind von Tag 1, A5 kam aus der Concept Story, A6 aus dem Geschäftsmodell. So braucht ihr die Werkstatt während der Übung nicht.');
     expect(folie('vorgehen')).not.toContain('nächste freie ID');
     expect(sichtbar('vorgehen')).toContain('<p class="folie-satz">Alles auf Miro – allein. Die Werkstatt kommt am Abend.</p>');
@@ -391,7 +523,7 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
   // Markus 27.11.: Überholtes ist nicht „Abhaken“ (unwichtig und belegt), es rutscht nach unten; ohne „(Kursregel)“ auf der Folie.
   it('#vorgehen Schritt 3: die Tag-1-Zettel liegen schon in der Spalte, jede in ein Feld, Überholtes nach unten, Werkstatt am Abend in der Reihenfolge der Nummern', () => {
     const v = sichtbar('vorgehen');
-    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts. Eure Annahmen von Tag 1 liegen schon in eurer Spalte („A1 · Tag 1 · …“), A5 (Concept Story) und A6 (Geschäftsmodell) kommen als Zettel dazu: Zieht jede in ein Feld – Überholtes nach unten. <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend. <Timer minuten={3} /></li>');
+    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts. Eure Annahmen von Tag 1 liegen schon in eurer Spalte („A1 · Tag 1 · …“), A5 (Concept Story) und A6 (Geschäftsmodell) kommen als Zettel dazu: Zieht jede in ein Feld – Überholtes nach unten. <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend. → Anleitung, Punkt 3. <Timer minuten={3} /></li>');
     const schritt3 = v.match(/<li data-schritt><strong>Map, auf Miro:<\/strong>.*<\/li>/)?.[0] ?? '';
     expect(schritt3).toContain('Überholtes nach unten');
     expect(schritt3).not.toContain('Abhaken');
@@ -401,8 +533,12 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
     expect(folie('vorgehen')).not.toContain('der Reihe nach, und so stimmen sie mit Miro überein');
     expect(folie('vorgehen')).not.toMatch(/aus der Werkstatt dazu|jetzt nur die Annahmen in „Zuerst testen“/);
     expect(folie('vorgehen')).not.toContain('kommt unter „Abhaken“');
-    expect([...v.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([3, 5, 3, 5, 2]);
-    expect(folie('vorgehen')).toContain('während der Übung nicht. Die Kaffeebar zählt anders – bei euch gilt ab A7. „S1“ auf dem Zettel nennt den Schritt, aus dem die Annahme kommt – eine Kursregel');
+    const timer = (s: string) => [...s.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]));
+    expect(timer(v)).toStrictEqual([3, 5, 3]);
+    expect(timer(sichtbar('vorgehen-karte'))).toStrictEqual([5, 2]);
+    // Markus 27.11.: was tun und warum, keine „Kursregel“-Markierung.
+    expect(folie('vorgehen')).toContain('während der Übung nicht. Die Kaffeebar zählt anders – bei euch gilt ab A7. „S1“ auf dem Zettel nennt den Schritt, aus dem die Annahme kommt: So seht ihr auf der Map, an welchem Schritt eine Annahme hängt – und welchen Schritt ihr ändert, wenn sie nicht hält.');
+    expect(folie('vorgehen')).not.toContain('Kursregel');
   });
   it('#annahmen-finden: A5 ist die Kaffeebar-Nummer, bei euch geht es ab A7 weiter, mit A5 zusammen aufgedeckt', () => {
     expect(sichtbar('annahmen-finden')).toContain('(wünschenswert)</span><br><span class="small muted">Kaffeebar-Nummer. Bei euch geht es ab A7 weiter.</span></p>');
@@ -483,5 +619,100 @@ describe('Überholte Annahmen (27.11.2026)', () => {
     // Auch „kommt unter „Abhaken““ und Varianten wie „Überholte Annahmen … Abhaken“ in einem Satz.
     const alt = /[Üü]berholt[^.]{0,80}Abhaken|unter „Abhaken“/;
     expect(Object.entries(alle).filter(([, t]) => alt.test(t)).map(([p]) => p)).toStrictEqual([]);
+  });
+});
+
+// 27.11.2026 nachts (Markus): die Übung in zwei Blöcken. Nach Schritt 3 ist Stopp; die Karte E1 kommt nach der Theorie zur Karte.
+describe('Zwei Blöcke: Stopp nach Schritt 3', () => {
+  const STOPP = '<p class="stopp"><strong>Stopp nach Schritt 3 – weiter mit den Folien.</strong>';
+  it('#vorgehen: die Stopp-Zeile steht im Beamer, nach der Liste der Schritte, ohne data-schritt', () => {
+    const v = sichtbar('vorgehen');
+    // Der genaue Tag schließt data-schritt am Absatz aus; nach </ol> steht sie in keinem Schritt.
+    expect(v).toContain(STOPP);
+    expect(v.indexOf('</ol>')).toBeGreaterThan(0);
+    expect(v.indexOf(STOPP)).toBeGreaterThan(v.indexOf('</ol>'));
+  });
+  it('#vorgehen kommt vor #karte, #karte-e1 direkt vor #vorgehen-karte', () => {
+    const ids = folienAus(EX, seite(EX)).map((f) => f.id);
+    expect(ids.indexOf('vorgehen')).toBeGreaterThanOrEqual(0);
+    expect(ids.indexOf('vorgehen')).toBeLessThan(ids.indexOf('karte'));
+    expect(ids.indexOf('karte-e1')).toBeGreaterThanOrEqual(0);
+    expect(ids.indexOf('vorgehen-karte')).toBe(ids.indexOf('karte-e1') + 1);
+  });
+  // Review #480: „Nicht fertig?“ erst nach Schritt 5 aufdecken – sonst steht es schon beim ersten Klick da.
+  it('#vorgehen-karte: „Nicht fertig?“ ist ein eigener Schritt nach Schritt 5', () => {
+    const k = sichtbar('vorgehen-karte');
+    const zeile = '<p class="stopp" data-schritt><strong>Nicht fertig?</strong>';
+    expect(k).toContain(zeile);
+    expect(k.indexOf(zeile)).toBeGreaterThan(k.indexOf('</ol>'));
+    expect(k.indexOf('</ol>')).toBeGreaterThan(k.indexOf('<strong>Euer Baum – Tests, auf Miro:</strong>'));
+  });
+  // Review #480: „Karte“ heißt auf diesen Folien nur die Experiment-Karte; die Anleitung auf Miro hat Punkte 1–5, wie ihre
+  // nummerierten Kreise (Frame „T4 · 0 · Anleitung Annahmen der Idee“, gelesen am 27.11.2026).
+  it('Verweise auf die Anleitung heißen „Anleitung, Punkt n“, in der Reihenfolge der Schritte; „Karte n“ gibt es nicht', () => {
+    const punkte = (s: string) => [...s.matchAll(/→ (?:Anleitung|<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung<\/MiroLink>), Punkt (\d)/g)].map((m) => Number(m[1]));
+    expect(punkte(sichtbar('vorgehen'))).toStrictEqual([1, 2, 3]);
+    expect(punkte(sichtbar('vorgehen-karte'))).toStrictEqual([4, 5]);
+    expect(sichtbar('vorgehen')).toContain('→ Anleitung, Punkt 2, darunter „Fünf Fragen an jeden Schritt“ und „Pre-Mortem“.');
+    const n = NOTIZEN[EX];
+    expect([seite(EX), JSON.stringify(n)].flatMap((t) => t.match(/\bKarten? [1-5]\b/g) ?? [])).toStrictEqual([]);
+    expect(n.vorgehen.live).toContain('Anleitung-Frame links neben „T4 · 0“ zeigen: Punkte 1 bis 3.');
+    expect(n['vorgehen-karte'].live).toContain('Anleitung: Punkt 4, dann Punkt 5 – Feld „Karte E1“ in der Spalte.');
+  });
+  // Review #480: was tun und warum, keine „Kursregel“-Markierung.
+  it('#lernkarte: Handout ohne „Kursregel“, mit dem Grund für die Zeile „Weicht ab“', () => {
+    expect(folie('lernkarte')).not.toContain('Kursregel');
+    expect(folie('lernkarte')).toContain('– so sieht jede*r, dass ihr bewusst anders entschieden habt und warum; wann das geht, zeigt die nächste Folie.');
+  });
+  it('#vorgehen: das Handout sagt, warum der Stopp', () => {
+    expect(folie('vorgehen')).toContain('<strong>Warum der Stopp?</strong>');
+  });
+  it('Titel nennen die Minuten der Timer; uebung.dauer im Begleiter passt dazu', () => {
+    const n = NOTIZEN[EX];
+    expect(sichtbar('vorgehen')).toContain('<h2 id="vorgehen">Jetzt ihr: Schritte 1–3 (11 min)</h2>');
+    expect(sichtbar('vorgehen-karte')).toContain('<h2 id="vorgehen-karte">Jetzt ihr: Schritte 4–5 (7 min)</h2>');
+    expect(sichtbar('vorgehen-karte')).toContain('<ol class="gross dicht ex-schritte" start="4">');
+    expect(n.vorgehen.uebung?.dauer).toBe('11 min (3 + 5 + 3)');
+    expect(n['vorgehen-karte'].uebung?.dauer).toBe('7 min (5 + 2)');
+  });
+});
+
+// Review #480: Das <style> dieser Seite landet in einem CSS-Stück, das rund 30 Seiten laden. Eine Regel auf
+// .folie:has(> h2#vorgehen) allein träfe jede Folie #vorgehen dort (usage-story, value-map, story-map …). Darum hängt jede Regel,
+// die #vorgehen nennt, zusätzlich an .ex-schritte, einer Klasse nur dieser Seite.
+describe('CSS für die Arbeitsfolien bleibt auf dieser Seite', () => {
+  it('jede Regel mit h2#vorgehen braucht .ex-schritte; die Klasse steht an beiden Schrittlisten', () => {
+    const q = seite(EX);
+    const css = q.slice(q.indexOf('<style>'));
+    const regeln = (css.match(/[^{}]*\{[^{}]*\}/g) ?? []).map((r) => r.slice(0, r.indexOf('{')).trim()).filter((s) => /h2#vorgehen\b/.test(s));
+    expect(regeln.length).toBeGreaterThanOrEqual(2);
+    expect(regeln.filter((s) => !s.includes('.ex-schritte'))).toStrictEqual([]);
+    expect(sichtbar('vorgehen')).toContain('<ol class="gross dicht ex-schritte">');
+    expect(sichtbar('vorgehen-karte')).toContain('<ol class="gross dicht ex-schritte" start="4">');
+    const andere = Object.entries(quellen).filter(([p, t]) => p !== EX && t.includes('ex-schritte')).map(([p]) => p);
+    expect(andere).toStrictEqual([]);
+  });
+});
+
+// 27.11.2026 nachts (Markus): „the link is too early. we only want to have links where we really starting to work. so i dont
+// miss theory which comes later.“ Auf dieser Seite stehen <MiroFrame>/<MiroLink> in Folien nur auf den zwei Arbeitsfolien.
+// Kriterium: die IDs der Arbeitsfolien als feste Liste – nicht „hat einen <Timer>“, denn ein Timer auf einer Theoriefolie
+// würde dort den Link gleich mit erlauben. Damit die Liste nicht veraltet, müssen die Folien mit <Timer> genau diese sein.
+// Handout-Abschnitte außerhalb der Folien (#vorlage, #pruefen, Origin-Story-Vorlage) behalten ihre Links.
+describe('Miro-Links nur auf den Arbeitsfolien', () => {
+  const ARBEIT = ['vorgehen', 'vorgehen-karte'];
+  const ohneKommentare = seite(EX).replace(/\{\/\*[\s\S]*?\*\/\}/g, '');
+  const folien = [...ohneKommentare.matchAll(/<Folie\b[^>]*>[\s\S]*?<\/Folie>/g)].map((m) => ({ id: /<h2 id="([^"]+)">/.exec(m[0])?.[1] ?? '?', text: m[0] }));
+  it('kein <MiroFrame> und kein <MiroLink> in einer Folie ohne Arbeit, auch nicht in ihrem Handout', () => {
+    expect(folien.length).toBe(20);
+    expect(folien.filter((f) => /<Miro(?:Frame|Link)\b/.test(f.text)).map((f) => f.id)).toStrictEqual(ARBEIT);
+    expect(folien.filter((f) => f.text.includes('<Timer')).map((f) => f.id)).toStrictEqual(ARBEIT);
+  });
+  it('#map und #lernkarte nennen ihre Frames als Text; der Lernkarten-Link steht in #vorlage', () => {
+    expect(folie('map')).toContain('Sortiert wird auf Miro (Frame „T4 · 0 · Annahmen der Idee“)');
+    expect(folie('lernkarte')).toContain('(Anleitung im Frame „T4 · 6 · Anleitung Lernkarten“;');
+    const q = seite(EX);
+    const vorlage = q.slice(q.indexOf('<h2 id="vorlage">'), q.indexOf('<h2 id="pruefen">'));
+    expect(vorlage).toContain('<MiroLink name="T4 · 6 · Anleitung Lernkarten">Anleitung</MiroLink>');
   });
 });

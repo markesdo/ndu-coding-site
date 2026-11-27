@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 11:00–11:40 Experiment-Karte mit Theorie und Beispiel,
-// 18 min Übung; seit 26.11.2026 nachts ohne den Claude-Pro-Block davor – dessen Notizen stehen jetzt in tag-5.ts). Jede Folie hat eine Notiz
+// Übung in zwei Blöcken: 11 min Schritte 1–3 (#vorgehen), nach der Theorie zur Karte 7 min Schritte 4–5 (#vorgehen-karte); seit 26.11.2026 nachts ohne den Claude-Pro-Block davor – dessen Notizen stehen jetzt in tag-5.ts). Jede Folie hat eine Notiz
 // (begleiter-tag-4.test.ts). Die Origin Story steht seit 26.11. im Abschluss von Tag 4 (tag-4#abschluss), nicht mehr hier.
 // Seit 26.11. ohne die Intuit-Folien (Geschichte im Handout von #karte); neu: schritte-der-idee,
 // ergebnis-gilt, test-arten, beispiel-map; gegen-den-beleg steht nach der Lernkarte. Seit dem Nachtrag 26.11. abends
@@ -15,7 +15,7 @@ const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   'annahmen-der-idee': {
     live: [
-      'Zeit: Theorie und Beispiel bis zur Übung, dann 18 min allein.',
+      'Zeit: zwei Runden – erst Annahmen und Map, dann Karte E1.',
       '„Euer Spitzenreiter steht auf Papier – an welcher Annahme hängt er?“',
       'Zwei Fallen: Bestätigung suchen, sich in Investiertes verlieben.',
       'Ergebnis um 11:40 nennen: Karte E1.',
@@ -43,6 +43,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Fünf Arten: wünschenswert, bedienbar, machbar, wirtschaftlich, ethisch.',
       'Pre-Mortem vorlesen: gescheitert, nicht „könnte scheitern“.',
       'Bezug: Pre-Mortem kennen alle von Tag 1, als Joker.',
+      'Bei Bedarf: Zeilen erklären – Kund*in, Software selbst, Partner mit Inhalt.',
     ],
     verstaendnis: {
       frage: 'Woher kommen die Annahmen, bevor ihr sie mappt?',
@@ -59,6 +60,14 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 121`,
       },
       {
+        text: 'Die Software als eigene Zeile: „In some products or services, the interface or software itself may be an actor in your map (e.g., for an end-user conversing with a chatbot, the chatbot should be listed as a player in the story map).“',
+        quelle: `${TORRES}, S. 120`,
+      },
+      {
+        text: 'Die Schritte im Text: „Our subscriber comes to our platform to watch live sports. Our platform has live sports options for our subscriber to choose from. Our subscriber browses the options and chooses a sport that is currently on a local TV channel. Our local channel provider’s content is available to stream. Our subscriber watches live sports.“',
+        quelle: `${TORRES}, S. 121`,
+      },
+      {
         text: 'Pre-Mortem: „Imagine it’s six months in the future; your product or initiative launched, and it was a complete failure. What went wrong?“ Entscheidend: als sicheres Scheitern formuliert.',
         quelle: `${TORRES}, S. 125`,
       },
@@ -72,6 +81,28 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         titel: 'Pre-Mortem nach Gary Klein',
         text: 'Das Team nimmt an, das Projekt sei bereits gescheitert, und sucht die Gründe, statt nur zu fragen, was schiefgehen könnte. Torres zitiert die Methode und die Forschung zu „prospective hindsight“.',
         quelle: 'Gary Klein, „Performing a Project Premortem“, Harvard Business Review, Sept. 2007: https://hbr.org/2007/09/performing-a-project-premortem; vgl. Torres S. 125',
+      },
+    ],
+    geschichte: {
+      text: 'Das Beispiel zieht sich durch Torres’ ganzes Buch: ein Streamingdienst für Unterhaltung – „if we worked at a streaming-entertainment company (e.g., Netflix, Hulu)“ (S. 52). Sein Outcome: mehr gesehene Minuten, „increase the average minutes watched“ (S. 52), später „Increase weekly viewer minutes“ (S. 126); dahinter steht das Geschäftsziel „increase subscriber retention“ (S. 154). Die Chance „I want to watch live sports“ begründet sie mit dem Markt: Wegen der „cord-cutters“, also Kabelkund*innen, die kündigen, könnte der Dienst diese Chance wählen, „to grab some of this market“ (S. 100). Für diese Ziel-Chance stehen drei Lösungen: „1. Integrate local networks (e.g., ABC, CBS, NBC) into our service 2. License broadcast rights directly from the different sports leagues and serve the sporting events up ourselves 3. Bundle our streaming service with a partner who streams live sports“ (S. 120). Die Story Map auf der Folie zeigt die erste: Das Programm lokaler Fernsehsender läuft im eigenen Dienst. Warum lokale Sender, steht in ihren Annahmen: „Most of the major sports are on local channels“ und „Our subscribers are more likely to want to watch major sports“ (S. 126). Sie warnt vor einer Falle beim Benennen der Beteiligten: „it’s easy to make the mistake of thinking our key players are our business-development folks and their equivalent at the respective local channel providers. But remember, with story mapping, we want to assume the solution already exists.“ (S. 120). Gemappt wird also nicht der Vertrag, sondern was passiert, „for our consumer to get value from it“ (S. 121).',
+      quelle: `${TORRES}, S. 52, 100, 120–121, 126, 154`,
+    },
+    fragen: [
+      {
+        frage: 'Was sind Subscriber, Platform und Local Channel?',
+        antwort: 'Subscriber ist die Kundin oder der Kunde mit Abo, die Sport schauen will: „the sports consumer (i.e., our subscriber)“ (S. 121). Bei ihr entsteht der Wert, ihr gehören erster und letzter Schritt. Platform ist der Streamingdienst selbst, die Software als eigene Zeile: „the interface or software itself may be an actor in your map“ (S. 120). Sie zeigt, welcher Sport gerade läuft. Local Channel ist ein Partner von außen, ein lokaler Fernsehsender (Torres nennt ABC, CBS, NBC, S. 120), der das Live-Programm liefert: „any number of local TV channel partners“ (S. 121). Nicht gemeint sind die Leute, die den Vertrag aushandeln (S. 120).',
+      },
+      {
+        frage: 'Wie liest man die Map?',
+        antwort: 'Von links nach rechts läuft die Zeit, jede Zeile ist ein Beteiligter: „Sequence the steps horizontally over time … You may need to jump back and forth between players if they need to take turns taking actions.“ (S. 120). Subscriber: Visits platform → Platform: Shows sports options → Subscriber: Browses options, Chooses sport → Local Channel: Delivers content → Subscriber: Watches sport. Zwei Schritte machen also nicht die Kund*innen: das Angebot zeigen (Plattform) und den Inhalt liefern (Sender). Gerade dort stehen Machbarkeits-Annahmen: „Feasibility: We know what sports are available right now.“ (S. 123) und „Feasibility: The local provider’s source content will be available.“ (S. 124). Im Text sind es fünf Schritte („From a simple 5-step story map“, S. 124); die Abbildung trennt „Browses options“ und „Chooses sport“, daher sechs Kästen.',
+      },
+      {
+        frage: 'Welche Annahmen leitet Torres aus dieser Map ab?',
+        antwort: 'Aus Schritt 1: „Desirability: Our subscriber wants to watch sports.“ – „Usability: Our subscriber knows they can watch sports on our platform.“ – „Feasibility: Our platform is available when our subscriber wants to watch sports.“ (S. 123). Aus Schritt 2 (Plattform): „Feasibility: We know what sports are available right now.“ (S. 123). Aus Schritt 4 (Sender): „Feasibility: The local provider’s source content will be available.“ (S. 124). Dazu, seltener aus der Map: „Viability: Integrating a local channel feed won’t be too expensive.“ – „Ethical: Subscribers will be okay with us sharing viewership data with their local channels.“ (S. 124). Wünschbarkeit, Bedienbarkeit und Machbarkeit stecken überall dort, wo jemand etwas tun muss – „every time you assume that an end-user will do something“ (S. 122); für Wirtschaftlichkeit und Schaden hat Torres eigene Wege: den Baum entlanggehen und nach möglichem Schaden fragen (S. 125–127). Zusammen: „From a simple 5-step story map, we generated 20 assumptions.“ (S. 124).',
+      },
+      {
+        frage: 'Wo stecken die drei Zeilen bei der Kaffeebar?',
+        antwort: 'Pendler*in wie Subscriber: will etwas und bekommt am Ende den Wert. Seite am Handy wie Platform: die Software als Beteiligte – sie öffnet sich nach dem Scan und nimmt Getränk und Abfahrtszeit entgegen (Schritte 2 und 3); Code scannen und wählen tut die Pendler*in. Bar wie Local Channel: liefert, was gewählt wurde – zeigt „Fertig 7:31“ und bereitet zu (Schritt 4). Die Schritte stehen auf der Folie „Am Beispiel“. Ein Unterschied: Der Sender ist bei Torres ein fremder Partner, die Bar gehört zum eigenen Geschäft. Auch dort hängen an der Seite und an der Bar Annahmen, die nicht die Kund*innen betreffen, etwa A2 (machbar: 40 Bestellungen in 30 Minuten). Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.',
       },
     ],
     ueberleitung: 'Torres macht das für drei Ideen – wir für eine. Warum?',
@@ -126,7 +157,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Du entscheidest: bestätigen oder ändern. Der Vorschlag in T3 · 4 war ein Ausgangspunkt, keine Vorgabe. Maßstab ist derselbe wie um 9:05: Welche deiner drei Ideen trifft dein Kundenprofil am besten (✓ ✗ ?)? Bleibst du beim Vorschlag, ist er ab jetzt deine Wahl. Wechselst du, arbeitest du mit der anderen Idee weiter und ziehst Value Map und Fit nach.',
       },
     ],
-    ueberleitung: 'Mit welcher Annahme fangt ihr an? Das zeigt die Map.',
+    ueberleitung: 'Wie findet ihr die Annahmen eures Spitzenreiters? Mit fünf Fragen an jeden Schritt.',
   },
 
   map: {
@@ -157,7 +188,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Dort stehen wichtige Annahmen mit Beleg. Ihr baut auf ihnen auf, schaut aber nach, ob der Beleg wirklich trägt (Feldnamen wie im Miro-Frame).',
       },
     ],
-    ueberleitung: 'Für die Annahme oben rechts schreibt ihr eine Karte. So sieht sie aus.',
+    ueberleitung: 'So sieht das an der Kaffeebar aus.',
   },
 
   karte: {
@@ -201,9 +232,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   'ergebnis-gilt': {
     live: [
-      'Kohl’s erzählen: viele begeistert, erst ein Test, Umsatz sinkt, gestoppt.',
+      'Kohl’s: Führung begeistert, Möbel, 70 Läden, sechs Monate, gestoppt.',
+      'Warum der Umsatz sank: Möbel nahmen anderen Waren die Fläche.',
       '„Gute Ergebnisse glaubt man sofort – schlechte prüft man so lange nach, bis sie zur eigenen Erwartung passen.“',
-      'Falle: behaupten, Kohl’s habe vorab eine Matrix gehabt.',
+      'Falle: Kohl’s eine Matrix vorab andichten – belegt ist der vereinbarte Test.',
       'Brücke: Darum steht die Handlung vorher auf der Karte.',
     ],
     verstaendnis: {
@@ -224,6 +256,28 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: '„When results align with our beliefs, we accept them without hesitation; when they don’t, we probe them relentlessly. The remedy is to implement the changes that experiments validate (although there are always exceptions).“',
         quelle: `${THOMKE}, S. 126`,
       },
+      {
+        text: 'Die Regel dahinter, Thomkes erste von vier: „(1) commit to abide by results“ (S. 85). „Before conducting any test, stakeholders must agree on how they’ll proceed once the results are in. … Most importantly, they must be willing to walk away from a project if a hypothesis is not supported“ (S. 86).',
+        quelle: `${THOMKE}, S. 85–86`,
+      },
+      {
+        text: 'Warum ein Test nur zählt, wenn sein Ergebnis etwas stoppen kann: „But if the proposed initiative is a done deal, why go through the time and expense of conducting a test? In such cases, it’s best to call programs what they are—a rollout, commitment, or implementation.“',
+        quelle: `${THOMKE}, S. 87`,
+      },
+      {
+        text: 'Was Kohl’s vorher vereinbart hat: den Test – „the company first agreed to test sales at seventy stores over six months“. Ob auch feststand, was bei welchem Ergebnis folgt, sagt Thomke nicht. Die Entscheidungsmatrix empfiehlt er im Absatz davor allgemein („a decision matrix that links possible outcomes to predetermined actions before any data comes in“, S. 86). Die Zeile „Wir entscheiden vorher“ mit drei Bändern ist die Form, die der Kurs dafür nimmt.',
+        quelle: `${THOMKE}, S. 86; Zeile und Bänder: Kurs`,
+      },
+    ],
+    geschichte: {
+      text: 'Wer Kohl’s ist: eine große Handelskette in den USA, bei Thomke „another large retailer“ (S. 13) und „the large US retailer“ (S. 66). Er kennt die Firma als eine, die testet: Bevor sie ihre Läden eine Stunde später öffnete, um Betriebskosten zu sparen, prüfte sie das in hundert Läden (S. 13, 66–67). Die Idee: Möbel ins Sortiment – „When Kohl’s was considering adding furniture to its product categories, many executives were tremendously enthusiastic, anticipating significant additional revenue.“ Viele in der Führung erwarteten also deutlich mehr Umsatz. Der Test: „Nevertheless, the company first agreed to test sales at seventy stores over six months—and the data showed a net decrease in revenue.“ Warum, steht gleich dabei: Die Möbel brauchten Platz, und was dafür weichen musste, verkaufte weniger – „Products that now had less floor space (to make room for the furniture) experienced a drop in sales, and Kohl’s was actually losing customers overall.“ Die Befürworter*innen: „Those negative results were a huge disappointment for the program’s advocates, but the initiative was nevertheless scrapped“ (S. 86–87). Mehr über ihre Reaktion erzählt Thomke nicht, etwa ob sie das Ergebnis angezweifelt haben – nicht ausschmücken. Seine Lesart: „The Kohl’s example highlights the fact that experiments are often needed to perform objective assessments of proposals backed by people with organizational clout“ (S. 87).',
+      quelle: `${THOMKE}, S. 13, 66–67, 86–87`,
+    },
+    fragen: [
+      {
+        frage: 'Was hat der Test bei Kohl’s gemessen – die Möbel oder den ganzen Laden?',
+        antwort: 'Den Umsatz insgesamt: „a net decrease in revenue“ (S. 86). Die Möbel nahmen anderen Waren die Fläche, die verkauften weniger, und Kohl’s verlor Kundschaft (S. 86–87). Wer nur auf die Möbel schaut, sieht die Verdrängung nicht. Darum zählt E1 beides, Automat und Aufsteller: Gemessen wird die Wahl, nicht nur das Interesse am Neuen.',
+      },
     ],
     ueberleitung: 'Wie schreibt ihr vorher auf, was ihr dann tut? Mit drei Bändern.',
   },
@@ -232,7 +286,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     live: [
       'Setup-Zeile vorlesen: E1, Schwelle 10 von 30.',
       'Bänder aufdecken: erst ab 10, dann unter 5, zuletzt 5–9.',
-      'Kursregel: Grenze darunter etwa die halbe Schwelle.',
+      'Grenze: etwa die halbe Schwelle – vorher als Zahl.',
       'Falle: „knapp darunter“ erst nach dem Test festlegen.',
     ],
     verstaendnis: {
@@ -266,6 +320,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         frage: 'Woher wissen wir, wo „knapp darunter“ endet?',
         antwort: 'Kursregel: etwa bei der halben Schwelle, vor dem Test als Zahl festgelegt. Bei der Kaffeebar 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
+      },
+      {
+        frage: 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?',
+        antwort: 'Nicht, wenn es vorher auf der Karte stand: Für 5–9 heißt die Zeile „Wir entscheiden vorher“ schon „wiederholen, eine Sache ändern“ – den Ort ändern ist dann die vereinbarte Handlung. Prüffrage nach Thomke (S. 14): Hättet ihr den Ort auch bei 12 von 30 hinterfragt? Bei 3 von 30 gilt „unter 5 → Wartezeit-Anzeige“, auch wenn der Morgen ungewöhnlich wirkte.',
       },
       {
         frage: 'Und eine neue Einsicht?',
@@ -304,6 +362,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Concierge: Wert von Hand, die Person sieht die Menschen dahinter.',
       'Fragen: Welcher passt zu eurer Annahme oben rechts?',
       'Kein Ort, keine Besucher: simulierter Moment.',
+      'Mock Sale: Klick, sofort aufgeklärt, Kaffee wie sonst, kleines Dankeschön.',
     ],
     kern: [
       {
@@ -335,7 +394,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, Mock Sale, S. 288–290`,
       },
       {
-        text: 'Mock Sale – Achtung: Bland lässt im Laden „intercept and explain that the product is not yet available“ und die Kundschaft „with a gift card for the inconvenience“ entschädigen; online kommt der Hinweis sofort nach dem Klick. Zahlungsdaten nicht speichern ist Kursregel. Kaffeebar: Knopf „Vorbestellen für 2,90 €“, danach „Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“.',
+        text: 'Mock Sale – Achtung: Bland lässt im Laden „intercept and explain that the product is not yet available“ und die Kundschaft „with a gift card for the inconvenience“ entschädigen; online kommt der Hinweis sofort nach dem Klick. Zahlungsdaten nicht speichern ist Kursregel. Kaffeebar: Knopf „Vorbestellen für 2,90 €“, danach „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“.',
         quelle: `${BLAND}, S. 289; Kaffeebar und Speicherregel: Kurs`,
       },
     ],
@@ -345,13 +404,13 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       falsch: '„Weil mehr Leute klicken“ – es klicken eher weniger; dafür kostet der Klick mehr.',
     },
     geschichte: {
-      text: 'Die vier Tests an der Kaffeebar, von schwach nach stark. Simulierter Moment: Zehn Pendler*innen in der Halle sehen am Handy den Bestellbildschirm – wer tippt auf „Bestellen“? Sie wählen, aber in einer gestellten Lage. Aufsteller: An der Hallentür steht „Trag deinen Zug ein“ mit QR-Code; wer auf dem Weg zum Zug vorbeikommt, trägt sich ein oder nicht, gezählt gegen die Strichliste am Automaten. Concierge: Ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar; die Pendler*innen bekommen echten Kaffee und sehen, wer ihn holt. Mock Sale: Der Knopf „Vorbestellen für 2,90 €“; wer tippt, liest „Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“. Von Stufe zu Stufe gibt die Person mehr her: eine Wahl am Bild, einen Eintrag, eine echte Bestellung beim Concierge – „Payments are strong evidence“ (S. 250). Der Kaufklick allein ist „relatively strong“; „sehr stark“ wird der Mock Sale erst mit Zahlungsdaten (S. 290).',
+      text: 'Die vier Tests an der Kaffeebar, von schwach nach stark. Simulierter Moment: Zehn Pendler*innen in der Halle sehen am Handy den Bestellbildschirm – wer tippt auf „Bestellen“? Sie wählen, aber in einer gestellten Lage. Aufsteller: An der Hallentür steht „Trag deinen Zug ein“ mit QR-Code; wer auf dem Weg zum Zug vorbeikommt, trägt sich ein oder nicht, gezählt gegen die Strichliste am Automaten. Concierge: Ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar; die Pendler*innen bekommen echten Kaffee und sehen, wer ihn holt. Mock Sale: Der Knopf „Vorbestellen für 2,90 €“; wer tippt, liest „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“. Von Stufe zu Stufe gibt die Person mehr her: eine Wahl am Bild, einen Eintrag, eine echte Bestellung beim Concierge – „Payments are strong evidence“ (S. 250). Der Kaufklick allein ist „relatively strong“; „sehr stark“ wird der Mock Sale erst mit Zahlungsdaten (S. 290).',
       quelle: `Kaffeebar: Kurs; Stärken nach ${TORRES}, S. 135, 142–144, und ${BLAND}, S. 250, 262, 290`,
     },
     fragen: [
       {
         frage: 'Was ist ein Mock Sale?',
-        antwort: 'Ein Angebot mit Preis und Kaufen-Knopf für etwas, das es noch nicht gibt: „Presenting a sale for your product without processing any payment information.“ Nach dem Klick erfährt die Person, dass es das noch nicht gibt – online ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Es fließt kein Geld (Bland, Mock Sale, S. 288–289). Gut für Preise: „Mock sale is ideal for determining different price points for your product“ (S. 288). Kaffeebar: „Vorbestellen für 2,90 €“ → „Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“ (E-Mail-Feld wie bei Bland, S. 289). Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks – „relatively strong, although not as strong as subsequent email and payment submissions“ – und, wer Bescheid will, die E-Mails danach, ebenfalls „relatively strong“ (S. 290); „sehr stark“ wäre er erst mit Zahlungsdaten.',
+        antwort: 'Ein Angebot mit Preis und Kaufen-Knopf für etwas, das es noch nicht gibt: „Presenting a sale for your product without processing any payment information.“ Nach dem Klick erfährt die Person, dass es das noch nicht gibt – online ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Es fließt kein Geld (Bland, Mock Sale, S. 288–289). Gut für Preise: „Mock sale is ideal for determining different price points for your product“ (S. 288). Kaffeebar: „Vorbestellen für 2,90 €“ → „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“ (E-Mail-Feld wie bei Bland, S. 289). Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks – „relatively strong, although not as strong as subsequent email and payment submissions“ – und, wer Bescheid will, die E-Mails danach, ebenfalls „relatively strong“ (S. 290); „sehr stark“ wäre er erst mit Zahlungsdaten.',
       },
       {
         frage: 'Sind die Testpersonen schon echte Kund*innen?',
@@ -365,8 +424,12 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         frage: 'Welcher Test passt zu uns?',
         antwort: 'Blands Faustregeln von der Folie davor: am Anfang schnell und billig, dann der stärkste Beleg, den ihr euch leisten könnt (S. 93). Habt ihr keinen Ort und keine Besucher*innen, bleibt der simulierte Moment: Bild am Handy, Situation in einem Satz (Torres, S. 135, 142–144). Concierge kostet vor allem Zeit (Bland S. 250); ein Mock Sale braucht einen durchgerechneten Preis – „If you test a ridiculously low price, then you’ll receive false positives“ (S. 290). Kursregel: E1 führt ihr nicht durch. Heute beschreibt ihr auf der Karte, welcher Test es wäre und wie er liefe; an Tag 5 besprecht ihr, was er gezeigt hätte.',
       },
+      {
+        frage: 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
+        antwort: 'Ort: am selben Ort wie E1, als eigener Durchlauf nach E1 – der Aufsteller an der Hallentür, jetzt mit Angebot und Preis: „Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“, darunter der QR-Code. Wer: Pendler*innen, die morgens ankommen und die Schlange sehen. Angeworben wird niemand – es ist die Zielgruppe in einer echten Kaufsituation; Bland: „target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290). Ablauf: scannen; auf der ersten Seite steht „Fährt dein Zug in weniger als 5 Minuten? Dann bitte nicht jetzt.“ (Hinweis des Kurses: niemand soll durchs Tippen den Zug verpassen). Dann Getränk wählen, Abfahrtszeit eintragen, auf „Vorbestellen für 2,90 €“ tippen. Sofort danach: „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“. Die Person: Sie bekommt durch den Test keinen Kaffee, und es fließt kein Geld. Sie erfährt es sofort, noch in der Halle und bevor sie das Anstellen aufgibt; ihren Kaffee holt sie wie sonst an der Bar oder am Automaten. Als Dank, nach Blands „gift card for the inconvenience“ (S. 289): Mit der Seite bekommt sie an der Bar eine kleine Aufmerksamkeit, etwa einen Gutschein – der Gutschein ist eine Anpassung des Kurses, Bland beschreibt die Entschädigung für den Test im Laden. Gezählt: Kaufklicks pro Besucher*in der Seite, dazu die E-Mails – und wie bei E1 gegen die Alternative: die Strichliste am Automaten in derselben Zeit, damit sichtbar wird, ob die Vorbestellung den Automaten verdrängt; gemessen wird die Wahl, nicht nur das Interesse am Neuen (wie bei Kohl’s: der ganze Laden zählt, nicht nur das Neue; Anpassung des Kurses). „Purchase clicks are relatively strong“, die E-Mails danach ebenfalls „relatively strong“ (S. 290); ohne Zahlungsdaten nicht „very strong“. Warum vertretbar: mit der Kundschaft, nicht an ihr – „Are you experimenting with your customers or on them?“ (S. 86). Die Person kostet es knapp eine Minute, und sie erfährt es sofort.',
+      },
     ],
-    ueberleitung: 'Alles zusammen an der Kaffeebar: erst die Schritte.',
+    ueberleitung: 'Alles zusammen an der Kaffeebar: die Karte E1 für A5.',
   },
 
   'annahmen-finden': {
@@ -449,7 +512,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: 'experiment.astro, Folie beispiel (Handout)',
       },
     ],
-    ueberleitung: 'Und welche davon zuerst? Die Map der Kaffeebar.',
+    ueberleitung: 'Und welche davon zuerst? Dafür gibt es die Map.',
   },
 
   'beispiel-map': {
@@ -469,7 +532,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 34–35`,
       },
     ],
-    ueberleitung: 'Für A5 die Karte E1.',
+    ueberleitung: 'Jetzt ihr: Schritte, Annahmen, Map – elf Minuten, allein. Nach Schritt 3 ist Stopp.',
   },
 
   'karte-e1': {
@@ -496,17 +559,32 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Dann entscheidet ihr offen dagegen: Auf der Lernkarte stehen der Beleg und der Grund (Folie „Gegen den Beleg entscheiden“ nach der Lernkarte). Die Zeile „Wir entscheiden vorher“ auf der Karte bleibt stehen.',
       },
     ],
-    ueberleitung: 'Jetzt ihr: Schritte, Annahmen, Map, Karte – 18 Minuten, allein.',
+    ueberleitung: 'Jetzt ihr: die Karte E1 für eure Annahme oben rechts, dann der Baum – sieben Minuten.',
   },
 
   vorgehen: {
     live: [
-      'Anleitung-Frame links neben „T4 · 0“ zeigen.',
+      'Anleitung-Frame links neben „T4 · 0“ zeigen: Punkte 1 bis 3.',
+      'Nach 3 min: Schritte stehen? Dann fünf Fragen – Timer 5 min.',
+      'Nach 8 min: Pre-Mortem gemacht? Dann Map – Timer 3 min.',
       'Nach 11 min: Liegt jeder Tag-1-Zettel in einem Feld? Werkstatt erst abends.',
-      'Nach 13 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
-      'Nach 16 min: Annahme und E1 in den Baum – Timer 2 min.',
+      '„Stopp nach Schritt 3 – die Karte E1 schreibt ihr nach den nächsten Folien.“',
     ],
-    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.'] },
+    uebung: { dauer: '11 min (3 + 5 + 3)', form: 'allein' },
+    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.', 'Stopp nach Punkt 3 der Anleitung und dem Pre-Mortem; das Feld „Karte E1“ bleibt noch leer.'] },
+    ueberleitung: 'Stopp. Für die Annahme oben rechts schreibt ihr gleich eine Karte – so sieht sie aus.',
+  },
+
+  'vorgehen-karte': {
+    live: [
+      'Anleitung: Punkt 4, dann Punkt 5 – Feld „Karte E1“ in der Spalte.',
+      'Nach 3 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
+      'Nach 5 min: Annahme und E1 in den Baum – Timer 2 min.',
+      'Wenn hinten: Lernkarte und „Gegen den Beleg“ überspringen, weiter bei Übertrag.',
+      '„Nicht fertig? Karte E1 bis Tag 5 – das steht in der Hausaufgabe.“',
+    ],
+    uebung: { dauer: '7 min (5 + 2)', form: 'allein' },
+    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Karte E1 im Feld „Karte E1 für die oberste rechts“, mit Schwelle und „Wir entscheiden vorher“.', 'Riskanteste Annahme und E1 in „Baum · Produkt n“ unter den Spitzenreiter.'] },
     kern: [
       {
         text: 'Prüfpunkt experiment-schwelle: Die Schwelle steht als „x von y“ fest, bevor der Test läuft – und mit ihr, was ihr bei welchem Ergebnis tut. Grundlage: Thomkes Entscheidungsmatrix vor den Daten.',
@@ -570,10 +648,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   'gegen-den-beleg': {
     live: [
       'Erst erklären: Serie, zwei Stars, Netflix testet Vorschaubilder.',
-      'Netflix in drei Schritten erzählen, Fluss links nach rechts.',
+      'Netflix erzählen: Tomlin allein klickt besser, trotzdem beide, Grund offen.',
       'Regel, Ausnahme, Nie – einzeln aufdecken.',
       '„Ihr dürft gegen einen Beleg entscheiden – aber nicht so tun, als gäbe es ihn nicht.“',
-      'Bezug: die Zeile „Weicht ab …? Grund“ unter der Karte.',
+      'Brücke: E1 mit 12, trotzdem kein Concierge – Grund auf die Lernkarte.',
     ],
     verstaendnis: {
       frage: 'Was hat der Test Netflix gebracht, obwohl die Entscheidung gegen die Daten ging?',
@@ -601,7 +679,19 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Umdeuten ist bei Thomke „cherry-picking data that supports a preferred point of view“.',
         quelle: `${THOMKE}, S. 86`,
       },
+      {
+        text: 'Was Thomke über Netflix’ Tests allgemein sagt: nur, dass die Firma „has built a sophisticated infrastructure for large-scale experimentation“. Wie Netflix Vorschaubilder testet und warum sie zählen, beschreibt er nicht; der Hintergrund dazu oben ist nicht von ihm. Seine Quelle für den Fall: Shalini Ramachandran und Joe Flint, „At Netflix: Who Wins When It’s Hollywood vs. the Algorithm?“, Wall Street Journal, 10.11.2018 (Anm. 17).',
+        quelle: `${THOMKE}, S. 127 und Anm. 17 zu Kap. 6`,
+      },
+      {
+        text: 'Wo der Fall im Buch steht: im Abschnitt „Insist That Data Overrides Opinions“. „The results of experiments must prevail when they clash with strong opinions, no matter whose opinions they are.“ „Nothing stalls experiments faster than a so-called HiPPO—highest-paid person’s opinion.“ „But if everything that can be tested is tested, experiments can become instrumental to management decisions and fuel healthy debates.“ Netflix folgt direkt darauf: „Sometimes those discussions might result in a conscious choice to overrule the data.“',
+        quelle: `${THOMKE}, S. 126–127`,
+      },
     ],
+    geschichte: {
+      text: 'Bei Thomke: Netflix, „which has built a sophisticated infrastructure for large-scale experimentation“, testete Werbung für die Comedyserie „Grace and Frankie“. „The company’s executives were torn when tests showed that a promotion featuring an image of only Lily Tomlin, one of the stars of Grace and Frankie, resulted in more clicks by potential viewers than promotions featuring both Tomlin and her costar Jane Fonda.“ Getestet wurde also ein Bild nur mit Tomlin gegen Bilder mit beiden; gemessen wurden Klicks möglicher Zuschauer*innen. Der Einwand kam aus dem Content-Team: „The content team worried that excluding Fonda would alienate the actress and possibly violate her contract.“ Ob der Vertrag wirklich verletzt worden wäre, sagt Thomke nicht – nur „possibly“. Entschieden hat Netflix nach Streit: „After heated debates that pitted empirical evidence against ‚strategic considerations,‘ Netflix chose to use images that included both actresses, even though customer data didn’t support the decision.“ Wer genau entschied, nennt er nicht; die Führung war „torn“. Sein Punkt ist die Offenheit: „However, the experimental evidence made the decision more transparent. Nobody could argue that Fonda should remain in the promotion because customers preferred it.“',
+      quelle: `${THOMKE}, S. 127`,
+    },
     fragen: [
       {
         frage: 'Wann ist es legitim, gegen den Beleg zu entscheiden?',
@@ -609,7 +699,15 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Muss so eine Zeile anders aussehen als die anderen?',
-        antwort: 'Nein: „Beleg: … → darum: …“ nennt den Beleg, der dagegen spricht; darunter „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ (Kursregel).',
+        antwort: 'Nein: „Beleg: … → darum: …“ nennt den Beleg, der dagegen spricht; darunter „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ (Anpassung des Kurses).',
+      },
+      {
+        frage: 'Was ist der Unterschied zwischen „gegen den Beleg entscheiden“ und „das Ergebnis umdeuten“?',
+        antwort: 'Wer umdeutet, ändert den Beleg: „When results align with our beliefs, we accept them without hesitation; when they don’t, we probe them relentlessly“ (S. 126) – am Ende steht da, das Ergebnis habe nicht gezählt. Netflix hat den Beleg stehen lassen – Tomlin allein brachte mehr Klicks – und offen einen anderen Grund dagegengestellt: die Sorge um Fonda und womöglich ihren Vertrag (S. 127). Darum bleibt die Regel von Kohl’s, „commit to abide by results“ (S. 85): Die Ausnahme ist „a conscious choice“ (S. 127), keine neue Lesart der Zahlen.',
+      },
+      {
+        frage: 'Kaffeebar: E1 ergibt 12 von 30, die Karte sagt Concierge. Was, wenn das Team nicht will?',
+        antwort: 'Das geht, wenn es offen dasteht. Beispiel des Kurses: Die Bar kann um 7:30 keine Bestellungen von Hand annehmen. Auf der Lernkarte: „Beleg: gestützt → darum: …“ mit dem, was ihr stattdessen tut, und „Weicht ab von ‚Wir entscheiden vorher‘? Ja – die Bar kann um 7:30 keine Bestellungen von Hand annehmen.“ Die 12 von 30 bleiben stehen. Nicht in Ordnung: „12 ist eigentlich nicht genug“ – die Schwelle war 10, das wäre Umdeuten. Offen festhalten heißt also: Ergebnis, Entscheidung dagegen und Grund stehen zusammen auf der Lernkarte (Hinweis des Kurses; Thomke verlangt Transparenz, S. 127, nicht diese Form).',
       },
     ],
     ueberleitung: 'Zum Schluss: Wo steht euer Aufsteller?',

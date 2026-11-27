@@ -13,7 +13,7 @@ const SEITEN: Record<string, number> = {
   '/innolab/tag-4': 7,
   // Seit 26.11.2026 nachts ohne die beiden Claude-Pro-Folien (jetzt auf tag-5).
   // Seit 27.11.2026 abends mit ein-schritt-fuenf-fragen (ein Kaffeebar-Schritt durch alle fünf Fragen).
-  '/innolab/methoden/experiment': 19,
+  '/innolab/methoden/experiment': 20,
   // Story Map seit 26.11.2026 abends: Warm-up in sechs Schritten, Begriffe, Theorie, Kaffeebar, Übung in elf Schritt-Folien.
   '/innolab/methoden/story-map': 31,
   '/innolab/methoden/usage-story': 6,

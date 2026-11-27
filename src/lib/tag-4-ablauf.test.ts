@@ -45,15 +45,19 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect(seite('/innolab/tag-4')).toContain('<strong>Der Baum wächst heute um Lösungen und Tests.</strong>');
     // Je ein eigener Schritt (data-schritt) in der Vorgehen-Folie.
     expect(folie('/innolab/methoden/value-map', 'vorgehen-fit')).toContain('<li data-schritt><strong>Euer Baum – Lösungen:</strong> Hängt eure drei Ideen als Lösungen unter den Stern in eurem Baum (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>) und markiert den Spitzenreiter. <Timer minuten={2} /></li>');
+    // Seit 27.11.2026 nachts: die Übung in zwei Blöcken – Schritte 1–3 (#vorgehen), nach der Theorie zur Karte Schritte 4–5 (#vorgehen-karte).
     const ex = folie('/innolab/methoden/experiment', 'vorgehen');
-    expect(ex).toContain('<li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>). <Timer minuten={2} /></li>');
-    // E2 kommt erst nach dem Papier-Prototyp – nicht auf der Folie der Experiment-Karte, nur im Handout.
-    expect(ex.slice(0, ex.indexOf('<div class="nur-handout">'))).not.toContain('E2');
-    expect(ex).toContain('nach dem Papier-Prototyp kommt E2 dazu');
-    // 18 min Übung plus 12 min Theorie füllen den 30-Minuten-Block; der Titel ist die Summe der Timer.
-    const timer = [...ex.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
-    expect(timer).toBe(18);
-    expect(ex).toContain(`So geht ihr vor (${timer} min)</h2>`);
+    const exKarte = folie('/innolab/methoden/experiment', 'vorgehen-karte');
+    expect(exKarte).toContain('<li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>). → Anleitung, Punkt 5. <Timer minuten={2} /></li>');
+    // E2 kommt erst nach dem Papier-Prototyp – nicht auf den Folien der Übung, nur im Handout.
+    for (const f of [ex, exKarte]) expect(f.slice(0, f.indexOf('<div class="nur-handout">'))).not.toContain('E2');
+    expect(exKarte).toContain('nach dem Papier-Prototyp kommt E2 dazu');
+    // 11 + 7 min Übung im 40-Minuten-Block; jeder Titel nennt die Summe seiner Timer.
+    const summe = (f: string) => [...f.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].reduce((a, m) => a + Number(m[1]), 0);
+    expect([summe(ex), summe(exKarte)]).toStrictEqual([11, 7]);
+    expect(ex).toContain(`Jetzt ihr: Schritte 1–3 (${summe(ex)} min)</h2>`);
+    expect(exKarte).toContain(`Jetzt ihr: Schritte 4–5 (${summe(exKarte)} min)</h2>`);
+    expect(summe(ex) + summe(exKarte)).toBe(18);
     // Kaffeebar: drei Ideen unter der Ziel-Chance, der Spitzenreiter markiert, darunter A5 mit E1.
     const loesungen = KAFFEEBAR_BAUM_TAG_4.kinder![0].kinder!;
     expect(loesungen.map((k) => k.t)).toStrictEqual(['Wartezeit-Anzeige an der Tür', 'Spitzenreiter: Im Gehen bestellen', 'Kaffeewagen am Bahnsteig']);
