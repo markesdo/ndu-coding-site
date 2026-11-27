@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { bloeckeAus, folienAus, hhmm, quellenAusGlob } from './begleiter';
 import { METHODEN } from '../components/methoden';
+import { NOTIZEN } from '../data/begleiter';
 
 // Entscheidung Markus 26.11.2026 nachts: Tag 4 ganz ohne Claude – der Prototyp entsteht auf Papier. Claude Pro und Claude
 // Code richten alle an Tag 5 gemeinsam ein, als eigener Block vor der ersten Nutzung (Backlog: Issues nach Linear), und am
@@ -70,10 +71,11 @@ describe('Tag 4 ohne Claude (Markus 26.11.2026 nachts)', () => {
 
   // Entscheidung Dozent 27.11.2026: Die freiwillige Claude-Hausaufgabe auf den Tag-4-Seiten fällt weg. „Prüfen“ bleibt als
   // Selbstprüfung mit der Prüfliste (Selbstpruefung.astro, dieselbe Checklisten-ID wie ClaudePruefung); die Methoden von
-  // Tag 2 und 3 prüfen weiter mit Claude.
-  it('Tag-4-Seiten: Prüfen nur selbst – kein claude.ai, kein ClaudePruefung, kein Claude-Prompt; Tag 2 und 3 behalten ihre', () => {
+  // Tag 2 und 3 prüfen weiter mit Claude – außer der Value Map (Tag 3, an Tag 4 nachgeholt; Entscheidung Dozent 27.11.2026):
+  // Sie prüft ebenfalls nur selbst.
+  it('Tag-4-Seiten und Value Map: Prüfen nur selbst – kein claude.ai, kein ClaudePruefung, kein Claude-Prompt; Tag 2 und 3 behalten ihre', () => {
     const tag4 = ['concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike'];
-    for (const slug of tag4) {
+    for (const slug of [...tag4, 'value-map']) {
       const q = seite(`/innolab/methoden/${slug}`);
       expect(q, slug).not.toMatch(/claude\.ai|ClaudePruefung|<Prompt\b[^>]*label="[^"]*(Prüfen lassen|zu Hause)|Zu Hause, in|Wer mag, lässt zu Hause/);
       const a = q.indexOf('<h2 id="pruefen">Prüfen</h2>');
@@ -90,9 +92,17 @@ describe('Tag 4 ohne Claude (Markus 26.11.2026 nachts)', () => {
     const selbst = readFileSync(new URL('../components/Selbstpruefung.astro', import.meta.url), 'utf8');
     expect(selbst).toContain('<Checklist id={pruefChecklisteId(m)} items={m.pruefliste.map((p) => p.text)} ids={m.pruefliste.map((p) => p.id)} />');
     expect(selbst).not.toMatch(/Prompt|claude\.ai/);
-    // Tag 2 und 3 (dazu die Value Map, die an Tag 4 nur nachgeholt wird) prüfen weiter mit Claude.
-    const frueher = METHODEN.filter((m) => (m.tag === 2 || m.tag === 3) && m.pruefliste && !m.stillgelegt && seite(`/innolab/methoden/${m.slug}`).includes('<h2 id="pruefen">'));
-    expect(frueher.map((m) => m.slug)).toEqual(expect.arrayContaining(['synthese', 'journey-map', 'ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']));
+    // Value Map: auch der Ablauf (vorgehen-fit) und die Begleiter-Notiz schicken nicht mehr zur Claude-Prüfung, sondern zur Liste.
+    const vm = seite('/innolab/methoden/value-map');
+    expect(vm).not.toMatch(/Prüfung mit Claude|nach dem Kurstag/);
+    expect(vm).toContain('Geprüft wird selbst, mit der Liste unter „Prüfen“.</p>');
+    const vmNotiz = JSON.stringify(NOTIZEN['/innolab/methoden/value-map'] ?? {});
+    expect(vmNotiz.length).toBeGreaterThan(1000);
+    expect(vmNotiz).not.toMatch(/Claude/);
+    expect(vmNotiz).toContain('Prüfen selbst mit der Prüfliste.');
+    // Tag 2 und 3 (ohne die Value Map) prüfen weiter mit Claude.
+    const frueher = METHODEN.filter((m) => (m.tag === 2 || m.tag === 3) && m.slug !== 'value-map' && m.pruefliste && !m.stillgelegt && seite(`/innolab/methoden/${m.slug}`).includes('<h2 id="pruefen">'));
+    expect(frueher.map((m) => m.slug)).toEqual(expect.arrayContaining(['synthese', 'journey-map', 'ziel-chance', 'kundenprofil', 'hmw', 'ideation']));
     for (const m of frueher) {
       const q = seite(`/innolab/methoden/${m.slug}`);
       expect(q, m.slug).toContain(`<ClaudePruefung slug="${m.slug}"`);

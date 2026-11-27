@@ -33,7 +33,7 @@ const weitere = [
   ...(miro ? vorBilder : []).map((b) => ({ b, zweck: 'zum Abgleich' })),
 ];
 const weitereText = weitere.map((x, i) => ` Dazu ein ${ORDNUNG[i + 1] ?? `${i + 2}.`} Bild ${x.zweck}: ${x.b.ausschnitt}, ebenso fotografieren und einfügen.`).join('');
-// Methoden mit Ergebnis in einer Datei, deren Prompt Vorarbeit von Miro als Bild nennt (Kundenprofil, Value Map ab Tag 4).
+// Methoden mit Ergebnis in einer Datei, deren Prompt Vorarbeit von Miro als Bild nennt (Kundenprofil).
 const vorBilderOhneMiro = !werkstatt && !miro ? vorBilder : [];
 ---
 <Checklist id={pruefChecklisteId(m)} items={m.pruefliste.map((p) => p.text)} ids={m.pruefliste.map((p) => p.id)} />
