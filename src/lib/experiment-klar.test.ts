@@ -360,14 +360,14 @@ describe('Tests zur Auswahl und Beispiel', () => {
     expect(JSON.stringify(n)).not.toContain('noch nicht. Sollen wir');
     expect(mock).toContain('Es fließt kein Geld (Bland, Mock Sale, S. 288–289)');
     // Ohne Zahlungsdaten: Kaufklicks und E-Mails, „relatively strong“ – nicht „sehr stark“.
-    expect(mock).toContain('Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks');
+    expect(mock).toContain('Ohne Zahlungsdaten (Vorgabe des Kurses: nie speichern) zählt euer Mock Sale die Kaufklicks');
     expect(personen).toMatch(/^Bei drei der vier Tests hat noch niemand gekauft/);
     expect(personen).toContain('Ausnahme Concierge: echte Kund*innen, die bestellen, zahlen können');
     expect(ehrlich).toContain('„with a gift card for the inconvenience“');
-    expect(ehrlich).toContain('Kursregel: Zahlungsdaten nie speichern');
+    expect(ehrlich).toContain('Vorgabe des Kurses: Zahlungsdaten nie speichern');
     expect(ehrlich).toContain('„Do your customers understand that you’ll be collecting that data?“ (S. 127)');
     expect(ehrlich).not.toContain('Can we meet customers’ expectations');
-    expect(wahl).toContain('Kursregel: E1 führt ihr nicht durch.');
+    expect(wahl).toContain('Vorgabe des Kurses: E1 führt ihr nicht durch.');
     expect(n.geschichte?.text).toContain('von schwach nach stark.');
     expect(n.geschichte?.text).toContain('Der Kaufklick allein ist „relatively strong“; „sehr stark“ wird der Mock Sale erst mit Zahlungsdaten (S. 290).');
     // Die bisherigen Kern-Einträge bleiben: je zwei pro Test, in dieser Reihenfolge; Concierge ausführlich (Markus 27.11.); danach die Vorsicht-Hinweise.

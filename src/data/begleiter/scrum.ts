@@ -60,7 +60,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
       'Zeit: 2 min.',
       '„Drei Produkte, drei Personen: drei Scrum-Teams mit denselben Köpfen.“',
       'Je Produkt PO, Produktziel, Sprint-Ziel – gemeinsamer Takt.',
-      'Nur ein Sprint (eine Woche erlaubt der Guide); Daily schriftlich in Linear.',
+      'Nur ein Sprint (eine Woche ist erlaubt); Daily dazwischen schriftlich in Linear.',
       'Warum offen sagen: Transparenz ist die erste Säule.',
     ],
     verstaendnis: {
@@ -78,8 +78,8 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         quelle: `${GUIDE}, S. 13`,
       },
       {
-        text: 'Abweichungen gegen den Guide: Sprints sind „fixed length events“ (S. 7) – bei uns nur einer, 12.12.–19.12.; das Daily „at the same time and place every working day“ (S. 9) – zwischen den Kurstagen schriftlich. Eine gemeinsame Definition of Done für alle drei Produkte ist eine Kursregel; der Guide verlangt sie nur für mehrere Teams am selben Produkt (S. 12).',
-        quelle: `${GUIDE}, S. 7, 9, 12; Kursregel`,
+        text: 'Abweichungen gegen den Guide: Sprints sind „fixed length events“ (S. 7) – bei uns nur einer, 12.12.–19.12.; das Daily „at the same time and place every working day“ (S. 9) – zwischen den Kurstagen schriftlich. Eine gemeinsame Definition of Done für alle drei Produkte ist eine Setzung des Kurses; der Guide verlangt sie nur für mehrere Teams am selben Produkt (S. 12).',
+        quelle: `${GUIDE}, S. 7, 9, 12; DoD für alle drei: Setzung des Kurses`,
       },
       {
         text: 'Vorsicht beim Erzählen: Eine Woche ist nach dem Guide erlaubt (höchstens ein Monat). Die Abweichung ist, dass es nur einen Sprint gibt und kein nächster sofort folgt.',

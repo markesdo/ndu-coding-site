@@ -157,11 +157,11 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
     ],
     kern: [
       {
-        text: 'Pain zuerst folgt Lichaws Bogen der Origin Story: erst Ausgangslage und Problem, dann wie sie vom Produkt erfährt, die Hürde, und erst dann sieht sie den Wert.',
-        quelle: `${LICHAW}, Kap. 4, Abb. 4.3`,
+        text: 'Pain zuerst ist die Lesart des Kurses von Lichaws Bogen der Origin Story (Abb. 4.3): Dort kommen erst Ausgangslage und Problem, dann wie sie vom Produkt erfährt, die Hürde, und erst dann sieht sie den Wert.',
+        quelle: `Lesart des Kurses; ${LICHAW}, Kap. 4, Abb. 4.3`,
       },
       {
-        text: 'Nicht behaupten: Bland empfehle dieselbe Reihenfolge. Bei ihm steht oben das Wertversprechen, darunter die Handlung, erst darunter Pains, Lösung und Gains (S. 261). Den Aufsteller mit dem Pain zu eröffnen, ist eine Entscheidung des Kurses.',
+        text: 'Nicht behaupten: Bland empfehle dieselbe Reihenfolge. Bei ihm steht oben das Wertversprechen, darunter die Handlung, erst darunter Pains, Lösung und Gains (S. 261). Den Aufsteller mit dem Pain zu eröffnen, ist die Lesart des Kurses von Lichaws Bogen (Abb. 4.3).',
         quelle: `${BLAND}, Simple Landing Page, S. 261`,
       },
     ],

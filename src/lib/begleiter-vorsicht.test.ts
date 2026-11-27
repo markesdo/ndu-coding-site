@@ -51,7 +51,7 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
       'methoden/scrum#foliensatz | Vorsicht beim Erzählen: „3-5-3“ (Foliensatz 42) ist eine Mer',
       'methoden/scrum#foliensatz | Nicht behaupten: Royce habe den Wasserfall empfohlen (Folien',
       'methoden/scrum#abweichungen | Vorsicht beim Erzählen: Eine Woche ist nach dem Guide erlaub',
-      'tag-5#debrief | Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ auf den Le',
+      'tag-5#debrief | Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ auf Lernka',
     ]);
   });
 
@@ -82,16 +82,21 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
 
   it('jeder Hinweis hat eine Quelle und kein Etikett „Kursregel“', () => {
     const h = hinweise();
-    expect(h.filter((x) => !x.quelle.trim()).map((x) => x.wo)).toStrictEqual([]);
+    expect(h.filter((x) => !(x.quelle ?? '').trim()).map((x) => x.wo)).toStrictEqual([]);
     expect(h.flatMap((x) => `${x.text} ${x.quelle}`.match(/Kursregel/g) ?? [])).toStrictEqual([]);
   });
 });
 
 describe('Tag 4: drei korrigierte Sachfehler', () => {
-  it('tag-4#origin-beispiel: Bland empfiehlt nicht dieselbe Reihenfolge; Pain zuerst ist Entscheidung des Kurses', () => {
+  it('tag-4#origin-beispiel: Bland empfiehlt nicht dieselbe Reihenfolge; Pain zuerst ist die Lesart des Kurses von Lichaws Bogen', () => {
     const f = folie('/innolab/tag-4', 'origin-beispiel');
     expect(f).not.toContain('dieselbe Reihenfolge empfiehlt Bland');
-    expect(handout(f)).toContain('Bland baut eine Landingpage anders auf: oben das Wertversprechen, darunter die Handlung, erst darunter Pains, Lösung und Gains ({BLAND}, S. 261). Unser Aufsteller beginnt mit dem Pain, weil er im Vorbeigehen wirken muss – das ist eine Entscheidung des Kurses.');
+    expect(handout(f)).toContain('– das ist die Lesart des Kurses von Lichaws Bogen der Origin Story: erst das Problem, dann die Hürde, dann sieht die Person den Wert ({LICHAW}, Abb. 4.3). Bland baut eine Landingpage anders auf: oben das Wertversprechen, darunter die Handlung, erst darunter Pains, Lösung und Gains ({BLAND}, S. 261).');
+    expect(f).not.toContain('Entscheidung des Kurses');
+    const k = (NOTIZEN['/innolab/tag-4']['origin-beispiel'].kern ?? []).map((x) => `${x.text} ${x.quelle}`).join(' ');
+    expect(k).toContain('Pain zuerst ist die Lesart des Kurses von Lichaws Bogen der Origin Story (Abb. 4.3)');
+    expect(k).toContain('ist die Lesart des Kurses von Lichaws Bogen (Abb. 4.3).');
+    expect(k).not.toContain('Entscheidung des Kurses');
     // Die Folie behält die Reihenfolge des Aufstellers.
     expect(beamer(f)).toContain('<p class="folie-satz">Erst der Pain, dann das Produkt, dann die Antwort auf die Hürde.</p>');
     expect(JSON.stringify(NOTIZEN['/innolab/tag-4']['origin-beispiel'])).not.toMatch(/Dieselbe Reihenfolge empfiehlt Bland/i);
@@ -115,7 +120,7 @@ describe('Tag 4: drei korrigierte Sachfehler', () => {
     expect(beamer(f)).toContain('<li data-schritt><strong>Nur ein Sprint</strong> – eine Woche erlaubt der Guide, aber kein nächster folgt.</li>');
     expect(handout(f)).toContain('Sprints sind „fixed length events of one month or less“, und „A new Sprint starts immediately after the conclusion of the previous Sprint“ (S. 7). Eine Woche liegt also im Rahmen des Guides; abweichend ist, dass es bei uns nur einen gibt');
     expect(seite('/innolab/methoden/scrum')).not.toMatch(/einziger Sprint (von einer|, eine) Woche/i);
-    expect(NOTIZEN['/innolab/methoden/scrum'].abweichungen.live).toContain('Nur ein Sprint (eine Woche erlaubt der Guide); Daily schriftlich in Linear.');
+    expect(NOTIZEN['/innolab/methoden/scrum'].abweichungen.live).toContain('Nur ein Sprint (eine Woche ist erlaubt); Daily dazwischen schriftlich in Linear.');
     expect(JSON.stringify(NOTIZEN['/innolab/methoden/scrum'].abweichungen.live)).not.toMatch(/Ein Sprint, eine Woche/);
     const punkt = METHODEN.find((m) => m.slug === 'scrum')?.pruefliste?.find((p) => p.id === 'scrum-abweichungen')?.text;
     expect(punkt).toBe('Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, nur ein Sprint ohne nächsten danach, schriftliches Daily.');
@@ -194,5 +199,49 @@ describe('experiment#test-arten: Concierge ausführlich (Markus 27.11.)', () => 
     const f = folie('/innolab/methoden/experiment', 'karte-e1');
     expect(f).not.toContain('per Nachricht vorbestellen');
     expect(handout(f)).toContain('ein Concierge: ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar.');
+  });
+});
+
+describe('Review #487: Wortlaut und Etiketten', () => {
+  // Alle Folien, an denen dieser PR Begleiter-Einträge hinzugefügt hat: kein Etikett „Kursregel“ in kern und fragen.
+  const BERUEHRT: [string, string[]][] = [
+    ['tag-4', ['was-bauen-wir', 'abschluss', 'origin-beispiel']],
+    ['methoden/geschaeftsmodell', ['vor-experiment', 'dreieck']],
+    ['methoden/experiment', ['annahmen-der-idee', 'karte', 'test-arten', 'karte-e1', 'lernkarte', 'vorher-entscheiden']],
+    ['methoden/story-map', ['schritt-schneiden']],
+    ['methoden/usage-story', ['nahe-am-ende']],
+    ['methoden/scrum', ['foliensatz', 'abweichungen']],
+    ['tag-5', ['debrief']],
+  ];
+  it('kein „Kursregel“ in kern und fragen der berührten Folien', () => {
+    const treffer = BERUEHRT.flatMap(([s, ids]) => ids.flatMap((id) => {
+      const n = NOTIZEN[`/innolab/${s}`]?.[id];
+      expect(n, `${s}#${id}`).toBeDefined();
+      const texte = [...(n?.kern ?? []).flatMap((k) => [k.text, k.quelle]), ...(n?.fragen ?? []).flatMap((f) => [f.frage, f.antwort])];
+      return texte.filter((t) => /Kursregel/.test(t ?? '')).map((t) => `${s}#${id}: ${(t ?? '').slice(0, 50)}`);
+    }));
+    expect(treffer).toStrictEqual([]);
+  });
+  it('karte-e1-Handout: die Grenze als Setzung des Kurses', () => {
+    const f = folie('/innolab/methoden/experiment', 'karte-e1');
+    expect(f).not.toContain('Kursregel');
+    expect(handout(f)).toContain('als Setzung des Kurses liegt sie bei etwa der halben Schwelle');
+  });
+  it('Intuit im Handout wie bei Thomke: „two versions of the software“, keine „zwei Knöpfe“', () => {
+    const f = folie('/innolab/methoden/experiment', 'karte');
+    expect(f).not.toContain('zwei Knöpfe');
+    expect(handout(f)).toContain('bot „two versions of the software“ an – eine mit der Option „Pay employees first“, eine mit „Do set-up first“');
+  });
+  it('tag-5#debrief: der Hinweis gilt nur für Lernkarte E1', () => {
+    const t = hinweise().find((h) => h.wo === 'tag-5#debrief')?.text ?? '';
+    expect(t).toContain('auf Lernkarte E1');
+    expect(t).not.toMatch(/Lernkarten|E2/);
+  });
+  it('Concierge der Kaffeebar: „ein paar Morgen“, wie auf der Folie', () => {
+    const n = NOTIZEN['/innolab/methoden/experiment']['test-arten'];
+    const concierge = (n.kern ?? []).filter((k) => /Concierge/.test(k.text) && /Kaffeebar/.test(k.text)).map((k) => k.text);
+    expect(concierge.length).toBeGreaterThan(1);
+    for (const t of concierge) expect(t).not.toContain('drei Morgen');
+    expect(folie('/innolab/methoden/experiment', 'karte-e1')).toContain('ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an');
   });
 });

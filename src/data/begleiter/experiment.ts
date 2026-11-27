@@ -312,7 +312,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 63`,
       },
       {
-        text: 'Kursregeln: drei Bänder als Form für die Entscheidungsmatrix; „knapp darunter“ = unklar, „deutlich darunter“ = widerlegt; Grenze etwa die halbe Schwelle. Die Quellen geben dafür keine Zahl.',
+        text: 'Setzungen des Kurses: drei Bänder als Form für die Entscheidungsmatrix; „knapp darunter“ = unklar, „deutlich darunter“ = widerlegt; Grenze etwa die halbe Schwelle. Die Quellen geben dafür keine Zahl.',
         quelle: 'Kurs (Entscheidung Markus 26.11.2026)',
       },
       {
@@ -355,7 +355,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Woher wissen wir, wo „knapp darunter“ endet?',
-        antwort: 'Kursregel: etwa bei der halben Schwelle, vor dem Test als Zahl festgelegt. Bei der Kaffeebar 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
+        antwort: 'Setzung des Kurses: etwa bei der halben Schwelle, vor dem Test als Zahl festgelegt. Bei der Kaffeebar 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
       },
       {
         frage: 'Was heißt „ab 10 → Concierge“ genau?',
@@ -414,7 +414,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 142–144; Kaffeebar und Einordnung: Kurs`,
       },
       {
-        text: 'Landingpage / Aufsteller – Aufbau: „A simple, digital web page that clearly illustrates your Value Proposition with a call to action.“ Das Angebot steht da, das Produkt noch nicht, und die Seite sagt das (Kursregel). Testpersonen: wer vorbeikommt – Bland rechnet mit „about 100 unique visitors a day“; beim Aufsteller die Menschen in der Halle.',
+        text: 'Landingpage / Aufsteller – Aufbau: „A simple, digital web page that clearly illustrates your Value Proposition with a call to action.“ Das Angebot steht da, das Produkt noch nicht, und die Seite sagt das (Vorgabe des Kurses). Testpersonen: wer vorbeikommt – Bland rechnet mit „about 100 unique visitors a day“; beim Aufsteller die Menschen in der Halle.',
         quelle: `${BLAND}, Simple Landing Page, S. 260, 262`,
       },
       {
@@ -450,7 +450,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, Fallstudie Concierge, S. 252–253`,
       },
       {
-        text: 'Concierge – Kaffeebar: Ab 10 von 30 bei E1 folgt der Concierge. An drei Morgen, 7:15–7:45, steht eine Person aus dem Team an der Hallentür, schreibt Getränk und Zug auf einen Bestellzettel (Blands „board“) und gibt die Bestellung an die Bar; die Bar bereitet zu, abgeholt und bezahlt wird an der Express-Ausgabe. Gemessen: Bestellungen und Zahlungen, ob der Kaffee vor dem Zug fertig war (Bestellung bis Übergabe), wo es stockte, und ein Satz zur Zufriedenheit bei der Übergabe. Erfolg steht vorher auf der nächsten Karte, als x von y – etwa: Von den ersten 30 Bestellungen sind mindestens 24 vor dem Zug fertig.',
+        text: 'Concierge – Kaffeebar: Ab 10 von 30 bei E1 folgt der Concierge. Ein paar Morgen, 7:15–7:45, steht eine Person aus dem Team an der Hallentür, schreibt Getränk und Zug auf einen Bestellzettel (Blands „board“) und gibt die Bestellung an die Bar; die Bar bereitet zu, abgeholt und bezahlt wird an der Express-Ausgabe. Gemessen: Bestellungen und Zahlungen, ob der Kaffee vor dem Zug fertig war (Bestellung bis Übergabe), wo es stockte, und ein Satz zur Zufriedenheit bei der Übergabe. Erfolg steht vorher auf der nächsten Karte, als x von y – etwa: Von den ersten 30 Bestellungen sind mindestens 24 vor dem Zug fertig.',
         quelle: `Kaffeebar: Kurs (Folie karte-e1); Messgrößen nach ${BLAND}, S. 249–250`,
       },
       {
@@ -458,7 +458,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, Mock Sale, S. 288–290`,
       },
       {
-        text: 'Mock Sale – Achtung: Bland lässt im Laden „intercept and explain that the product is not yet available“ und die Kundschaft „with a gift card for the inconvenience“ entschädigen; online kommt der Hinweis sofort nach dem Klick. Zahlungsdaten nicht speichern ist Kursregel. Kaffeebar: Knopf „Vorbestellen für 2,90 €“, danach „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“.',
+        text: 'Mock Sale – Achtung: Bland lässt im Laden „intercept and explain that the product is not yet available“ und die Kundschaft „with a gift card for the inconvenience“ entschädigen; online kommt der Hinweis sofort nach dem Klick. Zahlungsdaten nicht speichern ist eine Vorgabe des Kurses. Kaffeebar: Knopf „Vorbestellen für 2,90 €“, danach „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“.',
         quelle: `${BLAND}, S. 289; Kaffeebar und Speicherregel: Kurs`,
       },
       {
@@ -466,7 +466,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 52, 262; Einordnung: Kurs`,
       },
       {
-        text: 'Vorsicht beim Erzählen: Der Concierge der Kaffeebar – Hallentür, drei Morgen, Bestellzettel, Express-Ausgabe, „24 von 30“ – ist ein Beispiel des Kurses, nicht Blands. Von Bland sind Definition, Ablauf, Messgrößen, die Punkte der Grafik und der Fall Realtor.com.',
+        text: 'Vorsicht beim Erzählen: Der Concierge der Kaffeebar – Hallentür, ein paar Morgen, Bestellzettel, Express-Ausgabe, „24 von 30“ – ist ein Beispiel des Kurses, nicht Blands. Von Bland sind Definition, Ablauf, Messgrößen, die Punkte der Grafik und der Fall Realtor.com.',
         quelle: `Kurs; ${BLAND}, S. 248–253`,
       },
     ],
@@ -482,7 +482,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Was ist ein Mock Sale?',
-        antwort: 'Ein Angebot mit Preis und Kaufen-Knopf für etwas, das es noch nicht gibt: „Presenting a sale for your product without processing any payment information.“ Nach dem Klick erfährt die Person, dass es das noch nicht gibt – online ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Es fließt kein Geld (Bland, Mock Sale, S. 288–289). Gut für Preise: „Mock sale is ideal for determining different price points for your product“ (S. 288). Kaffeebar: „Vorbestellen für 2,90 €“ → „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“ (E-Mail-Feld wie bei Bland, S. 289). Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks – „relatively strong, although not as strong as subsequent email and payment submissions“ – und, wer Bescheid will, die E-Mails danach, ebenfalls „relatively strong“ (S. 290); „sehr stark“ wäre er erst mit Zahlungsdaten.',
+        antwort: 'Ein Angebot mit Preis und Kaufen-Knopf für etwas, das es noch nicht gibt: „Presenting a sale for your product without processing any payment information.“ Nach dem Klick erfährt die Person, dass es das noch nicht gibt – online ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Es fließt kein Geld (Bland, Mock Sale, S. 288–289). Gut für Preise: „Mock sale is ideal for determining different price points for your product“ (S. 288). Kaffeebar: „Vorbestellen für 2,90 €“ → „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“ (E-Mail-Feld wie bei Bland, S. 289). Ohne Zahlungsdaten (Vorgabe des Kurses: nie speichern) zählt euer Mock Sale die Kaufklicks – „relatively strong, although not as strong as subsequent email and payment submissions“ – und, wer Bescheid will, die E-Mails danach, ebenfalls „relatively strong“ (S. 290); „sehr stark“ wäre er erst mit Zahlungsdaten.',
       },
       {
         frage: 'Sind die Testpersonen schon echte Kund*innen?',
@@ -490,11 +490,11 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
-        antwort: 'Unehrlich wäre es, wenn die Person es nicht erfährt. Bland löst sofort auf: im Laden „intercept and explain that the product is not yet available“, nach Rückmeldung fragen und die Person „with a gift card for the inconvenience“ entschädigen; Ladenleitung und Personal kennen Dauer und Art des Tests vorher. Online kommt der Hinweis direkt nach dem Klick (S. 289). Grundsatz: „Are you experimenting with your customers or on them?“ – das Buch sei kein Grund „to scam people out of their money … In short, don’t be evil“ (S. 86). Beim Pop-up-Store schreibt Bland zum Mock Sale „do not collect payment information“ (S. 303). Kursregel: Zahlungsdaten nie speichern, und am Ende klar sagen, dass es ein Test war. Torres’ ethische Frage passt dazu: „Do your customers understand that you’ll be collecting that data?“ (S. 127) – darum die E-Mail nur, wenn die Person nach dem Hinweis Bescheid haben will.',
+        antwort: 'Unehrlich wäre es, wenn die Person es nicht erfährt. Bland löst sofort auf: im Laden „intercept and explain that the product is not yet available“, nach Rückmeldung fragen und die Person „with a gift card for the inconvenience“ entschädigen; Ladenleitung und Personal kennen Dauer und Art des Tests vorher. Online kommt der Hinweis direkt nach dem Klick (S. 289). Grundsatz: „Are you experimenting with your customers or on them?“ – das Buch sei kein Grund „to scam people out of their money … In short, don’t be evil“ (S. 86). Beim Pop-up-Store schreibt Bland zum Mock Sale „do not collect payment information“ (S. 303). Vorgabe des Kurses: Zahlungsdaten nie speichern, und am Ende klar sagen, dass es ein Test war. Torres’ ethische Frage passt dazu: „Do your customers understand that you’ll be collecting that data?“ (S. 127) – darum die E-Mail nur, wenn die Person nach dem Hinweis Bescheid haben will.',
       },
       {
         frage: 'Welcher Test passt zu uns?',
-        antwort: 'Blands Faustregeln von der Folie davor: am Anfang schnell und billig, dann der stärkste Beleg, den ihr euch leisten könnt (S. 93). Habt ihr keinen Ort und keine Besucher*innen, bleibt der simulierte Moment: Bild am Handy, Situation in einem Satz (Torres, S. 135, 142–144). Concierge kostet vor allem Zeit (Bland S. 250); ein Mock Sale braucht einen durchgerechneten Preis – „If you test a ridiculously low price, then you’ll receive false positives“ (S. 290). Kursregel: E1 führt ihr nicht durch. Heute beschreibt ihr auf der Karte, welcher Test es wäre und wie er liefe; an Tag 5 besprecht ihr, was er gezeigt hätte.',
+        antwort: 'Blands Faustregeln von der Folie davor: am Anfang schnell und billig, dann der stärkste Beleg, den ihr euch leisten könnt (S. 93). Habt ihr keinen Ort und keine Besucher*innen, bleibt der simulierte Moment: Bild am Handy, Situation in einem Satz (Torres, S. 135, 142–144). Concierge kostet vor allem Zeit (Bland S. 250); ein Mock Sale braucht einen durchgerechneten Preis – „If you test a ridiculously low price, then you’ll receive false positives“ (S. 290). Vorgabe des Kurses: E1 führt ihr nicht durch. Heute beschreibt ihr auf der Karte, welcher Test es wäre und wie er liefe; an Tag 5 besprecht ihr, was er gezeigt hätte.',
       },
       {
         frage: 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',

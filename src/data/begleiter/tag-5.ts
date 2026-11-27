@@ -30,7 +30,7 @@ export const NOTIZEN_TAG_5: Record<string, Notiz> = {
         quelle: 'Stefan H. Thomke, The Scientific Mindset, S. 86',
       },
       {
-        text: 'Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ auf den Lernkarten ist unsere Einordnung. Bland nennt einen Eintrag „relatively weak evidence“ (S. 52) und rechnet die vier Achsen nicht zu einer Stufe zusammen; mittel wird E1 bei uns, weil der Aufsteller in der echten Situation steht.',
+        text: 'Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ auf Lernkarte E1 ist unsere Einordnung. Bland nennt einen Eintrag „relatively weak evidence“ (S. 52) und rechnet die vier Achsen nicht zu einer Stufe zusammen; mittel wird es bei uns, weil der Aufsteller in der echten Situation steht.',
         quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas, S. 52, 55; Einordnung: Kurs',
       },
     ],
