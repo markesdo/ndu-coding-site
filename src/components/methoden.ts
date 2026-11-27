@@ -382,6 +382,7 @@ export const METHODEN: Methode[] = [
       { id: 'story-map-slice-ziel', text: 'Slice 1 nennt, was Menschen danach anders tun, und was ihr damit lernen wollt (mit Annahmen-ID).' },
       { id: 'story-map-slice-durchgehend', text: 'Slice 1 geht durch alle Aktivitäten von Anfang bis Ende; keine Aktivität wurde nach unten geschoben.' },
       { id: 'story-map-kein-software', text: 'Was in Slice 1 keine Software ist, steht trotzdem auf der Map und ist als „kein Software-Schritt“ markiert.' },
+      { id: 'story-map-pains', text: 'Jeder Pain am Rand hat einen Task, der ihn löst – oder ihr habt geklärt, dass euer Produkt diesen Pain gar nicht löst.' },
     ],
     ki: 'Spielt „Was ist, wenn …?“: fehlende Schritte dazwischen, Fehlerwege, eine zweite Gruppe.',
     quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Read This First, Kap. 1–5, 14',

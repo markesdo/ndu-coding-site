@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ohneAbgeschaltet } from '../components/abgeschaltet';
+import { METHODEN } from '../components/methoden';
 import { MIRO_FRAMES } from '../components/miro-frames';
 import { NOTIZEN } from '../data/begleiter';
 import { quellenAusGlob } from './begleiter';
@@ -127,8 +128,23 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(pruefen).toContain('in eurer Spalte im Frame „T4 · 1 · Story Map“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
     const n = NOTIZEN['/innolab/methoden/story-map'];
     expect(n['schritt-durchgehen'].ueberleitung).toBe('Zum Schluss: fertig auf Miro.');
-    expect(n['schritt-tasks'].live).toContain('Fragen: Hat jeder Pain vom Rand einen Task, der ihn löst?');
+    expect(n['schritt-tasks'].live).toContain('Fragen: Hat jeder Pain am Rand einen Task, der ihn löst?');
     expect(JSON.stringify(n)).not.toMatch(/ins Repo|docs\//);
+  });
+
+  // 27.11.2026: Die Studierenden erfahren, wozu die Pains am Rand stehen (Value Map wählt sie, am Ende braucht jeder einen
+  // Task) – nicht nur der Begleiter. Auf der Folie, im Handout und in der Prüfliste.
+  it('Pains am Rand: Schritt 2 sagt, welche und wozu; Schritt 3 prüft sichtbar, ob jeder einen Task hat', () => {
+    const jetzt = folie('schritt-jetzt-map');
+    expect(sichtbar(jetzt)).toContain('<li data-schritt><strong>Die zwei, drei stärksten Pains, die eure Pain Relievers (Value Map) lindern,</strong> als Notiz an den Rand eurer Story Map, mit Zitat-ID – am Ende braucht jeder einen Task, der ihn löst. <Timer minuten={2} /></li>');
+    expect(handout(jetzt)).toContain('Die Pains am Rand halten die Später-Map an dem fest, was heute wehtut: Ohne sie mappt man schnell Bildschirme und Features. Am Ende prüft ihr, ob jeder Pain einen Task hat, der ihn löst.');
+    expect(handout(jetzt)).toContain('„If you don’t have a clear solution in mind, or even if you think you do, try mapping the world as it is today, including pains and joys your users have“');
+    expect(sichtbar(folie('schritt-tasks'))).toMatch(/<p class="pruefen" data-schritt><strong>Prüft:<\/strong> [^<]*Hat jeder Pain am Rand einen Task, der ihn löst\? Wenn nicht: Fehlt ein Task – oder löst euer Produkt diesen Pain gar nicht\?<\/p>/);
+    const liste = METHODEN.find((m) => m.slug === 'story-map')!.pruefliste!;
+    expect(liste.find((p) => p.id === 'story-map-pains')?.text).toBe('Jeder Pain am Rand hat einen Task, der ihn löst – oder ihr habt geklärt, dass euer Produkt diesen Pain gar nicht löst.');
+    const n = NOTIZEN['/innolab/methoden/story-map'];
+    expect(n['schritt-jetzt-map'].live).toContain('Stärkste Pains, die die Pain Relievers lindern, mit Zitat-ID an den Rand.');
+    expect(seite).not.toContain('Hat jeder Pain vom Rand');
   });
 
   it('Begleiter: Warm-up-Notiz erinnert ans Teilen des eigenen Boards, ohne Link', () => {
