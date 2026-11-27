@@ -232,10 +232,11 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   'ergebnis-gilt': {
     live: [
-      'Kohl’s erzählen: viele begeistert, erst ein Test, Umsatz sinkt, gestoppt.',
+      'Kohl’s erzählen: US-Händler, Möbel, 70 Läden, sechs Monate, gestoppt.',
+      'Warum der Umsatz sank: Möbel nahmen anderen Waren die Fläche.',
       '„Gute Ergebnisse glaubt man sofort – schlechte prüft man so lange nach, bis sie zur eigenen Erwartung passen.“',
-      'Falle: behaupten, Kohl’s habe vorab eine Matrix gehabt.',
-      'Brücke: Darum steht die Handlung vorher auf der Karte.',
+      'Falle: eine Matrix vorab behaupten – belegt ist der vereinbarte Test.',
+      'Brücke: E1 unter 5 heißt Wartezeit-Anzeige, nicht „ungewöhnlicher Morgen“.',
     ],
     verstaendnis: {
       frage: 'Was hätte bei Kohl’s ohne vereinbarten Test passieren können?',
@@ -254,6 +255,32 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         text: '„When results align with our beliefs, we accept them without hesitation; when they don’t, we probe them relentlessly. The remedy is to implement the changes that experiments validate (although there are always exceptions).“',
         quelle: `${THOMKE}, S. 126`,
+      },
+      {
+        text: 'Die Regel dahinter, Thomkes erste von vier: „(1) commit to abide by results“ (S. 85). „Before conducting any test, stakeholders must agree on how they’ll proceed once the results are in. … Most importantly, they must be willing to walk away from a project if a hypothesis is not supported.“',
+        quelle: `${THOMKE}, S. 85–86`,
+      },
+      {
+        text: 'Warum ein Test nur zählt, wenn sein Ergebnis etwas stoppen kann: „But if the proposed initiative is a done deal, why go through the time and expense of conducting a test? In such cases, it’s best to call programs what they are—a rollout, commitment, or implementation.“',
+        quelle: `${THOMKE}, S. 87`,
+      },
+      {
+        text: 'Was Kohl’s vorher vereinbart hat: den Test – „the company first agreed to test sales at seventy stores over six months“. Ob auch feststand, was bei welchem Ergebnis folgt, sagt Thomke nicht. Die Entscheidungsmatrix empfiehlt er im Absatz davor allgemein („a decision matrix that links possible outcomes to predetermined actions before any data comes in“, S. 86). Die Zeile „Wir entscheiden vorher“ mit drei Bändern ist die Form, die der Kurs dafür nimmt.',
+        quelle: `${THOMKE}, S. 86; Zeile und Bänder: Kurs`,
+      },
+    ],
+    geschichte: {
+      text: 'Wer Kohl’s ist: eine große Handelskette in den USA, bei Thomke „another large retailer“ (S. 13) und „the large US retailer“ (S. 66). Er kennt die Firma als eine, die testet: Bevor sie ihre Läden eine Stunde später öffnete, um Betriebskosten zu sparen, prüfte sie das in hundert Läden (S. 13, 66–67). Die Idee: Möbel ins Sortiment – „When Kohl’s was considering adding furniture to its product categories, many executives were tremendously enthusiastic, anticipating significant additional revenue.“ Viele in der Führung erwarteten also deutlich mehr Umsatz. Der Test: „Nevertheless, the company first agreed to test sales at seventy stores over six months—and the data showed a net decrease in revenue.“ Warum, steht gleich dabei: Die Möbel brauchten Platz, und was dafür weichen musste, verkaufte weniger – „Products that now had less floor space (to make room for the furniture) experienced a drop in sales, and Kohl’s was actually losing customers overall.“ Die Befürworter*innen: „Those negative results were a huge disappointment for the program’s advocates, but the initiative was nevertheless scrapped“ (S. 86–87). Mehr über ihre Reaktion erzählt Thomke nicht, etwa ob sie das Ergebnis angezweifelt haben – nicht ausschmücken. Seine Lesart: „The Kohl’s example highlights the fact that experiments are often needed to perform objective assessments of proposals backed by people with organizational clout“ (S. 87).',
+      quelle: `${THOMKE}, S. 13, 66–67, 86–87`,
+    },
+    fragen: [
+      {
+        frage: 'Was hat der Test bei Kohl’s gemessen – die Möbel oder den ganzen Laden?',
+        antwort: 'Den Umsatz insgesamt: „a net decrease in revenue“ (S. 86). Die Möbel nahmen anderen Waren die Fläche, die verkauften weniger, und Kohl’s verlor Kundschaft (S. 86–87). Wer nur auf die Möbel schaut, sieht die Verdrängung nicht. Darum zählt E1 beides, Automat und Aufsteller: Gemessen wird die Wahl, nicht nur das Interesse am Neuen.',
+      },
+      {
+        frage: 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?',
+        antwort: 'Nicht, wenn es vorher auf der Karte stand: Für 5–9 heißt die Zeile „Wir entscheiden vorher“ schon „wiederholen, eine Sache ändern“ – den Ort ändern ist dann die vereinbarte Handlung. Prüffrage nach Thomke (S. 14): Hättet ihr den Ort auch bei 12 von 30 hinterfragt? Bei 3 von 30 gilt „unter 5 → Wartezeit-Anzeige“, auch wenn der Morgen ungewöhnlich wirkte.',
       },
     ],
     ueberleitung: 'Wie schreibt ihr vorher auf, was ihr dann tut? Mit drei Bändern.',
@@ -335,6 +362,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Concierge: Wert von Hand, die Person sieht die Menschen dahinter.',
       'Fragen: Welcher passt zu eurer Annahme oben rechts?',
       'Kein Ort, keine Besucher: simulierter Moment.',
+      'Mock Sale: Klick, sofort aufgeklärt, Kaffee wie sonst, kleines Dankeschön.',
     ],
     kern: [
       {
@@ -395,6 +423,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         frage: 'Welcher Test passt zu uns?',
         antwort: 'Blands Faustregeln von der Folie davor: am Anfang schnell und billig, dann der stärkste Beleg, den ihr euch leisten könnt (S. 93). Habt ihr keinen Ort und keine Besucher*innen, bleibt der simulierte Moment: Bild am Handy, Situation in einem Satz (Torres, S. 135, 142–144). Concierge kostet vor allem Zeit (Bland S. 250); ein Mock Sale braucht einen durchgerechneten Preis – „If you test a ridiculously low price, then you’ll receive false positives“ (S. 290). Kursregel: E1 führt ihr nicht durch. Heute beschreibt ihr auf der Karte, welcher Test es wäre und wie er liefe; an Tag 5 besprecht ihr, was er gezeigt hätte.',
+      },
+      {
+        frage: 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
+        antwort: 'Ort: derselbe Aufsteller an der Hallentür wie bei E1, aber mit Angebot und Preis: „Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“, darunter der QR-Code. Wer: Pendler*innen, die morgens ankommen und die Schlange sehen. Angeworben wird niemand – es ist die Zielgruppe in einer echten Kaufsituation; Bland: „target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290). Ablauf: scannen, Getränk wählen, Abfahrtszeit eintragen, auf „Vorbestellen für 2,90 €“ tippen. Sofort danach: „Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“. Die Person: Sie bekommt durch den Test keinen Kaffee, und es fließt kein Geld. Sie erfährt es sofort, noch in der Halle und bevor sie das Anstellen aufgibt; ihren Kaffee holt sie wie sonst an der Bar oder am Automaten. Als Dank, nach Blands „gift card for the inconvenience“ (S. 289): eine kleine Aufmerksamkeit an der Bar, etwa ein Gutschein – der Gutschein ist eine Anpassung des Kurses, Bland beschreibt die Entschädigung für den Test im Laden. Gezählt: Kaufklicks pro Besucher*in der Seite, dazu die E-Mails. „Purchase clicks are relatively strong“, die E-Mails danach ebenfalls „relatively strong“ (S. 290); ohne Zahlungsdaten nicht „very strong“. Warum vertretbar: mit der Kundschaft, nicht an ihr – „Are you experimenting with your customers or on them?“ (S. 86). Die Person kostet es ein paar Sekunden, und sie erfährt es sofort. Achtung, Hinweis des Kurses: nicht in der letzten Minute vor einem Zug anbieten – niemand soll durchs Tippen den Zug verpassen.',
       },
     ],
     ueberleitung: 'Alles zusammen an der Kaffeebar: erst die Schritte.',

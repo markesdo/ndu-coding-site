@@ -143,6 +143,53 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect([...e.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Die Falle:', 'Darum:']);
   });
 
+  // 27.11.2026: Begleiter erzählt Kohl’s ganz – wer, warum begeistert, Aufbau, Mechanismus, Reaktion, Lehre (Thomke S. 13–14, 66–67, 85–87, 126).
+  it('Begleiter #ergebnis-gilt: die Kohl’s-Geschichte mit Mechanismus, Reaktion und Brücke zu E1', () => {
+    const n = NOTIZEN[EX]['ergebnis-gilt'];
+    expect(n.geschichte?.quelle).toBe('Stefan H. Thomke, The Scientific Mindset, S. 13, 66–67, 86–87');
+    for (const zitat of [
+      '„the large US retailer“ (S. 66)',
+      'anticipating significant additional revenue',
+      'test sales at seventy stores over six months',
+      '„Products that now had less floor space (to make room for the furniture) experienced a drop in sales, and Kohl’s was actually losing customers overall.“',
+      'a huge disappointment for the program’s advocates',
+      'people with organizational clout',
+    ]) expect(n.geschichte?.text).toContain(zitat);
+    const kern = JSON.stringify(n.kern);
+    expect(kern).toContain('„(1) commit to abide by results“ (S. 85)');
+    expect(kern).toContain('done deal');
+    expect(kern).toContain('Ob auch feststand, was bei welchem Ergebnis folgt, sagt Thomke nicht.');
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual([
+      'Was hat der Test bei Kohl’s gemessen – die Möbel oder den ganzen Laden?',
+      'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?',
+    ]);
+    expect(n.fragen?.[1].antwort).toContain('„unter 5 → Wartezeit-Anzeige“');
+    expect(n.live).toContain('Brücke: E1 unter 5 heißt Wartezeit-Anzeige, nicht „ungewöhnlicher Morgen“.');
+    expect(JSON.stringify(n)).not.toContain('Kursregel');
+  });
+
+  // 27.11.2026: Mock Sale an der Kaffeebar als Szene – Ort, wer, Ablauf, was mit der Person passiert (Bland S. 86, 289–290).
+  it('Begleiter #test-arten: Mock Sale an der Kaffeebar – Person sofort aufgeklärt, Kaffee wie sonst, Dankeschön', () => {
+    const n = NOTIZEN[EX]['test-arten'];
+    expect(n.live).toContain('Mock Sale: Klick, sofort aufgeklärt, Kaffee wie sonst, kleines Dankeschön.');
+    const f = n.fragen?.find((x) => x.frage === 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?');
+    for (const teil of [
+      'derselbe Aufsteller an der Hallentür wie bei E1',
+      '„Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“',
+      'Angeworben wird niemand',
+      '„target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290)',
+      'auf „Vorbestellen für 2,90 €“ tippen',
+      'keinen Kaffee, und es fließt kein Geld',
+      'ihren Kaffee holt sie wie sonst an der Bar oder am Automaten',
+      '„gift card for the inconvenience“ (S. 289)',
+      'der Gutschein ist eine Anpassung des Kurses',
+      'ohne Zahlungsdaten nicht „very strong“',
+      '„Are you experimenting with your customers or on them?“ (S. 86)',
+      'Hinweis des Kurses: nicht in der letzten Minute vor einem Zug',
+    ]) expect(f?.antwort).toContain(teil);
+    expect(f?.antwort).not.toContain('Kursregel');
+  });
+
   it('#vorher-entscheiden: Bänder auf E1-Zahlen, aufgedeckt ab 10 → unter 5 → 5–9, Kursregel halbe Schwelle', () => {
     const v = sichtbar('vorher-entscheiden');
     // 27.11.2026: die 30 sind Menschen, die wählen (wie auf Karte E1 und der Lernkarte: 8 Einträge + 22 am Automaten).
@@ -252,6 +299,7 @@ describe('Tests zur Auswahl und Beispiel', () => {
       'Sind die Testpersonen schon echte Kund*innen?',
       'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
       'Welcher Test passt zu uns?',
+      'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
     ]);
     const [mock, personen, ehrlich, wahl] = n.fragen!.map((f) => f.antwort);
     // Review #465: Der Hinweis nach dem Klick sagt, dass es ein Test ist, und fragt nach der E-Mail (Bland S. 289).
