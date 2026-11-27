@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { NOTIZEN_USAGE_STORY } from '../data/begleiter/usage-story';
 import { NOTIZEN_PROTOTYP_SPIKE } from '../data/begleiter/prototyp-spike';
@@ -181,7 +181,9 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(h).toContain('quelle="Das Modell in Figma: fünf Frames, Graustufen, Pfeile als Notiz neben den Knöpfen."');
     const alt = /<BuchAbbildung src="\/quellen\/kurs\/kaffeebar-prototyp-figma.png" alt="([^"]+)"/.exec(h)?.[1] ?? '';
     for (const t of ['Frame 1 · Getränk wählen', 'Frame 2 · Zug wählen', 'Frame 3 · ★ Höhepunkt', '„Fertig 7:31. Dein Zug fährt 7:38.“', 'Frame 4 · Abholnummer', '„Abholen an der Express-Ausgabe.“', 'Frame 5 · Ansicht für die Bar', 'sortiert nach Abfahrt']) expect(alt, t).toContain(t);
-    expect(readFileSync(new URL('../../public/quellen/kurs/kaffeebar-prototyp-figma.png', import.meta.url)).subarray(1, 4).toString()).toBe('PNG');
+    const png = new URL('../../public/quellen/kurs/kaffeebar-prototyp-figma.png', import.meta.url);
+    expect(existsSync(png), 'PNG in public/quellen/kurs/').toBe(true);
+    expect(readFileSync(png).subarray(1, 4).toString()).toBe('PNG');
     const n = NOTIZEN_PROTOTYP_SPIKE.beispiel;
     expect(n?.live).toContain('Figma-Modell kurz zeigen: so roh darf es sein.');
     for (const z of n?.live ?? []) expect(z.split(/\s+/).length, z).toBeLessThanOrEqual(12);
@@ -280,6 +282,15 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(figma?.antwort).toContain('Keine Farben, keine Komponenten, keine Klick-Verbindungen (Kursregel).');
     expect(figma?.antwort).toContain('„ideal for rapidly testing the concept“ (S. 182)');
     expect(beamer(folie(PS, 'schritt-papier'))).toContain('Ein Blatt (oder Figma-Frame) je Bildschirm');
+    // Markus 27.11.2026: Schritt 1 und Befund-IDs ohne „Kursregel“-Label, mit dem Warum.
+    const sp = folie(PS, 'schritt-papier');
+    expect(sp).toContain('<p class="folie-satz">Papier vor Claude: Was auf dem Bildschirm steht, entscheidet ihr – nicht Claude.</p>');
+    expect(sp).toContain('<li data-schritt><strong>Foto je Blatt</strong> (oder Bild je Frame) in Feld 1 eures Frames – daraus baut Claude Code an Tag 5.</li>');
+    expect(sp).toContain('Papier vor Claude heißt: Ihr legt fest, was auf jedem Bildschirm steht, und Claude Code baut an Tag 5 genau das');
+    expect(sp).not.toContain('Kursregel');
+    const bf = folie(PS, 'beispiel-befunde');
+    expect(bf).toContain('<p data-schritt><strong>Jeder Befund</strong> bekommt eine ID – U wie Usability-Test: U1, U2 … –, eine Zahl und eine Folge.</p>');
+    expect(bf).not.toContain('Kursregel');
     expect(NOTIZEN_PROTOTYP_SPIKE['schritt-trockenlauf'].live).toContain('Wem er gehört: Blatt/Frame zeigen, Aufgabe vorlesen, nächstes Blatt/Frame.');
   });
   it('höchstens fünf live-Stichworte je Folie, auf beiden Seiten', () => {
