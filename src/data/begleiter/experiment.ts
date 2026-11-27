@@ -300,7 +300,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   'test-arten': {
     live: [
-      'Eine Zeile pro Klick, von schwach nach sehr stark.',
+      'Eine Zeile pro Klick, von schwach nach stark.',
       'Concierge: Wert von Hand, die Person sieht die Menschen dahinter.',
       'Fragen: Welcher passt zu eurer Annahme oben rechts?',
       'Kein Ort, keine Besucher: simulierter Moment.',
@@ -341,7 +341,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Warum ist Mock Sale stärker als Landingpage?',
-      antwort: 'Zahlungsdaten kosten mehr als eine E-Mail: „Email is a rather weak strength of evidence, in that everyone has email and they give it out freely if even mildly interested“ (S. 262); „Payment info submissions are very strong evidence“ (S. 290).',
+      antwort: 'Der Kaufklick hängt an einem Preis, der Eintrag auf der Landingpage nicht: „Email is a rather weak strength of evidence, in that everyone has email and they give it out freely if even mildly interested“ (S. 262); beim Mock Sale sind „Purchase clicks are relatively strong“, „Payment info submissions are very strong evidence“ (S. 290).',
       falsch: '„Weil mehr Leute klicken“ – es klicken eher weniger; dafür kostet der Klick mehr.',
     },
     geschichte: {

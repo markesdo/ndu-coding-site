@@ -218,6 +218,15 @@ describe('Tests zur Auswahl und Beispiel', () => {
     const t = sichtbar('test-arten');
     expect([...t.matchAll(/<tr data-schritt><th>([^<]+)<\/th>/g)].map((x) => x[1])).toStrictEqual(['Simulierter Moment', 'Landingpage / Aufsteller', 'Concierge', 'Mock Sale']);
   });
+  // Markus 27.11.: „eher stark“ wie Bland („relatively strong“). Ohne Zahlungsdaten zählt der Mock Sale Kaufklicks – „relatively strong“; „very strong“ erst mit Zahlungsdaten (Bland S. 290).
+  it('#test-arten: Mock Sale – die Person klickt auf Kaufen, Beleg eher stark (Zahlungsdaten: sehr stark)', () => {
+    expect(sichtbar('test-arten')).toContain('<tr data-schritt><th>Mock Sale</th><td>Kaufen-Knopf, ohne abzubuchen</td><td>klickt auf Kaufen</td><td>eher stark (Zahlungsdaten: sehr stark)</td></tr>');
+    expect(sichtbar('test-arten')).not.toContain('gibt Zahlungsdaten');
+    const n = NOTIZEN[EX]['test-arten'];
+    expect(n.live?.[0]).toBe('Eine Zeile pro Klick, von schwach nach stark.');
+    expect(n.verstaendnis?.antwort).toMatch(/^Der Kaufklick hängt an einem Preis, der Eintrag auf der Landingpage nicht/);
+    expect(n.verstaendnis?.antwort).toContain('„Purchase clicks are relatively strong“');
+  });
   // Markus 27.11.: Was ist ein Mock Sale, sind die Testpersonen schon Kund*innen, und wie bleibt das ehrlich?
   it('#test-arten: Begleiter beantwortet Mock Sale, Testpersonen, Ehrlichkeit und Testwahl', () => {
     const n = NOTIZEN[EX]['test-arten'];
@@ -359,10 +368,16 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
     expect(sichtbar('vorgehen')).toContain('<li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt („A… · S1 · …“) gleich in die Felder der Map; dazu das Pre-Mortem. <Timer minuten={5} /></li>');
     expect(folie('vorgehen')).toContain('Je Schritt mindestens zwei Annahmen. Neue Annahmen bekommen die nächste freie ID eurer Werkstatt – heute kamen schon welche aus Concept Story und Geschäftsmodell dazu.');
   });
-  it('#vorgehen Schritt 3: bisherige Annahmen dazu, Überholtes unter Abhaken, jetzt nur „Zuerst testen“ in die Werkstatt, Rest bis zum Abend als Kursregel', () => {
+  // Markus 27.11.: Überholtes ist nicht „Abhaken“ (unwichtig und belegt), es rutscht nach unten; ohne „(Kursregel)“ auf der Folie.
+  it('#vorgehen Schritt 3: bisherige Annahmen dazu, Überholtes rutscht nach unten, jetzt nur „Zuerst testen“ in die Werkstatt, Rest bis zum Abend', () => {
     const v = sichtbar('vorgehen');
-    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts; eure bisherigen Annahmen dazu (Überholtes: Abhaken). <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a> jetzt: „Zuerst testen“, Rest bis abends (Kursregel). <Timer minuten={3} /></li>');
-    expect(folie('vorgehen')).toContain('holt eure bisherigen Annahmen aus der Werkstatt dazu, je ein Zettel – was nicht mehr zum Spitzenreiter passt, kommt unter „Abhaken“. Eine Kursregel: In der Werkstatt wird nichts gelöscht. Die Schritte bleiben in ihrem Feld. In die Werkstatt tragt ihr jetzt nur die Annahmen in „Zuerst testen“ ein, mit Art, Wichtigkeit und Beleg; die übrigen bis zum Abend. Auch das ist eine Kursregel');
+    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts; eure bisherigen Annahmen dazu – Überholtes rutscht nach unten. <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a> jetzt: „Zuerst testen“, Rest bis abends. <Timer minuten={3} /></li>');
+    const schritt3 = v.match(/<li data-schritt><strong>Map, auf Miro:<\/strong>.*<\/li>/)?.[0] ?? '';
+    expect(schritt3).toContain('rutscht nach unten');
+    expect(schritt3).not.toContain('Abhaken');
+    expect(schritt3).not.toContain('Kursregel');
+    expect(folie('vorgehen')).toContain('holt eure bisherigen Annahmen aus der Werkstatt dazu, je ein Zettel. Überholtes rutscht nach unten (nicht mehr wichtig) – in der Werkstatt setzt ihr die Wichtigkeit herunter, gelöscht wird nichts. Die Schritte bleiben in ihrem Feld. In die Werkstatt tragt ihr jetzt nur die Annahmen in „Zuerst testen“ ein, mit Art, Wichtigkeit und Beleg; die übrigen bis zum Abend, denn alle Zeilen auszufüllen dauert länger als die drei Minuten.');
+    expect(folie('vorgehen')).not.toContain('kommt unter „Abhaken“');
     expect([...v.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([3, 5, 3, 5, 2]);
     expect(folie('vorgehen')).toContain('dazu. „S1“ auf dem Zettel nennt den Schritt, aus dem die Annahme kommt – eine Kursregel');
   });
@@ -424,5 +439,15 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
     const live = NOTIZ?.vorgehen?.live ?? [];
     expect(live).toContain('Nach 11 min: „Zuerst testen“ in der Werkstatt? Rest bis abends.');
     expect(live).not.toContain('Nach 11 min: Stehen die Annahmen in der Werkstatt?');
+  });
+});
+
+describe('Überholte Annahmen (27.11.2026)', () => {
+  it('nirgends in src kommt Überholtes nach „Abhaken“', () => {
+    const alle = import.meta.glob(['/src/**/*.{astro,ts,tsx}', '!/src/**/*.test.{ts,tsx}'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
+    expect(Object.keys(alle).length).toBeGreaterThan(50);
+    // Auch „kommt unter „Abhaken““ und Varianten wie „Überholte Annahmen … Abhaken“ in einem Satz.
+    const alt = /[Üü]berholt[^.]{0,80}Abhaken|unter „Abhaken“/;
+    expect(Object.entries(alle).filter(([, t]) => alt.test(t)).map(([p]) => p)).toStrictEqual([]);
   });
 });
