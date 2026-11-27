@@ -152,10 +152,7 @@ const karten = kartenPfade(quellen).map((pfad) => {
                     <div class="check">
                       <p class="frage"><CircleQuestionMark size={20} aria-hidden="true" /> <span><span class="label">Frag den Raum:</span> {n.verstaendnis.frage}</span></p>
                       {n.verstaendnis.falsch && <p class="falsch"><span>Häufig falsch:</span> {n.verstaendnis.falsch}</p>}
-                      <details>
-                        <summary>Antwort</summary>
-                        <p>{n.verstaendnis.antwort}</p>
-                      </details>
+                      <p class="antwort"><span>Antwort:</span> {n.verstaendnis.antwort}</p>
                     </div>
                   )}
                   {n.uebung && (n.uebung.dauer || n.uebung.form) && (
@@ -590,8 +587,8 @@ const karten = kartenPfade(quellen).map((pfad) => {
       .check .frage { display: flex; gap: .5rem; align-items: flex-start; margin: 0; font-size: 1.2rem; }
       .check .frage svg { flex: none; margin-top: .25rem; color: var(--blue); }
       .check .label { color: var(--blue); font-weight: 600; }
-      .check summary { min-height: 36px; display: flex; align-items: center; cursor: pointer; color: var(--muted); }
-      .check details p { margin: .2rem 0; font-size: 1.05rem; }
+      .check .antwort { margin: .3rem 0 0; font-size: 1.05rem; }
+      .check .antwort span { color: var(--blue); font-weight: 600; }
       .check .falsch { margin: .3rem 0 0; font-size: 1.05rem; }
       .check .falsch span { color: var(--yellow-ink); font-weight: 600; }
       .weiter { margin-top: 1rem; padding: .7rem .9rem; border-left: 4px solid var(--accent); background: var(--bg); border-radius: 4px; }
