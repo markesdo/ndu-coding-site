@@ -165,8 +165,8 @@ const KAFFEEBAR_ANNAHMEN = [
   <Folie>
     <h2 id="vorher-entscheiden">Vorher festlegen, was ihr dann tut</h2>
     <p class="folie-satz">Zu jedem Ergebnis steht die Handlung vorher fest.</p>
-    <p class="setup-zeile">Kaffeebar, E1: Recht haben wir ab 10 von 30 Einträgen.</p>
-    <figure class="skala" aria-label="Skala von 0 bis 30 Einträgen, Marken bei 5 und 10: unter 5 deutlich darunter, 5 bis 9 knapp darunter, ab 10 Schwelle erreicht">
+    <p class="setup-zeile">Kaffeebar, E1: 30 Pendler*innen wählen zwischen Automat und Aufsteller – ab 10 Einträgen haben wir recht.</p>
+    <figure class="skala" aria-label="Skala von 0 bis 30: Einträge unter 30 Pendler*innen, die zwischen Automat und Aufsteller wählen; Marken bei 5 und 10: unter 5 deutlich darunter, 5 bis 9 knapp darunter, ab 10 Schwelle erreicht">
       <div class="skala-balken" aria-hidden="true">
         <span class="sk-unter" style="flex: 5"></span><span class="sk-mitte" style="flex: 5"></span><span class="sk-ueber" style="flex: 20"></span>
       </div>
@@ -179,7 +179,7 @@ const KAFFEEBAR_ANNAHMEN = [
       <li class="band-unter" data-schritt><b>unter 5 von 30</b><span>deutlich darunter · widerlegt</span><span class="tun">→ umschwenken (Idee ändern) oder verwerfen</span><span class="e1">E1: Wartezeit-Anzeige</span></li>
       <li class="band-mitte" data-schritt><b>5–9 von 30</b><span>knapp darunter · unklar</span><span class="tun">→ weiter testen</span><span class="e1">E1: wiederholen, eine Sache ändern</span></li>
     </ol>
-    <p data-schritt><strong>Beide Zahlen vorher:</strong> Schwelle 10, Grenze 5 – Kursregel: etwa die halbe Schwelle.</p>
+    <p data-schritt><strong>Zwei Zahlen, vor dem Test:</strong> die Schwelle (ab 10: gestützt) und die Grenze (unter 5: widerlegt) – dazwischen ist es unklar. Kursregel: Grenze etwa bei der halben Schwelle.</p>
     <p data-schritt><strong>Auf der Karte:</strong> „Wir entscheiden vorher: ab 10 → Concierge · 5–9 → wiederholen, eine Sache ändern · unter 5 → Wartezeit-Anzeige“</p>
     <p class="small muted">Kursregel: drei Bänder für Thomkes Entscheidungsmatrix (S. 86, 103); Befunde nach Bland, S. 63.</p>
     <div class="nur-handout">
@@ -476,6 +476,8 @@ Weicht ab von „Wir entscheiden vorher“? Nein – 8 liegt im Band 5–9: wied
   /* 27.11.: Schritte 2–3 von #vorgehen und die ID-Zeile in #annahmen-finden sind länger; breiter statt einer Zeile mehr, sonst läuft die Folie bei 1280 × 720 über. */
   :global(html[data-beamer] .folie:has(> h2#vorgehen) ol.gross) { max-width: 46em; }
   :global(html[data-beamer] .folie:has(> h2#annahmen-finden) .fuenf-bsp) { max-width: none; }
+  /* 27.11.: #vorher-entscheiden mit längerer Setup- und Zwei-Zahlen-Zeile – volle Breite statt Überlauf bei 1280 × 720. */
+  :global(html[data-beamer] .folie:has(> h2#vorher-entscheiden) > p) { max-width: none; }
   .fluss-titel { margin: .5rem 0 -.75rem; }
   /* Fluss-Folien (ergebnis-gilt, gegen-den-beleg): etwas weniger Rand, damit Fluss und drei Zeilen bei 1280 × 720 passen. */
   :global(html[data-beamer] .folie:has(> h2#ergebnis-gilt) .fluss), :global(html[data-beamer] .folie:has(> h2#gegen-den-beleg) .fluss) { margin: .75rem 0; }
