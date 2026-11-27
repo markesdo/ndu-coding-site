@@ -331,7 +331,7 @@ export const METHODEN: Methode[] = [
       { id: 'concept-story-fallend', text: 'Die fallende Handlung ist ein Gedanke, keine Handlung, und steht als Annahme mit ID bereit.' },
       { id: 'concept-story-ende', text: 'Das Ende nennt das Ziel der Person und ein messbares Ziel des Geschäfts; jede Behauptung trägt eine J-, P-, G- oder Zitat-ID.' },
     ],
-    ki: 'Prüft, ob die Story Krise und Höhepunkt hat oder nur eine Linie ist; schreibt sie nicht um.',
+    ki: 'Heute keine Rolle – Tag 4 läuft ohne Claude; ihr prüft selbst mit der Prüfliste.',
     quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 1–4, 6–8',
   },
   {
@@ -345,7 +345,7 @@ export const METHODEN: Methode[] = [
       { id: 'geschaeftsmodell-annahme', text: 'Die Annahme, an der das Modell hängt, steht in der Annahmen-Map, Art „wirtschaftlich“, mit Wichtigkeit und Beleg – sie sagt, dass der Ertrag die Kosten deckt, nicht bloß, dass Umsatz entsteht.' },
       { id: 'geschaeftsmodell-widerspruch', text: 'Nichts im Modell widerspricht der Krise der Concept Story oder einem Pain im Kundenprofil.' },
     ],
-    ki: 'Prüft, ob Wer, Was, Wie und Wert zusammenpassen und die Annahme den Ertrag gegen die Kosten stellt; schreibt Modell und Annahme nicht um.',
+    ki: 'Heute keine Rolle – Tag 4 läuft ohne Claude; ihr prüft selbst mit der Prüfliste.',
     quelle: 'Gassmann, Frankenberger, Csik: Geschäftsmodelle entwickeln, 2. Aufl. 2017 (St. Galler Business Model Navigator); Osterwalder u. a., Value Proposition Design, S. 27–28, 115–118 (PDF); Cagan, Inspired, S. 189–190, 277; Torres, Continuous Discovery Habits, S. 118, 125–128; Bland & Osterwalder, Testing Business Ideas, S. 34–35, 39',
   },
   {
@@ -367,7 +367,7 @@ export const METHODEN: Methode[] = [
         frage: 'Ist keine Lernkarte im Bild, überspring diesen Punkt ohne Befund – E1 läuft in diesem Kurs nicht.',
       },
     ],
-    ki: 'Gegenprobe zu E1: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
+    ki: 'Heute keine Rolle – Tag 4 läuft ohne Claude; ihr prüft selbst mit der Prüfliste.',
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
@@ -383,7 +383,7 @@ export const METHODEN: Methode[] = [
       { id: 'story-map-slice-durchgehend', text: 'Slice 1 geht durch alle Aktivitäten von Anfang bis Ende; keine Aktivität wurde nach unten geschoben.' },
       { id: 'story-map-kein-software', text: 'Was in Slice 1 keine Software ist, steht trotzdem auf der Map und ist als „kein Software-Schritt“ markiert.' },
     ],
-    ki: 'Spielt „Was ist, wenn …?“: fehlende Schritte dazwischen, Fehlerwege, eine zweite Gruppe; nennt die Annahmen hinter jedem Schritt von Slice 1.',
+    ki: 'Heute keine Rolle – Tag 4 läuft ohne Claude; ihr prüft selbst mit der Prüfliste.',
     quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Read This First, Kap. 1–5, 14',
   },
   {
@@ -399,7 +399,7 @@ export const METHODEN: Methode[] = [
       { id: 'usage-story-nach-gipfel', text: 'Nach dem Höhepunkt kommen höchstens ein, zwei Schritte bis zum Ende; die Story endet nicht am Gipfel.' },
       { id: 'usage-story-ende', text: 'Das Ende sagt, wo die Person steht und was die nächste Episode wäre.' },
     ],
-    ki: 'Prüft, ob der Höhepunkt nahe am Ende liegt und danach schnell Schluss ist.',
+    ki: 'Heute keine Rolle – Tag 4 läuft ohne Claude; ihr prüft selbst mit der Prüfliste.',
     quelle: 'Donna Lichaw, The User’s Journey (Rosenfeld 2016), Kap. 2, 5–8',
   },
   {

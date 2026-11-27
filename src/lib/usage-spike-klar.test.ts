@@ -275,11 +275,13 @@ describe('Usage Story und Prototyp auf Papier: Miro statt Repo-Dateien, Opus', (
     expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(s).toContain('<Karte label="Miro · T4 · 4 · Usage Story · Produkt n" text={`Titel: Usage Story');
   });
-  // Seit 26.11.2026 nachts: Tag 4 ohne Claude Code; Prüfen zu Hause in claude.ai mit dem besten verfügbaren Modell, ab Tag 5 Opus.
-  it('Opus, ohne Versionsnummer: beide Prüfungen zu Hause in claude.ai; /model opus nur noch für Tag 5', () => {
+  // Seit 26.11.2026 nachts: Tag 4 ohne Claude Code; seit 27.11.2026 (Dozent) auch ohne Prüfen in claude.ai – Prüfen selbst.
+  it('Opus, ohne Versionsnummer, nur für Tag 5; beide Prüfungen selbst mit der Prüfliste', () => {
     expect(seite(PS).match(/\/model opus/g) ?? []).toStrictEqual(['/model opus']);
-    expect(seite(US)).toContain('<p>Eure Usage Story liegt nur auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.</p>');
-    expect(seite(PS)).toContain('in eurem Frame „T4 · 5 · Prototyp · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.</p>');
+    expect(seite(US)).toContain('<p>Eure Usage Story liegt nur auf Miro, in eurem Frame „T4 · 4 · Usage Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>');
+    expect(seite(PS)).toContain('in eurem Frame „T4 · 5 · Prototyp · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>');
+    expect(seite(US)).toContain('Eine zweite Probe allein ist die <a href="#pruefen">Prüfliste</a> unten:');
+    // Der Weg mit Claude auf Miro bleibt für die Methoden von Tag 2 und 3 (ClaudePruefung.astro).
     expect(readFileSync(new URL('../components/ClaudePruefung.astro', import.meta.url), 'utf8')).toContain('Im Modellmenü das beste Modell wählen, das euch zur Verfügung steht – mit Claude Pro (ab Innolab-Tag 5) Opus; meldet Claude ein Limit oder gibt es Opus nicht, das vorgeschlagene Standardmodell.');
     expect([seite(US), seite(PS)].flatMap((x) => x.match(/Opus \d|opus-\d/gi) ?? [])).toStrictEqual([]);
   });

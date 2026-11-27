@@ -409,7 +409,6 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Timer 4 min: auf Miro fertig – keine Datei, kein Commit.',
       'Fragen: Steht jedes Sticky nur einmal auf der Map?',
       '„Heute kein Claude – an Tag 5 werden aus Slice 1 eure Issues.“',
-      'Bei Bedarf: „Annahmen hinter Slice 1“ zu Hause in claude.ai, freiwillig (Handout).',
     ],
     uebung: { dauer: '4 min', form: 'allein' },
     ueberleitung: 'Slice 1 steht – nach der Pause wird er zur Geschichte.',

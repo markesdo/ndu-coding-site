@@ -110,11 +110,12 @@ describe('Pre-Mortem und Gegenprobe', () => {
     expect(q.indexOf('<strong>Pre-Mortem:</strong>')).toBeLessThan(q.indexOf('dazu das Pre-Mortem'));
   });
 
-  it('der Claude-Prompt am Ende des Tages heißt „Gegenprobe zu E1“, liest Screenshot und Werkstatt – zu Hause, in claude.ai', () => {
+  // Seit 27.11.2026 (Dozent): Tag 4 ohne Claude-Hausaufgabe – die „Gegenprobe zu E1“ in claude.ai ist weg, Prüfen nur selbst.
+  it('ohne „Gegenprobe zu E1“: kein Claude-Prompt zu E1, Prüfen selbst mit der Prüfliste', () => {
     const q = seite(EX);
-    expect(q).toContain('<Prompt label="Gegenprobe zu E1 · zu Hause, in claude.ai">{GEGENPROBE}</Prompt>');
-    expect(q).toContain('Zu Hause, in claude.ai oder der Claude-App, mit der Werkstatt verbunden und im Modellmenü auf dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus');
-    expect(q).toContain('const GEGENPROBE = `Im Bild: meine Karte E1 vom Miro-Frame „T4 · 0 · Annahmen der Idee“. Lies aus der Werkstatt meine Annahmen-Map');
+    expect(q).not.toMatch(/GEGENPROBE|Gegenprobe zu E1|claude\.ai|<Prompt\b|MCP_WERKZEUGE/);
+    expect(q).not.toContain('Prüfen mit Claude am Ende des Tages');
+    expect(q).toContain('die Origin Story in „T4 · 6 · Origin Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>\n  <Selbstpruefung slug="experiment" />');
     expect(q).not.toMatch(/PRE_MORTEM\}|label="Pre-Mortem/);
   });
 
@@ -275,8 +276,10 @@ describe('Experiment-Seite ohne Claude-Pro-Block', () => {
     const rueckfall = 'Meldet Claude ein Limit oder gibt es Opus nicht:';
     // Jeder Handout-Absatz, der sagt, wie man Opus wählt (Modellmenü, /model opus), nennt auch den Rückfall.
     const absaetze = (seite(EX).match(/<p>[^]*?<\/p>/g) ?? []).filter((p) => /Opus/.test(p) && /Modellmenü|\/model opus/.test(p));
-    expect(absaetze.length).toBeGreaterThanOrEqual(1);
+    // Seit 27.11.2026 ohne Claude-Hausaufgabe (Gegenprobe zu E1): kein Absatz wählt mehr ein Modell. Kommt einer zurück,
+    // braucht er den Rückfall.
     expect(absaetze.filter((p) => !p.includes(rueckfall))).toStrictEqual([]);
+    expect(absaetze).toStrictEqual([]);
     expect(seite(EX)).not.toMatch(/\/model opus/);
   });
 

@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { bloeckeAus, folienAus, hhmm, quellenAusGlob } from './begleiter';
+import { METHODEN } from '../components/methoden';
 
 // Entscheidung Markus 26.11.2026 nachts: Tag 4 ganz ohne Claude – der Prototyp entsteht auf Papier. Claude Pro und Claude
 // Code richten alle an Tag 5 gemeinsam ein, als eigener Block vor der ersten Nutzung (Backlog: Issues nach Linear), und am
@@ -62,20 +63,40 @@ describe('Tag 4 ohne Claude (Markus 26.11.2026 nachts)', () => {
       return (q.match(/\/model opus|in Claude Code <code>/g) ?? []).map((m) => `${p}: ${m}`);
     });
     expect(handout).toStrictEqual([]);
-    // Die Story Map fragt Claude nicht mehr im Kurs: „Annahmen hinter Slice 1“ nur noch zu Hause, freiwillig, in claude.ai.
+    // Die Story Map fragt Claude nicht mehr, auch nicht zu Hause (seit 27.11.2026 ohne „Annahmen hinter Slice 1“).
     expect(folie('/innolab/methoden/story-map', 'schritt-festhalten')).toContain('<h2 id="schritt-festhalten">11 · Fertig auf Miro</h2>');
-    expect(seite('/innolab/methoden/story-map')).toContain('<Prompt label="Annahmen hinter Slice 1 · zu Hause, freiwillig, in claude.ai"');
+    expect(seite('/innolab/methoden/story-map')).not.toContain('Annahmen hinter Slice 1');
   });
 
-  it('jede Prüfung auf den Tag-4-Seiten: zu Hause, in claude.ai, mit dem besten verfügbaren Modell – ab Tag 5 Opus', () => {
-    const satz = 'Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus.';
-    for (const slug of ['concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike']) {
+  // Entscheidung Dozent 27.11.2026: Die freiwillige Claude-Hausaufgabe auf den Tag-4-Seiten fällt weg. „Prüfen“ bleibt als
+  // Selbstprüfung mit der Prüfliste (Selbstpruefung.astro, dieselbe Checklisten-ID wie ClaudePruefung); die Methoden von
+  // Tag 2 und 3 prüfen weiter mit Claude.
+  it('Tag-4-Seiten: Prüfen nur selbst – kein claude.ai, kein ClaudePruefung, kein Claude-Prompt; Tag 2 und 3 behalten ihre', () => {
+    const tag4 = ['concept-story', 'geschaeftsmodell', 'experiment', 'story-map', 'usage-story', 'prototyp-spike'];
+    for (const slug of tag4) {
       const q = seite(`/innolab/methoden/${slug}`);
-      const pruefen = q.slice(q.indexOf('<h2 id="pruefen">'), q.indexOf('<ClaudePruefung', q.indexOf('<h2 id="pruefen">')));
-      expect(pruefen, slug).toContain(satz);
+      expect(q, slug).not.toMatch(/claude\.ai|ClaudePruefung|<Prompt\b[^>]*label="[^"]*(Prüfen lassen|zu Hause)|Zu Hause, in|Wer mag, lässt zu Hause/);
+      const a = q.indexOf('<h2 id="pruefen">Prüfen</h2>');
+      expect(a, slug).toBeGreaterThan(0);
+      const pruefen = q.slice(a, q.indexOf(`<Selbstpruefung slug="${slug}" />`, a));
+      expect(pruefen, slug).toContain('Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
+      expect(pruefen.length, slug).toBeLessThan(400);
     }
-    expect(seite(EX)).toContain('<Prompt label="Gegenprobe zu E1 · zu Hause, in claude.ai">{GEGENPROBE}</Prompt>');
-    expect(readFileSync(new URL('../components/ClaudePruefung.astro', import.meta.url), 'utf8')).toContain('Im Modellmenü das beste Modell wählen, das euch zur Verfügung steht – mit Claude Pro (ab Innolab-Tag 5) Opus;');
+    // Die Methoden-Karte nennt für Tag 4 keine Aufgabe für Claude mehr.
+    for (const m of METHODEN.filter((x) => tag4.includes(x.slug))) expect(m.ki, m.slug).toMatch(/^Heute keine Rolle – /);
+    // Selbstprüfung hakt an derselben Liste wie ClaudePruefung ab (gleiche Checklisten-ID), ohne Prompt.
+    const selbst = readFileSync(new URL('../components/Selbstpruefung.astro', import.meta.url), 'utf8');
+    expect(selbst).toContain('<Checklist id={pruefChecklisteId(m)} items={m.pruefliste.map((p) => p.text)} ids={m.pruefliste.map((p) => p.id)} />');
+    expect(selbst).not.toMatch(/Prompt|claude\.ai/);
+    // Tag 2 und 3 (dazu die Value Map, die an Tag 4 nur nachgeholt wird) prüfen weiter mit Claude.
+    const frueher = METHODEN.filter((m) => (m.tag === 2 || m.tag === 3) && m.pruefliste && !m.stillgelegt && seite(`/innolab/methoden/${m.slug}`).includes('<h2 id="pruefen">'));
+    expect(frueher.map((m) => m.slug)).toEqual(expect.arrayContaining(['synthese', 'journey-map', 'ziel-chance', 'kundenprofil', 'hmw', 'ideation', 'value-map']));
+    for (const m of frueher) {
+      const q = seite(`/innolab/methoden/${m.slug}`);
+      expect(q, m.slug).toContain(`<ClaudePruefung slug="${m.slug}"`);
+      expect(q, m.slug).not.toContain('<Selbstpruefung');
+    }
+    expect(readFileSync(new URL('../components/ClaudePruefung.astro', import.meta.url), 'utf8')).toContain('In claude.ai ein neues Gespräch öffnen');
   });
 
   it('Tag 4: Hinweis „Claude Code ab Tag 5“ vor dem Ablauf – installieren bis Tag 5, Pro gemeinsam an Tag 5', () => {
