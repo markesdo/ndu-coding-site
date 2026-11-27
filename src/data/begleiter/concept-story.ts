@@ -310,7 +310,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
   hoch: {
     live: [
       'Zeit: Sprechzeit ~2 min; Abbildung von links, je Punkt zeigen.',
-      'Anfang: gleiche Wolken wie eben – neu nur „smartphones suck“.',
+      'Anfang: dieselbe Figur wie beim Patent – neu nur „smartphones suck“.',
       'Krise: auf die Hürde zeigen – iPod, Handy, Preis, Bedienung.',
       'Höhepunkt: auf die Glühbirne zeigen – kommunizieren, „works like magic“.',
       '„Danach nur ein Gedanke: Ich will ein iPhone. Gekauft ist noch nichts.“',
@@ -319,6 +319,10 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       frage: 'Was hat die Version von 2007, das der Patent-Version fehlt?',
       antwort: 'Eine Krise (schon ein iPod und ein Handy, Preis, Angst vor dem Touchscreen) und einen Höhepunkt, der sie auflöst: der beste Weg zu kommunizieren, mit Internet, Karten und E-Mail, und „it worked like magic“ (Kap. 3, S. 27–28).',
       falsch: '„Mehr Funktionen“ – es zählt, dass der Höhepunkt die Krise auflöst.',
+    },
+    geschichte: {
+      text: 'Januar 2007, Jobs’ Keynote. Medien und Fachleute erwarten genau eines: einen iPod, der telefoniert. Jobs nennt zuerst ein Problem – „smartphones are no good“ – und kündigt dann drei Produkte an: „A widescreen touchscreen iPod / A revolutionary new mobile phone / An Internet communicator“. Er wiederholt die drei, immer wieder, bis er fragt: „Are you getting it?“ Der Saal applaudiert, denn es sind nicht drei Geräte, sondern eines: das iPhone. Ein halbes Jahr vorher hatte Apple noch die Version von der letzten Folie zum Patent angemeldet, „essentially an iPod that made phone calls“ – 2-in-1. „Dieselbe Figur“ heißt: Es ist dieselbe Person wie dort. Sie liebt iPod und Handy und will unterwegs Musik hören und telefonieren. An ihr ändert sich nichts, nur der Bogen ihrer Geschichte: Jetzt kommen Krise und Höhepunkt dazu.',
+      quelle: `${LICHAW}, Kap. 3 (Einleitung), S. 22; Exposition, S. 25; Avoiding the Anticlimactic, S. 31 und 33; „dieselbe Figur“ ist Kursformulierung`,
     },
     kern: [
       {
@@ -333,6 +337,35 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         text: 'Krise: schon iPod oder Handy, der Preis, der Touchscreen – „Wouldn’t a touchscreen make the iPhone difficult to use? And no keyboard? Typing would be impossible. At least that’s what the few people who owned Blackberrys and Palm Treos thought at the time.“ Der alte Weg war also Tastatur oder Stift. Höhepunkt: „what they get with the iPhone was the best way to communicate“, mit Internet, Karten, E-Mail; „the iPhone worked like magic. It was easy to use.“ Fallende Handlung: überzeugt, neugierig oder skeptisch – „in the realm of thought, rather than action“.',
         quelle: `${LICHAW}, Kap. 3, Crisis, S. 27; Climax/Resolution, S. 28; Falling Action, S. 28–29; Abb. 3.4, S. 30`,
       },
+      {
+        text: 'Abb. 3.4 von links gelesen. Exposition (Wolken links unten): „I love my iPod and my mobile phone. / I want to listen to music and make phone calls on the go.“ – Ich liebe meinen iPod und mein Handy; ich will unterwegs Musik hören und telefonieren. Wie in der flachen Version (S. 25). Auslöser (Wolke am Stern): „It sucks to carry two devices. / Oh, and smartphones suck.“ – Zwei Geräte mitzuschleppen nervt; ach ja, und Smartphones taugen nichts. Der erste Satz ist das Problem, das die Figur kennt; der zweite ist Jobs’ Problem aus der Keynote, „smartphones are no good“ (S. 22, 26). Steigende Handlung: „iPhone – A smartphone“ – Name und Produktart (S. 26). Krise (Hürde): „iPod, Mobile phones, Smartphones, Cost, Usability“ – iPod und Handy hat man schon; die Smartphones von damals (Blackberry, Palm Treo) gelten als schlecht; der Preis; die Bedienbarkeit, also Touchscreen ohne Tastatur (S. 27). Höhepunkt (Glühbirne): „The best way to communicate / Better than 2-in-1 / Internet at fingertips / Works like magic“ – der beste Weg zu kommunizieren; besser als 2-in-1; Internet griffbereit (wörtlich: an den Fingerspitzen), dazu Karten und E-Mail; funktioniert wie Zauberei, leicht zu bedienen (S. 28, 33). Fallende Handlung: „I want an iPhone!“ – Ich will ein iPhone! Ein Gedanke, noch kein Kauf (S. 28–29). Ende (Wolke rechts unten): „I can communicate, listen to music, and make phone calls on the go.“ – Ich kann unterwegs kommunizieren, Musik hören und telefonieren (S. 29).',
+        quelle: `${LICHAW}, Kap. 3, How Concept Stories Work, S. 25–29, Abb. 3.4 (S. 30); Avoiding the Anticlimactic, S. 33; Übersetzungen: Kursformulierung`,
+      },
+    ],
+    fragen: [
+      {
+        frage: 'Was heißt „dieselbe Figur“?',
+        antwort: 'Dieselbe Person wie in der flachen Version vom Patent: Sie liebt iPod und Handy und will unterwegs Musik hören und telefonieren (Kap. 3, S. 25 und S. 31). Die Exposition bleibt, neu sind Krise und Höhepunkt. Der Ausdruck ist Kursformulierung; Lichaw stellt die beiden Versionen so gegenüber: „Contrasting what could have been with what actually became the first iPhone“ (Kap. 3, S. 33).',
+      },
+      {
+        frage: 'Warum 3-in-1 und nicht 2-in-1 – mehr Funktionen = besser?',
+        antwort: 'Nein. Der Höhepunkt muss auflösen, was Auslöser und Krise aufwerfen: „The climax is where the problem outlined in the inciting incident and the additional hurdles that surface during your crisis are resolved and overcome.“ (Kap. 3, Climax/Resolution, S. 28). Das Internet zählt, weil es zum besten Weg zu kommunizieren gehört; „works like magic“ antwortet auf die Angst vor dem Touchscreen. Ausführlich auf der nächsten Folie, „Krise und Höhepunkt geben Höhe“.',
+      },
+      {
+        frage: 'Warum ist der Touchscreen eine Krise?',
+        antwort: 'Wer schon einen benutzt hatte, kannte ihn als schlecht: „touchscreens were as awful as the smartphones they accompanied those days. Wouldn’t a touchscreen make the iPhone difficult to use? And no keyboard? Typing would be impossible. At least that’s what the few people who owned Blackberrys and Palm Treos thought at the time.“ (Kap. 3, Crisis, S. 27). Das ist Widerstand gegen Neues: Gewohnt waren Tastatur und, bei Palm, der Stift (S. 33–34).',
+      },
+      {
+        frage: 'Was hat das mit unserem Produkt zu tun?',
+        antwort: '„Think of the crisis as the competition.“ – ein anderes Produkt, der heutige Weg oder der Widerstand gegen Neues (Kap. 3, Crisis, S. 27). Bei euch steht das schon im „anders als …“ eures Lückensatzes; euer Höhepunkt muss genau das auflösen. Die Verbindung zum Lückensatz ist eine Lesart dieses Kurses.',
+      },
+    ],
+    zusatz: [
+      {
+        titel: 'Hintergrund (nicht bei Lichaw): die Keynote',
+        text: 'Jobs stellte das iPhone am 9. Januar 2007 auf der Macworld in San Francisco vor. Apples Pressemitteilung vom selben Tag spricht ebenfalls von drei Produkten in einem: Handy, Breitbild-iPod mit Touch-Bedienung, Gerät fürs Internet. Angekündigt war es für Juni 2007 in den USA (Europa Ende 2007, Asien 2008), 4 GB für 499 US-Dollar, 8 GB für 599 US-Dollar, verkauft über Apple und den Netzbetreiber Cingular; die Tarife sollten vor dem Start folgen.',
+        quelle: 'Apple Newsroom, 9.1.2007: https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/ (abgerufen 27.11.2026)',
+      },
     ],
     ueberleitung: 'Legt beide nebeneinander: Was macht den Unterschied?',
   },
@@ -343,7 +376,6 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       '„2-in-1 war eine Linie. 3-in-1 war der Gipfel.“',
       '„Niemand hatte nach drei Geräten in einem gefragt.“',
       'Fragen: Was ist bei euch die naheliegende Lösung?',
-      'Kursregel nennen: beide aufschreiben; ist die Story die Linie, fehlt die Krise.',
     ],
     verstaendnis: {
       frage: 'Woran erkennt ihr, dass eure Story nur die Linie ist?',
@@ -380,6 +412,20 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       antwort: 'Weil es die Story – „works like magic“, leicht mit dem Finger – nicht stützte: „Animation supported the story. Cut-and-paste did not.“ (Kap. 3, S. 33). Die Krise war die Angst vor dem Touchscreen; Animation und Technik zum Tippen statt Stift lösten sie auf. Lichaw nennt keinen weiteren Grund.',
       falsch: '„Weil Apple es nicht konnte“ – das sagt Lichaw nicht; der Palm Treo hatte es längst (Kap. 7, S. 129).',
     },
+    geschichte: {
+      text: 'Die Krise war die Angst vor dem Touchscreen. Wer einen Palm Treo kannte, kannte Stift und fummeliges Tippen: „Wouldn’t a touchscreen make the iPhone difficult to use?“ (S. 27). Der Höhepunkt löst genau das auf: „the iPhone worked like magic. It was easy to use.“ (S. 28). Daraus folgt die Anforderung: Tippen mit dem Finger muss sich leicht anfühlen. Also baute Apple Animation und Tippen mit dem Finger statt Stift (S. 33). Jetzt der Kontrast: Der Palm Treo, im Jahr davor das meistverkaufte Smartphone, hatte Kopieren und Einfügen und ließ einen Apps und Spiele installieren. „The iPhone did neither.“ (Kap. 7, S. 129). Lichaws Urteil: „Animation supported the story. Cut-and-paste did not.“ (S. 33). Und ihre Faustregel: „Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out.“ (Kap. 8, S. 134).',
+      quelle: `${LICHAW}, Kap. 3, Crisis, S. 27; Climax/Resolution, S. 28; Supporting the Story, S. 33; Note „The Early Touchscreens Flopped“, S. 34 (Stift); Kap. 7, S. 129; Kap. 8, Stories Are Character-Driven, S. 134; „Anforderung“ als Schritt der Kette: Kursformulierung (Folie)`,
+    },
+    fragen: [
+      {
+        frage: 'Warum stützte Kopieren und Einfügen die Story nicht – was hätte es ihr gebracht?',
+        antwort: 'Lesart dieses Kurses, nicht bei Lichaw: Sie nennt keinen Grund. Am Bogen gelesen trägt es keine Station. Es nimmt nicht die Angst vor dem Touchscreen (Krise), und es macht den Höhepunkt – „works like magic“, leicht mit dem Finger – nicht stärker. Und der alte Weg hatte es schon: Der Palm Treo konnte Kopieren und Einfügen (Kap. 7, S. 129). Damit hätte das iPhone auf dem Feld der Konkurrenz mitgehalten, statt die Krise aufzulösen. Technische Gründe nennt Lichaw nicht.',
+      },
+      {
+        frage: 'Wie findet ihr euer „Kopieren und Einfügen“?',
+        antwort: 'Fragt bei jeder Funktion in eurer Story Map: Welche Station eurer Concept Story trägt sie – löst sie die Krise auf, macht sie den Höhepunkt stärker? Trägt sie keine, kommt sie nicht in den ersten Slice. Das ist ein Übertrag des Kurses; bei Lichaw steht dazu die Faustregel „If it doesn’t, you cut it out.“ (Kap. 8, S. 134).',
+      },
+    ],
     kern: [
       {
         text: '„in order for the touchscreen to be user-friendly (which Palm Treo touchscreens were not), Apple’s strategy was to employ animation and cutting-edge technology that enabled people to tap, rather than to interact with their device using a stylus.“ – „Animation supported the story. Cut-and-paste did not.“',
