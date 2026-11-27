@@ -214,9 +214,10 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
   it('Schritt 3 und 4: Karte E2 mit „Wir entscheiden vorher“; Trockenlauf auf Papier in drei Runden, wer besitzt, legt die Blätter, keine Kritik', () => {
     expect(beamer(folie(PS, 'schritt-karte'))).toContain('<strong>„Wir entscheiden vorher“:</strong> drei Bänder, je eine Handlung.');
     const t = beamer(folie(PS, 'schritt-trockenlauf'));
-    expect(t).toContain('<h2 id="schritt-trockenlauf">Schritt 4: Trockenlauf auf Papier – drei Runden, keine Kritik</h2>');
+    expect(t).toContain('<h2 id="schritt-trockenlauf">Schritt 4: Trockenlauf auf Papier</h2>');
+    expect(t).toContain('<p class="folie-satz">Drei Runden: Ihr prüft, ob der Ablauf verständlich ist – nicht, ob er gefällt.</p>');
     expect(t).toContain('<tr><th>1</th><td>Produkt 2</td><td>Produkt 1</td><td>Produkt 3</td></tr>');
-    expect(t).toContain('<strong>Wem der Prototyp gehört:</strong> zeigt Blatt 1 in die Kamera (oder die Fotos auf Miro), liest die Aufgabe vor – und legt dann das Blatt hin, zu dem der angesagte Knopf führt. Sonst schweigen.');
+    expect(t).toContain('<strong>Wem der Prototyp gehört:</strong> Blatt 1 in die Kamera, Aufgabe vorlesen, dann das Blatt hinlegen, zu dem der angesagte Knopf führt. Sonst schweigen.');
     expect(t).toContain('<strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Nächste Runde.');
     expect(t).toContain('<strong>Wo:</strong> Teams (Kamera oder Bildschirm teilen) und Feld „4 · Tests“, Zeile 0');
     expect(folie(PS, 'schritt-trockenlauf')).toContain('Der Trockenlauf ist heute euer Test des Prototyps.');
