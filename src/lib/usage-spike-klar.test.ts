@@ -98,7 +98,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(b).toContain("{ t: 'Usage Story', sub: 'Stationen 2 bis 6', icon: BookOpen }");
     expect(b).toContain("{ t: 'Papier-Skizzen', sub: 'ein Blatt pro Bildschirm, von Hand oder lo-fi in Figma', icon: PenLine }");
     expect(b).toContain("{ t: 'Tag 5: bauen', sub: 'Claude Code baut nach euren Blättern', icon: Code }");
-    expect(b).toContain('<strong>Papier-Skizzen:</strong> Jeden Bildschirm eures Ablaufs von Hand auf ein Blatt, oder je ein Graustufen-Frame in Figma – was steht drauf, welcher Knopf führt wohin. Foto oder Bild in euren Miro-Frame.');
+    expect(b).toContain('<strong>Papier-Skizzen:</strong> Jeden Bildschirm auf ein Blatt, oder je ein Graustufen-Frame in Figma – was steht drauf, welcher Knopf führt wohin.</li>');
     expect(b).toContain('<strong>Testen auf Papier:</strong> Jemand „tippt“ auf ein Blatt, ihr legt das nächste hin oder wechselt den Frame – so seht ihr, wo der Ablauf hakt.');
     expect(b).toContain('<strong>Kursregel – Papier vor Claude:</strong> Jeden Bildschirm entscheidet ihr selbst.');
     expect(b).not.toMatch(/Zeitbox|40 Minuten|Wegwerf/);
