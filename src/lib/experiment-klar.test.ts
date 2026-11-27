@@ -223,7 +223,8 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
   });
 
   it('#karte-e1 kennzeichnet die Zeilen des Kurses', () => {
-    expect(sichtbar('karte-e1')).toContain('Kursregel: Zeilen 2–5 nach Blands Test Card, die letzten drei vom Kurs.');
+    // Markus 27.11.: keine „Kursregel“-Zeile auf der Folie (verwirrt Studierende).
+    expect(sichtbar('karte-e1')).not.toContain('Kursregel');
   });
 });
 
