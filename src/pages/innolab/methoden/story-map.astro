@@ -525,6 +525,9 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
 <style>
   /* #vorgehen mit Anleitungs-Link im ersten Punkt: bei 1280 × 720 etwas kleinere Punkte. */
   :global(html[data-beamer] .folie:has(> h2#vorgehen) ul.gross > li) { font-size: 1rem; margin-bottom: .25rem; }
+  /* Schritt 3 und 9 (Layout C, längere Punkte): bei 1280 × 720 passen alle Punkte mit Beispiel und Prüffrage nur etwas kleiner. */
+  :global(html[data-beamer] .folie:has(> h2#schritt-tasks) ul.gross > li),
+  :global(html[data-beamer] .folie:has(> h2#schritt-schneiden) ul.gross > li) { font-size: 1.1rem; }
   /* Folie „morgen-aufschreiben“: Der Satz zum Aufwachen (Foliensatz des Dozenten) braucht vier Zeilen – bei 1280 × 720 passt
      die Folie nur mit etwas kleinerem Satz und Bild. */
   :global(html[data-beamer] .folie:has(> h2#morgen-aufschreiben) .folie-satz) { font-size: 1.45rem; }
