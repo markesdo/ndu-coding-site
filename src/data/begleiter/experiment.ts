@@ -43,6 +43,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Fünf Arten: wünschenswert, bedienbar, machbar, wirtschaftlich, ethisch.',
       'Pre-Mortem vorlesen: gescheitert, nicht „könnte scheitern“.',
       'Bezug: Pre-Mortem kennen alle von Tag 1, als Joker.',
+      'Bei Bedarf: Zeilen erklären – Kund*in, Software selbst, Partner mit Inhalt.',
     ],
     verstaendnis: {
       frage: 'Woher kommen die Annahmen, bevor ihr sie mappt?',
@@ -59,6 +60,14 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${TORRES}, S. 121`,
       },
       {
+        text: 'Die Software als eigene Zeile: „In some products or services, the interface or software itself may be an actor in your map (e.g., for an end-user conversing with a chatbot, the chatbot should be listed as a player in the story map).“',
+        quelle: `${TORRES}, S. 120`,
+      },
+      {
+        text: 'Die Schritte im Text: „Our subscriber comes to our platform to watch live sports. Our platform has live sports options for our subscriber to choose from. Our subscriber browses the options and chooses a sport that is currently on a local TV channel. Our local channel provider’s content is available to stream. Our subscriber watches live sports.“',
+        quelle: `${TORRES}, S. 121`,
+      },
+      {
         text: 'Pre-Mortem: „Imagine it’s six months in the future; your product or initiative launched, and it was a complete failure. What went wrong?“ Entscheidend: als sicheres Scheitern formuliert.',
         quelle: `${TORRES}, S. 125`,
       },
@@ -72,6 +81,28 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         titel: 'Pre-Mortem nach Gary Klein',
         text: 'Das Team nimmt an, das Projekt sei bereits gescheitert, und sucht die Gründe, statt nur zu fragen, was schiefgehen könnte. Torres zitiert die Methode und die Forschung zu „prospective hindsight“.',
         quelle: 'Gary Klein, „Performing a Project Premortem“, Harvard Business Review, Sept. 2007: https://hbr.org/2007/09/performing-a-project-premortem; vgl. Torres S. 125',
+      },
+    ],
+    geschichte: {
+      text: 'Das Beispiel zieht sich durch Torres’ ganzes Buch: ein Streamingdienst für Unterhaltung – „if we worked at a streaming-entertainment company (e.g., Netflix, Hulu)“ (S. 52). Sein Outcome: mehr gesehene Minuten, „increase the average minutes watched“ (S. 52), später „Increase weekly viewer minutes“ (S. 126); dahinter steht das Geschäftsziel „increase subscriber retention“ (S. 154). Die Chance „I want to watch live sports“ begründet sie mit dem Markt: Wegen der „cord-cutters“, also Kabelkund*innen, die kündigen, könnte der Dienst diese Chance wählen, „to grab some of this market“ (S. 100). Für diese Ziel-Chance stehen drei Lösungen: „1. Integrate local networks (e.g., ABC, CBS, NBC) into our service 2. License broadcast rights directly from the different sports leagues and serve the sporting events up ourselves 3. Bundle our streaming service with a partner who streams live sports“ (S. 120). Die Story Map auf der Folie zeigt die erste: Das Programm lokaler Fernsehsender läuft im eigenen Dienst. Warum lokale Sender, steht in ihren Annahmen: „Most of the major sports are on local channels“ und „Our subscribers are more likely to want to watch major sports“ (S. 126). Sie warnt vor einer Falle beim Benennen der Beteiligten: „it’s easy to make the mistake of thinking our key players are our business-development folks and their equivalent at the respective local channel providers. But remember, with story mapping, we want to assume the solution already exists.“ (S. 120). Gemappt wird also nicht der Vertrag, sondern was passiert, „for our consumer to get value from it“ (S. 121).',
+      quelle: `${TORRES}, S. 52, 100, 120–121, 126, 154`,
+    },
+    fragen: [
+      {
+        frage: 'Was sind Subscriber, Platform und Local Channel?',
+        antwort: 'Subscriber ist die Kundin oder der Kunde mit Abo, die Sport schauen will: „the sports consumer (i.e., our subscriber)“ (S. 121). Bei ihr entsteht der Wert, ihr gehören erster und letzter Schritt. Platform ist der Streamingdienst selbst, die Software als eigene Zeile: „the interface or software itself may be an actor in your map“ (S. 120). Sie zeigt, welcher Sport gerade läuft. Local Channel ist ein Partner von außen, ein lokaler Fernsehsender (Torres nennt ABC, CBS, NBC, S. 120), der das Live-Programm liefert: „any number of local TV channel partners“ (S. 121). Nicht gemeint sind die Leute, die den Vertrag aushandeln (S. 120).',
+      },
+      {
+        frage: 'Wie liest man die Map?',
+        antwort: 'Von links nach rechts läuft die Zeit, jede Zeile ist ein Beteiligter: „Sequence the steps horizontally over time … You may need to jump back and forth between players if they need to take turns taking actions.“ (S. 120). Subscriber: Visits platform → Platform: Shows sports options → Subscriber: Browses options, Chooses sport → Local Channel: Delivers content → Subscriber: Watches sport. Zwei Schritte machen also nicht die Kund*innen: das Angebot zeigen (Plattform) und den Inhalt liefern (Sender). Gerade dort stehen Machbarkeits-Annahmen: „Feasibility: We know what sports are available right now.“ (S. 123) und „Feasibility: The local provider’s source content will be available.“ (S. 124). Im Text sind es fünf Schritte („From a simple 5-step story map“, S. 124); die Abbildung trennt „Browses options“ und „Chooses sport“, daher sechs Kästen.',
+      },
+      {
+        frage: 'Welche Annahmen leitet Torres aus dieser Map ab?',
+        antwort: 'Aus Schritt 1: „Desirability: Our subscriber wants to watch sports.“ – „Usability: Our subscriber knows they can watch sports on our platform.“ – „Feasibility: Our platform is available when our subscriber wants to watch sports.“ (S. 123). Aus Schritt 2 (Plattform): „Feasibility: We know what sports are available right now.“ (S. 123). Aus Schritt 4 (Sender): „Feasibility: The local provider’s source content will be available.“ (S. 124). Dazu, seltener aus der Map: „Viability: Integrating a local channel feed won’t be too expensive.“ – „Ethical: Subscribers will be okay with us sharing viewership data with their local channels.“ (S. 124). Wünschbarkeit, Bedienbarkeit und Machbarkeit stecken überall dort, wo jemand etwas tun muss – „every time you assume that an end-user will do something“ (S. 122); für Wirtschaftlichkeit und Schaden hat Torres eigene Wege: den Baum entlanggehen und nach möglichem Schaden fragen (S. 125–127). Zusammen: „From a simple 5-step story map, we generated 20 assumptions.“ (S. 124).',
+      },
+      {
+        frage: 'Wo stecken die drei Zeilen bei der Kaffeebar?',
+        antwort: 'Pendler*in wie Subscriber: will etwas und bekommt am Ende den Wert. Seite am Handy wie Platform: die Software als Beteiligte – sie öffnet sich nach dem Scan und nimmt Getränk und Abfahrtszeit entgegen (Schritte 2 und 3); Code scannen und wählen tut die Pendler*in. Bar wie Local Channel: liefert, was gewählt wurde – zeigt „Fertig 7:31“ und bereitet zu (Schritt 4). Die Schritte stehen auf der Folie „Am Beispiel“. Ein Unterschied: Der Sender ist bei Torres ein fremder Partner, die Bar gehört zum eigenen Geschäft. Auch dort hängen an der Seite und an der Bar Annahmen, die nicht die Kund*innen betreffen, etwa A2 (machbar: 40 Bestellungen in 30 Minuten). Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.',
       },
     ],
     ueberleitung: 'Torres macht das für drei Ideen – wir für eine. Warum?',

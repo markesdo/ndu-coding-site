@@ -298,6 +298,43 @@ describe('Seite am Handy in den Schritten (27.11.2026)', () => {
   });
 });
 
+describe('#schritte-der-idee: Begleiter erklärt Torres’ Streaming-Beispiel (27.11.2026)', () => {
+  const n = NOTIZEN[EX]['schritte-der-idee'];
+  const frage = (f: string) => n.fragen?.find((x) => x.frage === f)?.antwort ?? '';
+  it('die drei Zeilen: Kund*in, Software selbst, Partner mit Inhalt – mit Seiten', () => {
+    const a = frage('Was sind Subscriber, Platform und Local Channel?');
+    expect(a).toContain('Subscriber ist die Kundin oder der Kunde mit Abo, die Sport schauen will: „the sports consumer (i.e., our subscriber)“ (S. 121).');
+    expect(a).toContain('Platform ist der Streamingdienst selbst, die Software als eigene Zeile: „the interface or software itself may be an actor in your map“ (S. 120).');
+    expect(a).toContain('Local Channel ist ein Partner von außen, ein lokaler Fernsehsender (Torres nennt ABC, CBS, NBC, S. 120), der das Live-Programm liefert: „any number of local TV channel partners“ (S. 121).');
+    expect(n.live).toContain('Bei Bedarf: Zeilen erklären – Kund*in, Software selbst, Partner mit Inhalt.');
+  });
+  it('Hintergrund: Firma, Outcome, Chance, gemappte Idee, mit Seiten', () => {
+    expect(n.geschichte?.text).toContain('„if we worked at a streaming-entertainment company (e.g., Netflix, Hulu)“ (S. 52)');
+    expect(n.geschichte?.text).toContain('„Increase weekly viewer minutes“ (S. 126)');
+    expect(n.geschichte?.text).toContain('„to grab some of this market“ (S. 100)');
+    expect(n.geschichte?.text).toContain('„1. Integrate local networks (e.g., ABC, CBS, NBC) into our service');
+    expect(n.geschichte?.quelle).toBe('Teresa Torres, Continuous Discovery Habits, S. 52, 100, 120–121, 126, 154');
+  });
+  it('Leserichtung, abgeleitete Annahmen und Kaffeebar-Zuordnung', () => {
+    expect(frage('Wie liest man die Map?')).toContain('Subscriber: Visits platform → Platform: Shows sports options → Subscriber: Browses options, Chooses sport → Local Channel: Delivers content → Subscriber: Watches sport.');
+    const ann = frage('Welche Annahmen leitet Torres aus dieser Map ab?');
+    for (const z of ['„Desirability: Our subscriber wants to watch sports.“', '„Feasibility: The local provider’s source content will be available.“ (S. 124)',
+      '„Viability: Integrating a local channel feed won’t be too expensive.“', '„Ethical: Subscribers will be okay with us sharing viewership data with their local channels.“ (S. 124)']) expect(ann).toContain(z);
+    const kb = frage('Wo stecken die drei Zeilen bei der Kaffeebar?');
+    expect(kb).toMatch(/^Pendler\*in wie Subscriber: [\s\S]* Seite am Handy wie Platform: [\s\S]* Bar wie Local Channel: /);
+    expect(kb).toContain('Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.');
+  });
+  it('Review #477: keine Überdehnung von S. 122–124; die Seite handelt nicht für die Pendler*in', () => {
+    const lesen = frage('Wie liest man die Map?');
+    expect(lesen).toContain('Gerade dort stehen Machbarkeits-Annahmen: „Feasibility: We know what sports are available right now.“ (S. 123)');
+    expect(lesen).not.toMatch(/vor allem|genau diesen/);
+    const ann = frage('Welche Annahmen leitet Torres aus dieser Map ab?');
+    expect(ann).toContain('Wünschbarkeit, Bedienbarkeit und Machbarkeit stecken überall dort, wo jemand etwas tun muss – „every time you assume that an end-user will do something“ (S. 122)');
+    expect(ann).not.toContain('in jedem Schritt');
+    expect(frage('Wo stecken die drei Zeilen bei der Kaffeebar?')).toContain('sie öffnet sich nach dem Scan und nimmt Getränk und Abfahrtszeit entgegen (Schritte 2 und 3); Code scannen und wählen tut die Pendler*in.');
+  });
+});
+
 // Die Folien „claude-pro-jetzt“ und „claude-code-opus“ stehen seit 26.11.2026 nachts auf tag-5 (tag-5-claude-pro.test.ts).
 describe('Experiment-Seite ohne Claude-Pro-Block', () => {
   it('Rückfall, wenn Opus nicht geht: überall im Handout, wo Opus steht (Review #456)', () => {
