@@ -179,7 +179,7 @@ describe('methoden', () => {
       'concept-story-stationen', 'concept-story-produkt', 'concept-story-krise', 'concept-story-hoehepunkt', 'concept-story-linie', 'concept-story-fallend', 'concept-story-ende',
       'geschaeftsmodell-verweise', 'geschaeftsmodell-wert', 'geschaeftsmodell-kosten', 'geschaeftsmodell-muster', 'geschaeftsmodell-annahme', 'geschaeftsmodell-widerspruch',
       'experiment-annahmen-arten', 'experiment-eine-annahme', 'experiment-wer-wo-was', 'experiment-schwelle', 'experiment-schnellster', 'experiment-danach', 'experiment-origin', 'experiment-lernkarte',
-      'story-map-rahmen', 'story-map-schritte', 'story-map-erzaehlbar', 'story-map-alternativen', 'story-map-slice-ziel', 'story-map-slice-durchgehend', 'story-map-kein-software',
+      'story-map-rahmen', 'story-map-schritte', 'story-map-erzaehlbar', 'story-map-alternativen', 'story-map-slice-ziel', 'story-map-slice-durchgehend', 'story-map-kein-software', 'story-map-pains',
       'usage-story-person', 'usage-story-ausloeser', 'usage-story-schritte', 'usage-story-krise', 'usage-story-hoehepunkt', 'usage-story-nach-gipfel', 'usage-story-ende',
       'prototyp-spike-skizzen', 'prototyp-spike-branch', 'prototyp-spike-kriterien', 'prototyp-spike-karte', 'prototyp-spike-aufgabe', 'prototyp-spike-trockenlauf', 'prototyp-spike-protokoll', 'prototyp-spike-lernkarte',
       'scrum-produkte', 'scrum-rollen', 'scrum-termine', 'scrum-dod', 'scrum-dod-messung', 'scrum-abweichungen', 'scrum-lego',
