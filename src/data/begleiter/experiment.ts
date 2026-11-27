@@ -401,7 +401,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'An Schritt 4 ergeben drei von fünf Fragen keinen Zettel. Ist das ein Fehler?',
-      antwort: 'Nein. Eine Frage kann an einem Schritt nichts ergeben: Es gibt dort nichts zu hoffen, oder sie betrifft die ganze Idee oder einen anderen Schritt. Ein Fehler wäre ein Schritt ganz ohne Annahme – oder eine Art, die an allen Schritten leer bleibt (Torres S. 131–132).',
+      antwort: 'Nein. Eine Frage kann an einem Schritt nichts ergeben: Es gibt dort nichts zu hoffen (kein Zettel), oder sie betrifft die ganze Idee statt des Schritts (weiter). Ein Fehler wäre ein Schritt mit weniger als zwei Annahmen – oder eine Art, die an allen Schritten leer bleibt (Torres S. 131–132).',
       falsch: '„Zu jeder Frage muss etwas stehen“ – dann erfindet ihr Annahmen, an denen nichts hängt, und die fünf Minuten reichen nicht.',
     },
     kern: [
@@ -438,7 +438,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   beispiel: {
     live: [
       'Schritt 4 kennt ihr schon: zwei Treffer.',
-      'Andere Schritte: je eine andere Frage getroffen, alle fünf Arten.',
+      'Andere Schritte: je ein Treffer – zusammen alle fünf Arten.',
       'A5 ohne Beleg – I2-3 spricht sogar dagegen.',
       'A4 kommt aus dem Geschäftsmodell vorhin.',
       'Zeit: kurz, ~30 s.',

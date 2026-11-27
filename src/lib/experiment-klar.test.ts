@@ -385,14 +385,14 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
       'Rechnet es sich? → weiter',
       'Schadet es jemandem? → kein Zettel',
     ]);
-    expect(s).toContain('<p class="ein-schritt-regel" data-schritt><strong>Eine Frage darf leer bleiben – ein Schritt nicht.</strong> Bleibt eine Art an allen Schritten leer: noch einmal fragen.</p>');
+    expect(s).toContain('<p class="ein-schritt-regel" data-schritt><strong>Eine Frage darf leer bleiben – ein Schritt nicht.</strong> Je Schritt mindestens zwei; bleibt eine Art an allen Schritten leer: noch einmal fragen.</p>');
     // Folie und Handout: was zu tun ist und warum, keine Kursregel und kein Vergleich mit Torres’ drei Arten je Schritt.
     const f = folie('ein-schritt-fuenf-fragen');
     expect(f).toContain('<div class="nur-handout">');
     expect(f).toContain('Für leere Fragen schreibt ihr nichts auf, auch kein „–“.');
     expect(f).toContain('„Use the categories to catch your blind spots“ (S. 132)');
     expect(f).not.toMatch(/Kursregel/);
-    expect(f).not.toContain('Sometimes story maps can help us uncover');
+    expect(f).not.toMatch(/Sometimes story maps can help us uncover|drei Arten|desirability assumptions/i);
     // Die Annahmen stehen genauso an Schritt 4 von #beispiel.
     expect(sichtbar('beispiel')).toContain('<td>4 Bar zeigt „Fertig 7:31“ und bereitet zu</td><td><strong>A6:</strong>');
     expect(sichtbar('beispiel')).toContain('<strong>A2:</strong> 40 Bestellungen in 30 Minuten.');
