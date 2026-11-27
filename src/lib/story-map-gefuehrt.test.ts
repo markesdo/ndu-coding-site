@@ -90,7 +90,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
   it('Übung: die Regeln aus der Auswertung der Maps 25/26 stehen an ihrem Schritt', () => {
     expect(sichtbar(folie('schritt-tasks'))).toContain('<strong>Anfang und Ende:</strong> beim Anlass im Alltag der Person');
     expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('Anbahnung · Information · Registrierung · Onboarding · Kernnutzen');
-    expect(sichtbar(folie('schritt-reihen'))).toContain('<strong>Grau, bei den Tasks:</strong> nur, worauf die Person wartet oder was sie sieht');
+    expect(sichtbar(folie('schritt-reihen'))).toContain('<strong>Grau, unter den Task, bei dem die Person wartet:</strong> nur, worauf sie wartet oder was sie sieht');
     expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('die letzte heißt „… danach“');
     expect(sichtbar(folie('schritt-durchgehen'))).toContain('„Outcome erreicht? ja / nein, es fehlt: …“');
     expect(seite).not.toMatch(/reihum/i);
@@ -237,6 +237,37 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     for (const id of ['vorgehen', 'schritt-erkunden', 'schritt-outcome', 'schritt-schneiden']) expect(JSON.stringify(n[id]), id).not.toMatch(/vier Zeilen|nach unten schieben|Pro Spalte|links an den Tasks|Kursregel/);
     // Live-Zeilen bleiben kurz: höchstens zwölf Wörter.
     for (const id of ['vorgehen', 'schritt-erkunden', 'schritt-outcome', 'schritt-schneiden']) {
+      for (const z of n[id].live) expect(z.split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length, z).toBeLessThanOrEqual(12);
+    }
+  });
+
+  // 27.11.2026 nachts (Markus, Miro): „Wer handelt“ ist eine Reihe kleiner violetter Stickies über dem Backbone, jedes über
+  // der Aktivität, bei der die Person handelt (Patton, Kap. 2, Narrative Flow Across Many Users). Keine eigene Reihe „Wer
+  // noch“ links; Tasks anderer Personen in die Fläche, unter die Tasks der Hauptperson; Grau unter den Task, bei dem sie wartet.
+  it('Wer handelt: violette Stickies über der Aktivität, keine eigene Reihe für „Wer noch“', () => {
+    expect(sichtbar(folie('schritt-rahmen'))).toContain('<strong>Violett „Wer handelt: …“:</strong> eure Hauptperson, klein in die Reihe „Wer handelt“ über dem Backbone.');
+    const reihen = folie('schritt-reihen');
+    const s = sichtbar(reihen);
+    expect(reihen).toMatch(/^<h2 id="schritt-reihen">5 · Wer noch handelt: über die Aktivität<\/h2>/);
+    expect(s).toContain('<strong>Kleines violettes Sticky „Wer noch: …“</strong> in die Reihe „Wer handelt“, über die Aktivität, bei der diese Person handelt. Ihre Tasks in die Fläche, unter die Tasks eurer Person.');
+    expect(s).toContain('violett „Barista“ über „Bestellen“, darunter „Bestellung sehen, zubereiten“');
+    expect(handout(reihen)).toContain('Wer gerade handelt, zeigt ein kleines Personen-Sticky über der Aktivität');
+    for (const text of [reihen, folie('schritt-rahmen'), folie('schritt-loecher')]) {
+      expect(text).not.toMatch(/in die eigene Reihe|\(eigene Reihe\)|Reihe der Barista|Reihe der Pendler|Wessen Reihe|links vor dem Backbone|Wer muss noch handeln, damit der Wert ankommt\?“/);
+    }
+    const vorlage = seite.slice(seite.indexOf('<h2 id="vorlage">'), seite.indexOf('<h2 id="pruefen">'));
+    expect(vorlage).toContain('<strong>Reihe „Wer handelt“</strong> über dem Backbone: kleine violette Stickies');
+    expect(vorlage).not.toContain('<li><strong>Violett „Wer noch: …“</strong>');
+    expect(vorlage.indexOf('Reihe „Wer handelt“')).toBeLessThan(vorlage.indexOf('Backbone-Reihe'));
+    const n = NOTIZEN['/innolab/methoden/story-map'];
+    expect(n['schritt-reihen'].live).toStrictEqual([
+      'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie handelt.',
+      'Ihre Tasks in die Fläche, unter die Tasks eurer Person.',
+      'System grau, unter den Task, bei dem die Person wartet.',
+      'Fragen: Wer muss noch handeln, damit der Wert ankommt?',
+    ]);
+    expect(n['schritt-rahmen'].live).toContain('Violett „Wer handelt“: Hauptperson, klein in die Reihe über dem Backbone.');
+    for (const id of ['schritt-rahmen', 'schritt-reihen']) {
       for (const z of n[id].live) expect(z.split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length, z).toBeLessThanOrEqual(12);
     }
   });

@@ -309,7 +309,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'schritt-rahmen': {
     live: [
       'Timer 3 min: Kopfzeile „Für | Outcome (Brief) | Idee (Value Map)“.',
-      'Violett „Wer handelt“: die Hauptperson, links vor dem Backbone.',
+      'Violett „Wer handelt“: Hauptperson, klein in die Reihe über dem Backbone.',
       'Fragen: Mensch, Verhalten, Idee – oder nur ein Produktname?',
     ],
     uebung: { dauer: '3 min', form: 'allein' },
@@ -351,9 +351,10 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-reihen': {
     live: [
-      'Timer 2 min: violett „Wer noch“, ihre Tasks in die eigene Reihe.',
-      'System grau, aktiv, nur wenn die Person wartet oder etwas sieht.',
-      'Fragen: Wessen Reihe ist leer, obwohl ohne sie nichts ankommt?',
+      'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie handelt.',
+      'Ihre Tasks in die Fläche, unter die Tasks eurer Person.',
+      'System grau, unter den Task, bei dem die Person wartet.',
+      'Fragen: Wer muss noch handeln, damit der Wert ankommt?',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
     ueberleitung: 'Jetzt in die Tiefe – mit den vier Fragen.',

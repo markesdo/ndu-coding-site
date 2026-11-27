@@ -355,7 +355,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
     <MiroFrame name="T4 · 1 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Kopfzeile:</strong> „Für: … | Outcome (Brief): … | Idee (Value Map): …“ <Timer minuten={3} /></li>
-      <li data-schritt><strong>Violett „Wer handelt: …“:</strong> eure Hauptperson, links vor dem Backbone.</li>
+      <li data-schritt><strong>Violett „Wer handelt: …“:</strong> eure Hauptperson, klein in die Reihe „Wer handelt“ über dem Backbone.</li>
     </ul>
     <p class="mini" data-schritt><strong>Kaffeebar:</strong> Für: Pendler*innen werktags 7:15–7:45 · Outcome: mehr Pendler*innen mit Kaffee im Zug · Idee: Im Gehen bestellen. Wer handelt: Pendler*in, Barista.</p>
     <p class="pruefen" data-schritt><strong>Prüft:</strong> Steht oben ein Mensch, ein Verhalten und eure Idee – und nicht nur ein Produktname?</p>
@@ -402,16 +402,16 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   </Folie>
 
   <Folie>
-    <h2 id="schritt-reihen">5 · Wer noch handelt: eigene Reihen</h2>
+    <h2 id="schritt-reihen">5 · Wer noch handelt: über die Aktivität</h2>
     <p class="folie-satz">Wer muss außer eurer Person etwas tun, damit der Wert ankommt – Mensch oder System?</p>
     <MiroFrame name="T4 · 1 · Story Map" />
     <ul class="gross">
-      <li data-schritt><strong>Violett „Wer noch: …“:</strong> ihre Tasks in die Reihe „Wer muss noch handeln, damit der Wert ankommt?“. <Timer minuten={2} /></li>
-      <li data-schritt><strong>Grau, bei den Tasks:</strong> nur, worauf die Person wartet oder was sie sieht; aktiv: „zeigt …“.</li>
+      <li data-schritt><strong>Kleines violettes Sticky „Wer noch: …“</strong> in die Reihe „Wer handelt“, über die Aktivität, bei der diese Person handelt. Ihre Tasks in die Fläche, unter die Tasks eurer Person. <Timer minuten={2} /></li>
+      <li data-schritt><strong>Grau, unter den Task, bei dem die Person wartet:</strong> nur, worauf sie wartet oder was sie sieht; aktiv: „zeigt …“.</li>
     </ul>
-    <p class="paar" data-schritt><span class="nicht">Nicht so:</span> „Bestellung wird bearbeitet“ (gelb, in der Reihe der Pendler*in) <span class="so">So:</span> „Barista: Bestellung sehen, zubereiten“ (eigene Reihe) · „System: zeigt ‚Fertig 7:31‘“ (grau)</p>
-    <p class="pruefen" data-schritt><strong>Prüft:</strong> Wessen Reihe ist leer, obwohl ohne sie nichts ankommt?</p>
-    <p class="nur-handout">Wo mehrere Nutzergruppen oder Systeme mitspielen, folgt die Map ihnen auf derselben Zeitachse – „it’s OK to anthropomorphize backend services“ ({PATTON}, Kap. 2, Map in a Narrative Flow Across Many Users and Systems). Torres zählt beim Mappen einer Idee ausdrücklich alle Beteiligten auf, auch die Software (S. 120–121). An der Kaffeebar ist die Barista diese zweite Person: Ohne sie kommt kein Kaffee an.</p>
+    <p class="paar" data-schritt><span class="nicht">Nicht so:</span> „Bestellung wird bearbeitet“ (gelb, als Task der Pendler*in) <span class="so">So:</span> violett „Barista“ über „Bestellen“, darunter „Bestellung sehen, zubereiten“ · „System: zeigt ‚Fertig 7:31‘“ (grau)</p>
+    <p class="pruefen" data-schritt><strong>Prüft:</strong> Wer muss noch etwas tun, damit der Wert ankommt – und steht ein violettes Sticky über seiner Aktivität?</p>
+    <p class="nur-handout">Wo mehrere Nutzergruppen oder Systeme mitspielen, folgt die Map ihnen auf derselben Zeitachse – „it’s OK to anthropomorphize backend services“ ({PATTON}, Kap. 2, Map in a Narrative Flow Across Many Users and Systems). Wer gerade handelt, zeigt ein kleines Personen-Sticky über der Aktivität (ebd.). Die Tasks der anderen Person stehen im selben Erzählfluss, unter den Tasks eurer Person. Torres zählt beim Mappen einer Idee ausdrücklich alle Beteiligten auf, auch die Software (S. 120–121). An der Kaffeebar ist die Barista diese zweite Person: Ohne sie kommt kein Kaffee an.</p>
   </Folie>
 
   <Folie>
@@ -434,7 +434,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
     <ul class="gross">
       <li data-schritt><strong>Allein:</strong> Geht eure Map von links nach rechts durch und ergänzt, was fehlt; offene Fragen als Sprechblase. <Timer minuten={5} /></li>
     </ul>
-    <p class="mini" data-schritt><strong>Kaffeebar:</strong> Was, wenn die Abfahrtszeit schon vorbei ist? → Hinweis. Dazwischen: Wer sieht die Bestellung? → die Reihe der Barista.</p>
+    <p class="mini" data-schritt><strong>Kaffeebar:</strong> Was, wenn die Abfahrtszeit schon vorbei ist? → Hinweis. Dazwischen: Wer sieht die Bestellung? → die Tasks der Barista.</p>
     <p class="pruefen" data-schritt><strong>Prüft:</strong> Wo springt eure Geschichte zwischen zwei Stickies – und was ist, wenn …?</p>
     <p class="nur-handout">„Was ist, wenn …?“ – so findet die Map die Löcher in der Geschichte ({PATTON}, Kap. 2, Mapping Helps You Spot Holes in Your Story). „Was passiert dazwischen?“ fragt nach den unscheinbaren Schritten, die beim Erzählen untergehen (Kap. 14, Validate completeness). Patton lässt dafür andere fragen; im Kurs fragt ihr euch selbst, weil jede*r von euch ein eigenes Produkt hat.</p>
   </Folie>
@@ -497,9 +497,9 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <p>Im Frame „T4 · 1 · Story Map“ hat jede*r einen eigenen Bereich (Produkt n, eure Spalte von links). Von oben nach unten:</p>
   <ol>
     <li><strong>Kopfzeile:</strong> „Für: … | Outcome (Brief): … | Idee (Value Map): …“</li>
-    <li><strong>Violett „Wer handelt: …“</strong> und die Backbone-Reihe „Aktivitäten (Backbone)“ mit einem grünen Sticky zum Kopieren: erst in Schritt 4 eins über jede Gruppe, gelesen mit „und dann …“.</li>
-    <li><strong>Violett „Wer noch: …“</strong> mit der Reihe „Wer muss noch handeln, damit der Wert ankommt?“.</li>
-    <li><strong>Offene Fläche für Tasks und alles darunter:</strong> gelbe Tasks von links nach rechts bis zum Ende, Platz nach unten, stapeln erlaubt. Blau, Rot und Grau hängen unter dem Task, zu dem sie gehören. Links daneben die Fragekarte zu Schritt 6 und 7.</li>
+    <li><strong>Reihe „Wer handelt“</strong> über dem Backbone: kleine violette Stickies „Wer handelt: …“ (eure Hauptperson) und „Wer noch: …“, jedes über der Aktivität, bei der diese Person handelt.</li>
+    <li><strong>Backbone-Reihe „Aktivitäten (Backbone)“</strong> mit einem grünen Sticky zum Kopieren: erst in Schritt 4 eins über jede Gruppe, gelesen mit „und dann …“.</li>
+    <li><strong>Offene Fläche für Tasks und alles darunter:</strong> gelbe Tasks von links nach rechts bis zum Ende, Platz nach unten, stapeln erlaubt. Tasks anderer Personen stehen unter den Tasks eurer Person; Blau, Rot und Grau hängen unter dem Task, zu dem sie gehören. Links daneben die Fragekarte zu Schritt 6 und 7.</li>
     <li><strong>Streifen „Schneiden“</strong> unter der Fläche: die gestrichelte Slice-Linie, pink „Outcome Slice 1: …“ und cyan „Wir lernen, ob … (A_)“. Sie warten dort bis Schritt 8 (Outcome) und 9 (Schneiden); in Schritt 8 legt ihr Pink und Cyan links unter die Fragekarte.</li>
   </ol>
   <p>Rechts neben der Fläche der Kasten „Outcome erreicht? ja / nein, es fehlt: …“ und die Legende: Grün Aktivität · Gelb Task (Meereshöhe) · Blau Details/Varianten · Rot geht schief · Grau System · Pink Outcome · Cyan „Wir lernen, ob“ · Violett wer handelt · „*“ kein Software-Schritt · Sprechblase offene Frage → Annahmen-Map. Daneben die Regel: „Schieben, nicht kopieren: jedes Sticky gibt es einmal.“</p>
