@@ -5,7 +5,7 @@ import type { Notiz } from './typen';
 // (begleiter-tag-4.test.ts). Die Origin Story steht seit 26.11. im Abschluss von Tag 4 (tag-4#abschluss), nicht mehr hier.
 // Seit 26.11. ohne die Intuit-Folien (Geschichte im Handout von #karte); neu: schritte-der-idee,
 // ergebnis-gilt, test-arten, beispiel-map; gegen-den-beleg steht nach der Lernkarte. Seit dem Nachtrag 26.11. abends
-// keine docs-Dateien: Karte E1 und Lernkarten auf Miro, Annahmen in der Werkstatt; Claude nur zu Hause in claude.ai, Claude Code erst ab Tag 5.
+// keine docs-Dateien: Karte E1 und Lernkarten auf Miro, Annahmen in der Werkstatt; Tag 4 ohne Claude (seit 27.11. auch ohne Hausaufgabe in claude.ai), Claude Code erst ab Tag 5.
 // Thomke: gedruckte Seiten aus quellen/thomke/text.txt (=====PAGE n=====); Torres: PDF-Seiten wie in
 // quellen/torres/text.txt; Bland: gedruckte Seiten.
 const THOMKE = 'Stefan H. Thomke, The Scientific Mindset';

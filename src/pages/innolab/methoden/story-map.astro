@@ -3,8 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import Orientierung from '../../../components/Orientierung.astro';
 import MethodenKarte from '../../../components/MethodenKarte.astro';
 import Uebergang from '../../../components/Uebergang.astro';
-import ClaudePruefung from '../../../components/ClaudePruefung.astro';
-import Prompt from '../../../components/Prompt.astro';
+import Selbstpruefung from '../../../components/Selbstpruefung.astro';
 import FooterNav from '../../../components/FooterNav.astro';
 import Folie from '../../../components/Folie.astro';
 import Timer from '../../../components/Timer.astro';
@@ -12,10 +11,8 @@ import BuchAbbildung from '../../../components/bild/BuchAbbildung.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
-import { MCP_WERKZEUGE } from '../../../werkstatt/vertrag';
 
 const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
-const ANNAHMEN_SLICE = `Im Bild: meine Story Map von Miro (Frame „T4 · 1 · Story Map“, mein Bereich), Slice 1 über der Linie, links Outcome und „Wir lernen, ob …“. Lies aus der Werkstatt meine Annahmen-Map (Werkzeug ${MCP_WERKZEUGE.artefaktLesen}). Geh Slice 1 Schritt für Schritt durch und nenn für jeden Schritt, was dort angenommen wird – nach den Arten der Map: wünschenswert, bedienbar, machbar, wirtschaftlich, ethisch. Markier die Annahmen, die noch nicht in der Map stehen. Kannst du ein Sticky im Bild nicht lesen, sag das, statt zu raten. Ändere nichts.`;
 // Das Warm-up zeigt Markus an seinem eigenen Morgen auf Miro (eigenes Board, nicht das Team-Board; der Link steht nicht
 // im öffentlichen Repo). Die Studierenden schreiben ihren Morgen in „T4 · 1 · Warm-up · euer Morgen · Produkt n“.
 const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
@@ -492,7 +489,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
       <li data-schritt><strong>Für euch:</strong> Was hat euch an eurer Map überrascht?</li>
     </ul>
     <p class="pruefen" data-schritt><strong>Prüft:</strong> Steht jedes Sticky nur einmal auf der Map?</p>
-    <p class="nur-handout">Die Story Map liegt nur auf Miro, im Frame „T4 · 1 · Story Map“, in eurem Bereich – keine Datei im Repo. Heute fragt ihr Claude nicht: Wer mag, lässt zu Hause in claude.ai die Annahmen hinter Slice 1 suchen (freiwillig, Prompt unten unter „Prüfen“). Neue Annahmen tragt ihr selbst in die Annahmen-Map der Werkstatt ein. Ein Screenshot dieses Bereichs ist an Tag 5 eine Eingabe für Claude Code, wenn es Slice 1 baut.</p>
+    <p class="nur-handout">Die Story Map liegt nur auf Miro, im Frame „T4 · 1 · Story Map“, in eurem Bereich – keine Datei im Repo. Neue Annahmen tragt ihr selbst in die Annahmen-Map der Werkstatt ein. Ein Screenshot dieses Bereichs ist an Tag 5 eine Eingabe für Claude Code, wenn es Slice 1 baut.</p>
   </Folie>
 
   <div class="nur-handout">
@@ -512,10 +509,8 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <p>Offene Fragen, die beim Mappen auftauchen, tragt ihr als neue Annahmen in die Annahmen-Map der Werkstatt ein.</p>
 
   <h2 id="pruefen">Prüfen</h2>
-  <p><strong>Eure Story Map liegt nur auf Miro,</strong> in eurer Spalte im Frame „T4 · 1 · Story Map“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.</p>
-  <ClaudePruefung slug="story-map" />
-  {/* Seit 26.11.2026 nachts (Dozent): Tag 4 ohne Claude Code – „Annahmen hinter Slice 1“ nur noch als freiwillige Hausaufgabe in claude.ai. */}
-  <Prompt label="Annahmen hinter Slice 1 · zu Hause, freiwillig, in claude.ai" note="In claude.ai mit dem Werkstatt-Connector und dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Screenshot eures Bereichs im Frame „T4 · 1 · Story Map“ unter dem Prompt einfügen – erst nachdem ihr Slice 1 selbst auf Annahmen abgeklopft habt. Claude findet, ihr entscheidet.">{ANNAHMEN_SLICE}</Prompt>
+  <p><strong>Eure Story Map liegt nur auf Miro,</strong> in eurer Spalte im Frame „T4 · 1 · Story Map“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>
+  <Selbstpruefung slug="story-map" />
   </div>
 
   <Folie>

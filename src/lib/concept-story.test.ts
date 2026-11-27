@@ -84,7 +84,8 @@ describe('Tag 4: Concept Story schreiben (NDU-66)', () => {
     // Seit 26.11. abends: keine docs-Dateien für Studierende – die Story bleibt auf Miro.
     expect(f).toContain('Die Story bleibt auf Miro in eurem Frame – eine Datei schreibt ihr nicht.');
     expect(f).not.toContain('docs/');
-    expect(seite).toContain('<ClaudePruefung slug="concept-story" />');
+    // Seit 27.11.2026 (Dozent): Tag 4 ohne Claude-Hausaufgabe – Prüfen nur noch selbst, mit der Prüfliste.
+    expect(seite).toContain('<Selbstpruefung slug="concept-story" />');
     expect(seite).toContain('<span class="eyebrow">Innolab · Tag 4 · Methode</span>');
     expect(NOTIZEN_CONCEPT_STORY.vorgehen?.uebung?.dauer).toBe('30 min (25 + 5)');
   });
@@ -198,8 +199,8 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(f).not.toContain('Vorlage in <code>docs/STORYS.md</code>');
     expect(seite).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(seite).not.toContain('<Prompt label="Vorlage · docs/STORYS.md">');
-    // Seit 27.11.: Prüfen an einem Bild des Frames (ClaudePruefung, Weg Miro) – nicht mehr über den Ausweichweg „Ohne Claude Code“.
-    expect(seite).toContain('Eure Story liegt nur auf Miro, in eurem Frame „T4 · 0 · Concept Story · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.');
+    // Seit 27.11.2026 (Dozent): Prüfen selbst mit der Prüfliste, ohne Claude (vorher an einem Bild des Frames in claude.ai).
+    expect(seite).toContain('Eure Story liegt nur auf Miro, in eurem Frame „T4 · 0 · Concept Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
     expect(seite).not.toContain('Ohne Claude Code');
     expect(NOTIZEN_CONCEPT_STORY.vorgehen.miro?.frame).toBe('T4 · 0 · Concept Story · Produkt 1');
   });

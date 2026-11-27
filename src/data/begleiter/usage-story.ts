@@ -126,7 +126,7 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
       achten: [
         'Höhepunkt als Bildschirm oder Moment, nicht als „Problem gelöst“.',
         'Der Papier-Prototyp zeichnet genau die Stationen 2 bis 6 – sie müssen konkret sein.',
-        'Keine Runde über Kreuz: Jede*r hat ein eigenes Produkt; zweite Probe allein ist die Claude-Prüfung im Handout – zu Hause, in claude.ai.',
+        'Keine Runde über Kreuz: Jede*r hat ein eigenes Produkt; zweite Probe allein ist die Prüfliste im Handout.',
       ],
     },
     kern: [

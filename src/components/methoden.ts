@@ -367,7 +367,7 @@ export const METHODEN: Methode[] = [
         frage: 'Ist keine Lernkarte im Bild, überspring diesen Punkt ohne Befund – E1 läuft in diesem Kurs nicht.',
       },
     ],
-    ki: 'Gegenprobe zu E1: Wie könnte E1 uns in die Irre führen – und welcher kleinere Test wäre genauer?',
+    ki: 'Prüft, ob Karte E1 genau eine Annahme testet und die Schwelle vor dem Test feststeht; schreibt nichts um.',
     quelle: 'Teresa Torres, Continuous Discovery Habits, Kap. 9–10; David J. Bland & Alexander Osterwalder, Testing Business Ideas; Stefan H. Thomke, The Scientific Mindset (2027), S. 72, 86–87, 127; Origin Story nach Donna Lichaw, Kap. 4',
   },
   {
@@ -383,7 +383,7 @@ export const METHODEN: Methode[] = [
       { id: 'story-map-slice-durchgehend', text: 'Slice 1 geht durch alle Aktivitäten von Anfang bis Ende; keine Aktivität wurde nach unten geschoben.' },
       { id: 'story-map-kein-software', text: 'Was in Slice 1 keine Software ist, steht trotzdem auf der Map und ist als „kein Software-Schritt“ markiert.' },
     ],
-    ki: 'Spielt „Was ist, wenn …?“: fehlende Schritte dazwischen, Fehlerwege, eine zweite Gruppe; nennt die Annahmen hinter jedem Schritt von Slice 1.',
+    ki: 'Spielt „Was ist, wenn …?“: fehlende Schritte dazwischen, Fehlerwege, eine zweite Gruppe.',
     quelle: 'Jeff Patton, User Story Mapping (O’Reilly 2014), Read This First, Kap. 1–5, 14',
   },
   {

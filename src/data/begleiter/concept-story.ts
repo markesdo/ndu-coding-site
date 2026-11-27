@@ -637,7 +637,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Schritt 1 (25 min, allein): die Stickies unter den sieben Stationen in „T4 · 0 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person. Fertig, wenn Krise und Höhepunkt stehen – sonst ist die Story eine Linie (Flach-Probe, Kursregel).',
-        'Schritt 2 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map – beides auf der Folie verlinkt. Die Story bleibt auf Miro; geprüft wird mit einem Screenshot des Frames in Claude (Opus).',
+        'Schritt 2 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map – beides auf der Folie verlinkt. Die Story bleibt auf Miro; geprüft wird selbst, mit der Prüfliste im Handout.',
       ],
       achten: [
         'Exposition beschreibt die Welt der Zielgruppe, nicht das Produkt.',

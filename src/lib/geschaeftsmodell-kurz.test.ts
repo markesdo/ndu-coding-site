@@ -54,7 +54,8 @@ describe('Geschäftsmodell gekürzt (26.11.2026)', () => {
     expect(v).toContain('<li><strong>Wert?</strong> Ertrag: wer zahlt wofür; wie die Kundschaft heute bezahlt. Kosten: die größten Posten.</li>');
     expect(v).toContain('<li><strong>Linie:</strong> [Outcome] führt zu [Impact], weil …</li>');
     expect(q.match(/docs\//g) ?? []).toStrictEqual([]);
-    expect(q).toContain('Euer Modell liegt nur auf Miro, in eurem Frame „T4 · 7 · Geschäftsmodell · Produkt n“. Zu Hause, in claude.ai: Claude prüft es an einem Bildschirmfoto, mit dem Werkstatt-Connector und mit dem besten Modell, das euch zur Verfügung steht – ab Tag 5 Opus. Schritt für Schritt unter „So geht’s“.');
+    // Seit 27.11.2026 (Dozent): Prüfen selbst, ohne Claude-Hausaufgabe.
+    expect(q).toContain('Euer Modell liegt nur auf Miro, in eurem Frame „T4 · 7 · Geschäftsmodell · Produkt n“, die wirtschaftliche Annahme in der Werkstatt. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
   });
 
   it('Begleiter: jede Folie hat eine Notiz mit live-Stichworten, Seite zwischen Concept Story und Experiment', () => {
