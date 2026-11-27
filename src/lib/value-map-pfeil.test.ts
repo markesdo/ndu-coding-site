@@ -124,7 +124,7 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(folie('ps-finden')).toContain('<li data-schritt><strong>Idee möglich machen:</strong> Was braucht es, damit eure Idee passiert? Ein gelber Zettel je Produkt oder Dienst – zusammen ersetzen sie den Ideen-Zettel.</li>');
     // 27.11.: Products & Services = was es braucht, damit die Idee passiert (statt „Idee zerlegen“).
     expect(folie('ps-finden')).toContain('<strong>Kaffeebar:</strong> Damit „Bestellen im Gehen“ passiert, braucht es: QR-Code an der Hallentür, Bestellung im Browser ohne App · Express-Ausgabe mit drei Standardgetränken.</p>');
-    expect(folie('vom-satz')).toContain('<td>Products & Services – was es braucht, damit die Idee passiert</td>');
+    expect(folie('vom-satz')).toContain('<td>Products & Services <span style="font-size:.8em">– was es braucht, damit die Idee passiert</span></td>');
     expect(vm.match(/zerleg/g) ?? []).toStrictEqual(['zerleg']);
     expect(folie('vorgehen')).toContain('den gelben Ideen-Zettel ersetzt ihr durch die Produkte und Dienste, die es braucht, damit die Idee passiert – diese Frage ist das Vorgehen dieses Kurses');
     expect(JSON.stringify(NOTIZEN['/innolab/methoden/value-map']?.vorgehen ?? {})).toContain('die Idee wird zu Products & Services (ersetzt durch die Produkte, die es braucht, damit die Idee passiert)');
