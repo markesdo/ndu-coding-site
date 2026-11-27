@@ -84,7 +84,7 @@ describe('Tag 4: Ablauf-Texte und Namen (Durchsicht 26.11.)', () => {
   // Seit 26.11.2026 nachts: Claude Pro und Claude Code an Tag 5 (tag-5-claude-pro.test.ts); Tag 4 hat stattdessen einen Puffer.
   it('kein Claude-Block mehr an Tag 4; der Puffer nach dem Prototyp auf Papier sagt, was nachzuholen ist', () => {
     expect(bloecke.map((b) => b.titel)).not.toContain('Claude Pro und Claude Code, gemeinsam');
-    expect(text('Prototyp auf Papier')).toBe('Papier-Skizzen, Abnahmekriterien, Karte E2, Trockenlauf auf Papier. Gebaut wird an Tag 5.');
+    expect(text('Prototyp auf Papier')).toBe('Papier-Skizzen oder lo-fi in Figma, Abnahmekriterien, Karte E2, Trockenlauf. Gebaut wird an Tag 5.');
     expect(text('Puffer: nachholen, was offen ist')).toBe('Allein fertig machen, was heute offen blieb – zuerst Papier-Prototyp und Karte E2, dann Story Map und Usage Story; Markus kommt ins 1:1.');
   });
   it('kein „Geschäftsmodell-Karten“ mehr auf Tag 4, Concept Story und Value Map; Pitch ohne Gebäck', () => {

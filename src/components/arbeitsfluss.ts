@@ -200,7 +200,7 @@ const ROH: Omit<Station, 'zeile'>[] = [
   },
   {
     id: 'prototyp-spike', methode: 'prototyp-spike', kurz: 'Prototyp auf Papier, Karte E2', linien: ['beleg', 'annahme'], spalte: 4,
-    kommtAus: ['Usage Story', 'Slice 1', 'eine Annahme'], jetzt: 'Papier-Skizzen, Abnahmekriterien, Karte E2',
+    kommtAus: ['Usage Story', 'Slice 1', 'eine Annahme'], jetzt: 'Skizzen, Abnahmekriterien, Karte E2',
     satz: 'Ein Blatt je Bildschirm: genug, damit fünf Menschen den Höhepunkt erreichen können – oder nicht. Gebaut wird an Tag 5.',
     gebrauchtIn: 'Baum: Lösungen und Tests · Fünf Tests bis Tag 5 · Befunde U… · Lernkarte · Issues · Bau an Tag 5',
   },

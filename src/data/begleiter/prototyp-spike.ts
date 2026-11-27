@@ -13,14 +13,14 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
   worum: {
     live: [
       'Anknüpfen: Usage Story, Stationen 2 bis 6 – daraus werden Bildschirme.',
-      'Papier-Skizzen: ein Blatt pro Bildschirm, von Hand; Pfeile, wohin jeder Knopf führt.',
+      'Papier-Skizzen: ein Blatt pro Bildschirm oder lo-fi in Figma; Pfeile je Knopf.',
+      'Kursregel: Figma nur lo-fi – Graustufen, keine Komponenten, keine Klicks.',
       'Kursregel: Papier vor Claude – an Tag 5 baut Claude genau das.',
-      'Testen auf Papier: jemand tippt, ihr legt das nächste Blatt hin.',
-      '„Heute auf Papier – an Tag 5 baut Claude Code daraus.“',
+      'Testen auf Papier: jemand tippt; nächstes Blatt legen oder Frame wechseln.',
     ],
     verstaendnis: {
       frage: 'Wozu zeichnet ihr erst auf Papier, wenn Claude Code den Prototyp an Tag 5 ohnehin baut?',
-      antwort: 'Damit ihr jeden Bildschirm selbst entscheidet und den Ablauf testet, bevor eine Zeile Code steht. An Tag 5 baut Claude Code nach den Fotos der Blätter. Ohne Papier bekämt ihr Claudes Vorstellung von eurem Produkt.',
+      antwort: 'Damit ihr jeden Bildschirm selbst entscheidet und den Ablauf testet, bevor eine Zeile Code steht. An Tag 5 baut Claude Code nach den Fotos oder Figma-Bildern eurer Skizzen. Ohne Papier bekämt ihr Claudes Vorstellung von eurem Produkt.',
     },
     kern: [
       {
@@ -30,6 +30,12 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       {
         text: 'Paper Prototype: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction.“ – „ideal for rapidly testing the concept of your product quickly with customers.“',
         quelle: `${BLAND}, S. 182`,
+      },
+    ],
+    fragen: [
+      {
+        frage: 'Dürfen wir Figma nehmen?',
+        antwort: 'Ja, lo-fi: Graustufen-Rahmen mit Kästen, Text und Pfeilen, ein Frame pro Bildschirm, als Bild in euren Miro-Frame. Keine Farben, keine Komponenten, keine Klick-Verbindungen (Kursregel). Der Grund: Heute zählen Ablauf und Inhalt, nicht das Aussehen. Bland stellt den Papier-Prototyp an den Anfang, „ideal for rapidly testing the concept“ (S. 182); der klickbare kommt danach (S. 185) – bei euch an Tag 5, gebaut von Claude Code. Im Trockenlauf wechselt ihr den Frame statt das Blatt.',
       },
     ],
     ueberleitung: 'Was zeigt so ein Prototyp – und was zeigt er nicht?',
@@ -64,7 +70,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Eine Testperson, eine Aufgabe, der Prototyp – alle schauen nur zu.',
       'Falle: Meinungsfragen („Gefällt dir das?“) – gemessen wird, was sie tut.',
       'Ergebnis sind Bedienprobleme; ob sie es will, zeigt E1.',
-      'Heute Trockenlauf auf Papier; Zielgruppe freiwillig bis Tag 5.',
+      'Heute Trockenlauf untereinander; Zielgruppe freiwillig bis Tag 5.',
     ],
     verstaendnis: {
       frage: 'Eine Testperson sagt am Ende: „Coole App, würde ich nutzen.“ Was davon notiert ihr?',
@@ -190,12 +196,12 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
 
   'schritt-papier': {
     live: [
-      'Timer 10 min: ein Blatt je Bildschirm, Stationen 2 bis 6.',
+      'Timer 10 min: Blatt oder Figma-Frame je Bildschirm, Stationen 2–6.',
       'Höhepunkt = eigenes Blatt mit Stern und wörtlichem Satz.',
       'Pfeil an jedem Knopf zur Nummer des nächsten Blatts.',
       'Blätter für den Trockenlauf bereitlegen, Fotos in Feld 1.',
     ],
-    uebung: { dauer: '10 min', form: 'allein, Papier und Stift; Foto je Blatt in Feld 1' },
+    uebung: { dauer: '10 min', form: 'allein, Papier und Stift oder Figma lo-fi; Foto oder Bild je Bildschirm in Feld 1' },
     ueberleitung: 'Was muss der Prototyp zeigen? Drei Sätze – heute fürs Papier, an Tag 5 für Claude Code.',
   },
 
@@ -222,13 +228,13 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Karte heute, auch wenn die Tests freiwillig sind.',
     ],
     uebung: { dauer: '10 min', form: 'allein, Feld 3 auf Miro' },
-    ueberleitung: 'Und jetzt der eine Test heute: der Trockenlauf auf Papier.',
+    ueberleitung: 'Und jetzt der eine Test heute: der Trockenlauf.',
   },
 
   'schritt-trockenlauf': {
     live: [
       'Timer 10 min, drei Runden à gut drei Minuten nach Tabelle.',
-      'Wem er gehört: Blatt in die Kamera, Aufgabe vorlesen, nächstes Blatt legen.',
+      'Wem er gehört: Blatt/Frame zeigen, Aufgabe vorlesen, nächstes Blatt/Frame.',
       'Dritte Person notiert in Feld 4, Zeile 0 des fremden Frames.',
       'Kursregel – keine Kritik: kein Feedback, nächste Runde.',
     ],

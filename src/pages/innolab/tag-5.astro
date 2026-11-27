@@ -17,7 +17,7 @@ const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas
 <Layout title="Tag 5 · Backlog & Sprint">
   <span class="eyebrow">Innolab · Tag 5 · Samstag, 12. Dezember 2026 · 09:00–17:00 · online in Teams</span>
   <h1>Tag 5 · Backlog & Sprint</h1>
-  <p class="lead">Ihr entscheidet nach euren Tests, stellt euch als Team für drei Produkte auf, baut Backlogs, die jede*r im Team abarbeiten kann, und plant euren Sprint. Am Nachmittag wird gebaut: Claude Code, das ihr heute gemeinsam einrichtet, baut Slice 1 nach euren Papier-Skizzen von Tag 4.</p>
+  <p class="lead">Ihr entscheidet nach euren Tests, stellt euch als Team für drei Produkte auf, baut Backlogs, die jede*r im Team abarbeiten kann, und plant euren Sprint. Am Nachmittag wird gebaut: Claude Code, das ihr heute gemeinsam einrichtet, baut Slice 1 nach euren Skizzen von Tag 4.</p>
   <p>Heute seid ihr online in einer Teams-Besprechung; den Link findet ihr in Teams.</p>
   <Orientierung seite="innolab/tag-5" />
 
@@ -33,7 +33,7 @@ const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas
     <Block time="13:15–13:45" type="uebung" title="Schneiden statt Schätzen" href="/innolab/methoden/schneiden">Wer baut, schätzt; Plan-Check mit Claude, Geteiltes zeigen, die anderen prüfen.</Block>
     <Block time="13:45–14:25" type="uebung" title="Sprint-Planning mit Störfall" href="#stoerfall">Sprint-Ziel, Auswahl, wer baut was – und eine Karte, die alles ändert.</Block>
     <Block time="14:25–14:35" type="pause" title="Pause" />
-    <Block time="14:35–15:35" type="uebung" title="Bauen" href="#bauen-skizzen">Das Mess-Issue zuerst, Branding, dann das erste Issue mit Oberfläche – nach euren Papier-Skizzen von Tag 4.</Block>
+    <Block time="14:35–15:35" type="uebung" title="Bauen" href="#bauen-skizzen">Das Mess-Issue zuerst, Branding, dann das erste Issue mit Oberfläche – nach euren Skizzen von Tag 4.</Block>
     <Block time="15:35–15:45" type="pause" title="Pause" />
     <Block time="15:45–16:45" type="uebung" title="Bauen" href="#bauen">Issues, Belege, Pull Requests.</Block>
     <Block time="16:45–17:00" type="plenum" title="Abschluss" href="#abschluss">Der Sprint läuft – bis Tag 6.</Block>
@@ -205,7 +205,7 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
       sichern“ abgeleitet; statt Wegwerf-Branch ein Branch je Issue und ein Pull Request (Coding-Kurs, konzepte/linear#prompts). */}
   <Folie zurueck="/innolab/tag-5#stoerfall" weiter="#abschluss" weiterTitel="Abschluss">
     <h2 id="bauen-skizzen">Bauen: das erste Issue nach euren Skizzen</h2>
-    <p class="folie-satz">Eure Blätter von Tag 4 sind der Bauplan – Claude Code baut daraus Slice 1, Issue für Issue.</p>
+    <p class="folie-satz">Eure Skizzen von Tag 4 sind der Bauplan – Claude Code baut daraus Slice 1, Issue für Issue.</p>
     <ol class="gross dicht">
       <li data-schritt><strong>Claude Code, mit Opus:</strong> euer Repo, Terminal, <code>claude</code>, dann <code>/model opus</code>.</li>
       <li data-schritt><strong>Prompt „Issue nach Skizzen“</strong> aus dem Handout, Kennung eintragen; darunter die Bilder aus eurem Frame „T4 · 5 · Prototyp · Produkt n“ (<code>ctrl</code> + <code>V</code>).</li>
@@ -221,7 +221,7 @@ Beleg: gestützt → darum: nächste Annahme; Zugliste in Slice 1 (U2).</Prompt>
       <p><strong>Sichern:</strong> Prompt „Vorschau sichern“. Den Link tragt ihr in Feld „5 · Tag 5: gebaut“ ein und öffnet ihn am Handy. Verlangt das Handy eine Anmeldung bei Vercel: auf vercel.com euer Projekt → Settings → Deployment Protection → Vercel Authentication aus → Save (wie an Coding-Tag 3) – sonst können eure Testpersonen an Tag 6 den Link nicht öffnen. Dann weiter wie immer: Pull Request ins Issue, eine andere Person prüft, der Product Owner setzt Done (<a href="/innolab/methoden/sprint#spec">Das Issue ist die Spezifikation</a>).</p>
       <Prompt label="Issue nach Skizzen · Claude Code, mit Opus" note="Statt [Kennung] die Kennung des Issues. Erst schicken, wenn die Bilder unter dem Prompt stehen.">Hol dir über den Linear-MCP das Issue [Kennung]. Setz es auf In Progress, weis es mir zu und leg einen Branch an, der mit der Kennung beginnt.
 
-Unter dieser Nachricht stehen Bilder aus Miro: meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen, ein Blatt je Bildschirm. Die Pfeile auf den Skizzen zeigen, wohin ein Knopf führt; das Blatt mit dem Stern ist der Höhepunkt.
+Unter dieser Nachricht stehen Bilder aus Miro: meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen oder Bilder meiner Figma-Frames, ein Blatt oder Frame je Bildschirm. Die Pfeile auf den Skizzen zeigen, wohin ein Knopf führt; das Blatt oder der Frame mit dem Stern ist der Höhepunkt.
 
 Bevor du baust: Zähl mir in höchstens sechs Zeilen auf, welche Bildschirme dieses Issue betrifft, welcher Knopf wohin führt und wie du jedes Akzeptanzkriterium belegst. Was du auf den Bildern nicht lesen kannst oder was im Issue fehlt, fragst du, statt zu raten. Dann warte auf mein Okay.
 

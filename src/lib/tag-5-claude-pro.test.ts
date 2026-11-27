@@ -166,7 +166,7 @@ describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)
       'Claude Code, mit Opus:', 'Prompt „Issue nach Skizzen“', 'Claude nennt zuerst die Bildschirme.', 'Ansehen, schmal wie ein Handy:', 'Prompt „Vorschau sichern“:',
     ]);
     expect(f).toContain('<Prompt label="Issue nach Skizzen · Claude Code, mit Opus"');
-    expect(f).toContain('meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen');
+    expect(f).toContain('meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen oder Bilder meiner Figma-Frames, ein Blatt oder Frame je Bildschirm.');
     expect(f).toContain('<Prompt label="Vorschau sichern · Claude Code">');
     expect(f).toContain('öffne einen Pull Request nach main – mergen tust du nicht');
     // Der erste Bau-Block ist 15 Minuten kürzer als bis zum 26.11. (Block mit Claude Pro, Claude Code und Linear am Morgen).
@@ -174,7 +174,7 @@ describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)
     expect(b.map((x) => [hhmm(x.von), hhmm(x.bis)])).toStrictEqual([['14:35', '15:35'], ['15:45', '16:45']]);
     // Code-Review #459: Der erste Bau-Block führt direkt auf die Folie mit den Skizzen.
     expect(b[0].href).toBe('#bauen-skizzen');
-    expect(seite(T5)).toContain('nach euren Papier-Skizzen von Tag 4.</Block>');
+    expect(seite(T5)).toContain('nach euren Skizzen von Tag 4.</Block>');
   });
 
   it('die Anker der Setup-Seite, auf die die Folie zeigt, sind Überschriften', () => {

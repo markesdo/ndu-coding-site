@@ -101,7 +101,7 @@ export const NOTIZEN_TAG_5: Record<string, Notiz> = {
   'bauen-skizzen': {
     live: [
       'Erst Mess-Issue und Branding, dann das erste Issue mit Oberfläche.',
-      'Bilder dazu: Usage Story, Slice 1, Abnahmekriterien, Skizzen-Fotos.',
+      'Bilder dazu: Usage Story, Slice 1, Abnahmekriterien, Skizzen (Fotos oder Figma-Bilder).',
       'Claude zählt erst die Bildschirme auf – dann „Ja, los.“',
       'Fragen: Stimmt die Liste mit den Blättern von Tag 4?',
       'Falle: verschönern lassen – Farben kommen aus dem Branding.',
