@@ -52,7 +52,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
       'Links der Pfad im Baum, rechts was bei Slice 1 steht.',
       '„Slice 1 ist kein Knoten im Baum – er macht den Spitzenreiter konkret.“',
       'Annahme nur ankündigen: gewählt wird an der Experiment-Karte.',
-      'Tag 5: Annahme hält → Slice bleibt; fällt sie → zurück in den Baum.',
+      'Tag 5, Debrief: hätte die Annahme gehalten → Slice bleibt; sonst Baum.',
     ],
     kern: [
       {
