@@ -335,6 +335,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     const beispiel = folie('beispiel');
     for (const t of ['Link in den Favoriten', 'Zug aus der Liste', 'Becher mit Zug beschriftet', 'vorher online zahlen']) expect(sichtbar(beispiel), t).toContain(`<span class="oder">${t}</span>`);
     expect(sichtbar(beispiel)).toContain('<td>Größe, Milch · <span class="oder">');
+    expect(sichtbar(beispiel)).toContain('<thead><tr><th><span class="oder">orange</span> = oder</th>');
     const h = handout(beispiel);
     expect(h).toContain('darunter orange: Link in den Favoriten (Slice 2), Stammbestellung (später);');
     expect(h).toContain('Größe und Milch (blau, Slice 2)');
