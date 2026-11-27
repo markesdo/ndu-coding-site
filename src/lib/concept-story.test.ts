@@ -146,6 +146,14 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(bautMit.fragen?.find((f) => f.frage.startsWith('Wie findet ihr'))?.antwort).toContain('Übertrag des Kurses');
   });
 
+  it('slack: die Linie als naheliegende Lösung erklärt, Übertrag als Lesart markiert (27.11.)', () => {
+    expect(folie('slack')).toContain('<p data-schritt><strong>Die naheliegende Lösung wäre die Linie:</strong> eine Plattform, die „easier to use“ ist als E-Mail. Aber Schwierigkeit war nicht das Problem – das Problem war: nichts an einem Ort.</p>');
+    expect(folie('slack')).not.toContain('Die Linie daneben:</strong>');
+    const fragen = NOTIZEN_CONCEPT_STORY.slack.fragen ?? [];
+    expect(fragen.map((f) => f.frage)).toStrictEqual(['Was heißt „die Linie“ hier?', 'Was ist bei euch die Linie?']);
+    expect(fragen[1].antwort).toMatch(/^Lesart dieses Kurses:/);
+  });
+
   it('baut-mit: Kette Krise → Höhepunkt → Anforderung → Gebaut, letzte Zeile als Kursregel, keine eigene Begründung', () => {
     const f = folie('baut-mit');
     expect([...f.matchAll(/\{ t: '([^']+)'/g)].map((m) => m[1])).toStrictEqual(['Krise', 'Höhepunkt', 'Anforderung', 'Gebaut']);

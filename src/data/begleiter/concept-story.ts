@@ -477,6 +477,16 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 3, Mapping a Concept Story, S. 35`,
       },
     ],
+    fragen: [
+      {
+        frage: 'Was heißt „die Linie“ hier?',
+        antwort: 'Jede Story hat eine naheliegende Lösung: „there is always a simple solution to every story, which can look like a straight line“ (Kap. 3, Mapping a Concept Story, S. 35). Bei Slack wäre das eine Plattform, die „easier to use“ ist als E-Mail. Flach ist sie, weil Schwierigkeit nicht das Problem war: „But ‚easy to use‘ is a pretty boring story when difficulty isn’t really the problem“ (S. 35). Der echte Auslöser: Alles im Blick und an einem Ort zu behalten ist schwer und kostet Zeit und Geld (S. 36). Von dort läuft der Bogen über die Krise („What, sign up for another online service? Ack. No.“) zum Höhepunkt („Unlike the competition, Slack is a one-stop solution.“, S. 36). Derselbe Zug wie beim iPhone, den Lichaw selbst zieht („much like with the first iPhone“, S. 35): 2-in-1 war die Linie, der beste Weg zu kommunizieren der Bogen.',
+      },
+      {
+        frage: 'Was ist bei euch die Linie?',
+        antwort: 'Lesart dieses Kurses: Steht in eurem Höhepunkt „einfacher als …“, prüft in euren Interviews, ob Schwierigkeit dort wirklich der Pain ist. Ist sie es nicht, ist das eure Linie; der Höhepunkt muss dann aus eurem echten P1 kommen.',
+      },
+    ],
     ueberleitung: 'Dieselben sieben Stationen – jetzt für die Kaffeebar.',
   },
 
