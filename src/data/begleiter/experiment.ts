@@ -83,7 +83,13 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Kursregel: Abweichung von Torres, weil drei Personen, eine Idee für heute.',
       'Gemeinsame Annahmen zuerst: Scheitern sie, fallen alle drei.',
       'Unter die Karte: je eine Zeile für die anderen Ideen.',
+      'Bei Bedarf: Portland von Tag 1 aufgreifen, siehe Geschichte.',
     ],
+    verstaendnis: {
+      frage: 'Was heißt „Spitzenreiter auf Papier“?',
+      antwort: 'Die Wahl stützt sich auf den Fit aus Value Map und Fit, nicht auf einen Test – „The fit you achieve is not yet proven and exists mainly on paper“ (Value Proposition Design, S. 117 PDF). Ein Test könnte sie ändern; dann geht es mit der Idee aus der Zeile unter der Karte weiter.',
+      falsch: '„Wir haben uns entschieden.“ Entschieden ist nur, womit ihr heute weiterarbeitet. Entscheiden würde erst, was ein Test zeigt (Blands drei Möglichkeiten, S. 61–63).',
+    },
     kern: [
       {
         text: '„You’ll want to story map, generate assumptions, and assumption map for each of your three ideas.“ – „If we test only one idea at a time, confirmation bias will rear its ugly head.“ – „we are looking for a clear front runner.“',
@@ -92,6 +98,32 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         text: '„It’s common for ideas to share assumptions. It’s one of the reasons why assumption testing is faster than idea testing.“',
         quelle: `${TORRES}, S. 136`,
+      },
+    ],
+    geschichte: {
+      text: 'Torres knüpft hier an Portland an, die Geschichte von Tag 1: Die Stadt hat eine einzige Idee verfolgt, und je länger sie das tat, desto fester hielt sie an ihr fest – trotz ihrer Schwächen. Torres nennt das Bestätigungsneigung und „escalation of commitment“ (S. 116). Darum vergleicht sie drei Ideen: „If we test only one idea at a time, confirmation bias will rear its ugly head. We’ll be more likely to notice the confirming evidence and miss the disconfirming evidence.“ (S. 134). Ihr Beispiel: drei Ideen für „I want to watch sports“ – lokale Sender, Rechte direkt von den Ligen, ein Bündel mit einem Sportanbieter. Alle drei hängen an „Our subscriber wants to watch sports“; ist das falsch, fällt das ganze Set (S. 135–136). Wir machen es anders, als Kursregel: Ihr seid drei, jede*r mit einem eigenen Produkt, und Story Map, Usage Story und Prototyp von heute brauchen eine Idee. Von Torres bleiben zwei Mittel gegen das Verlieben: gemeinsame Annahmen zuerst und die anderen beiden als Zeile unter der Karte.',
+      quelle: `${TORRES}, S. 116, 134–136; die Abweichung ist eine Kursregel (Handout der Folie)`,
+    },
+    fragen: [
+      {
+        frage: 'Was ist eine gemeinsame Annahme?',
+        antwort: 'Eine Annahme, an der alle drei Ideen hängen – fällt sie, fallen alle drei. Bei der Kaffeebar ist das A8: „Wir glauben, dass Pendler*innen die Bar wählen, wenn sie sicher wissen, dass es sich bis zur Abfahrt ausgeht.“ Wartezeit-Anzeige, Bestellen im Gehen und Kaffeewagen versprechen alle, die Frage „Geht sich das aus?“ zu beantworten (P1). Getestet wird dort trotzdem A5 zuerst, weil A8 schon teils belegt ist – eine Ausnahme (Folie „Die Map der Kaffeebar“). A8 ist ein Beispiel dieses Kurses; Torres’ Beispiel ist „Our subscriber wants to watch sports“ (S. 136).',
+      },
+      {
+        frage: 'Was passiert mit den anderen beiden Ideen?',
+        antwort: 'Sie bleiben offen: im Baum als Lösungen unter der Ziel-Chance, und auf der Karte E1 steht in der letzten Zeile „Falls E1 scheitert“ je ihre riskanteste Annahme – auf Miro im Frame „T4 · 0 · Annahmen der Idee“, Feld „Karte E1 für die oberste rechts“. Bei der Kaffeebar: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt es keine Schlange“).',
+      },
+      {
+        frage: 'Und wenn der Spitzenreiter scheitert?',
+        antwort: 'Dann gilt eine von Blands drei Möglichkeiten: weitermachen (persevere – derselbe Test stärker oder die nächste Annahme), umschwenken (pivot – ein Teil der Idee ändert sich deutlich) oder verwerfen (kill) (Bland S. 61–63). Beim Umschwenken nehmt ihr meist die nächste Idee aus der Zeile „Falls E1 scheitert“; Interviews, Kundenprofil und was alle drei teilen, gelten weiter. Bei uns ist das an Tag 5 ein Gedankenexperiment: Was hättet ihr bei welchem Ergebnis getan?',
+      },
+      {
+        frage: 'Warum nicht alle drei testen, wie Torres?',
+        antwort: 'Eine Kursregel, bewusst gegen Torres: Ihr seid drei Personen mit je einem eigenen Produkt, und Story Map, Usage Story und Prototyp von heute brauchen eine Idee – an Tag 5 baut Claude Code daraus Slice 1. Was wir von Torres behalten: gemeinsame Annahmen zuerst und die Zeile für die anderen beiden, ihre Mittel gegen das Verlieben (S. 134, 136).',
+      },
+      {
+        frage: 'Der Spitzenreiter ist nicht meine Idee – was jetzt?',
+        antwort: 'Du entscheidest: bestätigen oder ändern. Der Vorschlag in T3 · 4 war ein Ausgangspunkt, keine Vorgabe. Maßstab ist derselbe wie um 9:05: Welche deiner drei Ideen trifft dein Kundenprofil am besten (✓ ✗ ?)? Bleibst du beim Vorschlag, ist er ab jetzt deine Wahl. Wechselst du, arbeitest du mit der anderen Idee weiter und ziehst Value Map und Fit nach.',
       },
     ],
     ueberleitung: 'Mit welcher Annahme fangt ihr an? Das zeigt die Map.',

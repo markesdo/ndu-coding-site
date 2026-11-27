@@ -235,3 +235,29 @@ describe('Experiment-Seite ohne Claude-Pro-Block', () => {
     expect(seite(EX)).toContain("prev={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell' }}");
   });
 });
+
+// 27.11.2026 (Markus): Der Begleiter zu #spitzenreiter braucht mehr – Geschichte, Verständnisfrage, Fragen aus dem Raum.
+describe('Begleiter #spitzenreiter: Geschichte, Verständnisfrage, Fragen', () => {
+  const n = NOTIZEN[EX].spitzenreiter;
+  it('Geschichte: Torres’ Begründung mit Seite, die Abweichung als Kursregel', () => {
+    expect(n.geschichte?.text).toContain('„If we test only one idea at a time, confirmation bias will rear its ugly head.');
+    expect(n.geschichte?.quelle).toContain('S. 116, 134–136');
+    expect(n.geschichte?.quelle).toContain('Kursregel');
+  });
+  it('Verständnisfrage mit erwarteter und falscher Antwort', () => {
+    expect(n.verstaendnis?.frage).toBe('Was heißt „Spitzenreiter auf Papier“?');
+    expect(n.verstaendnis?.antwort).toContain('nicht auf einen Test');
+    expect(n.verstaendnis?.falsch).toContain('„Wir haben uns entschieden.“');
+  });
+  it('fünf Fragen, die letzte lässt die Wahl bei der Person', () => {
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual([
+      'Was ist eine gemeinsame Annahme?',
+      'Was passiert mit den anderen beiden Ideen?',
+      'Und wenn der Spitzenreiter scheitert?',
+      'Warum nicht alle drei testen, wie Torres?',
+      'Der Spitzenreiter ist nicht meine Idee – was jetzt?',
+    ]);
+    expect(n.fragen?.[0].antwort).toContain('A8');
+    expect(n.fragen?.[4].antwort).toContain('Du entscheidest: bestätigen oder ändern.');
+  });
+});
