@@ -13,7 +13,6 @@ import SliceImBaum from '../../components/bild/SliceImBaum.astro';
 import BildText from '../../components/bild/BildText.astro';
 import BuchAbbildung from '../../components/bild/BuchAbbildung.astro';
 import Prompt from '../../components/Prompt.astro';
-import MiroFrame from '../../components/MiroFrame.astro';
 import MiroLink from '../../components/MiroLink.astro';
 import { KAFFEEBAR_BAUM_TAG_4 } from '../../components/innolab-beispiel';
 import { FOLIENSATZ_URL } from '../../lib/foliensatz';
@@ -141,10 +140,10 @@ const LICHAW = 'Donna Lichaw, „The User’s Journey“ (2016)';
   </Folie>
 
   {/* 17:15, zweite Folie der Origin Story (Durchsicht 26.11.): Das Beispiel stand nur im Handout; im Beamer fehlte, was
-      Studierende hier schreiben. Der Aufstellertext ist Beispiel, kein Prompt zum Übernehmen – darum ohne Kopieren. */}
+      Studierende hier schreiben. Der Aufstellertext ist Beispiel, kein Prompt zum Übernehmen – darum ohne Kopieren.
+      Ohne Miro-Pille (Dozent 27.11.): Links nur, wo die Arbeit beginnt – das Beispiel auf Miro verlinkt #hausaufgabe. */}
   <Folie>
     <h2 id="origin-beispiel">Am Beispiel: der Aufsteller der Kaffeebar</h2>
-    <MiroFrame name="T4 · 6 · Origin Story · Kaffeebar" />
     <p class="folie-satz">Erst der Pain, dann das Produkt, dann die Antwort auf die Hürde.</p>
     <Prompt label="Beispiel · Origin Story als Aufstellertext" kopieren={false}>Zug in 8 Minuten, Schlange bis zur Tür?
 Bestell im Gehen. Scan den Code, gib deine Abfahrtszeit ein –
@@ -166,7 +165,7 @@ Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
     {/* Die Schritte nur im Beamer; im Handout steht die Checkliste, aus der sie stammen. Seit 27.11.2026 (Dozent): E1 läuft
         nicht, die Karte bleibt Theorie; Reihenfolge Origin Story → Karte E1 → freiwillig Usability-Tests → Aufräumen → bis Tag 5 (seit Code-Review #459 ohne Linear: das braucht Claude Code und kommt an Tag 5). */}
     <ol class="gross dicht nur-beamer">
-      <li data-schritt><strong>Origin Story</strong> auf Miro – der Text, mit dem E1 laufen würde: „T4 · 6 · Origin Story · Produkt n“ (<MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">3</MiroLink> · <MiroLink name="T4 · 6 · Anleitung Origin Story">Anleitung</MiroLink>).</li>
+      <li data-schritt><strong>Origin Story</strong> auf Miro – der Text, mit dem E1 laufen würde: „T4 · 6 · Origin Story · Produkt n“ (<MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">3</MiroLink> · Beispiel <MiroLink name="T4 · 6 · Origin Story · Kaffeebar">Kaffeebar</MiroLink> · <MiroLink name="T4 · 6 · Anleitung Origin Story">Anleitung</MiroLink>).</li>
       <li data-schritt><strong>Karte E1 fertig machen,</strong> falls offen – mit „Wir entscheiden vorher“, im Frame „T4 · 0 · Annahmen der Idee“ (<MiroLink name="T4 · 0 · Annahmen der Idee">Miro</MiroLink>).</li>
       <li data-schritt><strong>Freiwillig: Usability-Tests</strong> mit dem Papier-Prototyp – Karte E2, Befunde in „T4 · 5 · Prototyp · Produkt n“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>); fünf sind ideal, auch zwei, drei helfen.</li>
       <li data-schritt><strong>Fertig machen, was heute offen blieb</strong> – auch Skizzen und Abnahmekriterien: An Tag 5 baut Claude Code danach (ganze Liste im Handout).</li>
@@ -175,7 +174,7 @@ Abholen an der Express-Ausgabe. Ohne App, ohne Anmeldung.</Prompt>
     <div class="nur-handout">
       <p>Bei uns läuft E1 nicht: Die Karte E1 (<MiroLink name="T4 · 0 · Annahmen der Idee">Miro, „T4 · 0 · Annahmen der Idee“</MiroLink>) beschreibt, wie ihr eure riskanteste Annahme prüfen würdet; an Tag 5 besprecht ihr, was sie gezeigt hätte (<a href="/innolab/methoden/experiment#so-liefe-e1">So würde E1 laufen</a>). Tests mit Menschen sind freiwillig – mit dem Papier-Prototyp, als Usability-Test mit Karte E2. Claude Code installiert ihr bis Tag 5 (<a href="/setup#lokal-schnellweg">Setup-Skript</a>); Claude Pro schließt ihr erst an Tag 5 gemeinsam ab.</p>
       <p>Anleitung auf Miro: <MiroLink name="T4 · 6 · Anleitung Origin Story">Origin Story</MiroLink>; für E2, falls ihr testet: <MiroLink name="T4 · 6 · Anleitung Lernkarten">Lernkarten</MiroLink>.</p>
-      <p>Eure Frames auf Miro – Origin Story: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">Produkt 3</MiroLink>; Prototyp: <MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">Produkt 3</MiroLink>; Lernkarten (freiwillig, für E2, falls ihr testet): <MiroLink name="T4 · 6 · Lernkarten · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 3">Produkt 3</MiroLink>.</p>
+      <p>Eure Frames auf Miro – Origin Story: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Origin Story · Produkt 3">Produkt 3</MiroLink> · Beispiel <MiroLink name="T4 · 6 · Origin Story · Kaffeebar">Kaffeebar</MiroLink>; Prototyp: <MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">Produkt 3</MiroLink>; Lernkarten (freiwillig, für E2, falls ihr testet): <MiroLink name="T4 · 6 · Lernkarten · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T4 · 6 · Lernkarten · Produkt 3">Produkt 3</MiroLink>.</p>
       <p>Zum Abhaken:</p>
     {/* -v7: Häkchen je Position; seit 12.11.2026 mit Geschäftsmodell und Karte E1, ohne docs/TEAM.md (-v2); seit 25.11.2026
         mit Value Map, Concept Story und Baum (-v3) und ohne Lego-Zettel (-v4, NDU-72); seit 26.11.2026 abends ohne docs/*.md

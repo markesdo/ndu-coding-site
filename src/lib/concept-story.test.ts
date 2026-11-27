@@ -192,7 +192,8 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     for (const n of [1, 2, 3]) expect(schritt1).toMatch(new RegExp(`<MiroLink name="T4 · 0 · Concept Story · Produkt ${n}">(Produkt )?${n}</MiroLink>`));
     expect(schritt1).toContain('<MiroLink name="T4 · 0 · Concept Story · Kaffeebar">Kaffeebar</MiroLink>');
     expect(schritt1).toContain('<MiroLink name="T4 · 0 · Anleitung Concept Story">Anleitung</MiroLink>');
-    expect(folie('beispiel')).toContain('<MiroFrame name="T4 · 0 · Concept Story · Kaffeebar" />');
+    // Seit 27.11. (Dozent): Links nur, wo die Arbeit beginnt – #beispiel ist Theorie, ohne Miro-Pille.
+    expect(folie('beispiel')).not.toMatch(/<Miro(Frame|Link)\b/);
     // Wortlaut wie auf dem Frame: Stationen „1 Exposition“ … „7 Ende“, Feld „Flach-Probe (Kursregel)“.
     expect(f).toContain('unter „1 Exposition“ bis „7 Ende“');
     expect(f).toContain('Das Feld „Flach-Probe“ unten links im Frame könnt ihr dafür nutzen; es ist freiwillig.');

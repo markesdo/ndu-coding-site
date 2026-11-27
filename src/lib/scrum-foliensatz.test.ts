@@ -213,10 +213,13 @@ describe('Scrum-Seite: Links auf die Theorie-Anker', () => {
     expect(q).toContain('Still sortieren');
     for (const n of [1, 2, 3]) expect(q).toContain(`Produkt ${n}`);
     for (const n of [1, 2, 3]) expect(q).toContain(`<MiroLink name="T4 · 3 · Scrum · Kaffeebar sortieren · Produkt ${n}">Produkt ${n}</MiroLink>`);
-    // Die Lösung ist auf dem Board bis zur Auflösung versteckt: kein Link aus der Übung, sondern erst auf „Am Beispiel“.
-    expect(q).not.toContain('Kaffeebar · Lösung');
+    // Die Lösung ist auf dem Board bis zur Auflösung versteckt: Ihr Link steht nur in Schritt 2 „Auflösung“ (im Beamer erst mit
+    // diesem Schritt sichtbar), nie in Schritt 1. Seit 27.11. (Dozent) nicht mehr auf „Am Beispiel“: Links nur, wo gearbeitet wird.
+    const schritte = [...q.matchAll(/<li data-schritt>([^]*?)<\/li>/g)].map((m) => m[1]);
+    expect(schritte.map((s) => s.includes('<MiroLink name="T4 · 3 · Scrum · Kaffeebar · Lösung">'))).toStrictEqual([false, true]);
+    expect(q.split('Kaffeebar · Lösung')).toHaveLength(2);
     const beispiel = QUELLE_SCRUM.slice(QUELLE_SCRUM.indexOf('<h2 id="beispiel">'), QUELLE_SCRUM.indexOf('</Folie>', QUELLE_SCRUM.indexOf('<h2 id="beispiel">')));
-    expect(beispiel).toContain('<MiroLink name="T4 · 3 · Scrum · Kaffeebar · Lösung">');
+    expect(beispiel).not.toMatch(/<Miro(Frame|Link)\b/);
   }, 60_000);
 });
 
