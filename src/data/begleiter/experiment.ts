@@ -319,8 +319,36 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Warum drei Bänder: Die Zahlen sind „a subjective decision“ – sie sollen Risiko senken, nicht beweisen. 9 von 30 ist nicht das Gegenteil von 10 von 30.',
         quelle: `${TORRES}, S. 137`,
       },
+      {
+        text: 'Wie viele Menschen, sagt Torres nicht als Zahl, sondern als Abwägung: „We want to define both how many people we’ll test with and how many people need to exhibit the behavior that we expect to see.“ Wie man die Zahlen wählt: „This is a subjective decision. … You want to test your assumption with as few people as possible (as it will be faster) but with the number of people that still gives your team the information they need to act on the data.“ Die Frage ans Team: „How many people would convince you this assumption is more known? That’s the negotiation you are having as a team.“',
+        quelle: `${TORRES}, S. 136–137`,
+      },
+      {
+        text: 'Klein anfangen: „we want to start small. You’ll be pleasantly surprised by how much you can learn from getting feedback from a handful of customers.“ Mit kleinen Zahlen gibt es Fehlalarme in beide Richtungen („false positives and false negatives“); dagegen hilft Streuung bei der Auswahl (S. 139). Als Anzahl, nicht als Prozent: „Be explicit from the get-go about how many people you will test with when defining your success criteria.“ Und ist der Test schwächer als die echte Lage, passt man die Schwelle an: „you might lower your threshold for success to account for that“ (S. 137).',
+        quelle: `${TORRES}, S. 137–139, 144–145`,
+      },
+      {
+        text: 'Bland: Der vierte Teil der Test Card ist „Criteria“ – „The success criteria for your experiment metrics“ (S. 45), im Beispiel „16 of the 20 parents“ (S. 46). Eine Regel für die Zahl der Testpersonen gibt er nicht, nur: „The more data points you have, the better. Five quotes from personal customer interviews is obviously weaker than 100 quotes.“ (S. 56). Quoten nennt er je Test: Landingpage „For early stage validation we recommend 10% –15%“ der Aufrufe (S. 262), Broschüre mit Handlungsaufruf „a strong signal of 15% or more“ (S. 196).',
+        quelle: `${BLAND}, S. 45–46, 56, 196, 262`,
+      },
+      {
+        text: 'So kommt die Kaffeebar auf 30, 10 und 5. 30: so viele Pendler*innen wählen an drei Morgen zwischen 7:15 und 7:45 bei Schlange – genug für eine Zahl, schnell genug für eine Woche. 10, ein Drittel: Gezählt wird nur, wer bei Schlange wählt (Automat oder Aufsteller), nicht jede*r, die vorbeigeht – darum liegt die Schwelle weit über Blands 10–15 % aller Aufrufe; das Verhältnis liegt nahe an Torres’ „At least 3 out of 10“. 5: die halbe Schwelle, damit zwischen widerlegt und gestützt ein Band zum Weitertesten bleibt.',
+        quelle: `Kaffeebar: Setzung des Kurses; vgl. ${TORRES}, S. 136; ${BLAND}, S. 262`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: 30, 10 und 5 hat der Kurs gesetzt – keine Quelle nennt eine Mindestzahl oder „ein Drittel“. Nicht als „so viele braucht man“ erzählen, sondern als Beispiel, wie ein Team seine Zahlen vorher aushandelt.',
+        quelle: `Kurs; ${TORRES}, S. 137; ${BLAND}, S. 56`,
+      },
     ],
     fragen: [
+      {
+        frage: 'Warum 30? Warum ab 10?',
+        antwort: 'Keine Quelle schreibt eine Zahl vor; Torres nennt die Wahl „a subjective decision“: so wenige Menschen wie möglich, aber so viele, dass das Team danach handelt (S. 137). Die Kaffeebar hat gesetzt: 30, weil so viele an drei Morgen bei Schlange zwischen Automat und Aufsteller wählen; 10, ein Drittel, weil nur zählt, wer wählt – nicht alle, die vorbeigehen. Wären wir uns bei 10 von 30 einig, dass A5 „more known“ ist? Das ist die Frage, die das Team vorher beantwortet. Bland hat Quoten nur pro Aufruf: 10–15 % auf einer Landingpage (S. 262).',
+      },
+      {
+        frage: 'Wie finden wir unsere eigenen Zahlen?',
+        antwort: 'In vier Schritten, vor dem Test: (1) Wer zählt? Nur wer die Wahl hat, die eure Annahme behauptet – das ist der Nenner. (2) Wie viele erreicht ihr in ein, zwei Tagen, höchstens einer Woche (Torres S. 144)? (3) Die Schwelle als Anzahl, nicht als Prozent (S. 144–145): Bei wie vielen wärt ihr alle überzeugt (S. 137)? Ist der Test schwächer als die echte Lage, senkt ihr sie (S. 137). (4) Die Grenze bei etwa der halben Schwelle – Setzung des Kurses. Testet zuerst mit den Menschen, bei denen es am ehesten klappt: „design your assumption tests such that they are likely to pass“ (S. 145).',
+      },
       {
         frage: 'Ist das nicht dasselbe wie die Schwelle?',
         antwort: 'Die Schwelle sagt, wann ihr recht habt. Die Zeile daneben sagt, was ihr dann tut – auch wenn ihr nicht recht habt. Thomke verlangt beides vor den Daten (S. 86).',

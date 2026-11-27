@@ -36,6 +36,7 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
       'methoden/geschaeftsmodell#dreieck | Vorsicht beim Erzählen: „Über die Hälfte aller App-Entwickle',
       'methoden/experiment#annahmen-der-idee | Vorsicht beim Erzählen: „Wochen“ ist unsere Schätzung; Torre',
       'methoden/experiment#karte | Vorsicht beim Erzählen: Thomke spricht von „two versions of',
+      'methoden/experiment#vorher-entscheiden | Vorsicht beim Erzählen: 30, 10 und 5 hat der Kurs gesetzt –',
       'methoden/experiment#test-arten | Vorsicht beim Erzählen: „bis mittel“ gilt nur für den Aufste',
       'methoden/experiment#karte-e1 | Nicht behaupten: Bland nenne den Eintrag einen mittleren Bel',
       'methoden/experiment#lernkarte | Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ ist unsere',
@@ -135,5 +136,30 @@ describe('Tag 4: Setzungen des Kurses auf den Seiten markiert', () => {
     for (const [p, id] of [['story-map', 'schritt-schneiden'], ['usage-story', 'nahe-am-ende'], ['experiment', 'annahmen-der-idee'], ['geschaeftsmodell', 'vor-experiment']]) {
       expect(folie(`/innolab/methoden/${p}`, id), `${p}#${id}`).not.toContain('Kursregel');
     }
+  });
+});
+
+describe('experiment#vorher-entscheiden: Warum 30, warum ab 10 (Markus 27.11.)', () => {
+  const n = NOTIZEN['/innolab/methoden/experiment']['vorher-entscheiden'];
+  const kern = (n.kern ?? []).map((k) => k.text).join(' ');
+  it('was die Quellen sagen, wörtlich und mit Seite', () => {
+    expect(kern).toContain('„This is a subjective decision. … You want to test your assumption with as few people as possible (as it will be faster) but with the number of people that still gives your team the information they need to act on the data.“');
+    expect(kern).toContain('„How many people would convince you this assumption is more known? That’s the negotiation you are having as a team.“');
+    expect(kern).toContain('„Be explicit from the get-go about how many people you will test with when defining your success criteria.“');
+    expect(kern).toContain('„The more data points you have, the better. Five quotes from personal customer interviews is obviously weaker than 100 quotes.“ (S. 56)');
+    expect(kern).toContain('„For early stage validation we recommend 10% –15%“ der Aufrufe (S. 262)');
+  });
+  it('was der Kurs gesetzt hat und warum: 30, ein Drittel, halbe Schwelle', () => {
+    const k = (n.kern ?? []).find((x) => x.text.startsWith('So kommt die Kaffeebar auf 30, 10 und 5.'));
+    expect(k?.text).toContain('Gezählt wird nur, wer bei Schlange wählt (Automat oder Aufsteller)');
+    expect(k?.text).toContain('5: die halbe Schwelle');
+    expect(k?.quelle).toContain('Setzung des Kurses');
+  });
+  it('Fragen „Warum 30? Warum ab 10?“ und „Wie finden wir unsere eigenen Zahlen?“', () => {
+    const f = Object.fromEntries((n.fragen ?? []).map((x) => [x.frage, x.antwort]));
+    expect(f['Warum 30? Warum ab 10?']).toContain('Keine Quelle schreibt eine Zahl vor');
+    expect(f['Wie finden wir unsere eigenen Zahlen?']).toContain('Die Schwelle als Anzahl, nicht als Prozent (S. 144–145)');
+    // Passt zur Verständnisfrage „8 von 30“: dasselbe Band.
+    expect(n.verstaendnis?.antwort).toContain('8 liegt im Band 5–9');
   });
 });
