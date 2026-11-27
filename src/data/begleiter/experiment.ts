@@ -351,7 +351,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     live: [
       'Fünf Fragen nacheinander aufdecken, je mit Art.',
       'Kaffeebar Schritt 1 laut durchgehen: Wollen sie?',
-      'Antwort mit „hoffentlich“ → Annahme, hier A5.',
+      'Antwort mit „hoffentlich“ → Annahme, hier A5 – bei euch: nächste freie ID.',
       'Pre-Mortem-Frage von vorhin dazu.',
       'Zeit: Sprechzeit ~2 min.',
     ],
@@ -435,7 +435,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Anleitung-Frame links neben „T4 · 0“ zeigen.',
-      'Nach 11 min: Stehen die Annahmen in der Werkstatt?',
+      'Nach 11 min: „Zuerst testen“ in der Werkstatt? Rest bis abends.',
       'Nach 13 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
       'Nach 16 min: Annahme und E1 in den Baum – Timer 2 min.',
     ],
