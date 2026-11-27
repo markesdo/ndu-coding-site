@@ -232,7 +232,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     live: [
       'Setup-Zeile vorlesen: E1, Schwelle 10 von 30.',
       'Bänder aufdecken: erst ab 10, dann unter 5, zuletzt 5–9.',
-      'Kursregel: Grenze darunter etwa die halbe Schwelle.',
+      'Grenze: etwa die halbe Schwelle – vorher als Zahl.',
       'Falle: „knapp darunter“ erst nach dem Test festlegen.',
     ],
     verstaendnis: {
