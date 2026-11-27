@@ -34,9 +34,12 @@ describe('Story Map: Begleiter mit Kontext aus Patton', () => {
     }
     expect(g).not.toContain('Patton verspricht „a very happy ending“.');
     expect(g.indexOf('very happy ending')).toBeLessThan(g.indexOf('email promotion platform'));
-    expect(n.warum.live.at(-1)).toBe('Happy End: Fokus auf Bandmanager – daraus wurde eine E-Mail-Plattform.');
+    expect(n.warum.live.at(-1)).toBe('Happy End: nur Bandmanager, Fan, Admin – „a great email promotion platform“.');
     expect(n.warum.fragen?.[2].antwort).toContain('„Specific business outcomes drive focus on specific users, their goals, and the activities they’ll engage in with your product“ (Kap. 14, The secret to prioritization)');
+    expect(n.warum.fragen?.[2].antwort).toContain('(Kap. 2, This Is Magic—Really, It Is)');
+    expect(n.warum.fragen?.[2].antwort).toContain('Patton relativiert selbst: „all this stuff is a guess until we actually ship');
     expect(n.warum.fragen?.[2].antwort).toContain('(Kap. 15, Einleitung)');
+    expect(n.warum.geschichte?.text).not.toContain('Musik-Werkzeug');
   });
 
   it('#warum: Kern zu flacher Liste, Map und gemeinsamem Verständnis, jeweils mit Kapitel und Abschnitt', () => {
@@ -49,10 +52,10 @@ describe('Story Map: Begleiter mit Kontext aus Patton', () => {
     }
   });
 
-  it('#warum: Verständnisfrage und drei Fragen, die Übertragung als Kurs markiert', () => {
+  it('#warum: Verständnisfrage und vier Fragen, die Übertragung als Kurs markiert', () => {
     expect(n.warum.verstaendnis?.frage).toBe('Was zeigt die Map, das eine priorisierte Liste nicht zeigen kann?');
     expect(n.warum.verstaendnis?.falsch).toMatch(/^„Die Map ist einfach übersichtlicher\.“/);
-    expect(n.warum.fragen?.map((f) => f.frage)).toStrictEqual(['Ist eine Liste dann falsch?', 'Ich baue allein und habe alles im Kopf – brauche ich das?', 'Warum hat der kleine Anfang funktioniert?', 'Was hat das mit unserem Produkt zu tun?']);
+    expect(n.warum.fragen?.map((f) => f.frage)).toStrictEqual(['Ist eine Liste dann falsch?', 'Ich baue allein und habe alles im Kopf – brauche ich das?', 'Warum war der kleine Anfang der richtige erste Schritt?', 'Was hat das mit unserem Produkt zu tun?']);
     expect(n.warum.fragen?.[0].antwort).toContain('„Eric’s backlog is organized as a story map“');
     // Wörtlich wie im Buch: Die Stelle steht mitten im Satz („you’ll find that no matter …“), darum Auslassung und klein.
     expect(n.warum.fragen?.[1].antwort).toContain('„… no matter how clear you are about your story, talking through it while you map will help you discover the holes in your own thinking“ (Kap. 1, Tell Your Users’ Stories)');
