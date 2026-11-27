@@ -223,16 +223,29 @@ describe('Tests zur Auswahl und Beispiel', () => {
       'Welcher Test passt zu uns?',
     ]);
     const [mock, personen, ehrlich, wahl] = n.fragen!.map((f) => f.antwort);
-    expect(mock).toContain('„Vorbestellen für 2,90 €“ → „Gibt es noch nicht – wir sagen dir Bescheid“');
+    // Review #465: Der Hinweis nach dem Klick sagt, dass es ein Test ist, und fragt nach der E-Mail (Bland S. 289).
+    const hinweis = '„Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“';
+    expect(mock).toContain(`„Vorbestellen für 2,90 €“ → ${hinweis}`);
+    expect(n.geschichte?.text).toContain(hinweis);
+    expect(n.kern?.[7].text).toContain(hinweis);
+    expect(JSON.stringify(n)).not.toContain('wir sagen dir Bescheid“');
     expect(mock).toContain('Es fließt kein Geld (Bland, Mock Sale, S. 288–289)');
-    expect(personen).toContain('Mögliche Kund*innen: Gekauft hat noch niemand');
-    expect(personen).toContain('Ausnahme Concierge: echte Kund*innen');
+    // Ohne Zahlungsdaten: Kaufklicks und E-Mails, „relatively strong“ – nicht „sehr stark“.
+    expect(mock).toContain('Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks');
+    expect(personen).toMatch(/^Bei drei der vier Tests hat noch niemand gekauft/);
+    expect(personen).toContain('Ausnahme Concierge: echte Kund*innen, die bestellen, zahlen können');
     expect(ehrlich).toContain('„with a gift card for the inconvenience“');
     expect(ehrlich).toContain('Kursregel: Zahlungsdaten nie speichern');
+    expect(ehrlich).toContain('„Do your customers understand that you’ll be collecting that data?“ (S. 127)');
+    expect(ehrlich).not.toContain('Can we meet customers’ expectations');
     expect(wahl).toContain('Kursregel: E1 führt ihr nicht durch.');
-    expect(n.geschichte?.text).toContain('von schwach nach sehr stark');
-    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test.
-    expect(n.kern).toHaveLength(8);
+    expect(n.geschichte?.text).toContain('von schwach nach stark.');
+    expect(n.geschichte?.text).toContain('Der Kaufklick allein ist „relatively strong“; „sehr stark“ wird der Mock Sale erst mit Zahlungsdaten (S. 290).');
+    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test, in dieser Reihenfolge.
+    expect(n.kern?.map((k) => k.text.split(':')[0])).toStrictEqual([
+      'Simulierter Moment – Aufbau', 'Simulierter Moment – gemessen', 'Landingpage / Aufsteller – Aufbau', 'Landingpage – gemessen',
+      'Concierge – Aufbau', 'Concierge – Testpersonen', 'Mock Sale – Aufbau', 'Mock Sale – Achtung',
+    ]);
   });
   it('#beispiel: Schritt – Annahme – Art, A3 an Schritt 2, A4 an Schritt 5', () => {
     const b = sichtbar('beispiel');
