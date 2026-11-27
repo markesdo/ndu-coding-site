@@ -314,7 +314,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'schritt-jetzt-map': {
     live: [
       'Timer 2 min: Experience Map öffnen, Momente lesen.',
-      'Zwei, drei stärkste Pains mit Zitat-ID an den Rand.',
+      'Zwei, drei Pains, die Pain Relievers lindern, mit Zitat-ID an den Rand.',
       '„Jeder dieser Pains braucht einen Task in der Später-Map.“',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
@@ -327,7 +327,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Timer 6 min: gelbe Verb-Sätze, erst bis zum Ende.',
       'Falle: „klickt“, „ist auf Seite“ – fragen: wozu?',
       'Falle: „und“ auf dem Sticky – zwei Stickies.',
-      'Fragen: Hat jeder Pain vom Rand einen Task, der ihn löst?',
+      'Fragen: Hat jeder Pain am Rand einen Task, der ihn löst?',
     ],
     uebung: { dauer: '6 min', form: 'allein' },
     ueberleitung: 'Über die Tasks kommen die Aktivitäten.',
