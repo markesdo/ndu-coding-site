@@ -23,10 +23,10 @@ const sichtbar = (id: string) => folie(id).replace(/<div class="nur-handout">[\s
 
 describe('Experiment-Karte: Folienfolge seit 26.11.2026', () => {
   // Seit 26.11.2026 nachts ohne claude-pro-jetzt und claude-code-opus: Tag 4 läuft ohne Claude, die Folien stehen auf tag-5.
-  it('18 Folien (seit 27.11. mit annahmen-finden und so-liefe-e1) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
+  it('19 Folien (seit 27.11. mit annahmen-finden, ein-schritt-fuenf-fragen und so-liefe-e1) in der neuen Reihenfolge, ohne die Intuit-Folien', () => {
     expect(folienAus(EX, seite(EX)).map((f) => f.id)).toStrictEqual([
       'annahmen-der-idee', 'schritte-der-idee', 'spitzenreiter', 'map', 'karte', 'ergebnis-gilt',
-      'vorher-entscheiden', 'welcher-test', 'test-arten', 'annahmen-finden', 'beispiel', 'beispiel-map', 'karte-e1', 'vorgehen', 'so-liefe-e1', 'lernkarte',
+      'vorher-entscheiden', 'welcher-test', 'test-arten', 'annahmen-finden', 'ein-schritt-fuenf-fragen', 'beispiel', 'beispiel-map', 'karte-e1', 'vorgehen', 'so-liefe-e1', 'lernkarte',
       'gegen-den-beleg', 'uebertrag',
     ]);
     expect(seite(EX)).not.toMatch(/id="sagen-tun|NACH_INTUIT|<Aufloesung/);
@@ -370,6 +370,47 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
   });
   it('#ergebnis-gilt: „vor dem Test“ fett', () => {
     expect(sichtbar('ergebnis-gilt')).toContain('<li data-schritt><strong>Darum:</strong> Auf eurer Karte steht <strong>vor dem Test</strong>, was ihr bei jedem Ergebnis tut.</li>');
+  });
+  // 27.11.2026: ein Kaffeebar-Schritt durch alle fünf Fragen, mit den leeren Fällen. Ohne „Kursregel“ (Markus: die Studierenden
+  // wollen wissen, was sie tun und warum).
+  it('#ein-schritt-fuenf-fragen: Schritt 4, fünf Zeilen mit Ergebnis, die Regel fett, ohne „Kursregel“', () => {
+    const s = sichtbar('ein-schritt-fuenf-fragen');
+    expect(s).toContain('<h2 id="ein-schritt-fuenf-fragen">Ein Schritt, fünf Fragen – nicht jede ergibt einen Zettel</h2>');
+    expect(s).toContain('Kaffeebar, <strong>Schritt 4:</strong> Bar zeigt „Fertig 7:31“ und bereitet zu.');
+    const zeilen = [...s.matchAll(/<tr data-schritt><td>([^<]+)<\/td><td>[^<]+<\/td><td[^>]*>(.+?)<\/td><\/tr>/g)].map((m) => `${m[1]} → ${m[2]}`);
+    expect(zeilen).toStrictEqual([
+      'Wollen sie? → <strong>A6</strong> · S4 · wünschenswert',
+      'Können sie? → kein Zettel',
+      'Können wir? → <strong>A2</strong> · S4 · machbar',
+      'Rechnet es sich? → weiter',
+      'Schadet es jemandem? → kein Zettel',
+    ]);
+    expect(s).toContain('<p class="ein-schritt-regel" data-schritt><strong>Eine Frage darf leer bleiben – ein Schritt nicht.</strong> Bleibt eine Art an allen Schritten leer: noch einmal fragen.</p>');
+    // Folie und Handout: was zu tun ist und warum, keine Kursregel und kein Vergleich mit Torres’ drei Arten je Schritt.
+    const f = folie('ein-schritt-fuenf-fragen');
+    expect(f).toContain('<div class="nur-handout">');
+    expect(f).toContain('Für leere Fragen schreibt ihr nichts auf, auch kein „–“.');
+    expect(f).toContain('„Use the categories to catch your blind spots“ (S. 132)');
+    expect(f).not.toMatch(/Kursregel/);
+    expect(f).not.toContain('Sometimes story maps can help us uncover');
+    // Die Annahmen stehen genauso an Schritt 4 von #beispiel.
+    expect(sichtbar('beispiel')).toContain('<td>4 Bar zeigt „Fertig 7:31“ und bereitet zu</td><td><strong>A6:</strong>');
+    expect(sichtbar('beispiel')).toContain('<strong>A2:</strong> 40 Bestellungen in 30 Minuten.');
+  });
+  it('Begleiter #ein-schritt-fuenf-fragen: Regel im live-Text, Quellen ohne „Kursregel“, Übergänge davor und danach', () => {
+    const n = NOTIZEN[EX];
+    const e = n['ein-schritt-fuenf-fragen'];
+    expect(e.live).toContain('„Eine Frage darf leer bleiben – ein Schritt nicht.“');
+    expect(JSON.stringify(e)).not.toContain('Kursregel');
+    expect(e.kern?.map((k) => k.quelle)).toStrictEqual([
+      'Teresa Torres, Continuous Discovery Habits, S. 122–124',
+      'Teresa Torres, Continuous Discovery Habits, S. 124–126',
+      'Teresa Torres, Continuous Discovery Habits, S. 126, 132',
+    ]);
+    expect(n['annahmen-finden'].ueberleitung).toBe('Und wenn eine Frage nichts ergibt? Ein Schritt der Kaffeebar, alle fünf Fragen.');
+    expect(e.ueberleitung).toBe('Dasselbe an allen fünf Schritten – das kommt heraus.');
+    expect(n.beispiel.live).toContain('Schritt 4 kennt ihr schon: zwei Treffer.');
+    expect(folie('annahmen-finden')).toContain('Die nächste Folie geht einen Schritt mit allen fünf Fragen durch, die übernächste zeigt die Annahmen aller Schritte.');
   });
   it('Begleiter #annahmen-finden: keine feste ID für die Studierenden', () => {
     expect(NOTIZ?.['annahmen-finden']?.live ?? []).toContain('Antwort mit „hoffentlich“ → Annahme, hier A5 – bei euch: nächste freie ID.');
