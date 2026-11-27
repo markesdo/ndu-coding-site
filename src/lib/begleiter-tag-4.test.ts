@@ -53,8 +53,10 @@ describe('Begleiter Tag 4: Slice 1 im Baum', () => {
   // Outcome-Frage und die zwei Ebenen: Brief-Satz im Rahmen über der Map (Wurzel des Baums), enger am pinken Sticky von
   // Slice 1. Die Vorsicht-Notiz verweist darauf, statt das Kaffeebar-Beispiel ein zweites Mal zu erzählen.
   it('„Wer tut danach was anders?“: Outcome-Frage nach Patton, zwei Ebenen, Brief oben, Slice 1 enger', () => {
-    const was = kern[0];
-    expect(was.text.startsWith('Was heißt „Wer tut danach was anders?“ ')).toBe(true);
+    const was = kern.find((k) => k.text.startsWith('Was heißt „Wer tut danach was anders?“ '));
+    expect(was).toBeDefined();
+    if (!was) return;
+    expect(was.text).toContain('Die Folienfrage ist unsere Kurzform von Pattons Outcome-Begriff');
     expect(was.text).toContain('„We measure what people actually do differently to reach their goals as a consequence of what you’ve built“');
     expect(was.text).toContain('„The secret to breaking down that really big chunk of output was to focus on a smaller, specific outcome.“');
     expect(was.text).toContain('„Outcomes are often something you can observe right away after delivery“');
@@ -65,7 +67,13 @@ describe('Begleiter Tag 4: Slice 1 im Baum', () => {
     expect(was.text).toContain(`„${slice}“`);
     expect(quellen['/innolab/methoden/story-map']).toContain(`Outcome: ${slice}`);
     const a5 = 'Wer die Schlange sieht, bestellt am Aufsteller statt am Automaten';
-    expect(was.text).toContain(`„${a5}“`);
+    expect(was.text).toContain(`A5 ist der Kern davon als Annahme: „${a5}“`);
+    // E1 läuft vorab, ohne das Produkt (und im Kurs gar nicht): Beobachtbar wäre der Slice-Outcome erst mit Slice 1.
+    for (const t of [was.text, n.fragen?.[0].antwort ?? '']) {
+      expect(t).toContain('schon vorab, ohne das Produkt (Aufsteller an der Hallentür)');
+      expect(t.match(/A5 sagt dasselbe|genau das prüfen A5 und E1|Ihn können .{0,40}E1 prüfen/g) ?? []).toStrictEqual([]);
+    }
+    expect(was.text).toContain('im Rahmen über der Map steht der Outcome aus dem Brief');
     expect(quellen['/innolab/methoden/experiment']).toContain(`<strong>A5:</strong> ${a5}.`);
     expect(was.text).toContain('„[Wer] tut [was] statt [was bisher]“');
     expect(was.text).toContain('Beim Vorlesen der Folie heißt „derselbe Satz wie im Brief“ also: der Rahmen über der Map. An Slice 1 selbst wird der Satz enger.');
