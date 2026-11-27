@@ -93,15 +93,17 @@ describe('Geschäftsmodell: Warum vor der Experiment-Karte, Links (27.11.2026)',
 
   it('#vor-experiment: Folie-Satz, vier Zeilen und die sichtbare Idee in der Mitte', () => {
     const f = sichtbar('vor-experiment');
-    expect(f).toContain('<p class="folie-satz">Gleich wählt ihr die riskanteste Annahme – dafür muss sie auf der Map stehen. Die wirtschaftliche fehlt dort meistens.</p>');
+    expect(f).toContain('<p class="folie-satz">Gleich wählt ihr die riskanteste Annahme – dafür muss sie auf der Map stehen. Die wirtschaftliche fehlt dort oft.</p>');
     expect(f).toContain('mitte="Im Gehen bestellen" ideeSichtbar hervor={2}');
     expect([...f.matchAll(/<li data-schritt>(.*?)<\/li>/g)].map((m) => m[1])).toStrictEqual([
       '<strong>Wirtschaftlich heißt:</strong> Die Idee funktioniert für die Kundschaft – trägt sie sich auch für euch? („Should we build it?“)',
-      '<strong>Oft vergessen:</strong> An Kosten und Einnahmen denkt man selten.',
-      '<strong>Kaffeebar, A4:</strong> Die zusätzlichen Bestellungen bringen mehr ein, als Aufsteller, Bildschirm und Bestellseite kosten.',
+      '<strong>Oft vergessen:</strong> Kosten und Einnahmen – bei vielen Teams der blinde Fleck.',
+      '<strong>Kaffeebar:</strong> Rechnen sich die zusätzlichen Bestellungen? – gleich als Annahme A4.',
       '<strong>Ein Satz, keine Kalkulation</strong> – getestet wird zuerst, ob es jemand will.',
     ]);
-    // A4 auf der Folie = A4 auf #annahme, ohne „Wir glauben, dass“ und (Beamer-Platz) ohne „ohne weitere Kraft am Morgen“.
+    // Kein Vorgriff: Die fertige A4 leitet erst #annahme her; hier steht nur der Verweis darauf.
+    expect(f).not.toContain('mehr einbringen');
+    expect(f).not.toContain('bringen mehr ein');
     expect(folie('annahme')).toContain('„Wir glauben, dass die zusätzlichen Bestellungen mehr einbringen, als Aufsteller, Bildschirm und Bestellseite kosten – ohne weitere Kraft am Morgen.“');
   });
 
@@ -111,6 +113,9 @@ describe('Geschäftsmodell: Warum vor der Experiment-Karte, Links (27.11.2026)',
     expect(n.geschichte?.text).toContain('ab 10:40, kommt das Geschäftsmodell. Um 11:00 folgt die Experiment-Karte');
     expect(n.geschichte?.text).toContain('wünschenswert, machbar, wirtschaftlich, bedienbar');
     expect(n.geschichte?.quelle).toMatch(/S\. 118, 128/);
+    // Torres verallgemeinert nicht: erst der Bias der meisten Teams, dann „forget viability“ als ein Muster – ohne „Or“ am Zitatanfang.
+    expect(n.geschichte?.text).toContain('„most teams have a bias toward one category or another.“ Ein Muster, das Torres nennt: „they always remember desirability and usability, but they forget viability.“');
+    expect(n.geschichte?.text).not.toContain('„Or ');
     expect(n.fragen?.map((f) => f.frage)).toStrictEqual([
       'Ist das nicht viel zu früh für ein Geschäftsmodell?',
       'Müssen wir einen Preis festlegen?',
@@ -120,6 +125,8 @@ describe('Geschäftsmodell: Warum vor der Experiment-Karte, Links (27.11.2026)',
     ]);
     expect(n.fragen?.[1].antwort).toContain('(Kursentscheidung)');
     expect(n.fragen?.[3].antwort).toContain('(S. 34–35, 39)');
+    expect(n.fragen?.[2].antwort).toContain('Torres nennt Loss Leader (S. 118)');
+    expect(n.fragen?.[2].antwort).not.toContain('erlaubt');
     // Die Zeiten der Geschichte stehen so im Tagesplan.
     const tag4 = quellen['/innolab/tag-4'] ?? '';
     expect(tag4).toContain('<Block time="10:40–11:00" type="uebung" title="Geschäftsmodell"');
@@ -127,7 +134,7 @@ describe('Geschäftsmodell: Warum vor der Experiment-Karte, Links (27.11.2026)',
   });
 
   it('#vorgehen: Miro-Pille oben rechts; #vorlage verlinkt die drei Frames, Kaffeebar, Anleitung und Werkstatt', () => {
-    expect(folie('vorgehen')).toContain('<h2 id="vorgehen">So geht ihr vor (10 min)</h2>\n    <MiroFrame name="T4 · 7 · Anleitung Geschäftsmodell" />');
+    expect(folie('vorgehen')).toContain('<h2 id="vorgehen">So geht ihr vor (10 min)</h2>\n    <p class="folie-satz">Zwei Zeilen, eine Linie, ein Satz.</p>\n    <MiroFrame name="T4 · 7 · Anleitung Geschäftsmodell" />');
     const v = q.slice(q.indexOf('<h2 id="vorlage">'), q.indexOf('<h2 id="pruefen">'));
     for (const n of [1, 2, 3]) expect(v).toContain(`<MiroLink name="T4 · 7 · Geschäftsmodell · Produkt ${n}">`);
     expect(v).toContain('<MiroLink name="T4 · 7 · Geschäftsmodell · Kaffeebar">Kaffeebar</MiroLink>');

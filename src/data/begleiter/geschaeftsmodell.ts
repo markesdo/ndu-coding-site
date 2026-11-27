@@ -57,7 +57,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
     },
     ueberleitung: 'Wie sieht ein Geschäftsmodell aus, wenn man es in vier Fragen fasst?',
     geschichte: {
-      text: 'Wo wir im Tag stehen: Nach der Pause, ab 10:40, kommt das Geschäftsmodell. Um 11:00 folgt die Experiment-Karte: Annahmen der Idee, die Map, und dort wählt ihr die riskanteste. Die Map kennt ihr von Tag 1, mit Cagans vier Arten: wünschenswert, machbar, wirtschaftlich, bedienbar. Torres beobachtet, dass Teams an Wunsch und Bedienung denken, die Wirtschaftlichkeit aber vergessen: „Or they always remember desirability and usability, but they forget viability.“ Darum schreibt ihr die wirtschaftliche Annahme jetzt auf – damit sie auf der Map steht, wenn ihr gleich wählt.',
+      text: 'Wo wir im Tag stehen: Nach der Pause, ab 10:40, kommt das Geschäftsmodell. Um 11:00 folgt die Experiment-Karte: Annahmen der Idee, die Map, und dort wählt ihr die riskanteste. Die Map kennt ihr von Tag 1, mit Cagans vier Arten: wünschenswert, machbar, wirtschaftlich, bedienbar. Die meisten Teams haben einen blinden Fleck: „most teams have a bias toward one category or another.“ Ein Muster, das Torres nennt: „they always remember desirability and usability, but they forget viability.“ Darum schreibt ihr die wirtschaftliche Annahme jetzt auf – damit sie auf der Map steht, wenn ihr gleich wählt.',
       quelle: `Tagesplan tag-4.astro (10:40 Geschäftsmodell, 11:00 Experiment-Karte); ${CAGAN}, S. 24 (vier Risiken); ${TORRES}, S. 118, 128; „Darum jetzt“: Kursentscheidung`,
     },
     kern: [
@@ -89,7 +89,7 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
       },
       {
         frage: 'Was, wenn bei uns niemand zahlt?',
-        antwort: 'Dann steht bei Wert?, wer sonst zahlt oder zu welchem Ziel es beiträgt. Wer zahlt, muss nicht wer nutzt (Gassmann, Tabelle 2.2); Loss Leader sind erlaubt (Torres S. 118). Wirtschaftlich bleibt die Annahme trotzdem: „somewhere down the line, the idea must create enough value for the business to be worth the effort“ (S. 118).',
+        antwort: 'Dann steht bei Wert?, wer sonst zahlt oder zu welchem Ziel es beiträgt. Wer zahlt, muss nicht wer nutzt (Gassmann, Tabelle 2.2); Torres nennt Loss Leader (S. 118). Wirtschaftlich bleibt die Annahme trotzdem: „somewhere down the line, the idea must create enough value for the business to be worth the effort“ (S. 118).',
       },
       {
         frage: 'Warum testen wir sie nicht zuerst?',
