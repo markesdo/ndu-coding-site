@@ -10,7 +10,8 @@ import type { Notiz } from './typen';
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
 // selbst kommt bei der Usage Story, hier geht es um den Bogen dahinter.
 // Lichaw liegt als EPUB vor: Quellen mit Kapitel + Abschnitt + Seite nach den Seitenmarken der Druckausgabe im EPUB.
-// Was nicht von Lichaw stammt, ist als „Kursformulierung“ oder „Kursregel“ markiert.
+// Was nicht von Lichaw stammt, ist markiert: ältere Notizen mit „Kursformulierung“ oder „Kursregel“, neuere mit „Übertrag des Kurses“,
+// „Beispiel des Kurses“ bzw. „Kursbeispiel“ (Kaffeebar) oder „Lesart des Kurses“ bzw. „Lesart dieses Kurses“, oft mit „nicht bei Lichaw“.
 const LICHAW = 'Donna Lichaw, The User’s Journey';
 
 export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
@@ -105,31 +106,75 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Zeit: Sprechzeit ~2 min; Film an der Abbildung, je Station ein Satz.',
       '„Ihr müsst Marty nicht mögen. Ihr müsst nur verstehen, was er will.“',
       'Krise betonen: Nichts hat funktioniert, das Ziel ist weiter weg denn je.',
-      'Bei Bedarf: Film unbekannt – Drachen-Zeichnung der Abbildung erzählen.',
+      'Bei Bedarf: Film unbekannt – Drachen der Abbildung erzählen.',
     ],
     verstaendnis: {
       frage: 'Worin unterscheiden sich Auslöser und Krise?',
       antwort: 'Der Auslöser ist das Problem, das die Figur losschickt (Marty strandet 1955). Die Krise ist der Punkt des größten Konflikts auf dem Weg: Nichts hat funktioniert (er beginnt zu verschwinden). Der Höhepunkt löst beides.',
       falsch: '„Die Krise ist das Problem“ – das Problem steht schon am Auslöser.',
     },
+    // Je Station ein Eintrag, immer gleich gebaut: Was sie tut – Frage (Kap. 3 Concept Story, Kap. 5 Usage Story) – Film (Kap. 2) –
+    // Kaffeebar (Kursbeispiel, wörtlich wie concept-story#beispiel und usage-story#beispiel) – Falle.
     kern: [
       {
-        text: 'Exposition: Welt, Figuren, ein großes Ziel. „You don’t have to like him. You just have to understand him, his goals and why he wants to pursue them.“ Auslöser: Ein Problem stellt sich zwischen Figur und Ziel – der Ruf zum Handeln.',
-        quelle: `${LICHAW}, Kap. 2, Exposition; Inciting Incident or Problem`,
+        text: 'Sieben Stationen auf einem Bogen: „Every narrative arc has specific key plot points and sequences“ – Exposition, Inciting incident or problem, Rising action, Crisis, Climax or resolution, Falling action or denouement, End (Abb. 2.3). Lichaw begründet die Zahl sieben nicht eigens; die Stationen sind die Punkte auf dem Bogen aus Abb. 2.2, der bis zum Gipfel steigt und dann abklingt. Dieselben sieben Stationen nutzt sie für die Concept Story (Kap. 3) und die Usage Story (Kap. 5), jeweils mit eigenen Fragen. Die Fragen unten stammen von dort.',
+        quelle: `${LICHAW}, Kap. 2, Story Has a Structure, S. 9–10, Abb. 2.2–2.3; Kap. 3, How Concept Stories Work, S. 24–25; Kap. 5, How Usage Stories Work, S. 71`,
       },
       {
-        text: 'Steigende Handlung: „Without conflict, endings come too easily, and the audience is unconvinced or bored or both.“ Krise: „Nothing the hero has done has worked, and he is further from the goal than ever.“',
-        quelle: `${LICHAW}, Kap. 2, Rising Action; Crisis`,
+        text: '1 Exposition. Was sie tut: „During the exposition, you are introduced to the world of the story, the characters, and some kind of big goal. There is a main character, and that character wants something. Big.“ Sie soll euch an die Figur binden: „At the very least, it compels you to empathize with them.“ Frage: Wer? Welche Ziele? Was steht im Weg? – bei Lichaw „Who is your target customer?“, „What are her goals as they relate to your product?“, „What is the problem or impediment standing in the way of this person meeting her goal?“ (Usage Story). Für die Concept Story fragt sie statt nach dem Hindernis: „What’s good in her world as it relates to your product or service?“ – das Hindernis kommt dort erst an Station 2. Film: Marty McFly lebt in Hill Valley, „any suburb USA“. „His family isn’t very ambitious, but Marty has plans. He’s going to make something of himself.“ Sein Freund Doc, ein verrückter Wissenschaftler, hat eine Zeitmaschine gebaut. „You don’t have to like him. You just have to understand him, his goals and why he wants to pursue them.“ Mehr sagt Lichaw zur Exposition nicht: Was schief ist, ist die Familie ohne Ehrgeiz; was Marty vor 1955 im Weg steht, nennt sie nicht. Eine Band nennt sie nicht; die Gitarre kommt erst am Höhepunkt, die Freundin am Ende, Namen wie Jennifer gar nicht. Kaffeebar (Kursbeispiel): Concept Story – Pendler*innen, werktags zwischen 7:15 und 7:45, mit festem Morgenzug; gut in ihrer Welt: Die Bar liegt am Weg, die Barista kennt die Stammgäste (G3, I3-6), und „wenn der erste Schluck passt, ist der Morgen gerettet“ (I1-4); großes Ziel: auf dem Weg zum Zug Kaffee besorgen (J1), ohne gehetzt in den Tag zu starten (J2). Usage Story – I1, Zug 7:38, „eigentlich immer knapp dran“ (I1-1); will Kaffee, ohne den Zug zu riskieren (J1, P1). Falle: nur die Person beschreiben, ohne dass sie etwas will. Lichaw: „Your character is someone, and she wants something.“',
+        quelle: `${LICHAW}, Kap. 2, Exposition, S. 11, Abb. 2.4; Kap. 3, Mapping a Concept Story, S. 34; Kap. 5, Exposition, S. 71–72, und Mapping the Usage Story, S. 82–83. Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)`,
       },
       {
-        text: 'Höhepunkt: der wichtigste Teil, löst Problem und Hürde; daran erinnert man sich. „Climax is why you are glad that you tuned in and stayed tuned in.“ Fallende Handlung: „Humans, it turns out, need closure.“ – aber so schnell wie möglich. Ende: „Characters grow throughout a story and should be changed by the end.“',
-        quelle: `${LICHAW}, Kap. 2, Climax or Resolution; Falling Action or Denouement; End`,
+        text: '2 Auslöser (Inciting incident). Was er tut: „The inciting incident is the moment where something changes or goes dramatically wrong in the world of the story. A problem surfaces and gets in the way of the character meeting his big goal.“ Der Moment, in dem die Figur ihre sichere Welt verlässt, heißt „call to action“. Fürs Publikum ist er „the first hook“: „It’s what gets you hooked.“ Frage: Concept Story – „What is her problem or pain point?“; Usage Story – „What will kick-start the customer on this specific journey?“, ein Ereignis oder Call to Action, das zum Problem der Concept Story passt („This step should map out onto the problem you outlined in your concept story.“). Film: Militante schießen Doc auf einem Parkplatz nieder, weil er ihnen Plutonium gestohlen hat. Auf der Flucht fährt Marty mit der Zeitmaschine nach 1955 und merkt, dass er nicht zurückkommt – „a meaty enough problem to name the movie after“. Sein Ruf zum Handeln: „to get back to the future“. Kaffeebar (Kursbeispiel): Concept Story – sie wissen nicht, ob sich der Kaffee bis zur Abfahrt ausgeht (P1); bei mehr als fünf Leuten reicht die Zeit nicht (P2). Usage Story – 7:27, „Ich komme in die Halle und entscheide.“: Schlange bis zur Tür, an der Tür der Aufsteller. Falle: kein echtes Problem. Lichaw: „If there isn’t a problem, then there is no solution…and without either, there is no story.“ Groß muss es nicht sein: „It can be as simple as boredom.“',
+        quelle: `${LICHAW}, Kap. 2, Inciting Incident or Problem, S. 11–12, Abb. 2.5; Kap. 3, Inciting Incident/Problem, S. 26; Mapping a Concept Story, S. 34; Kap. 5, Inciting Incident/Problem, S. 72; Mapping the Usage Story, S. 83. Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)`,
+      },
+      {
+        text: '3 Steigende Handlung. Was sie tut: Die Figur macht sich auf, das Unrecht zu richten; „A good story escalates during the rising action, creating new tensions and conflicts that help move the story forward.“ Und: „Without conflict, endings come too easily, and the audience is unconvinced or bored or both.“ Frage: Concept Story – „What is the name of your product?“, „What type of product is it?“; hier kommt das Produkt „to the rescue“. Usage Story – „What is the first action that the user should take?“, „What’s next?“, „And next?“; jeder Schritt soll interessanter sein als der letzte. Film: Marty sucht den Doc von 1955; zusammen versuchen sie, ihn heimzubringen. „But they can’t solve the problem, or the movie would end.“ Er trifft seine junge Mutter, die sich in ihn verguckt, und Biff, den Erzfeind seines Vaters, der zu seinem eigenen wird. „Things get tense. And more tense.“ Kaffeebar (Kursbeispiel): Concept Story – „Gleis-1-Express“ – bestellen im Browser, per QR-Code an der Hallentür, abholen an der Express-Ausgabe. Usage Story – scannen → eins aus drei → 7:38 eintippen (die Tasks aus Slice 1). Falle: in der Concept Story eine Funktionsliste statt Name und Art. Lichaw: „Because concept stories are short and conceptual in nature, the rising action shouldn’t be too complicated or wordy.“',
+        quelle: `${LICHAW}, Kap. 2, Rising Action, S. 12–13, Abb. 2.6; Kap. 3, Rising Action, S. 26; Mapping a Concept Story, S. 35; Kap. 5, Rising Action, S. 72; Mapping the Usage Story, S. 83. Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)`,
+      },
+      {
+        text: '4 Krise. Was sie tut: der Punkt (oder die Punkte) größten Konflikts, „the point of no return. Nothing the hero has done has worked, and he is further from the goal than ever.“ Aufgeben geht nicht mehr: „Defeat or success is the only option.“ Frage: Concept Story – „What does the competition look like?“, „What mental hurdles might keep her from adopting your solution?“; Usage Story – „What might get in her way of solving her problem and meeting her goal?“, greifbar wie eine Paywall oder emotional wie Langeweile. Film: Marty ist nah dran, heimzukommen. Doch seine Mutter verliebt sich in ihn statt in seinen Vater; vielleicht wird er nie geboren, und er beginnt zu verschwinden, auf der Bühne beim Schulball (Abb. 2.7). Erst müssen die Eltern zusammenfinden, dann muss er immer noch heimkommen. Kaffeebar (Kursbeispiel): Concept Story – der Automat, „halt Notlösung, aber er ist schnell“ (I1-3), oder gar kein Kaffee: „Bei mehr als fünf Leuten lass ich es“ (I3-4); dazu der Widerstand gegen Neues: im Gehen am Handy tippen? Usage Story – tippen im Gehen und der Zweifel, ob es reicht (P1, I3-3). Falle: nur Konkurrenzprodukte aufzählen. Lichaw zählt auch „an alternative way that people currently solve their problems“ und „resistance to change or people not wanting to adopt something new“ dazu. Fehlt die Krise ganz, ist die Story flach: „A concept without a conflict and a resulting climax is a flat story—literally just a line.“',
+        quelle: `${LICHAW}, Kap. 2, Crisis, S. 13–14, Abb. 2.7; Kap. 3, Crisis, S. 27; Climax/Resolution, S. 28; Mapping a Concept Story, S. 35; Kap. 5, Mapping the Usage Story, S. 83. Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)`,
+      },
+      {
+        text: '5 Höhepunkt (Climax or resolution). Was er tut: „It’s the most important part of the story. It’s the high point.“ Hier entscheiden sich Schicksal und Richtung; aufgelöst werden „the main problem from the inciting incident and the hurdle from the crisis“. „Climax is why you are glad that you tuned in and stayed tuned in.“ Und: „it’s what you remember most.“ Frage: Concept Story – „What will help her resolve her problem and overcome a crisis moment or resistance?“, „What’s your product’s primary value proposition or differentiator?“; Usage Story – „What is the high point of this experience or flow?“, „What will make all of her conflict, crisis, and work she puts in so far be worthwhile?“ Film: Der Höhepunkt beginnt, als sich Martys Eltern beim Schulball küssen; jetzt kann er sein Lied auf der Gitarre zu Ende spielen. „But wait! There’s more!“: Uhrturm und Blitz. Doc nutzt den Blitz als Energie für die Zeitmaschine: „In a bolt of lightning, boom, Marty gets catapulted back to the future.“ Erst löst sich also die Hürde der Krise (die Eltern), dann das Problem des Auslösers (heimkommen). Kaffeebar (Kursbeispiel): „Fertig 7:31. Dein Zug fährt 7:38.“ – Gewissheit statt Glücksspiel; anders als der Automat (schnell, aber Brühe) und die Schlange (Glücksspiel). In der Usage Story geht I1 an der Schlange vorbei. Falle: „leicht zu bedienen“ als Höhepunkt. Lichaw: „But ‚easy to use‘ is a pretty boring story when difficulty isn’t really the problem.“ Und wer nur das Problem löst, bekommt eine Story, die fließt, „yet be anti-climactic“.',
+        quelle: `${LICHAW}, Kap. 2, Climax or Resolution, S. 14–15, Abb. 2.8; Kap. 3, Climax/Resolution, S. 28; Mapping a Concept Story, S. 35; Kap. 5, Climax/Resolution, S. 73; Mapping the Usage Story, S. 83. Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)`,
+      },
+      {
+        text: '6 Fallende Handlung (Denouement). Was sie tut: Abschluss. „Humans, it turns out, need closure. Stories, likewise, need closure so that humans can feel closure.“ Denouement kommt aus dem Französischen, „to unknot“: Der Konflikt ist gelöst, das Tempo fällt bis zur Schlussszene. Aber kurz: „Ideally, the falling action or denouement should happen as quickly as possible.“ Frage: Concept Story – „What do you want people to think, feel, or envision after learning about your product?“, ein Gedanke, keine Handlung: „Falling action for concept stories should still remain in the realm of thought, rather than action.“ Usage Story – „What then?“, der letzte Schritt im Ablauf, „as quickly as possible“. Film: Marty kommt heim – „the hero goes home“. Und zu Hause ist es besser als zu Beginn: „Marty’s parents are successful. Biff is his family’s servant. Marty got the truck he always wanted.“ Kaffeebar (Kursbeispiel): Concept Story – „Ich muss nicht mehr auf die Uhr schauen“, als Annahme, das Gegenbild zu „Wenn ich auf die Uhr schauen muss, geh ich“ (I2-2). Usage Story – Express-Ausgabe, Nummer am Bildschirm, bar bezahlt; hier ist die fallende Handlung ein Schritt, in der Concept Story ein Gedanke. Falle: in der Concept Story eine Handlung statt eines Gedankens schreiben oder den Gedanken für sicher halten. Lichaw: „If you posit this falling action as a hypothesis, you should test it with real people.“',
+        quelle: `${LICHAW}, Kap. 2, Falling Action or Denouement, S. 15–16, Abb. 2.9; Kap. 3, Falling Action, S. 28–29; Mapping a Concept Story, S. 35; Kap. 5, Falling Action, S. 73; Mapping the Usage Story, S. 83. Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)`,
+      },
+      {
+        text: '7 Ende. Was es tut: „Quite literally, the end is the end. Characters grow throughout a story and should be changed by the end.“ Das große Ziel aus der Exposition: „How did it all work out?“ Frage: Concept Story – „What happens when the user meets her goal?“ und fürs Geschäft „What’s the business goal? How will you know you’re on the right path?“; Usage Story – „Where does the user end up—both in terms of character development and logistics?“, „Is this really the end or perhaps the starting point of her next story?“ Film: Martys Freundin fragt, ob alles in Ordnung sei. „Everything,“ Marty says, „is perfect.“ Sie umarmen sich. Dann kommt Doc die Einfahrt hoch, es gibt ein neues Problem – der Anfang der Fortsetzung („serial stories“). Kaffeebar (Kursbeispiel): Concept Story – Kaffee in der Hand, bevor der Zug einfährt (G1); fürs Geschäft: mehr Pendler*innen steigen morgens mit Kaffee in den Zug, gemessen an Bestellungen über den Code zwischen 7:15 und 7:45. Usage Story – 7:34 am Bahnsteig, im Zug der erste Schluck (I1-4); die nächste Episode wäre Slice 2. Falle: nur das Ziel der Figur nennen und das Geschäft vergessen. Lichaw: „your high-level business goal or mission must also resonate with the story.“ Oder die Figur kommt unverändert heim: „the main character never just ends up at home after a journey“.',
+        quelle: `${LICHAW}, Kap. 2, End, S. 17–18, Abb. 2.10; Kap. 3, End, S. 29; Mapping a Concept Story, S. 35; Kap. 5, End, S. 73–74; Mapping the Usage Story, S. 83. Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)`,
       },
     ],
     geschichte: {
-      text: 'Zurück in die Zukunft (1985), Station für Station: Marty hat Pläne, Doc hat eine Zeitmaschine (Exposition). Doc wird angeschossen, Marty landet 1955 und kommt nicht zurück (Auslöser). Mit dem jungen Doc sucht er einen Weg; seine Mutter verliebt sich in ihn, Biff wird sein Gegner (steigende Handlung). Weil die Eltern nicht zusammenfinden, beginnt er zu verschwinden (Krise). Die Eltern küssen sich, der Blitz am Uhrturm schickt ihn zurück (Höhepunkt). Zu Hause ist es besser als vorher (fallende Handlung); alles ist perfekt, sagt Marty (Ende).',
-      quelle: `${LICHAW}, Kap. 2, Story Has a Structure, Abb. 2.4–2.10`,
+      text: 'Zurück in die Zukunft (1985), Station für Station: Marty lebt in Hill Valley, seine Familie hat keinen Ehrgeiz, er hat Pläne; sein Freund Doc hat eine Zeitmaschine gebaut (Exposition). Doc wird angeschossen, Marty landet 1955 und kommt nicht zurück (Auslöser). Mit dem jungen Doc sucht er einen Weg; seine Mutter verliebt sich in ihn, Biff wird sein Gegner (steigende Handlung). Weil die Eltern nicht zusammenfinden, beginnt er zu verschwinden (Krise). Die Eltern küssen sich, der Blitz am Uhrturm schickt ihn zurück (Höhepunkt). Zu Hause ist es besser als vorher: Die Eltern sind erfolgreich, Biff arbeitet für die Familie, Marty hat den Truck, den er immer wollte (fallende Handlung). Alles ist perfekt, sagt Marty (Ende) – bis Doc mit dem nächsten Problem in der Einfahrt steht.',
+      quelle: `${LICHAW}, Kap. 2, Story Has a Structure, S. 11–18, Abb. 2.4–2.10`,
     },
+    fragen: [
+      {
+        frage: 'Warum sieben Stationen – reichen nicht Anfang, Mitte, Ende?',
+        antwort: 'Lichaw begründet die Zahl nicht. Sie beginnt mit Anfang, Mitte, Ende (Abb. 2.1) und dem Bogen (Abb. 2.2) und benennt dann die Punkte darauf: „Every narrative arc has specific key plot points and sequences“ (Kap. 2, Story Has a Structure, S. 10). Was die Feinteilung zeigt, sieht man an ihrem iPhone-Gegenbeispiel: Die Patent-Story hat Exposition, Auslöser, steigende Handlung und Ende; ihr fehlen „two key plot points that give stories their height: crisis and climax“ (Kap. 3, Avoiding the Anticlimactic, S. 32). Dass man das mit nur drei Teilen nicht sähe, ist die Lesart des Kurses.',
+      },
+      {
+        frage: 'Warum hört die Geschichte nicht am Höhepunkt auf?',
+        antwort: 'Weil sie sonst so unbefriedigend wäre wie ein Cliffhanger: „Stories can’t just end on a high point, or they’re as unsatisfying as a cliffhanger.“ (Kap. 2, Climax or Resolution, S. 15). Lichaws Belege: das halbe Telefongespräch, „a halfalogue“, das das Gehirn ungefragt zu Ende bringen will, und der Zauberer von Oz, wenn er nach dem Sieg über die Hexe endete – „What about Kansas?“ (Kap. 2, Falling Action or Denouement, S. 15–16). Für Produkte: „The flow can’t just end on a high point—it has to go somewhere and take the user with it.“ (Kap. 5, Falling Action, S. 73).',
+      },
+      {
+        frage: 'Warum sollen fallende Handlung und Ende so kurz sein?',
+        antwort: '„As much as humans need closure, they’re also impatient beings.“ Abschluss heißt nicht, ihn „dragged out with a 10-minute long ticker-tape parade“ (Kap. 2, Falling Action or Denouement, S. 16). Die Grenze zwischen Höhepunkt, fallender Handlung und Ende „can be blurry and happen so quickly that it’s hard to discern the difference between one and another“ (ebd.). Im Storyboard aus neun Feldern gehört der Höhepunkt deshalb ins siebte: „your climax or resolution leads to a very swift ending“ (Kap. 7, Storyboard, S. 117–118).',
+      },
+      {
+        frage: 'Was gehört in eine gute Exposition? Gibt es Beispiele?',
+        antwort: 'Vier Dinge: eine Person, ihre Welt und ihr Ziel (Kap. 2, Exposition, S. 11) und was ihr im Weg steht – danach fragt Lichaw nur in Kap. 5 („What is the problem or impediment standing in the way of this person meeting her goal?“, Mapping the Usage Story, S. 83). Lichaws eigenes Beispiel ist die Studieninteressierte: Will sie die richtige Schule, um einmal Tierärztin zu werden, will sie Berufe erkunden oder mit Gleichgesinnten studieren? „Each exposition is the beginning of a very different story.“ (Kap. 5, Exposition, S. 72). Beispiele des Kurses, nicht bei Lichaw: (a) Kaffeebar – „Pendler I1, Zug 7:38, eigentlich immer knapp dran. Die Bar liegt am Weg, die Barista kennt die Stammgäste. Er will Kaffee, ohne den Zug zu riskieren – ob es sich ausgeht, weiß er erst in der Halle.“ (I1-1, G3, J1, P1). (b) Lern-App – „Studentin im zweiten Semester, arbeitet 20 Stunden die Woche neben dem Studium, lernt abends in der Bahn. Sie will die Statistik-Prüfung im ersten Anlauf schaffen – aber die Übungsblätter gibt es nur als PDF für den Laptop.“ (c) Rechnungs-Tool – „Selbstständiger Grafiker mit drei Kund*innen im Monat, schreibt die Rechnungen am Monatsende in Word. Er will pünktlich bezahlt werden – aber wer noch nicht gezahlt hat, merkt er erst Wochen später.“ In der Concept Story wird das Hindernis zum Auslöser (Station 2); in ihrer Exposition steht stattdessen, was in der Welt der Figur gut ist.',
+      },
+      {
+        frage: 'Reicht eine Persona-Beschreibung als Exposition?',
+        antwort: 'Nein. Schwach (Beispiel des Kurses): „Pendler, 34, fährt jeden Tag mit dem Zug, trinkt gern Kaffee, hat ein Smartphone, hört Podcasts.“ Alles kann stimmen, aber niemand will etwas – also kann auch nichts schiefgehen, und der Auslöser hat nichts zu stören. Stark: „Pendler I1, Zug 7:38, eigentlich immer knapp dran (I1-1). Er will Kaffee, ohne den Zug zu riskieren (J1). Ob es sich ausgeht, weiß er erst in der Halle (P1).“ Lichaw: „Your character is someone, and she wants something.“ (Kap. 5, Exposition, S. 72) und „There is a main character, and that character wants something. Big.“ (Kap. 2, Exposition, S. 11).',
+      },
+    ],
     ueberleitung: 'Wer ist die Figur in eurer Geschichte? Nicht ihr.',
   },
 
@@ -338,12 +383,12 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Zeit: Sprechzeit ~2 min; Abbildung von links, je Punkt zeigen.',
       'Anfang: dieselbe Figur wie beim Patent – neu nur „smartphones suck“.',
       'Krise: auf die Hürde zeigen – iPod, Handy, Preis, Bedienung.',
-      'Höhepunkt: auf die Glühbirne zeigen – kommunizieren, „works like magic“.',
+      'Höhepunkt: auf die Glühbirne zeigen – kommunizieren, „worked like magic“.',
       '„Danach nur ein Gedanke: Ich will ein iPhone. Gekauft ist noch nichts.“',
     ],
     verstaendnis: {
       frage: 'Was hat die Version von 2007, das der Patent-Version fehlt?',
-      antwort: 'Eine Krise (schon ein iPod und ein Handy, Preis, Angst vor dem Touchscreen) und einen Höhepunkt, der sie auflöst: der beste Weg zu kommunizieren, mit Internet, Karten und E-Mail, und „it worked like magic“ (Kap. 3, S. 27–28).',
+      antwort: 'Eine Krise (schon ein iPod und ein Handy, Preis, Angst vor dem Touchscreen) und einen Höhepunkt, der sie auflöst: der beste Weg zu kommunizieren, mit Internet, Karten und E-Mail, und „the iPhone worked like magic“ (Kap. 3, S. 27–28).',
       falsch: '„Mehr Funktionen“ – es zählt, dass der Höhepunkt die Krise auflöst.',
     },
     geschichte: {
@@ -375,7 +420,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       },
       {
         frage: 'Warum 3-in-1 und nicht 2-in-1 – mehr Funktionen = besser?',
-        antwort: 'Nein. Der Höhepunkt muss auflösen, was Auslöser und Krise aufwerfen: „The climax is where the problem outlined in the inciting incident and the additional hurdles that surface during your crisis are resolved and overcome.“ (Kap. 3, Climax/Resolution, S. 28). Das Internet zählt, weil es zum besten Weg zu kommunizieren gehört; „works like magic“ antwortet auf die Angst vor dem Touchscreen. Ausführlich auf der nächsten Folie, „Krise und Höhepunkt geben Höhe“.',
+        antwort: 'Nein. Der Höhepunkt muss auflösen, was Auslöser und Krise aufwerfen: „The climax is where the problem outlined in the inciting incident and the additional hurdles that surface during your crisis are resolved and overcome.“ (Kap. 3, Climax/Resolution, S. 28). Das Internet zählt, weil es zum besten Weg zu kommunizieren gehört; „worked like magic“ antwortet auf die Angst vor dem Touchscreen. Ausführlich auf der nächsten Folie, „Krise und Höhepunkt geben Höhe“.',
       },
       {
         frage: 'Warum ist der Touchscreen eine Krise?',
@@ -402,6 +447,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       '„2-in-1 war eine Linie. 3-in-1 war der Gipfel.“',
       '„Niemand hatte nach drei Geräten in einem gefragt.“',
       'Fragen: Was ist bei euch die naheliegende Lösung?',
+      'Bei Bedarf: Kaffeebar – Wartezeit-Anzeige als Linie, „Fertig 7:31“ als Gipfel.',
     ],
     verstaendnis: {
       frage: 'Woran erkennt ihr, dass eure Story nur die Linie ist?',
@@ -410,16 +456,54 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     },
     kern: [
       {
-        text: '„No one had asked for a three-in-one communication device. Actually, most iPod owners in 2007 would have been content with an iPod that let them make phone calls.“',
+        text: 'Die Keynote im Januar 2007. Erwartet wurde ein iPod, der telefoniert. „Jobs presented a problem: smartphones are no good.“ Dann zeigte er drei Produkte – „A widescreen touchscreen iPod“, „A revolutionary new mobile phone“, „An Internet communicator“ – und wiederholte sie, bis er fragte: „Are you getting it?“ Es war ein einziges Gerät. „No one had asked for a three-in-one communication device. Actually, most iPod owners in 2007 would have been content with an iPod that let them make phone calls.“ Für Lichaw war dieser Moment „the inciting incident that kick-started a storyline that flowed through everything from the actual product itself to the rest of the presentation“.',
         quelle: `${LICHAW}, Kap. 3 (Einleitung), S. 22`,
       },
       {
-        text: 'Diagramm und Konzept der flachen Version „lack two key plot points that give stories their height: crisis and climax“. „Our brains don’t like flat.“ Dann der Vergleich: „A simple solution, an iPhone that made phone calls, was flat. A climactic solution, an iPhone that did everything, worked like ‚magic.‘ One was a 2-in-1 device, the other 3-in-1.“',
-        quelle: `${LICHAW}, Kap. 3, Avoiding the Anticlimactic, S. 32–33`,
+        text: 'Die Linie: das Patentgerät, sechs Monate vor der Keynote angemeldet, „essentially an iPod that made phone calls“. Als Story: „I love my iPod; I love my mobile phone.“ – „I don’t love carrying two devices, and I wish I could have my iPod and phone all in one.“ – „iPhone to the rescue!“ – „I now have a way to have my iPod and phone in one device.“ Lichaw: „This story lacks gravitas or dignity. It has a structure, but when you visually assess the story as a diagram, you can see that the structure isn’t very tall.“ Diagramm und Konzept „lack two key plot points that give stories their height: crisis and climax“. Jobs machte sich in der Keynote über so ein Gerät lustig, bevor er das echte zeigte.',
+        quelle: `${LICHAW}, Kap. 3, Avoiding the Anticlimactic, S. 31–32, Abb. 3.5–3.6`,
       },
       {
-        text: 'Lichaws zwei Fragen: „What is the straightforward solution to the problem? What is the awesome solution to the problem?“ Dass ihr beide nebeneinanderlegt (Flach-Probe), ist eine Kursregel.',
-        quelle: `${LICHAW}, Kap. 3, What Is a Concept Story?, S. 23; Kursregel`,
+        text: 'Der Gipfel: Die Krise der Version von 2007 sind iPod und Handy, die man schon hat, der Preis und der Touchscreen, „a huge crisis“ für alle, die frühe Touchscreens kannten. Der Höhepunkt: „if the character wanted a two-in-one device to communicate, what they get with the iPhone was the best way to communicate“, dazu Internet, Karten und E-Mail, und „the iPhone worked like magic. It was easy to use.“ Lichaws Vergleich: „A simple solution, an iPhone that made phone calls, was flat. A climactic solution, an iPhone that did everything, worked like ‚magic.‘ One was a 2-in-1 device, the other 3-in-1. One helped you play music and make phone calls, the other was a communication powerhouse.“ Der Gipfel ist also nicht die Zahl der Funktionen, sondern der beste Weg zu kommunizieren.',
+        quelle: `${LICHAW}, Kap. 3, Crisis, S. 27; Climax/Resolution, S. 28; Avoiding the Anticlimactic, S. 33`,
+      },
+      {
+        text: '„Our brains don’t like flat. Our brains need structure in order to get excited about things before, during, and after experiencing something, whether the experience involves thinking about or actually using the thing.“ Warum das ein Produkt trifft: Die Concept Story ist „the mental calculation that someone makes when they first hear about your product“, nur Sekunden lang, aber „this story sets the stage for your customer being intrigued or excited by what your product is“. Und allgemein: „A concept without a conflict and a resulting climax is a flat story—literally just a line.“',
+        quelle: `${LICHAW}, Kap. 3, Avoiding the Anticlimactic, S. 32; How Concept Stories Work, S. 24; Climax/Resolution, S. 28`,
+      },
+      {
+        text: 'Die zwei Fragen stehen am Anfang von Kap. 3, als die letzten von zehn: „Concept stories, when used to define products, help you answer the following questions“ – darunter „What is the straightforward solution to the problem?“ und „What is the awesome solution to the problem?“. In der Liste „Mapping a Concept Story“ kommen sie nicht vor; danach greift Lichaw sie am Slack-Beispiel auf: „there is always a simple solution to every story, which can look like a straight line. People want to communicate and collaborate? So give them a better communication and collaboration tool. However, while you might want to design solutions that are simply better than whatever else is out there, “better” isn’t always enough.“ Ein festes Vorgehen für die zwei Fragen gibt sie nicht; das Nebeneinanderlegen (Flach-Probe) ist ein Übertrag des Kurses.',
+        quelle: `${LICHAW}, Kap. 3, What Is a Concept Story?, S. 23; Mapping a Concept Story, S. 35; Übertrag des Kurses`,
+      },
+      {
+        text: 'Wann die naheliegende Lösung reicht: Beim Kalender von iOS, dessen Kernaufgabe flach bleibt, fragt Lichaw: „Is Apple in trouble? Not at all. Unless calendaring becomes core to their business and engagement strategies.“ Und: „When it matters, you should plot even the smallest and seemingly trivial core tasks story-first.“ Zu „leicht zu bedienen“: „But ‚easy to use‘ is a pretty boring story when difficulty isn’t really the problem.“ Dass „leicht“ dann der Gipfel sein kann, wenn die Schwierigkeit wirklich das Problem ist, folgt daraus, sagt Lichaw aber nicht ausdrücklich.',
+        quelle: `${LICHAW}, Kap. 5, Micro-Stories: Core Tasks, S. 90; Kap. 3, Mapping a Concept Story, S. 35`,
+      },
+    ],
+    fragen: [
+      {
+        frage: 'Wofür sind die zwei Fragen da?',
+        antwort: 'Damit ihr die Linie seht, bevor ihr sie baut. Eine naheliegende Lösung gibt es fast immer: „there is always a simple solution to every story, which can look like a straight line“ (Kap. 3, S. 35). Sie löst das Problem, das die Leute nennen – beim iPhone „it sucked to carry two devices“. Die großartige Lösung löst das Problem dahinter und die Krise mit: nicht zwei Geräte in einem, sondern „the best way to communicate“ (Kap. 3, S. 26 und 28). Lichaw stellt die Fragen, ohne ein Vorgehen dazu.',
+      },
+      {
+        frage: 'Was machen wir heute konkret damit?',
+        antwort: 'Übertrag des Kurses, nicht bei Lichaw (Flach-Probe in Schritt 1 der Übung): 1. Die naheliegende Lösung als Linie hinschreiben, Problem → Produkt → Ende – im Feld „Flach-Probe“ unten links in „T4 · 0 · Concept Story · Produkt n“, freiwillig. 2. Daneben eure Story: Steht in der Krise eine Alternative oder ein Widerstand aus den Interviews, mit Zitat-ID? 3. Den Höhepunkt prüfen: Löst er genau diese Krise auf? Steht dort gegenüber der Linie nur „schneller“ oder „leichter“, fehlt die Krise. Fertig ist Schritt 1, wenn Krise und Höhepunkt stehen. Die Linie ist kein Fehler, sondern der Vergleich, an dem ihr seht, was euer Höhepunkt mehr hat.',
+      },
+      {
+        frage: 'Wie sieht das bei der Kaffeebar aus?',
+        antwort: 'Beispiel des Kurses. Naheliegend: die Wartezeit-Anzeige an der Tür – „Geht sich ein Kaffee aus?“ → Wartezeit-Anzeige an der Tür → Kaffee vor dem Zug. Eine Linie, ohne Krise und Gipfel; sie trifft P1, aber nicht P2, P3 und G1 und verlor schon im Vergleich der Lückensätze (Value Map). Großartig: Gleis-1-Express – im Gehen per QR-Code bestellen, und beim Bestellen steht, ob es sich ausgeht: „Fertig 7:31. Dein Zug fährt 7:38.“ Was sich am Höhepunkt ändert: Die Linie sagt nur, wie lange es dauert. Die Story nimmt die Krise auf – den Automaten („halt Notlösung, aber er ist schnell“, I1-3), den Verzicht (I3-4), den Zweifel, ob er doch nicht fertig ist (I3-3) – und löst sie: Gewissheit statt Glücksspiel, und der gute Kaffee statt der Brühe.',
+      },
+      {
+        frage: 'Frage an den Raum: War ein iPod, der telefoniert, eine schlechte Idee?',
+        antwort: 'Nein. Er löste das Problem, das die Leute kannten, und hätte den meisten gereicht (Kap. 3, S. 22). Er war nur flach: keine Krise, die er auflöst, kein Höhepunkt, an den man sich erinnert. Die Frage ist nicht gut oder schlecht, sondern Linie oder Gipfel.',
+      },
+      {
+        frage: 'Frage an den Raum: Wann dürft ihr bei der naheliegenden Lösung bleiben?',
+        antwort: 'Wenn die Aufgabe nicht zum Kern eures Geschäfts gehört – Lichaws Kalender-Beispiel (Kap. 5, S. 90). Und wenn die Schwierigkeit wirklich das Problem ist, kann „leichter“ der Höhepunkt sein; das ist eine Lesart aus Kap. 3, S. 35. Für eure Concept Story heute gilt: Die Kernaufgabe ist euer Geschäft, also braucht sie Krise und Höhepunkt.',
+      },
+      {
+        frage: 'Vorsicht beim Erzählen: Was davon steht so bei Lichaw?',
+        antwort: '„Niemand hatte 3-in-1 verlangt“ und „hätte gereicht“ sind Lichaws Sätze („No one had asked …“, „would have been content …“, Kap. 3, S. 22), aber ihre Einschätzung, ohne Beleg oder Zahl – erzählt es als ihre Sicht, nicht als Marktforschung. „3-in-1 war der Gipfel“ heißt nicht „mehr Funktionen“: Ihr Höhepunkt ist „the best way to communicate“ und „worked like magic“ (S. 28). Die gestrichelte Linie in Abb. 3.6 erklärt sie nicht; wir lesen sie als möglichen Bogen. Und das Nebeneinanderlegen der zwei Lösungen ist ein Übertrag des Kurses, kein Schritt bei Lichaw.',
       },
     ],
     ueberleitung: 'Die Story war mehr als die Rede dazu: Sie hat entschieden, was gebaut wurde.',
@@ -434,7 +518,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Warum fehlte Kopieren und Einfügen?',
-      antwort: 'Weil es die Story – „works like magic“, leicht mit dem Finger – nicht stützte: „Animation supported the story. Cut-and-paste did not.“ (Kap. 3, S. 33). Die Krise war die Angst vor dem Touchscreen; Animation und Technik zum Tippen statt Stift lösten sie auf. Lichaw nennt keinen weiteren Grund.',
+      antwort: 'Weil es die Story – „worked like magic“, leicht mit dem Finger – nicht stützte: „Animation supported the story. Cut-and-paste did not.“ (Kap. 3, S. 33). Die Krise war die Angst vor dem Touchscreen; Animation und Technik zum Tippen statt Stift lösten sie auf. Lichaw nennt keinen weiteren Grund.',
       falsch: '„Weil Apple es nicht konnte“ – das sagt Lichaw nicht; der Palm Treo hatte es längst (Kap. 7, S. 129).',
     },
     geschichte: {
@@ -444,7 +528,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Warum stützte Kopieren und Einfügen die Story nicht – was hätte es ihr gebracht?',
-        antwort: 'Lesart dieses Kurses, nicht bei Lichaw: Sie nennt keinen Grund. Am Bogen gelesen trägt es keine Station. Es nimmt nicht die Angst vor dem Touchscreen (Krise), und es macht den Höhepunkt – „works like magic“, leicht mit dem Finger – nicht stärker. Und der alte Weg hatte es schon: Der Palm Treo konnte Kopieren und Einfügen (Kap. 7, S. 129). Damit hätte das iPhone auf dem Feld der Konkurrenz mitgehalten, statt die Krise aufzulösen. Technische Gründe nennt Lichaw nicht.',
+        antwort: 'Lesart dieses Kurses, nicht bei Lichaw: Sie nennt keinen Grund. Am Bogen gelesen trägt es keine Station. Es nimmt nicht die Angst vor dem Touchscreen (Krise), und es macht den Höhepunkt – „worked like magic“, leicht mit dem Finger – nicht stärker. Und der alte Weg hatte es schon: Der Palm Treo konnte Kopieren und Einfügen (Kap. 7, S. 129). Damit hätte das iPhone auf dem Feld der Konkurrenz mitgehalten, statt die Krise aufzulösen. Technische Gründe nennt Lichaw nicht.',
       },
       {
         frage: 'Wie findet ihr euer „Kopieren und Einfügen“?',
