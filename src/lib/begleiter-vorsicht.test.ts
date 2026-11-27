@@ -128,8 +128,14 @@ describe('Tag 4: drei korrigierte Sachfehler', () => {
 });
 
 describe('Tag 4: Setzungen des Kurses auf den Seiten markiert', () => {
-  it('story-map: „ein, zwei Stickies“ ist Faustregel des Kurses', () => {
-    expect(handout(folie('/innolab/methoden/story-map', 'schritt-schneiden'))).toContain('Slice 1 hat selten mehr als ein, zwei Stickies pro Aktivität – eine Faustregel des Kurses, nicht Pattons.');
+  // Review #489 (Markus): Herkunftsvermerke („Faustregel des Kurses, nicht Pattons“) stehen nicht auf Folie oder Handout,
+  // sondern im Begleiter; das Handout nennt die Regel schlicht.
+  it('story-map: „ein, zwei Stickies“ schlicht im Handout, Faustregel des Kurses im Begleiter', () => {
+    const h = handout(folie('/innolab/methoden/story-map', 'schritt-schneiden'));
+    expect(h).toContain('Slice 1 hat selten mehr als ein, zwei Stickies pro Aktivität.');
+    expect(h).not.toMatch(/Faustregel|nicht Pattons/);
+    const kern = JSON.stringify(NOTIZEN['/innolab/methoden/story-map']['schritt-schneiden'].kern);
+    expect(kern).toContain('„Slice 1 hat selten mehr als ein, zwei Stickies pro Aktivität“ sei Pattons Regel – es ist eine Faustregel des Kurses.');
   });
   it('usage-story: ein Satz als Boom ist Übertrag des Kurses', () => {
     expect(handout(folie('/innolab/methoden/usage-story', 'nahe-am-ende'))).toContain('Lichaw nennt eine Animation; dass auch ein einziger Satz reicht, ist ein Übertrag des Kurses');

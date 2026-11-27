@@ -97,7 +97,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(sichtbar(folie('schritt-erkunden'))).toContain('<strong>Mindestens ein rotes Sticky pro Aktivität.</strong>');
     expect(sichtbar(folie('schritt-outcome'))).toContain('„Outcome: [Wer] tut [was] statt [was bisher].“');
     const schneiden = sichtbar(folie('schritt-schneiden'));
-    expect(schneiden).toContain('was Slice 1 nicht braucht – nicht kopieren. Aktivitäten bleiben oben.');
+    expect(schneiden).toContain('was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal. Aktivitäten bleiben oben.');
     expect(handout(folie('schritt-schneiden'))).toContain('Jedes Sticky gibt es dabei einmal.');
     expect(schneiden).toContain('<strong>Euer „bar an der Ausgabe“:</strong>');
     expect(sichtbar(folie('schritt-durchgehen'))).toContain('<strong>Prüft:</strong> An welchem Sticky passiert der Outcome?');
@@ -205,28 +205,35 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(sichtbar(folie('schritt-erkunden'))).toContain('<strong>Unter den Task, zu dem es gehört:</strong> genauer · oder · richtig gut (blau) · geht schief (rot).');
     expect(handout(folie('schritt-erkunden'))).toContain('Varianten und was schiefgeht hängen deshalb als Spalte unter ihrem Task, nicht in eigenen Reihen');
     const outcome = sichtbar(folie('schritt-outcome'));
-    expect(outcome).toContain('<strong>Pink aus dem Streifen unten, links neben die Map:</strong>');
+    expect(outcome).toContain('<strong>Pink aus dem Streifen, links unter die Fragekarte:</strong>');
     expect(outcome).toContain('<strong>Cyan daneben:</strong>');
     const schneiden = sichtbar(folie('schritt-schneiden'));
-    expect(schneiden).toContain('<strong>Slice-Linie hochziehen,</strong> quer durch die Map; darunter schieben, was Slice 1 nicht braucht – nicht kopieren. Aktivitäten bleiben oben.');
-    expect(schneiden).toContain('<strong>Wo ein „oder“ hängt:</strong> Die Variante, die zum Lernen reicht, kommt über die Linie. Was fehlt oben noch?');
+    expect(schneiden).toContain('<strong>Slice-Linie hochziehen,</strong> quer durch die Map; darunter schieben, was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal. Aktivitäten bleiben oben.');
+    expect(schneiden).toContain('<strong>Wo ein „oder“ hängt:</strong> Die Variante, die zum Lernen reicht, kommt über die Linie, die anderen darunter. Was fehlt oben noch?');
+    expect(schneiden).toContain('darunter schieben, was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal.');
+    expect(schneiden).toContain('Slice 1 = bar an der Ausgabe* · darunter: vorher online zahlen');
+    expect(schneiden).not.toContain('Slice 2');
     expect(handout(folie('schritt-schneiden'))).toContain('Bis hierher lag die Linie im Streifen unter eurer Fläche; erst jetzt zieht ihr sie hoch');
     const durchgehen = sichtbar(folie('schritt-durchgehen'));
     expect(durchgehen).toContain('ein ✓ auf jedes grüne Sticky mit Task über der Linie');
     expect(durchgehen).toContain('Rechts im Kasten: „Outcome erreicht? ja / nein, es fehlt: …“');
-    expect(handout(folie('vorgehen'))).toContain('Die Slice-Linie, Pink und Cyan warten im Streifen unter der Fläche, bis ihr in Schritt 8 und 9 schneidet.');
+    expect(handout(folie('vorgehen'))).toContain('Die Slice-Linie, Pink und Cyan warten im Streifen unter der Fläche bis Schritt 8 (Outcome) und 9 (Schneiden).');
     // Handout „So sieht euer Bereich aus“: fünf Einträge statt acht Reihen.
     expect(vorlage.match(/<li>/g) ?? []).toHaveLength(5);
     expect(vorlage).toContain('<strong>Offene Fläche für Tasks und alles darunter:</strong>');
     expect(vorlage).toContain('<strong>Streifen „Schneiden“</strong> unter der Fläche: die gestrichelte Slice-Linie');
     expect(vorlage).not.toMatch(/Slice 2|Später|Genauer|Durchgang/);
     const n = NOTIZEN['/innolab/methoden/story-map'];
-    expect(n['schritt-erkunden'].live[0]).toBe('Timer 6 min: vier Fragen, alles unter den Task – blau, schief rot.');
+    expect(n['schritt-erkunden'].live[0]).toBe('Timer 6 min: vier Fragen unter den Task – gut blau, schief rot.');
     expect(n['schritt-schneiden'].live.slice(0, 2)).toStrictEqual([
       'Timer 5 min: Linie hochziehen, darunter schieben – nicht kopieren.',
-      'Beim „oder“: die Variante, die zum Lernen reicht, nach oben.',
+      'Beim „oder“: was zum Lernen reicht, nach oben; die anderen darunter.',
     ]);
-    expect(n['schritt-outcome'].live[0]).toBe('Timer 2 min: Pink aus dem Streifen unten, links neben die Map.');
+    expect(n['schritt-outcome'].live[0]).toBe('Timer 2 min: Pink aus dem Streifen, links unter die Fragekarte.');
+    expect(vorlage).toContain('in Schritt 8 legt ihr Pink und Cyan links unter die Fragekarte.');
+    expect(vorlage).toContain('Sie warten dort bis Schritt 8 (Outcome) und 9 (Schneiden)');
+    expect(vorlage).toContain('Rechts neben der Fläche der Kasten „Outcome erreicht?');
+    expect(vorlage).not.toContain('wie bisher');
     for (const id of ['vorgehen', 'schritt-erkunden', 'schritt-outcome', 'schritt-schneiden']) expect(JSON.stringify(n[id]), id).not.toMatch(/vier Zeilen|nach unten schieben|Pro Spalte|links an den Tasks|Kursregel/);
     // Live-Zeilen bleiben kurz: höchstens zwölf Wörter.
     for (const id of ['vorgehen', 'schritt-erkunden', 'schritt-outcome', 'schritt-schneiden']) {
