@@ -155,11 +155,19 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(fragen[1].antwort).toMatch(/^Lesart dieses Kurses:/);
   });
 
-  it('baut-mit: Kette Krise → Höhepunkt → Anforderung → Gebaut, letzte Zeile als Kursregel, keine eigene Begründung', () => {
+  // 27.11. abends (Markus): Kursregel-Zeile auf baut-mit gestrichen; die Regel steht nur noch im Handout, als Übertrag des Kurses.
+  it('baut-mit: Kette Krise → Höhepunkt → Anforderung → Gebaut, zwei Zeilen ohne Kursregel, keine eigene Begründung', () => {
     const f = folie('baut-mit');
     expect([...f.matchAll(/\{ t: '([^']+)'/g)].map((m) => m[1])).toStrictEqual(['Krise', 'Höhepunkt', 'Anforderung', 'Gebaut']);
     expect(f).toContain('hervor={[3]}');
-    expect(lis('baut-mit').at(-1)).toBe('Kursregel:');
+    expect(lis('baut-mit')).toStrictEqual(['Animation stützte die Story.', 'Nicht nur Pitch:']);
+    const sichtbar = f.slice(0, f.indexOf('<div class="nur-handout">'));
+    expect(sichtbar).not.toContain('Kursregel');
+    expect(f).toContain('<p><strong>Kursregel:</strong> Was eure Concept Story nicht stützt, kommt nicht in den Prototyp. Das ist ein Übertrag des Kurses, nicht Lichaws Regel:');
+    expect(f).not.toContain('auf der Folie ist ein Übertrag');
+    const n = NOTIZEN_CONCEPT_STORY['baut-mit'];
+    expect(n.live.filter((s) => s.includes('Kursregel'))).toStrictEqual([]);
+    expect(JSON.stringify(n)).not.toContain('Kursregel auf der Folie');
     expect(f).not.toContain('Für euch:');
     expect(f).not.toContain('sonst wäre der Höhepunkt');
     expect(f).toContain('Warum Kopieren und Einfügen die Story nicht stützte, führt Lichaw nicht aus.');
@@ -213,6 +221,11 @@ describe('Concept Story: Satz im Brief, iPhone-Hintergrund', () => {
     expect(n.zusatz?.[0].titel).toBe('Hintergrund (nicht bei Lichaw): das erste iPhone');
     expect(n.zusatz?.[0].text).toContain('es kam erst 2009 mit iPhone OS 3.0');
     expect(JSON.stringify(n.kern)).toContain('There was a good reason why the iPhone launched with fancy animation but no cut-and-paste functionality.');
+    // Lichaw nennt in Kap. 7 die Pin-Animation (S. 129–130, Abb. 7.9) – die Notiz darf nicht sagen, sie nenne keine.
+    expect(JSON.stringify(n)).not.toMatch(/Welche Animation, nennt Lichaw nicht|Welche Animationen Lichaw meint, ist damit nicht gesagt/);
+    expect(JSON.stringify(n.kern)).toContain('„meticulously crafted for bounce and elasticity“');
+    expect(n.kern?.find((k) => k.text.includes('pin dropped'))?.quelle).toContain('Kap. 7, Build and Communicate, S. 129–130, Abb. 7.9');
+    expect(n.zusatz?.[0].text).toContain('Lichaw selbst nennt als Beispiel die Pin-Animation in Maps');
     expect(JSON.stringify(NOTIZEN_CONCEPT_STORY.hoch.kern)).toContain('Blackberrys and Palm Treos');
   });
 });
