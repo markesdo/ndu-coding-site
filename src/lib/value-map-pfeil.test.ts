@@ -121,9 +121,13 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(folie('pr-finden')).toContain('Der Pfeil zeigt auf das, was der Zettel trifft (S. 93, 112) – meist einen Pain, aber auch einen Job oder Gain, etwa (→ J1) oder (→ G2). Trifft ein Zettel Pain und Gain zugleich, ist das erlaubt (S. 103); dann trägt er zwei IDs, etwa (→ P2, G1).');
     expect(folie('gc-finden')).toContain('(S. 103); dann trägt der Zettel zwei IDs, etwa (→ P2, G1).');
     // A3: Ideen-Zettel wird durch die Produkte ersetzt.
-    expect(folie('ps-finden')).toContain('<li data-schritt><strong>Idee zerlegen:</strong> ein gelber Zettel je Produkt oder Dienst – sie ersetzen den Ideen-Zettel aus dem Satz.</li>');
-    expect(folie('vorgehen')).toContain('den gelben Ideen-Zettel ersetzt ihr durch die Produkte und Dienste, in die ihr die Idee zerlegt.');
-    expect(JSON.stringify(NOTIZEN['/innolab/methoden/value-map']?.vorgehen ?? {})).toContain('die Idee wird zu Products & Services (ersetzt durch die Produkte, in die ihr sie zerlegt)');
+    expect(folie('ps-finden')).toContain('<li data-schritt><strong>Idee möglich machen:</strong> Was braucht es, damit eure Idee passiert? Ein gelber Zettel je Produkt oder Dienst – zusammen ersetzen sie den Ideen-Zettel.</li>');
+    // 27.11.: Products & Services = was es braucht, damit die Idee passiert (statt „Idee zerlegen“).
+    expect(folie('ps-finden')).toContain('<strong>Kaffeebar:</strong> Damit „Bestellen im Gehen“ passiert, braucht es: QR-Code an der Hallentür, Bestellung im Browser ohne App · Express-Ausgabe mit drei Standardgetränken.</p>');
+    expect(folie('vom-satz')).toContain('<td>Products & Services – was es braucht, damit die Idee passiert</td>');
+    expect(vm.match(/zerleg/g) ?? []).toStrictEqual(['zerleg']);
+    expect(folie('vorgehen')).toContain('den gelben Ideen-Zettel ersetzt ihr durch die Produkte und Dienste, die es braucht, damit die Idee passiert – diese Frage ist das Vorgehen dieses Kurses');
+    expect(JSON.stringify(NOTIZEN['/innolab/methoden/value-map']?.vorgehen ?? {})).toContain('die Idee wird zu Products & Services (ersetzt durch die Produkte, die es braucht, damit die Idee passiert)');
     // A4: Website-Frage entscheidet beim Wählen und kommt beim Füllen als Check wieder.
     const schritte = folie('vorgehen').slice(folie('vorgehen').indexOf('<ol'), folie('vorgehen').indexOf('</ol>'));
     expect(schritte.slice(0, schritte.indexOf('Euer Canvas –'))).toContain('Was davon ist die Website, die ihr baut – und trifft sie allein noch P1?');
@@ -145,7 +149,7 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(folie('gc-finden')).toContain('Die Gains von oben durchzugehen ist wie bei den Pains das Vorgehen dieses Kurses; das Buch fragt vom Angebot her (S. 90, 101).');
     // Befund 7: Kursregeln im Begleiter nicht mit Buchseiten belegt.
     expect(n).not.toContain('Produkte ohne ID (VPD S. 99–101, 105)');
-    expect(n).toContain('IDs, „Profil von oben“ und „Produkte ohne ID“ sind Regeln dieses Kurses.');
+    expect(n).toContain('IDs, „Profil von oben“, „Produkte ohne ID“ und die Frage „Was braucht es, damit die Idee passiert?“ sind Regeln dieses Kurses.');
     // Befund 8: S. 96.
     expect(vm).toContain('Das Buch sieht das vor: „if you don’t have one yet, sketch out how you intend to create value with a new idea“ (S. 96).');
     // Befund 11: Bündel statt Features.
