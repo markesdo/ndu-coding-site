@@ -296,7 +296,7 @@ describe('Tests zur Auswahl und Beispiel', () => {
 describe('Seite am Handy in den Schritten (27.11.2026)', () => {
   it('#vorgehen Schritt 1 fragt im Beamer nach der Seite am Handy, mit Anleitung und Timer', () => {
     const schritt1 = sichtbar('vorgehen').match(/<li data-schritt><strong>Schritte, auf Miro:<\/strong>[\s\S]*?<\/li>/)?.[0] ?? '';
-    expect(schritt1).toContain('als gäbe es euren Spitzenreiter schon – wer tut was, und wo kommt eure Seite am Handy ins Spiel? In eurer Spalte im Frame oben rechts. → Karte 1 in der <MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>.');
+    expect(schritt1).toContain('als gäbe es euren Spitzenreiter schon – wer tut was, und wo kommt eure Seite am Handy ins Spiel? In eurer Spalte im Frame oben rechts. → <MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>, Punkt 1.');
     expect(schritt1).toContain('<Timer minuten={3} />');
   });
   it('#schritte-der-idee: Handout nennt die Seite als Beteiligte, mit Torres S. 120 und Kursregel', () => {
@@ -389,7 +389,7 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
   const NOTIZ = NOTIZEN['/innolab/methoden/experiment'] as Record<string, { live?: string[] }> | undefined;
   // 27.11. abends: neue IDs ab A7 (A1–A4 Tag 1, A5 Concept Story, A6 Geschäftsmodell), damit die Übung ohne Werkstatt läuft.
   it('#vorgehen Schritt 2: Art und Schritt auf dem Zettel, neue IDs ab A7, gleich in die Felder; im Handout, woher A1 bis A6 kommen', () => {
-    expect(sichtbar('vorgehen')).toContain('<li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt, ab A7 („A7 · S1 · …“), gleich in die Felder der Map; dazu das Pre-Mortem. → Karte 2 in der Anleitung, darunter „Fünf Fragen“ und „Pre-Mortem“. <Timer minuten={5} /></li>');
+    expect(sichtbar('vorgehen')).toContain('<li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt, ab A7 („A7 · S1 · …“), gleich in die Felder der Map; dazu das Pre-Mortem. → Anleitung, Punkt 2, darunter „Fünf Fragen an jeden Schritt“ und „Pre-Mortem“. <Timer minuten={5} /></li>');
     expect(folie('vorgehen')).toContain('Je Schritt mindestens zwei Annahmen. Neue Annahmen zählt ihr ab A7: A1 bis A4 sind von Tag 1, A5 kam aus der Concept Story, A6 aus dem Geschäftsmodell. So braucht ihr die Werkstatt während der Übung nicht.');
     expect(folie('vorgehen')).not.toContain('nächste freie ID');
     expect(sichtbar('vorgehen')).toContain('<p class="folie-satz">Alles auf Miro – allein. Die Werkstatt kommt am Abend.</p>');
@@ -397,7 +397,7 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
   // Markus 27.11.: Überholtes ist nicht „Abhaken“ (unwichtig und belegt), es rutscht nach unten; ohne „(Kursregel)“ auf der Folie.
   it('#vorgehen Schritt 3: die Tag-1-Zettel liegen schon in der Spalte, jede in ein Feld, Überholtes nach unten, Werkstatt am Abend in der Reihenfolge der Nummern', () => {
     const v = sichtbar('vorgehen');
-    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts. Eure Annahmen von Tag 1 liegen schon in eurer Spalte („A1 · Tag 1 · …“), A5 (Concept Story) und A6 (Geschäftsmodell) kommen als Zettel dazu: Zieht jede in ein Feld – Überholtes nach unten. <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend. → Karte 3 in der Anleitung. <Timer minuten={3} /></li>');
+    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts. Eure Annahmen von Tag 1 liegen schon in eurer Spalte („A1 · Tag 1 · …“), A5 (Concept Story) und A6 (Geschäftsmodell) kommen als Zettel dazu: Zieht jede in ein Feld – Überholtes nach unten. <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend. → Anleitung, Punkt 3. <Timer minuten={3} /></li>');
     const schritt3 = v.match(/<li data-schritt><strong>Map, auf Miro:<\/strong>.*<\/li>/)?.[0] ?? '';
     expect(schritt3).toContain('Überholtes nach unten');
     expect(schritt3).not.toContain('Abhaken');
@@ -512,6 +512,31 @@ describe('Zwei Blöcke: Stopp nach Schritt 3', () => {
     expect(ids.indexOf('vorgehen')).toBeLessThan(ids.indexOf('karte'));
     expect(ids.indexOf('karte-e1')).toBeGreaterThanOrEqual(0);
     expect(ids.indexOf('vorgehen-karte')).toBe(ids.indexOf('karte-e1') + 1);
+  });
+  // Review #480: „Nicht fertig?“ erst nach Schritt 5 aufdecken – sonst steht es schon beim ersten Klick da.
+  it('#vorgehen-karte: „Nicht fertig?“ ist ein eigener Schritt nach Schritt 5', () => {
+    const k = sichtbar('vorgehen-karte');
+    const zeile = '<p class="stopp" data-schritt><strong>Nicht fertig?</strong>';
+    expect(k).toContain(zeile);
+    expect(k.indexOf(zeile)).toBeGreaterThan(k.indexOf('</ol>'));
+    expect(k.indexOf('</ol>')).toBeGreaterThan(k.indexOf('<strong>Euer Baum – Tests, auf Miro:</strong>'));
+  });
+  // Review #480: „Karte“ heißt auf diesen Folien nur die Experiment-Karte; die Anleitung auf Miro hat Punkte 1–5, wie ihre
+  // nummerierten Kreise (Frame „T4 · 0 · Anleitung Annahmen der Idee“, gelesen am 27.11.2026).
+  it('Verweise auf die Anleitung heißen „Anleitung, Punkt n“, in der Reihenfolge der Schritte; „Karte n“ gibt es nicht', () => {
+    const punkte = (s: string) => [...s.matchAll(/→ (?:Anleitung|<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung<\/MiroLink>), Punkt (\d)/g)].map((m) => Number(m[1]));
+    expect(punkte(sichtbar('vorgehen'))).toStrictEqual([1, 2, 3]);
+    expect(punkte(sichtbar('vorgehen-karte'))).toStrictEqual([4, 5]);
+    expect(sichtbar('vorgehen')).toContain('→ Anleitung, Punkt 2, darunter „Fünf Fragen an jeden Schritt“ und „Pre-Mortem“.');
+    const n = NOTIZEN[EX];
+    expect([seite(EX), JSON.stringify(n)].flatMap((t) => t.match(/\bKarten? [1-5]\b/g) ?? [])).toStrictEqual([]);
+    expect(n.vorgehen.live).toContain('Anleitung-Frame links neben „T4 · 0“ zeigen: Punkte 1 bis 3.');
+    expect(n['vorgehen-karte'].live).toContain('Anleitung: Punkt 4, dann Punkt 5 – Feld „Karte E1“ in der Spalte.');
+  });
+  // Review #480: was tun und warum, keine „Kursregel“-Markierung.
+  it('#lernkarte: Handout ohne „Kursregel“, mit dem Grund für die Zeile „Weicht ab“', () => {
+    expect(folie('lernkarte')).not.toContain('Kursregel');
+    expect(folie('lernkarte')).toContain('– so sieht jede*r, dass ihr bewusst anders entschieden habt und warum; wann das geht, zeigt die nächste Folie.');
   });
   it('#vorgehen: das Handout sagt, warum der Stopp', () => {
     expect(folie('vorgehen')).toContain('<strong>Warum der Stopp?</strong>');

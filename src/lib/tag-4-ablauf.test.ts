@@ -48,7 +48,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     // Seit 27.11.2026 nachts: die Übung in zwei Blöcken – Schritte 1–3 (#vorgehen), nach der Theorie zur Karte Schritte 4–5 (#vorgehen-karte).
     const ex = folie('/innolab/methoden/experiment', 'vorgehen');
     const exKarte = folie('/innolab/methoden/experiment', 'vorgehen-karte');
-    expect(exKarte).toContain('<li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>). → Karte 5 in der Anleitung. <Timer minuten={2} /></li>');
+    expect(exKarte).toContain('<li data-schritt><strong>Euer Baum – Tests, auf Miro:</strong> riskanteste Annahme und E1 unter den Spitzenreiter (<MiroLink name="Baum · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="Baum · Produkt 2">2</MiroLink> · <MiroLink name="Baum · Produkt 3">3</MiroLink>). → Anleitung, Punkt 5. <Timer minuten={2} /></li>');
     // E2 kommt erst nach dem Papier-Prototyp – nicht auf den Folien der Übung, nur im Handout.
     for (const f of [ex, exKarte]) expect(f.slice(0, f.indexOf('<div class="nur-handout">'))).not.toContain('E2');
     expect(exKarte).toContain('nach dem Papier-Prototyp kommt E2 dazu');

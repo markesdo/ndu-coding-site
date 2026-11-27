@@ -501,20 +501,20 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Anleitung-Frame links neben „T4 · 0“ zeigen: Karten 1 bis 3.',
+      'Anleitung-Frame links neben „T4 · 0“ zeigen: Punkte 1 bis 3.',
       'Nach 3 min: Schritte stehen? Dann fünf Fragen – Timer 5 min.',
       'Nach 8 min: Pre-Mortem gemacht? Dann Map – Timer 3 min.',
       'Nach 11 min: Liegt jeder Tag-1-Zettel in einem Feld? Werkstatt erst abends.',
       '„Stopp nach Schritt 3 – die Karte E1 schreibt ihr nach den nächsten Folien.“',
     ],
     uebung: { dauer: '11 min (3 + 5 + 3)', form: 'allein' },
-    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.', 'Stopp nach Karte 3 der Anleitung; das Feld „Karte E1“ bleibt noch leer.'] },
+    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.', 'Stopp nach Punkt 3 der Anleitung und dem Pre-Mortem; das Feld „Karte E1“ bleibt noch leer.'] },
     ueberleitung: 'Stopp. Für die Annahme oben rechts schreibt ihr gleich eine Karte – so sieht sie aus.',
   },
 
   'vorgehen-karte': {
     live: [
-      'Anleitung: Karte 4, dann Karte 5 – Feld „Karte E1“ in der Spalte.',
+      'Anleitung: Punkt 4, dann Punkt 5 – Feld „Karte E1“ in der Spalte.',
       'Nach 3 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
       'Nach 5 min: Annahme und E1 in den Baum – Timer 2 min.',
       'Wenn hinten: Lernkarte und „Gegen den Beleg“ überspringen, weiter bei Übertrag.',
