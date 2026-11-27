@@ -52,9 +52,23 @@ describe('Story Map: Begleiter mit Kontext aus Patton', () => {
 
   it('#lernen: Workiva-Geschichte, Verständnisfrage, drei Fragen mit Kursübertrag zu Slice 1', () => {
     expect(n.lernen.geschichte?.text).toMatch(/^Aaron und Mike von Workiva .*drei Slices.*„would howl“/s);
-    expect(n.lernen.verstaendnis?.antwort).toContain('„Build just enough to see the product working end-to-end“');
+    // Code-Review #466: Slice 1 baut für Zahlen und Zum Zug keine Software; Durchlaufen (Workiva, Kap. 4) und Lernen mit
+    // Nutzer*innen (Eric, Kap. 3) sind zwei Quellen, wie in Frage 1.
+    const antwort = n.lernen.verstaendnis?.antwort ?? '';
+    expect(antwort).toMatch(/^Einmal dünn durch alle fünf Aktivitäten – Handarbeit mit \* eingeschlossen \(bar zahlen, zum Zug gehen\)\./);
+    expect(antwort).toContain('ob es durchläuft: „Build just enough to see the product working end-to-end“ (Kap. 4, Opening-, Mid-, and Endgame Strategy).');
+    expect(antwort).toContain('ob Pendler*innen im Gehen bestellen, kommt von Eric');
+    expect(antwort).toContain('(Kap. 3, Build to Learn; Validated Learning)');
     expect(n.lernen.fragen?.map((f) => f.frage)).toStrictEqual(['Ist das laufende Skelett schon das MVP?', 'Warum nicht ein Teil fertig bauen und dann das nächste?', 'Was heißt das für unseren Slice 1 heute?']);
     expect(n.lernen.fragen?.[2].antwort).toMatch(/^Kursübertrag, nicht aus dem Buch: .*Usage Story.*Prototyp auf Papier.*Issues/);
+    // E1 läuft nicht: An Tag 5 wird besprochen, was sie gezeigt hätte.
+    expect(n.lernen.fragen?.[2].antwort).toContain('An Tag 5 besprecht ihr im Test-Debrief, was Karte E1 gezeigt hätte (und E2, falls ihr getestet habt)');
+    expect(n.lernen.fragen?.[2].antwort).not.toContain('ob die Annahmen halten');
+  });
+
+  it('#warum: Handout nennt für Garys Zitate denselben Abschnittsbereich wie die Geschichte', () => {
+    const seite = Object.entries(import.meta.glob('/src/pages/innolab/methoden/story-map.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>)[0][1];
+    expect(seite).toContain('the vision that would have taken me years to reach“ ({PATTON}, Kap. 1, Gary and the Tragedy of the Flat Backlog bis Explore Details and Options).</p>');
   });
 });
 

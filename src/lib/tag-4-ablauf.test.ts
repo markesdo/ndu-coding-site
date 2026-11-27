@@ -133,7 +133,7 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect([sm, gm].flatMap((x) => x.match(/zu dritt|die anderen beiden (gehen|ergänzen)|die anderen fragen/gi) ?? [])).toStrictEqual([]);
     expect(seite('/innolab/methoden/geschaeftsmodell')).not.toContain('zu dritt sechs Karten');
     expect(sm).toContain('<li data-schritt><strong>Kursregel:</strong> Jede*r arbeitet allein an der eigenen Map.</li>');
-    // Markus 27.11.: 1:1 und „keine Runde“ stehen nicht mehr auf der Übersicht, auch nicht als Begleiter-Stichwort.
+    // Markus 27.11.: Die live-Stichworte zu #vorgehen nennen 1:1 und „keine Runde“ nicht mehr (uebung.form bleibt).
     expect(NOTIZEN['/innolab/methoden/story-map'].vorgehen.live.filter((s) => /1:1|Runde/.test(s))).toStrictEqual([]);
     expect(folie('/innolab/methoden/story-map', 'schritt-loecher')).toContain('<li data-schritt><strong>Markus kommt ins 1:1</strong> und stellt dieselben Fragen; ihr ergänzt, ohne zu verteidigen.</li>');
     expect(folie('/innolab/methoden/story-map', 'schritt-durchgehen')).toContain('<li data-schritt><strong>Erzählt Slice 1 allein</strong>');

@@ -249,7 +249,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
     },
     verstaendnis: {
       frage: 'Ihr habt wenig Zeit: Baut ihr zuerst „Bestellen“ richtig gut – oder alle fünf Aktivitäten ganz dünn?',
-      antwort: 'Alle fünf dünn: Erst wenn es einmal von „In die Halle“ bis „Zum Zug“ durchgeht, seht ihr, ob es läuft, und könnt lernen, ob Pendler*innen im Gehen bestellen. Patton: „Build just enough to see the product working end-to-end“ (Kap. 4, Opening-, Mid-, and Endgame Strategy).',
+      antwort: 'Einmal dünn durch alle fünf Aktivitäten – Handarbeit mit * eingeschlossen (bar zahlen, zum Zug gehen). Erst wenn es einmal von „In die Halle“ bis „Zum Zug“ durchgeht, seht ihr, ob es durchläuft: „Build just enough to see the product working end-to-end“ (Kap. 4, Opening-, Mid-, and Endgame Strategy). Dass ihr damit auch lernt, ob Pendler*innen im Gehen bestellen, kommt von Eric: „something less than minimal—just enough that potential users could do something useful with it“, ein „minimum viable product experiment“ (Kap. 3, Build to Learn; Validated Learning). Euer Slice 1 verbindet beides.',
       falsch: '„Erst das Wichtigste fertig.“ – So baut nach Patton ein Maurer eine Wand, Stück für Stück; das klappt nur, wenn jedes Teil so klar ist wie ein Ziegel (Kap. 4, What Would da Vinci Do?).',
     },
     fragen: [
@@ -263,7 +263,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       },
       {
         frage: 'Was heißt das für unseren Slice 1 heute?',
-        antwort: 'Kursübertrag, nicht aus dem Buch: Slice 1 ist euer dünner Weg durch alle Aktivitäten, links Outcome und „Wir lernen, ob …“. Nach der Pause erzählt ihr ihn als Usage Story, am Nachmittag baut ihr ihn als Prototyp auf Papier. An Tag 5 prüft ihr im Test-Debrief, ob die Annahmen halten; dann werden aus seinen Karten die ersten Issues, die Claude Code nach euren Skizzen baut. Schritte mit * bleiben Handarbeit, etwa bar zahlen.',
+        antwort: 'Kursübertrag, nicht aus dem Buch: Slice 1 ist euer dünner Weg durch alle Aktivitäten, links Outcome und „Wir lernen, ob …“. Nach der Pause erzählt ihr ihn als Usage Story, am Nachmittag baut ihr ihn als Prototyp auf Papier. An Tag 5 besprecht ihr im Test-Debrief, was Karte E1 gezeigt hätte (und E2, falls ihr getestet habt); dann werden aus seinen Karten die ersten Issues, die Claude Code nach euren Skizzen baut. Schritte mit * bleiben Handarbeit, etwa bar zahlen.',
       },
     ],
     ueberleitung: 'So sieht das an der Kaffeebar aus.',
