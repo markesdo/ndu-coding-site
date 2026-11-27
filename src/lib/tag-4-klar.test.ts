@@ -128,6 +128,8 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
   it('Hausaufgabe: Checkliste -v8 nennt Miro-Frames und Claude Code bis Tag 5', () => {
     const f = folie(T4, 'hausaufgabe');
     expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v8" items={[');
+    // 27.11. abends: die Werkstatt erst am Abend, in der Reihenfolge der Nummern (sie vergibt die IDs selbst).
+    expect(f).toContain('die neuen Annahmen der Idee in der <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map der Werkstatt</a>, in der Reihenfolge der Nummern ab A5\'');
     for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 7 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Produkt n“', 'Claude Code auf eurem Mac installiert']) expect(f, w).toContain(w);
     expect(f.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')).not.toMatch(/Spike/);
   });

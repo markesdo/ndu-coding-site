@@ -502,7 +502,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Anleitung-Frame links neben „T4 · 0“ zeigen.',
-      'Nach 11 min: Liegen alle Tag-1-Zettel in einem Feld? Werkstatt erst abends.',
+      'Nach 11 min: Liegt jeder Tag-1-Zettel in einem Feld? Werkstatt erst abends.',
       'Nach 13 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
       'Nach 16 min: Annahme und E1 in den Baum – Timer 2 min.',
     ],
