@@ -82,7 +82,7 @@ export const NOTIZEN_TAG_5: Record<string, Notiz> = {
 
   'linear-einrichten': {
     live: [
-      'Timer 5 min: eine*r legt das Team an, lädt die anderen ein.',
+      'Timer 5 min: eine*r legt das Team an, lädt die anderen ein (Konten aus dem Coding-Kurs, kein neues).',
       'Dann jede*r: /mcp, Linear anmelden, /ndu-linear im eigenen Repo.',
       'Falle: als Gast eingeladen – im Team alle als Mitglied.',
       'Fragen: Steht bei allen docs/LINEAR.md im Repo?',

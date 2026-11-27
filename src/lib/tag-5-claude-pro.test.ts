@@ -118,6 +118,8 @@ describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)
     const l = folie(T5, 'linear-einrichten');
     expect([...l.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['Team im Browser:', 'Claude mit Linear verbinden:', 'Jede*r im eigenen Repo:']);
     expect(l).toContain('<ol class="gross" start="7">');
+    // Linear-Konten gibt es seit dem Coding-Kurs – kein neues Konto (Markus 27.11.).
+    expect(l).toContain('Konten habt ihr aus dem Coding-Kurs.');
     expect(l).toContain('<Prompt label="In Claude Code">/ndu-linear</Prompt>');
     expect([...(folie(T5, 'claude-pro-jetzt') + folie(T5, 'claude-code-opus') + l).matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([10, 5]);
     // Die Teamaufstellung sagt, dass Linear gerade eingerichtet wurde.
