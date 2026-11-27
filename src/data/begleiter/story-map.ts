@@ -313,14 +313,14 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Fragen: Mensch, Verhalten, Idee – oder nur ein Produktname?',
     ],
     uebung: { dauer: '3 min', form: 'allein' },
-    ueberleitung: 'Die Jetzt-Map habt ihr schon – holt euch daraus die Pains.',
+    ueberleitung: 'Jetzt die Pains aus eurer Value Map.',
   },
 
   'schritt-jetzt-map': {
     live: [
-      'Timer 2 min: Experience Map öffnen, Momente lesen.',
-      'Zwei, drei Pains, die Pain Relievers lindern, mit Zitat-ID an den Rand.',
-      '„Jeder dieser Pains braucht einen Task in der Später-Map.“',
+      'Timer 2 min: Pains mit ✓-Pain-Reliever, mit ID an den Rand.',
+      '„Jeder davon braucht später einen Task.“',
+      'Fragen: Steht jeder Pain mit ID am Rand?',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
     ueberleitung: 'Jetzt die Später-Map: ein Tag im Leben, wenn das Produkt live ist.',
