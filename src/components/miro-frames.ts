@@ -39,7 +39,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T3 · 4 · Anleitung Value Map · Produkt 3': '3458764691611859843',
   // Bis 19.11.2026 „T3 · 5 · Annahmen der Idee“; genutzt wird der Frame an Tag 4 (experiment.astro), darum T4 · 0.
   'T4 · 0 · Annahmen der Idee': '3458764687894872786',
-  // Anleitung links neben T4 · 0 (seit 26.11.2026), verlinkt von experiment.astro#vorgehen.
+  // Anleitung links neben T4 · 0 (seit 26.11.2026), verlinkt von experiment.astro#vorgehen und #vorgehen-karte.
   'T4 · 0 · Anleitung Annahmen der Idee': '3458764691725321671',
   // Concept Story auf Miro (seit 26.11.2026): sieben Stationen auf dem Bogen und das Feld „Flach-Probe (Kursregel)“, ein Frame
   // je Person; das ausgefüllte Beispiel der Kaffeebar daneben. Seit dem Nachtrag 26.11. abends bleibt sie auf Miro (keine Datei).
