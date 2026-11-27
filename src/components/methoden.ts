@@ -414,7 +414,7 @@ export const METHODEN: Methode[] = [
       { id: 'prototyp-spike-kriterien', text: 'Im Feld „2 · Abnahmekriterien“ stehen drei Sätze – „Der Prototyp zeigt …“ mit Zahl, „Er läuft …“, „Er hat nicht …“ –, jeder mit Ja oder Nein prüfbar.' },
       { id: 'prototyp-spike-karte', text: 'Die Karte E2 im Feld „3 · Karte E2“ nennt die Annahme (ID, Art) und die Schwelle „x von 5“, bevor jemand testet.' },
       { id: 'prototyp-spike-aufgabe', text: 'Die Aufgabe beschreibt Situation und Ziel, keine Bedienschritte und keine Begriffe aus der Oberfläche.' },
-      { id: 'prototyp-spike-trockenlauf', text: 'Der Trockenlauf auf Papier mit den anderen beiden steht in Feld „4 · Tests“, Zeile 0; die Testpersonen danach haben den Pain und kennen das Produkt nicht.' },
+      { id: 'prototyp-spike-trockenlauf', text: 'Der Trockenlauf mit den anderen beiden steht in Feld „4 · Tests“, Zeile 0; die Testpersonen danach haben den Pain und kennen das Produkt nicht.' },
       { id: 'prototyp-spike-protokoll', text: 'Pro Testperson steht fest: Höhepunkt ohne Hilfe erreicht, Zeit, wo gehangen, Reaktion am Höhepunkt.' },
       { id: 'prototyp-spike-lernkarte', text: 'Nach den Tests: Lernkarte mit Verlässlichkeit und Befund (gestützt, widerlegt, unklar oder neue Einsicht), und was ihr deshalb ändert, in der Zeile „Beleg: … → darum: …“ mit U-IDs.' },
     ],

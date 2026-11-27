@@ -70,7 +70,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Eine Testperson, eine Aufgabe, der Prototyp – alle schauen nur zu.',
       'Falle: Meinungsfragen („Gefällt dir das?“) – gemessen wird, was sie tut.',
       'Ergebnis sind Bedienprobleme; ob sie es will, zeigt E1.',
-      'Heute Trockenlauf auf Papier; Zielgruppe freiwillig bis Tag 5.',
+      'Heute Trockenlauf untereinander; Zielgruppe freiwillig bis Tag 5.',
     ],
     verstaendnis: {
       frage: 'Eine Testperson sagt am Ende: „Coole App, würde ich nutzen.“ Was davon notiert ihr?',
@@ -228,7 +228,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Karte heute, auch wenn die Tests freiwillig sind.',
     ],
     uebung: { dauer: '10 min', form: 'allein, Feld 3 auf Miro' },
-    ueberleitung: 'Und jetzt der eine Test heute: der Trockenlauf auf Papier.',
+    ueberleitung: 'Und jetzt der eine Test heute: der Trockenlauf.',
   },
 
   'schritt-trockenlauf': {

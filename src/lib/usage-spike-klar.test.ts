@@ -85,8 +85,8 @@ describe('Usage Story: drei Storys vorn, sieben Stationen, Boom-Probe allein', (
 });
 
 // Seit 26.11.2026 nachts (Dozent): Tag 4 ohne Claude – aus dem Spike wird der Prototyp auf Papier. Zeitbox, Bauen und
-// Ansehen sind weg (gebaut wird an Tag 5, tag-5#bauen-skizzen); der Trockenlauf läuft auf Papier.
-describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Trockenlauf auf Papier ohne Kritik', () => {
+// Ansehen sind weg (gebaut wird an Tag 5, tag-5#bauen-skizzen). Seit 27.11. heißt er nur „Trockenlauf“ (Papier oder Figma).
+describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Trockenlauf ohne Kritik', () => {
   it('Folienordnung', () => {
     expect(ids(PS)).toStrictEqual(['worum', 'was-er-zeigt', 'usability-test', 'fuenf', 'test-ablauf', 'karte-e2', 'beispiel', 'beispiel-befunde', 'vorgehen',
       'schritt-papier', 'schritt-kriterien', 'schritt-karte', 'schritt-trockenlauf', 'uebertrag']);
@@ -135,8 +135,8 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
   });
   // Entscheidung des Dozenten (26.11. abends): Die fünf Tests sind freiwillig bis Tag 5; im Kurs ist der Trockenlauf der
   // eine Test des Prototyps – seit 26.11. nachts auf Papier.
-  it('Tests mit der Zielgruppe freiwillig: Beamer sagt heute Trockenlauf auf Papier, bis Tag 5 freiwillig', () => {
-    expect(beamer(folie(PS, 'usability-test'))).toContain('<strong>Heute</strong> testet ihr einmal: im Trockenlauf untereinander, auf Papier. <strong>Bis Tag 5, freiwillig:</strong> mit Menschen, die den Pain haben.');
+  it('Tests mit der Zielgruppe freiwillig: Beamer sagt heute Trockenlauf, bis Tag 5 freiwillig', () => {
+    expect(beamer(folie(PS, 'usability-test'))).toContain('<strong>Heute</strong> testet ihr einmal: im Trockenlauf untereinander. <strong>Bis Tag 5, freiwillig:</strong> mit Menschen, die den Pain haben.');
     expect(beamer(folie(PS, 'worum'))).toContain("{ t: 'Testen auf Papier', sub: 'heute ein Trockenlauf; bis Tag 5 freiwillig mehr', icon: Users }");
     expect(beamer(folie(PS, 'vorgehen'))).toContain('<strong>Bis dahin, freiwillig:</strong> Tests mit Menschen, die den Pain haben.');
     const s = seite(PS);
@@ -211,10 +211,10 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(k).toContain('<p>Er läuft heute auf Papier, an Tag 5 am Handy im Browser.</p>');
     expect(seite(PS)).not.toMatch(/3 · Zeitbox|Zeitbox: bis/);
   });
-  it('Schritt 3 und 4: Karte E2 mit „Wir entscheiden vorher“; Trockenlauf auf Papier in drei Runden, wer besitzt, legt die Blätter, keine Kritik', () => {
+  it('Schritt 3 und 4: Karte E2 mit „Wir entscheiden vorher“; Trockenlauf in drei Runden, wer besitzt, legt die Blätter, keine Kritik', () => {
     expect(beamer(folie(PS, 'schritt-karte'))).toContain('<strong>„Wir entscheiden vorher“:</strong> drei Bänder, je eine Handlung.');
     const t = beamer(folie(PS, 'schritt-trockenlauf'));
-    expect(t).toContain('<h2 id="schritt-trockenlauf">Schritt 4: Trockenlauf auf Papier</h2>');
+    expect(t).toContain('<h2 id="schritt-trockenlauf">Schritt 4: Trockenlauf</h2>');
     expect(t).toContain('<p class="folie-satz">Drei Runden: Ihr prüft, ob der Ablauf verständlich ist – nicht, ob er gefällt.</p>');
     expect(t).toContain('<tr><th>1</th><td>Produkt 2</td><td>Produkt 1</td><td>Produkt 3</td></tr>');
     expect(t).toContain('<strong>Wem der Prototyp gehört:</strong> Blatt 1 in die Kamera, Aufgabe vorlesen, dann das Blatt legen oder den Frame wechseln, zu dem der angesagte Knopf führt. Sonst schweigen.');
@@ -234,6 +234,8 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(s).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(s).toContain('<Karte label="Miro · T4 · 5 · Prototyp · Produkt n" text={`1 · Skizzen: Papier oder Figma (lo-fi)\nJe Bildschirm ein Blatt oder ein Graustufen-Frame in Figma – Foto oder Bild hier rein');
     expect(s).toContain('Aufgabe vorlesen · Blatt legen oder Frame wechseln, schweigen');
+    expect(s).toContain('\n0 · Trockenlauf (heute): Aufgabe verständlich?');
+    expect(JSON.stringify([s, NOTIZEN_PROTOTYP_SPIKE]).match(/Trockenlauf auf Papier/g) ?? []).toStrictEqual([]);
     expect(s).toContain('Abnahmekriterien und eure Skizzen (Fotos oder Figma-Bilder)');
     expect(s).toContain('<Karte text={`5 · Tag 5: gebaut\n');
     expect(s).toContain('<Karte text={`Für Claude Code (an Tag 5, mit Opus – /model opus)\n');
