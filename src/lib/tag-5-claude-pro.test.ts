@@ -166,7 +166,7 @@ describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)
       'Claude Code, mit Opus:', 'Prompt „Issue nach Skizzen“', 'Claude nennt zuerst die Bildschirme.', 'Ansehen, schmal wie ein Handy:', 'Prompt „Vorschau sichern“:',
     ]);
     expect(f).toContain('<Prompt label="Issue nach Skizzen · Claude Code, mit Opus"');
-    expect(f).toContain('meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen');
+    expect(f).toContain('meine Usage Story mit sieben Stationen, meine Story Map mit Slice 1, meine Abnahmekriterien und Fotos meiner Papier-Skizzen oder Bilder meiner Figma-Frames, ein Blatt oder Frame je Bildschirm.');
     expect(f).toContain('<Prompt label="Vorschau sichern · Claude Code">');
     expect(f).toContain('öffne einen Pull Request nach main – mergen tust du nicht');
     // Der erste Bau-Block ist 15 Minuten kürzer als bis zum 26.11. (Block mit Claude Pro, Claude Code und Linear am Morgen).

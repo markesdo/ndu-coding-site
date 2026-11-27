@@ -94,12 +94,12 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
   });
   it('worum: heute auf Papier, an Tag 5 baut Claude Code; Papier-Skizzen und Test auf Papier erklärt, Kursregel gekennzeichnet', () => {
     const b = beamer(folie(PS, 'worum'));
-    expect(b).toContain('<p class="folie-satz">Heute auf Papier – an Tag 5 baut Claude Code daraus.</p>');
+    expect(b).toContain('<p class="folie-satz">Heute auf Papier oder lo-fi in Figma – an Tag 5 baut Claude Code daraus.</p>');
     expect(b).toContain("{ t: 'Usage Story', sub: 'Stationen 2 bis 6', icon: BookOpen }");
-    expect(b).toContain("{ t: 'Papier-Skizzen', sub: 'ein Blatt pro Bildschirm, von Hand', icon: PenLine }");
+    expect(b).toContain("{ t: 'Papier-Skizzen', sub: 'ein Blatt pro Bildschirm, von Hand oder lo-fi in Figma', icon: PenLine }");
     expect(b).toContain("{ t: 'Tag 5: bauen', sub: 'Claude Code baut nach euren Blättern', icon: Code }");
-    expect(b).toContain('<strong>Papier-Skizzen:</strong> Jeden Bildschirm eures Ablaufs von Hand auf ein Blatt – was steht drauf, welcher Knopf führt wohin. Foto in euren Miro-Frame.');
-    expect(b).toContain('<strong>Testen auf Papier:</strong> Jemand „tippt“ auf ein Blatt, ihr legt das nächste hin – so seht ihr, wo der Ablauf hakt.');
+    expect(b).toContain('<strong>Papier-Skizzen:</strong> Jeden Bildschirm eures Ablaufs von Hand auf ein Blatt, oder je ein Graustufen-Frame in Figma – was steht drauf, welcher Knopf führt wohin. Foto oder Bild in euren Miro-Frame.');
+    expect(b).toContain('<strong>Testen auf Papier:</strong> Jemand „tippt“ auf ein Blatt, ihr legt das nächste hin oder wechselt den Frame – so seht ihr, wo der Ablauf hakt.');
     expect(b).toContain('<strong>Kursregel – Papier vor Claude:</strong> Jeden Bildschirm entscheidet ihr selbst.');
     expect(b).not.toMatch(/Zeitbox|40 Minuten|Wegwerf/);
     // Bland wörtlich, mit Seite: Definition (S. 182) und das Paar mit dem Klick-Prototyp (S. 185).
@@ -189,7 +189,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(v).toContain('<h2 id="vorgehen">So geht ihr vor (33 min)</h2>');
     expect(timer(v)).toStrictEqual([]);
     expect([...v.matchAll(/\{ t: '([^']+)', sub: '([^']+)' \}/g)].map((m) => `${m[1]} | ${m[2]}`)).toStrictEqual([
-      '1 Papier | 10 min<br>allein, Stift', '2 Abnahme-kriterien | 3 min<br>Miro', '3 Karte E2 | 10 min<br>Miro', '4 Trockenlauf | 10 min<br>zu dritt, Teams',
+      '1 Papier | 10 min<br>allein, Stift oder Figma', '2 Abnahme-kriterien | 3 min<br>Miro', '3 Karte E2 | 10 min<br>Miro', '4 Trockenlauf | 10 min<br>zu dritt, Teams',
     ]);
     expect(schritte.flatMap((id) => timer(folie(PS, id)))).toStrictEqual([10, 3, 10, 10]);
     expect(v).toContain('zusammen 53 Minuten, der Block hat 55');
@@ -217,7 +217,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(t).toContain('<h2 id="schritt-trockenlauf">Schritt 4: Trockenlauf auf Papier</h2>');
     expect(t).toContain('<p class="folie-satz">Drei Runden: Ihr prüft, ob der Ablauf verständlich ist – nicht, ob er gefällt.</p>');
     expect(t).toContain('<tr><th>1</th><td>Produkt 2</td><td>Produkt 1</td><td>Produkt 3</td></tr>');
-    expect(t).toContain('<strong>Wem der Prototyp gehört:</strong> Blatt 1 in die Kamera, Aufgabe vorlesen, dann das Blatt hinlegen, zu dem der angesagte Knopf führt. Sonst schweigen.');
+    expect(t).toContain('<strong>Wem der Prototyp gehört:</strong> Blatt 1 in die Kamera, Aufgabe vorlesen, dann das Blatt legen oder den Frame wechseln, zu dem der angesagte Knopf führt. Sonst schweigen.');
     expect(t).toContain('<strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Nächste Runde.');
     expect(t).toContain('<strong>Wo:</strong> Teams (Kamera oder Bildschirm teilen) und Feld „4 · Tests“, Zeile 0');
     expect(folie(PS, 'schritt-trockenlauf')).toContain('Der Trockenlauf ist heute euer Test des Prototyps.');
@@ -236,6 +236,21 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(s).toContain('<Karte text={`5 · Tag 5: gebaut\n');
     expect(s).toContain('<Karte text={`Für Claude Code (an Tag 5, mit Opus – /model opus)\n');
     expect(quellen['/innolab/tag-5']).toContain('<h2 id="bauen-skizzen">');
+  });
+  // Entscheidung Markus 27.11.2026: Bildschirme auf Papier oder lo-fi in Figma; Figma nur Graustufen, ohne Komponenten
+  // und Klick-Verbindungen (sonst wäre es der Klick-Prototyp, den Bland nach dem Papier stellt, S. 185).
+  it('Kursregel Papier oder Figma: im Handout mit Bland-Grund, im Begleiter als live-Stichwort und Frage', () => {
+    const w = folie(PS, 'worum');
+    expect(w).toContain('<p><strong>Kursregel – Papier oder Figma:</strong> In Figma nur Graustufen-Rahmen: Kästen, Text, Pfeile. Keine Farben, keine Komponenten, keine Klick-Verbindungen. Ein Frame pro Bildschirm, als Bild in euren Miro-Frame.');
+    expect(w).toContain('„ideal for rapidly testing the concept“ ({BLAND}, S. 182) –, der klickbare Prototyp kommt danach (S. 185)');
+    expect(w).toContain('wechselt zum nächsten Frame – wie beim Blätter legen.</p>');
+    const n = NOTIZEN_PROTOTYP_SPIKE.worum;
+    expect(n.live).toContain('Kursregel: Figma nur lo-fi – Graustufen, keine Komponenten, keine Klicks.');
+    const figma = n.fragen?.find((f) => f.frage === 'Dürfen wir Figma nehmen?');
+    expect(figma?.antwort).toContain('Keine Farben, keine Komponenten, keine Klick-Verbindungen (Kursregel).');
+    expect(figma?.antwort).toContain('„ideal for rapidly testing the concept“ (S. 182)');
+    expect(beamer(folie(PS, 'schritt-papier'))).toContain('Ein Blatt (oder Figma-Frame) je Bildschirm');
+    expect(NOTIZEN_PROTOTYP_SPIKE['schritt-trockenlauf'].live).toContain('Wem er gehört: Blatt zeigen, Aufgabe vorlesen, Blatt legen oder Frame wechseln.');
   });
   it('höchstens fünf live-Stichworte je Folie, auf beiden Seiten', () => {
     const zuViele = [...Object.entries(NOTIZEN_USAGE_STORY), ...Object.entries(NOTIZEN_PROTOTYP_SPIKE)].filter(([, n]) => n.live.length > 5).map(([id]) => id);
