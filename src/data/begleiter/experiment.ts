@@ -87,7 +87,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Was heißt „Spitzenreiter auf Papier“?',
-      antwort: 'Die Wahl stützt sich auf den Fit aus Value Map und Fit, nicht auf einen Test – „The fit you achieve is not yet proven and exists mainly on paper“ (Value Proposition Design, S. 117 PDF). Ein Test könnte sie ändern; dann geht es mit der Idee aus der Zeile unter der Karte weiter.',
+      antwort: 'Die Wahl stützt sich auf den Fit zwischen Value Map und Kundenprofil, nicht auf einen Test – „The fit you achieve is not yet proven and exists mainly on paper“ (Value Proposition Design, S. 117 PDF). Ein Test könnte sie ändern – dann entscheidet ihr nach Blands drei Möglichkeiten, oft mit der Idee aus der Zeile unter der Karte.',
       falsch: '„Wir haben uns entschieden.“ Entschieden ist nur, womit ihr heute weiterarbeitet. Entscheiden würde erst, was ein Test zeigt (Blands drei Möglichkeiten, S. 61–63).',
     },
     kern: [
@@ -101,8 +101,8 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
     ],
     geschichte: {
-      text: 'Torres knüpft hier an Portland an, die Geschichte von Tag 1: Die Stadt hat eine einzige Idee verfolgt, und je länger sie das tat, desto fester hielt sie an ihr fest – trotz ihrer Schwächen. Torres nennt das Bestätigungsneigung und „escalation of commitment“ (S. 116). Darum vergleicht sie drei Ideen: „If we test only one idea at a time, confirmation bias will rear its ugly head. We’ll be more likely to notice the confirming evidence and miss the disconfirming evidence.“ (S. 134). Ihr Beispiel: drei Ideen für „I want to watch sports“ – lokale Sender, Rechte direkt von den Ligen, ein Bündel mit einem Sportanbieter. Alle drei hängen an „Our subscriber wants to watch sports“; ist das falsch, fällt das ganze Set (S. 135–136). Wir machen es anders, als Kursregel: Ihr seid drei, jede*r mit einem eigenen Produkt, und Story Map, Usage Story und Prototyp von heute brauchen eine Idee. Von Torres bleiben zwei Mittel gegen das Verlieben: gemeinsame Annahmen zuerst und die anderen beiden als Zeile unter der Karte.',
-      quelle: `${TORRES}, S. 116, 134–136; die Abweichung ist eine Kursregel (Handout der Folie)`,
+      text: 'Torres verweist hier auf die Denkfehler aus dem vorigen Kapitel – bei uns die Portland-Geschichte von Tag 1: Die Stadt hat eine einzige Idee verfolgt, und je länger sie das tat, desto fester hielt sie an ihr fest – trotz ihrer Schwächen. Torres nennt das Bestätigungsneigung und „escalation of commitment“ (S. 116). Darum vergleicht sie drei Ideen: „If we test only one idea at a time, confirmation bias will rear its ugly head. We’ll be more likely to notice the confirming evidence and miss the disconfirming evidence.“ (S. 134). Ihr Beispiel: drei Ideen für „I want to watch sports“ – lokale Sender, Rechte direkt von den Ligen, ein Bündel mit einem Sportanbieter. Alle drei hängen an „Our subscriber wants to watch sports“; ist das falsch, fällt das ganze Set (S. 135–136). Wir machen es anders, als Kursregel: Ihr seid drei, jede*r mit einem eigenen Produkt, und Story Map, Usage Story und Prototyp von heute brauchen eine Idee. Von Torres bleibt: gemeinsame Annahmen zuerst (S. 136). Dazu, ebenfalls als Kursregel, die anderen beiden als Zeile „Falls E1 scheitert“ unter der Karte.',
+      quelle: `${TORRES}, S. 116, 134–136; Abweichung und Zeile unter der Karte sind Kursregeln (Handout der Folie)`,
     },
     fragen: [
       {
@@ -115,11 +115,11 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Und wenn der Spitzenreiter scheitert?',
-        antwort: 'Dann gilt eine von Blands drei Möglichkeiten: weitermachen (persevere – derselbe Test stärker oder die nächste Annahme), umschwenken (pivot – ein Teil der Idee ändert sich deutlich) oder verwerfen (kill) (Bland S. 61–63). Beim Umschwenken nehmt ihr meist die nächste Idee aus der Zeile „Falls E1 scheitert“; Interviews, Kundenprofil und was alle drei teilen, gelten weiter. Bei uns ist das an Tag 5 ein Gedankenexperiment: Was hättet ihr bei welchem Ergebnis getan?',
+        antwort: 'Bland nennt drei Möglichkeiten: weitermachen (persevere – derselbe Test stärker oder die nächste Annahme), umschwenken (pivot – eine deutliche Änderung an Idee, Wertversprechen oder Geschäftsmodell) und verwerfen (kill); ist die Annahme widerlegt, bleiben umschwenken oder verwerfen (Bland S. 61–63). Umschwenken heißt bei uns meist: auf die Idee aus der Zeile „Falls E1 scheitert“ – wie auf der Folie „Vorher festlegen“ (unter 5 → Wartezeit-Anzeige); das ist eine Lesart des Kurses. Interviews, Kundenprofil und was alle drei teilen, gelten weiter. Bei uns ist das an Tag 5 ein Gedankenexperiment: Was hättet ihr bei welchem Ergebnis getan?',
       },
       {
         frage: 'Warum nicht alle drei testen, wie Torres?',
-        antwort: 'Eine Kursregel, bewusst gegen Torres: Ihr seid drei Personen mit je einem eigenen Produkt, und Story Map, Usage Story und Prototyp von heute brauchen eine Idee – an Tag 5 baut Claude Code daraus Slice 1. Was wir von Torres behalten: gemeinsame Annahmen zuerst und die Zeile für die anderen beiden, ihre Mittel gegen das Verlieben (S. 134, 136).',
+        antwort: 'Eine Kursregel, bewusst gegen Torres: Ihr seid drei Personen mit je einem eigenen Produkt, und Story Map, Usage Story und Prototyp von heute brauchen eine Idee – an Tag 5 baut Claude Code daraus Slice 1. Von Torres behalten wir: gemeinsame Annahmen zuerst (S. 136). Die Zeile „Falls E1 scheitert“ für die anderen beiden ist eine Kursregel – damit sie nicht aus dem Blick geraten.',
       },
       {
         frage: 'Der Spitzenreiter ist nicht meine Idee – was jetzt?',

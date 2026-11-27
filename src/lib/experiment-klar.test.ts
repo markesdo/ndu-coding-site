@@ -243,10 +243,20 @@ describe('Begleiter #spitzenreiter: Geschichte, Verständnisfrage, Fragen', () =
     expect(n.geschichte?.text).toContain('„If we test only one idea at a time, confirmation bias will rear its ugly head.');
     expect(n.geschichte?.quelle).toContain('S. 116, 134–136');
     expect(n.geschichte?.quelle).toContain('Kursregel');
+    // Review #463: Torres nennt Portland auf S. 134 nicht – der Bezug ist unserer; die Zeile unter der Karte ist Kursregel.
+    expect(n.geschichte?.text).toContain('bei uns die Portland-Geschichte von Tag 1');
+    expect(n.geschichte?.text).toContain('ebenfalls als Kursregel, die anderen beiden als Zeile „Falls E1 scheitert“');
+    expect(n.fragen?.[3].antwort).toContain('Die Zeile „Falls E1 scheitert“ für die anderen beiden ist eine Kursregel');
+  });
+  it('Umschwenken wie auf der Folie „Vorher festlegen“: auf die Idee aus der Zeile, als Lesart des Kurses', () => {
+    expect(n.fragen?.[2].antwort).toContain('pivot – eine deutliche Änderung an Idee, Wertversprechen oder Geschäftsmodell');
+    expect(n.fragen?.[2].antwort).toContain('das ist eine Lesart des Kurses');
+    expect(n.fragen?.[2].antwort).not.toContain('ein Teil der Idee ändert sich deutlich');
   });
   it('Verständnisfrage mit erwarteter und falscher Antwort', () => {
     expect(n.verstaendnis?.frage).toBe('Was heißt „Spitzenreiter auf Papier“?');
-    expect(n.verstaendnis?.antwort).toContain('nicht auf einen Test');
+    expect(n.verstaendnis?.antwort).toContain('auf den Fit zwischen Value Map und Kundenprofil, nicht auf einen Test');
+    expect(n.verstaendnis?.antwort).toContain('dann entscheidet ihr nach Blands drei Möglichkeiten');
     expect(n.verstaendnis?.falsch).toContain('„Wir haben uns entschieden.“');
   });
   it('fünf Fragen, die letzte lässt die Wahl bei der Person', () => {
