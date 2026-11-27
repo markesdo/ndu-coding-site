@@ -60,7 +60,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
       'Zeit: 2 min.',
       '„Drei Produkte, drei Personen: drei Scrum-Teams mit denselben Köpfen.“',
       'Je Produkt PO, Produktziel, Sprint-Ziel – gemeinsamer Takt.',
-      'Nur ein Sprint (eine Woche erlaubt der Guide); Daily dazwischen schriftlich.',
+      'Nur ein Sprint (eine Woche erlaubt der Guide); Daily schriftlich in Linear.',
       'Warum offen sagen: Transparenz ist die erste Säule.',
     ],
     verstaendnis: {

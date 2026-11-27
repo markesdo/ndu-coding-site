@@ -406,7 +406,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 289; Kaffeebar und Speicherregel: Kurs`,
       },
       {
-        text: 'Vorsicht beim Erzählen: „bis mittel“ bei Landingpage und Aufsteller ist unsere Einordnung – Bland sagt nur, eine E-Mail sei ein schwacher Beleg (S. 262). Mittel wird es bei uns, weil der Aufsteller in der echten Situation steht.',
+        text: 'Vorsicht beim Erzählen: „bis mittel“ gilt nur für den Aufsteller und ist unsere Einordnung, weil er in der echten Situation steht. Die Landingpage online bleibt „eher schwach“ – Bland: „Email is a rather weak strength of evidence“ (S. 262).',
         quelle: `${BLAND}, S. 52, 262; Einordnung: Kurs`,
       },
     ],

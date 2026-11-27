@@ -5,7 +5,7 @@ import { METHODEN } from '../components/methoden';
 
 // Audit Tag 4 (27.11.2026, tag4-vorbereitung/begleiter-vorsicht-tag4.md): Vorsicht-Hinweise im Begleiter. Form: ein
 // kern-Eintrag, der mit „Vorsicht beim Erzählen:“ oder „Nicht behaupten:“ beginnt, mit Quelle. concept-story (zwei Hinweise)
-// folgt in einem eigenen PR; prototyp-spike hat keinen.
+// folgt in einem eigenen PR; prototyp-spike hat keinen. Die Hinweise stehen am Ende der kern-Liste ihrer Folie.
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 const seite = (p: string) => quellen[p] ?? '';
 const folie = (p: string, id: string) => {
@@ -16,7 +16,7 @@ const folie = (p: string, id: string) => {
 const handout = (f: string) => (f.includes('<div class="nur-handout">') ? f.slice(f.indexOf('<div class="nur-handout">')) : f.slice(f.indexOf('class="nur-handout"')));
 const beamer = (f: string) => (f.includes('class="nur-handout"') ? f.slice(0, f.indexOf('class="nur-handout"')) : f);
 
-const SEITEN = ['tag-4', 'methoden/geschaeftsmodell', 'methoden/experiment', 'methoden/story-map', 'methoden/usage-story', 'methoden/scrum'];
+const SEITEN = ['tag-4', 'methoden/geschaeftsmodell', 'methoden/experiment', 'methoden/story-map', 'methoden/usage-story', 'methoden/scrum', 'tag-5'];
 const VORSICHT = /^(Vorsicht beim Erzählen|Nicht behaupten): /;
 
 const hinweise = () =>
@@ -36,7 +36,7 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
       'methoden/geschaeftsmodell#dreieck | Vorsicht beim Erzählen: „Über die Hälfte aller App-Entwickle',
       'methoden/experiment#annahmen-der-idee | Vorsicht beim Erzählen: „Wochen“ ist unsere Schätzung; Torre',
       'methoden/experiment#karte | Vorsicht beim Erzählen: Thomke spricht von „two versions of',
-      'methoden/experiment#test-arten | Vorsicht beim Erzählen: „bis mittel“ bei Landingpage und Auf',
+      'methoden/experiment#test-arten | Vorsicht beim Erzählen: „bis mittel“ gilt nur für den Aufste',
       'methoden/experiment#karte-e1 | Nicht behaupten: Bland nenne den Eintrag einen mittleren Bel',
       'methoden/experiment#lernkarte | Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ ist unsere',
       'methoden/story-map#schritt-schneiden | Nicht behaupten: „Slice 1 hat selten mehr als ein, zwei Stic',
@@ -45,6 +45,7 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
       'methoden/scrum#foliensatz | Vorsicht beim Erzählen: „3-5-3“ (Foliensatz 42) ist eine Mer',
       'methoden/scrum#foliensatz | Nicht behaupten: Royce habe den Wasserfall empfohlen (Folien',
       'methoden/scrum#abweichungen | Vorsicht beim Erzählen: Eine Woche ist nach dem Guide erlaub',
+      'tag-5#debrief | Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ auf den Le',
     ]);
   });
 
@@ -55,6 +56,22 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
     expect(t('methoden/scrum#abweichungen')).toContain('Die Abweichung ist, dass es nur einen Sprint gibt und kein nächster sofort folgt.');
     expect(t('methoden/usage-story#nahe-am-ende')).toContain('sie datiert sie falsch auf die 1970er');
     expect(t('methoden/scrum#foliensatz')).toContain('ist eine Merkhilfe, kein Begriff des Guides');
+  });
+
+  it('die Hinweise stehen am Ende der kern-Liste ihrer Folie', () => {
+    const vorne = SEITEN.flatMap((s) =>
+      Object.entries(NOTIZEN[`/innolab/${s}`] ?? {}).filter(([, n]) => {
+        const k = (n.kern ?? []).map((x) => VORSICHT.test(x.text));
+        const erster = k.indexOf(true);
+        return erster >= 0 && k.slice(erster).includes(false);
+      }).map(([id]) => `${s}#${id}`));
+    expect(vorne).toStrictEqual([]);
+  });
+
+  it('test-arten: „bis mittel“ nur für den Aufsteller, die Landingpage online bleibt eher schwach', () => {
+    const t = hinweise().find((h) => h.wo === 'methoden/experiment#test-arten')?.text;
+    expect(t).toContain('„bis mittel“ gilt nur für den Aufsteller');
+    expect(t).toContain('Die Landingpage online bleibt „eher schwach“');
   });
 
   it('jeder Hinweis hat eine Quelle und kein Etikett „Kursregel“', () => {
@@ -80,8 +97,9 @@ describe('Tag 4: drei korrigierte Sachfehler', () => {
     expect(handout(f)).toContain('Ein Eintrag ist ein kleiner Einsatz und bei Bland ein schwacher Beleg, „relatively weak evidence of interest“ ({BLAND}, S. 52); weil der Aufsteller in der echten Situation steht, ordnen wir ihn als mittel ein.');
     // Dieselbe Einordnung in der Tabelle „Vier Tests“ und auf der Lernkarte.
     const ta = folie('/innolab/methoden/experiment', 'test-arten');
-    expect(beamer(ta)).toContain('<td>trägt sich ein</td><td>eher schwach bis mittel</td>');
-    expect(handout(ta)).toContain('Ebenso „bis mittel“ beim Aufsteller: Bland nennt die E-Mail „a rather weak strength of evidence“ ({BLAND}, S. 262); mittel wird es bei uns, weil der Aufsteller in der echten Situation steht.');
+    expect(beamer(ta)).toContain('<td>trägt sich ein</td><td>online eher schwach, Aufsteller bis mittel</td>');
+    expect(beamer(ta)).not.toContain('<td>eher schwach bis mittel</td>');
+    expect(handout(ta)).toContain('„Bis mittel“ gilt nur für den Aufsteller; die Landingpage online bleibt eher schwach: Bland nennt die E-Mail „a rather weak strength of evidence“ ({BLAND}, S. 262); mittel wird es bei uns, weil der Aufsteller in der echten Situation steht.');
     expect(folie('/innolab/methoden/experiment', 'lernkarte')).toContain('Verlässlichkeit: mittel – echte Situation, aber ein kleiner Einsatz.');
   });
 
@@ -91,9 +109,31 @@ describe('Tag 4: drei korrigierte Sachfehler', () => {
     expect(beamer(f)).toContain('<li data-schritt><strong>Nur ein Sprint</strong> – eine Woche erlaubt der Guide, aber kein nächster folgt.</li>');
     expect(handout(f)).toContain('Sprints sind „fixed length events of one month or less“, und „A new Sprint starts immediately after the conclusion of the previous Sprint“ (S. 7). Eine Woche liegt also im Rahmen des Guides; abweichend ist, dass es bei uns nur einen gibt');
     expect(seite('/innolab/methoden/scrum')).not.toMatch(/einziger Sprint (von einer|, eine) Woche/i);
-    expect(NOTIZEN['/innolab/methoden/scrum'].abweichungen.live).toContain('Nur ein Sprint (eine Woche erlaubt der Guide); Daily dazwischen schriftlich.');
+    expect(NOTIZEN['/innolab/methoden/scrum'].abweichungen.live).toContain('Nur ein Sprint (eine Woche erlaubt der Guide); Daily schriftlich in Linear.');
     expect(JSON.stringify(NOTIZEN['/innolab/methoden/scrum'].abweichungen.live)).not.toMatch(/Ein Sprint, eine Woche/);
     const punkt = METHODEN.find((m) => m.slug === 'scrum')?.pruefliste?.find((p) => p.id === 'scrum-abweichungen')?.text;
     expect(punkt).toBe('Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, nur ein Sprint ohne nächsten danach, schriftliches Daily.');
+  });
+});
+
+describe('Tag 4: Setzungen des Kurses auf den Seiten markiert', () => {
+  it('story-map: „ein, zwei Stickies“ ist Faustregel des Kurses', () => {
+    expect(handout(folie('/innolab/methoden/story-map', 'schritt-schneiden'))).toContain('Slice 1 hat selten mehr als ein, zwei Stickies pro Aktivität – eine Faustregel des Kurses, nicht Pattons.');
+  });
+  it('usage-story: ein Satz als Boom ist Übertrag des Kurses', () => {
+    expect(handout(folie('/innolab/methoden/usage-story', 'nahe-am-ende'))).toContain('Lichaw nennt eine Animation; dass auch ein einziger Satz reicht, ist ein Übertrag des Kurses');
+  });
+  it('experiment: „Wochen“ ist unsere Schätzung', () => {
+    expect(handout(folie('/innolab/methoden/experiment', 'annahmen-der-idee'))).toContain('„Wochen“ auf der Folie ist unsere Schätzung, eine Dauer nennt Torres dort nicht.');
+  });
+  it('geschaeftsmodell: blinder Fleck nach Torres’ Wortlaut, nicht „bei vielen Teams“', () => {
+    const f = folie('/innolab/methoden/geschaeftsmodell', 'vor-experiment');
+    expect(f).not.toContain('bei vielen Teams der blinde Fleck');
+    expect(beamer(f)).toContain('<strong>Oft vergessen:</strong> Kosten und Einnahmen – die meisten Teams haben einen blinden Fleck, manche genau diesen.');
+  });
+  it('keine Seite trägt dafür das Etikett „Kursregel“', () => {
+    for (const [p, id] of [['story-map', 'schritt-schneiden'], ['usage-story', 'nahe-am-ende'], ['experiment', 'annahmen-der-idee'], ['geschaeftsmodell', 'vor-experiment']]) {
+      expect(folie(`/innolab/methoden/${p}`, id), `${p}#${id}`).not.toContain('Kursregel');
+    }
   });
 });
