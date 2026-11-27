@@ -314,7 +314,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'schritt-jetzt-map': {
     live: [
       'Timer 2 min: Experience Map öffnen, Momente lesen.',
-      'Stärkste Pains, die die Pain Relievers lindern, mit Zitat-ID an den Rand.',
+      'Zwei, drei Pains, die Pain Relievers lindern, mit Zitat-ID an den Rand.',
       '„Jeder dieser Pains braucht einen Task in der Später-Map.“',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
