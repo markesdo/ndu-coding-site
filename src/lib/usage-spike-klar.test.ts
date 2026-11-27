@@ -158,7 +158,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(b).toContain('<h2 id="beispiel">Am Beispiel: der Prototyp der Kaffeebar – auf Papier oder lo-fi in Figma</h2>');
     expect([...b.matchAll(/<li(?: class="[^"]+")?><span>([^<]+)<\/span>([^<]+)<span class="inhalt">([^<]+)<\/span><\/li>/g)].map((m) => `${m[1]}: ${m[2]} | ${m[3]}`)).toStrictEqual([
       'Bildschirm 1: Getränk wählen | 3 Getränke → 2',
-      'Bildschirm 2: Zug wählen | Abfahrtszeit · Weiter → 3',
+      'Bildschirm 2: Zug wählen | Abfahrt · Weiter → 3',
       'Bildschirm 3 · Höhepunkt: „Fertig 7:31. Dein Zug fährt 7:38.“ | Bestellen → 4',
       'Bildschirm 4: Abholnummer | 17 · Express-Ausgabe',
       'Bildschirm 5: Ansicht für die Bar | sortiert nach Abfahrt',
@@ -175,6 +175,13 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     const h = folie(PS, 'beispiel');
     expect(h).toContain('Das Modell in Figma zeigt, was lo-fi heißt: graue Kästen und Wörter, ein Frame je Bildschirm');
     expect(h).toContain('Auf Bildschirm 4 steht „Express-Ausgabe“, nicht „an der Bar“');
+    // Export der fünf Frames: im Handout (im Beamer zu klein, gemessen 27.11.2026), Datei liegt wirklich in public/quellen/kurs/.
+    expect(b).not.toContain('kaffeebar-prototyp-figma.png');
+    expect(h).toContain('<BuchAbbildung src="/quellen/kurs/kaffeebar-prototyp-figma.png" alt="Fünf graue Handy-Bildschirme nebeneinander');
+    expect(h).toContain('quelle="Das Modell in Figma: fünf Frames, Graustufen, Pfeile als Notiz neben den Knöpfen."');
+    const alt = /<BuchAbbildung src="\/quellen\/kurs\/kaffeebar-prototyp-figma.png" alt="([^"]+)"/.exec(h)?.[1] ?? '';
+    for (const t of ['Frame 1 · Getränk wählen', 'Frame 2 · Zug wählen', 'Frame 3 · ★ Höhepunkt', '„Fertig 7:31. Dein Zug fährt 7:38.“', 'Frame 4 · Abholnummer', '„Abholen an der Express-Ausgabe.“', 'Frame 5 · Ansicht für die Bar', 'sortiert nach Abfahrt']) expect(alt, t).toContain(t);
+    expect(readFileSync(new URL('../../public/quellen/kurs/kaffeebar-prototyp-figma.png', import.meta.url)).subarray(1, 4).toString()).toBe('PNG');
     const n = NOTIZEN_PROTOTYP_SPIKE.beispiel;
     expect(n?.live).toContain('Figma-Modell kurz zeigen: so roh darf es sein.');
     for (const z of n?.live ?? []) expect(z.split(/\s+/).length, z).toBeLessThanOrEqual(12);
