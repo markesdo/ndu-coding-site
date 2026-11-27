@@ -20,7 +20,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Wozu zeichnet ihr erst auf Papier, wenn Claude Code den Prototyp an Tag 5 ohnehin baut?',
-      antwort: 'Damit ihr jeden Bildschirm selbst entscheidet und den Ablauf testet, bevor eine Zeile Code steht. An Tag 5 baut Claude Code nach den Fotos der Blätter. Ohne Papier bekämt ihr Claudes Vorstellung von eurem Produkt.',
+      antwort: 'Damit ihr jeden Bildschirm selbst entscheidet und den Ablauf testet, bevor eine Zeile Code steht. An Tag 5 baut Claude Code nach den Fotos oder Figma-Bildern eurer Skizzen. Ohne Papier bekämt ihr Claudes Vorstellung von eurem Produkt.',
     },
     kern: [
       {
@@ -234,7 +234,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
   'schritt-trockenlauf': {
     live: [
       'Timer 10 min, drei Runden à gut drei Minuten nach Tabelle.',
-      'Wem er gehört: Blatt zeigen, Aufgabe vorlesen, Blatt legen oder Frame wechseln.',
+      'Wem er gehört: Blatt/Frame zeigen, Aufgabe vorlesen, nächstes Blatt/Frame.',
       'Dritte Person notiert in Feld 4, Zeile 0 des fremden Frames.',
       'Kursregel – keine Kritik: kein Feedback, nächste Runde.',
     ],

@@ -418,7 +418,7 @@ export const METHODEN: Methode[] = [
       { id: 'prototyp-spike-protokoll', text: 'Pro Testperson steht fest: Höhepunkt ohne Hilfe erreicht, Zeit, wo gehangen, Reaktion am Höhepunkt.' },
       { id: 'prototyp-spike-lernkarte', text: 'Nach den Tests: Lernkarte mit Verlässlichkeit und Befund (gestützt, widerlegt, unklar oder neue Einsicht), und was ihr deshalb ändert, in der Zeile „Beleg: … → darum: …“ mit U-IDs.' },
     ],
-    ki: 'Heute keine Rolle – an Tag 5 baut Claude Code Slice 1 nach den Papier-Skizzen und Abnahmekriterien.',
+    ki: 'Heute keine Rolle – an Tag 5 baut Claude Code Slice 1 nach den Skizzen und Abnahmekriterien.',
     quelle: 'David J. Bland & Alexander Osterwalder, Testing Business Ideas (Paper Prototype, S. 182–185); Jakob Nielsen, NN/g 2000 und 2012; Marieke McCloskey, NN/g 2014',
   },
   {

@@ -32,11 +32,11 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
   <Folie>
     <h2 id="worum">Vom Höhepunkt zum Prototyp</h2>
     <p class="folie-satz">Heute auf Papier oder lo-fi in Figma – an Tag 5 baut Claude Code daraus.</p>
-    <Fluss label="Von der Usage Story über Papier-Skizzen und den Test auf Papier zum Bau an Tag 5" hervor={[1, 2]} knoten={[
+    <Fluss label="Von der Usage Story über Skizzen auf Papier oder in Figma und den Test zum Bau an Tag 5" hervor={[1, 2]} knoten={[
       { t: 'Usage Story', sub: 'Stationen 2 bis 6', icon: BookOpen },
-      { t: 'Papier-Skizzen', sub: 'ein Blatt pro Bildschirm, von Hand oder lo-fi in Figma', icon: PenLine },
+      { t: 'Skizzen', sub: 'ein Blatt oder Figma-Frame pro Bildschirm', icon: PenLine },
       { t: 'Testen auf Papier', sub: 'heute ein Trockenlauf; bis Tag 5 freiwillig mehr', icon: Users },
-      { t: 'Tag 5: bauen', sub: 'Claude Code baut nach euren Blättern', icon: Code },
+      { t: 'Tag 5: bauen', sub: 'Claude Code baut nach euren Skizzen', icon: Code },
     ]} />
     <ul class="gross dicht">
       <li data-schritt><strong>Papier-Skizzen:</strong> Jeden Bildschirm auf ein Blatt, oder je ein Graustufen-Frame in Figma – was steht drauf, welcher Knopf führt wohin.</li>
@@ -44,7 +44,7 @@ const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
       <li data-schritt><strong>Kursregel – Papier vor Claude:</strong> Jeden Bildschirm entscheidet ihr selbst. An Tag 5 baut Claude Code genau das.</li>
     </ul>
     <div class="nur-handout">
-      <p>Papier-Skizzen heißt: ein Blatt pro Bildschirm, von Hand gezeichnet – für jeden Bildschirm der Stationen 2 bis 6 eurer Usage Story. Auf jedem Blatt steht, was die Testperson dort sieht, und Pfeile zeigen, wohin jeder Knopf führt. Bland nennt das einen Paper Prototype: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction“; er ist „ideal for rapidly testing the concept of your product quickly with customers“ ({BLAND}, S. 182). Ihr fotografiert die Blätter, legt die Fotos in euren Miro-Frame „T4 · 5 · Prototyp · Produkt n“ und testet den Ablauf heute einmal untereinander.</p>
+      <p>Papier-Skizzen heißt: ein Blatt pro Bildschirm, von Hand gezeichnet, oder lo-fi in Figma (ein Frame je Bildschirm, als Bild) – für jeden Bildschirm der Stationen 2 bis 6 eurer Usage Story. Auf jedem Blatt steht, was die Testperson dort sieht, und Pfeile zeigen, wohin jeder Knopf führt. Bland nennt das einen Paper Prototype: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction“; er ist „ideal for rapidly testing the concept of your product quickly with customers“ ({BLAND}, S. 182). Ihr fotografiert die Blätter, legt die Fotos in euren Miro-Frame „T4 · 5 · Prototyp · Produkt n“ und testet den Ablauf heute einmal untereinander.</p>
       <p>Bland führt Papier- und Klick-Prototyp als Paar: Was ihr am Papier gelernt habt, nutzt ihr „to inform your clickable prototype design“ ({BLAND}, S. 185). Bei euch heißt das: An Tag 5 bekommt Claude Code eure Skizzen und Abnahmekriterien als Bilder und baut daraus Slice 1 – keinen Wegwerf-Prototyp, sondern die ersten Issues eures Sprints (<a href="/innolab/tag-5#bauen-skizzen">Tag 5, Bauen</a>).</p>
       <p>Die Kursregel „Papier vor Claude“ hat einen einfachen Grund: Wer direkt bauen lässt, testet Claudes Vorstellung von eurem Produkt.</p>
       <p><strong>Kursregel – Papier oder Figma:</strong> In Figma nur Graustufen-Rahmen: Kästen, Text, Pfeile. Keine Farben, keine Komponenten, keine Klick-Verbindungen. Ein Frame pro Bildschirm, als Bild in euren Miro-Frame. Der Grund: Bland stellt den Papier-Prototyp an den Anfang – er ist „ideal for rapidly testing the concept“ ({BLAND}, S. 182) –, der klickbare Prototyp kommt danach (S. 185); bei euch baut ihn Claude Code an Tag 5. Lo-fi hält den Blick auf Ablauf und Inhalt, nicht auf das Aussehen. Im Trockenlauf sagt die Testperson, wo sie tippen würde, und wem der Prototyp gehört, wechselt zum nächsten Frame – wie beim Blätter legen.</p>
@@ -184,18 +184,18 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
   </Folie>
 
   <Folie>
-    <h2 id="schritt-papier">Schritt 1: ein Blatt je Bildschirm</h2>
+    <h2 id="schritt-papier">Schritt 1: ein Blatt oder Frame je Bildschirm</h2>
     <p class="folie-satz">Kursregel – Papier vor Claude: Was auf dem Bildschirm steht, entscheidet ihr.</p>
     <ol class="gross dicht">
       <li data-schritt><strong>Stationen 2 bis 6</strong> eurer Usage Story: Was sieht die Person jeweils? Ein Blatt (oder Figma-Frame) je Bildschirm, vier bis sechs.</li>
-      <li data-schritt><strong>Der Höhepunkt ist ein eigenes Blatt</strong> – mit Stern und dem Satz, der dort wörtlich steht.</li>
-      <li data-schritt><strong>Knöpfe mit Pfeil:</strong> Von jedem Knopf führt ein Pfeil zur Nummer des nächsten Blatts.</li>
+      <li data-schritt><strong>Der Höhepunkt ist ein eigenes Blatt (oder Frame)</strong> – mit Stern und dem Satz, der dort wörtlich steht.</li>
+      <li data-schritt><strong>Knöpfe mit Pfeil:</strong> Von jedem Knopf führt ein Pfeil zur Nummer des nächsten Blatts (oder Frames).</li>
       <li data-schritt><strong>Foto je Blatt</strong> (oder Bild je Frame) in Feld 1 eures Frames.</li>
     </ol>
     <p class="beispiel-box"><strong>Kaffeebar:</strong> 1 Getränk (eins aus drei) → 2 Zug (7:38 eintippen) → 3 ★ „Fertig 7:31. Dein Zug fährt 7:38.“ → 4 Abholnummer · 5 Ansicht für die Bar</p>
     <p class="wo-fertig"><span><strong>Wo:</strong> Papier und Stift oder Figma, dann Feld „1 · Skizzen: Papier oder Figma (lo-fi)“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> jemand Fremdes an den Pfeilen den Weg zum Stern sieht</span> <Timer minuten={10} /></p>
     <div class="nur-handout">
-      <p>Ein Blatt ist ein Bildschirm, kein Ablauf. Schreibt die Wörter so hin, wie sie am Bildschirm stehen sollen: Überschrift, Knöpfe, der Satz am Höhepunkt. Nummeriert die Blätter oben rechts; an jeden Knopf kommt ein Pfeil mit der Nummer des Blatts, zu dem er führt. Zeichnen müsst ihr nicht können: Kästen und Wörter reichen. Foto: mit dem Handy, ein Foto je Blatt, gerade von oben; in der Miro-App in euren Frame laden oder per AirDrop auf den Mac und in Feld 1 ziehen. Die Blätter selbst legt ihr für den Trockenlauf bereit. Wer bei der Usage Story nur Krise und Höhepunkt geschafft hat, zeichnet zuerst das Höhepunkt-Blatt und dann den kürzesten Weg dorthin. Bland: „You’ll need to be able to sketch out the flow of the product and manually replicate customer interactions“ ({BLAND}, S. 184). „Papier vor Claude“ ist eine Kursregel. Wer in Figma zeichnet, hält sich an die Kursregel oben: nur Graustufen-Rahmen mit Kästen, Text und Pfeilen, keine Farben, keine Komponenten, keine Klick-Verbindungen. Ein Frame je Bildschirm; Frame markieren, „Copy as PNG“ und in Feld 1 einfügen.</p>
+      <p>Ein Blatt ist ein Bildschirm, kein Ablauf. Schreibt die Wörter so hin, wie sie am Bildschirm stehen sollen: Überschrift, Knöpfe, der Satz am Höhepunkt. Nummeriert die Blätter oder Frames oben rechts; an jeden Knopf kommt ein Pfeil mit der Nummer des Blatts, zu dem er führt. Zeichnen müsst ihr nicht können: Kästen und Wörter reichen. Foto: mit dem Handy, ein Foto je Blatt, gerade von oben; in der Miro-App in euren Frame laden oder per AirDrop auf den Mac und in Feld 1 ziehen. Die Blätter selbst legt ihr für den Trockenlauf bereit. Wer bei der Usage Story nur Krise und Höhepunkt geschafft hat, zeichnet zuerst das Höhepunkt-Blatt und dann den kürzesten Weg dorthin. Bland: „You’ll need to be able to sketch out the flow of the product and manually replicate customer interactions“ ({BLAND}, S. 184). „Papier vor Claude“ ist eine Kursregel. Wer in Figma zeichnet, hält sich an die Kursregel oben: nur Graustufen-Rahmen mit Kästen, Text und Pfeilen, keine Farben, keine Komponenten, keine Klick-Verbindungen. Ein Frame je Bildschirm; Frame markieren, „Copy as PNG“ und in Feld 1 einfügen.</p>
     </div>
   </Folie>
 
@@ -246,13 +246,13 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
       </tbody>
     </table>
     <ol class="gross dicht">
-      <li data-schritt><strong>Wem der Prototyp gehört:</strong> Blatt 1 in die Kamera, Aufgabe vorlesen, dann das Blatt legen oder den Frame wechseln, zu dem der angesagte Knopf führt. Sonst schweigen.</li>
+      <li data-schritt><strong>Wem der Prototyp gehört:</strong> Blatt 1 in die Kamera oder Frame 1 teilen, Aufgabe vorlesen, dann das Blatt legen oder den Frame wechseln, zu dem der angesagte Knopf führt. Sonst schweigen.</li>
       <li data-schritt><strong>Testperson:</strong> denkt laut und sagt, wo sie tippen würde. <strong>Dritte Person:</strong> schreibt in Zeile „0 · Trockenlauf“.</li>
       <li data-schritt><strong>Kursregel – keine Kritik:</strong> kein Feedback danach. Nächste Runde.</li>
     </ol>
     <p class="wo-fertig"><span><strong>Wo:</strong> Teams (Kamera oder Bildschirm teilen) und Feld „4 · Tests“, Zeile 0 (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> in allen drei Frames Zeile 0 ausgefüllt ist</span> <Timer minuten={10} /></p>
     <div class="nur-handout">
-      <p>Wem der Prototyp gehört, hält die Blätter in die Kamera – oder teilt in Teams den Bildschirm mit Feld 1 auf Miro und zeigt dort das Foto, zu dem der angesagte Knopf führt. Sie oder er liest die Aufgabe von Karte E2 wörtlich vor und legt danach nur das Blatt hin, zu dem der angesagte Knopf führt, auch wenn es der falsche Knopf ist; führt ein Knopf nirgendwohin, sagt sie oder er nur: „Da passiert nichts.“ Das ist Blands Papier-Prototyp: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction“ ({BLAND}, S. 182). Erlaubt ist ein Satz: „Was würdest du jetzt tun?“ Die dritte Person notiert im Frame des Prototyps in Zeile 0: Aufgabe verständlich (ja/nein), Höhepunkt erreicht (ja/nein), wo gehangen (Stichwort). Nach gut drei Minuten ist Schluss, auch ohne Höhepunkt. Besprochen wird nichts; wer nach der Runde etwas ändern will, ändert allein: die Aufgabe, wenn sie nicht verständlich war, ein Blatt, wenn der Ablauf hakte. Mit Figma läuft es genauso: Ihr teilt den Bildschirm mit Frame 1, die Testperson sagt, wo sie tippen würde, und ihr wechselt zum Frame, zu dem dieser Knopf führt – wie beim Blätter legen.</p>
+      <p>Wem der Prototyp gehört, hält die Blätter in die Kamera – oder teilt in Teams den Bildschirm mit Feld 1 auf Miro (oder mit Figma) und zeigt dort das Foto oder den Frame, zu dem der angesagte Knopf führt. Sie oder er liest die Aufgabe von Karte E2 wörtlich vor und legt danach nur das Blatt hin, zu dem der angesagte Knopf führt, auch wenn es der falsche Knopf ist; führt ein Knopf nirgendwohin, sagt sie oder er nur: „Da passiert nichts.“ Das ist Blands Papier-Prototyp: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction“ ({BLAND}, S. 182). Erlaubt ist ein Satz: „Was würdest du jetzt tun?“ Die dritte Person notiert im Frame des Prototyps in Zeile 0: Aufgabe verständlich (ja/nein), Höhepunkt erreicht (ja/nein), wo gehangen (Stichwort). Nach gut drei Minuten ist Schluss, auch ohne Höhepunkt. Besprochen wird nichts; wer nach der Runde etwas ändern will, ändert allein: die Aufgabe, wenn sie nicht verständlich war, ein Blatt, wenn der Ablauf hakte. Mit Figma läuft es genauso: Ihr teilt den Bildschirm mit Frame 1, die Testperson sagt, wo sie tippen würde, und ihr wechselt zum Frame, zu dem dieser Knopf führt – wie beim Blätter legen.</p>
       <p>Der Trockenlauf ist heute euer Test des Prototyps. Er ist keine Runde über Kreuz, in der ihr die Arbeit der anderen beurteilt: Die Testperson erfüllt eine Aufgabe und denkt laut, besprochen wird nichts. Bland verlangt den Probelauf vor dem ersten echten Test: „Test it internally to make sure the flow works“, und er trennt die Rollen: eine Person führt, eine schreibt mit (S. 183). Für die Schwelle von E2 zählt er nicht – dafür zählen nur Testpersonen mit dem Pain, freiwillig bis Tag 5. Dass online die Besitzerin oder der Besitzer die Blätter legt und die Testperson ansagt, und „keine Kritik“, sind Kursregeln.</p>
     </div>
   </Folie>
@@ -267,7 +267,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
   <p>Im Frame „T4 · 5 · Prototyp · Produkt n“ stehen die nummerierten Felder so wie die Schritte: 1 bis 4 für heute, dazu die Befunde, das Feld „Für Claude Code“ und Feld 5 für Tag 5. Testet ihr bis Tag 5 mit Menschen, die den Pain haben (freiwillig), kommen die Tests, die Befunde und die Lernkarte E2 in denselben Frame.</p>
   <Karte label="Miro · T4 · 5 · Prototyp · Produkt n" text={`1 · Skizzen: Papier oder Figma (lo-fi)
 Je Bildschirm ein Blatt oder ein Graustufen-Frame in Figma – Foto oder Bild hier rein (Stationen 2 bis 6 eurer Usage Story). Höhepunkt = eigenes Blatt oder Frame mit Stern. Pfeil an jedem Knopf: wohin führt er?
-Blatt 1 · [Name des Bildschirms] · Station [n] … Blatt 6 · …`} />
+Blatt/Frame 1 · [Name des Bildschirms] · Station [n] … Blatt/Frame 6 · …`} />
   <Karte text={`2 · Abnahmekriterien
 Der Prototyp zeigt [den Weg von … bis zum Höhepunkt „…“ – in … Tipps].
 Er läuft [heute auf Papier; an Tag 5 am Handy im Browser].

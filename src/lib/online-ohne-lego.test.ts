@@ -102,7 +102,7 @@ describe('Lego4Scrum dieses Kursjahr stillgelegt (NDU-72)', () => {
     // Satz und Uhrzeit nur im Beamer (Review 2 #448): im Handout läse sich „Jetzt: Origin Story“ an Tag 5 falsch.
     expect(ab).toContain('<p class="folie-satz nur-beamer">Teamaufstellung und Definition of Done folgen an Tag 5.</p>');
     expect(ab).toContain('<p class="nur-beamer">Jetzt: Origin Story und Hausaufgabe. Den Prototyp baut Claude Code an Tag 5 aus euren Skizzen.</p>');
-    expect(ab).toContain('An Tag 4 folgt jetzt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a> (<a href="/innolab/tag-4#hausaufgabe">Hausaufgabe</a>). Gebaut wird der Prototyp an Tag 5: Claude Code baut Slice 1 aus euren Papier-Skizzen (<a href="/innolab/tag-5#bauen-skizzen">Tag 5, Bauen</a>).');
+    expect(ab).toContain('An Tag 4 folgt jetzt der <a href="/innolab/tag-4#abschluss">Abschluss mit der Origin Story</a> (<a href="/innolab/tag-4#hausaufgabe">Hausaufgabe</a>). Gebaut wird der Prototyp an Tag 5: Claude Code baut Slice 1 aus euren Skizzen (<a href="/innolab/tag-5#bauen-skizzen">Tag 5, Bauen</a>).');
   });
 
   it('die Lego-Auflösungen springen dieses Kursjahr nicht von selbst auf: Zeitpunkt nach dem letzten Kurstag', () => {
