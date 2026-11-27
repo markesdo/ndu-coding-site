@@ -302,7 +302,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Jede*r allein an der eigenen Map – drei Produkte.',
     ],
     uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein' },
-    miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
+    miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Orange oder, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
     ueberleitung: 'Schritt 1: der Rahmen.',
   },
 
@@ -373,9 +373,13 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-erkunden': {
     live: [
-      'Timer 6 min: vier Fragen unter den Task – gut blau, schief rot.',
+      'Timer 6 min: genauer blau, oder orange, gut blau, schief rot.',
       'Mindestens ein rotes Sticky pro Aktivität.',
       'Falle: Kanal oder Feature-Name statt Verb-Satz.',
+    ],
+    kern: [
+      { text: '„What are the specific things they’d do here? What are alternative things they could do? What would make it really cool? What about when things go wrong?“', quelle: `${PATTON}, Kap. 1, Explore Details and Options` },
+      { text: 'Vorsicht beim Erzählen: Die Farben (blau = Detail, orange = oder, rot = geht schief) legt der Kurs fest. Patton stellt die vier Fragen, ordnet ihnen aber keine Farben zu; „details, alternatives, variations, and exceptions“ hängen bei ihm einfach unter dem Task.', quelle: `Kurs; ${PATTON}, Kap. 1, Explore Details and Options; Kap. 5, 3. Explore Alternative Stories` },
     ],
     uebung: { dauer: '6 min', form: 'allein' },
     ueberleitung: 'Und dann sucht ihr die Löcher.',
@@ -405,7 +409,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'schritt-schneiden': {
     live: [
       'Timer 5 min: Linie hochziehen, darunter schieben – nicht kopieren.',
-      'Beim „oder“: was zum Lernen reicht, nach oben; die anderen darunter.',
+      'Bei Orange: was zum Lernen reicht, nach oben, die anderen darunter.',
       'Fragen: Was ist euer „bar an der Ausgabe“?',
       'Fragen: Welches Sticky oben fehlt der Lernfrage nicht?',
     ],

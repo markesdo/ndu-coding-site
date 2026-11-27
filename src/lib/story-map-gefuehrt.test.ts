@@ -107,7 +107,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
 
   it('Farblegende auf der Übersicht: dieselben Farben wie auf den Frames', () => {
     const s = sichtbar(folie('vorgehen'));
-    for (const t of ['Grün: Aktivität', 'Gelb: Task', 'Blau: Details, Varianten', 'Rot: geht schief', 'Grau: System', 'Pink: Outcome', 'Cyan: „Wir lernen, ob“', 'Violett: wer handelt', '* kein Software-Schritt', 'Sprechblase: offene Frage → <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a>']) expect(s, t).toContain(t);
+    for (const t of ['Grün: Aktivität', 'Gelb: Task', 'Blau: Details', 'Orange: oder', 'Rot: geht schief', 'Grau: System', 'Pink: Outcome', 'Cyan: „Wir lernen, ob“', 'Violett: wer handelt', '* kein Software-Schritt', 'Sprechblase: offene Frage → <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map</a>']) expect(s, t).toContain(t);
   });
 
   // Seit 26.11.2026 nachts: Tag 4 ohne Claude Code – Schritt 11 fragt Claude nicht mehr. Seit 27.11.2026 (Dozent) auch
@@ -202,14 +202,14 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(sichtbar(folie('schritt-tasks'))).toContain('<strong>Gelbe Stickies in eure Fläche:</strong> Verb-Sätze, erst bis zum Ende. Alles, was die Person tut – geschnitten wird in Schritt 9.');
     expect(handout(folie('schritt-tasks'))).toContain('Die Fläche ist offen und breit, Platz ist nach unten, stapeln ist erlaubt');
     expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('<strong>Tasks zu Gruppen schieben,</strong> ein grünes Sticky über jede Gruppe: ein Verb in der Sprache der Person.');
-    expect(sichtbar(folie('schritt-erkunden'))).toContain('<strong>Unter den Task, zu dem es gehört:</strong> genauer · oder · richtig gut (blau) · geht schief (rot).');
+    expect(sichtbar(folie('schritt-erkunden'))).toContain('<strong>Unter den Task, zu dem es gehört:</strong> genauer (blau) · oder (orange) · richtig gut (blau) · geht schief (rot).');
     expect(handout(folie('schritt-erkunden'))).toContain('Varianten und was schiefgeht hängen deshalb als Spalte unter ihrem Task, nicht in eigenen Reihen');
     const outcome = sichtbar(folie('schritt-outcome'));
     expect(outcome).toContain('<strong>Pink aus dem Streifen, links unter die Fragekarte:</strong>');
     expect(outcome).toContain('<strong>Cyan daneben:</strong>');
     const schneiden = sichtbar(folie('schritt-schneiden'));
     expect(schneiden).toContain('<strong>Slice-Linie hochziehen,</strong> quer durch die Map; darunter schieben, was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal. Aktivitäten bleiben oben.');
-    expect(schneiden).toContain('<strong>Wo ein „oder“ hängt:</strong> Die Variante, die zum Lernen reicht, kommt über die Linie, die anderen darunter. Was fehlt oben noch?');
+    expect(schneiden).toContain('<strong>Bei Orange (oder):</strong> Die Variante, die zum Lernen reicht, kommt über die Linie, die anderen darunter.');
     expect(schneiden).toContain('darunter schieben, was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal.');
     expect(schneiden).toContain('Slice 1 = bar an der Ausgabe* · darunter: vorher online zahlen');
     expect(schneiden).not.toContain('Slice 2');
@@ -224,10 +224,10 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(vorlage).toContain('<strong>Streifen „Schneiden“</strong> unter der Fläche: die gestrichelte Slice-Linie');
     expect(vorlage).not.toMatch(/Slice 2|Später|Genauer|Durchgang/);
     const n = NOTIZEN['/innolab/methoden/story-map'];
-    expect(n['schritt-erkunden'].live[0]).toBe('Timer 6 min: vier Fragen unter den Task – gut blau, schief rot.');
+    expect(n['schritt-erkunden'].live[0]).toBe('Timer 6 min: genauer blau, oder orange, gut blau, schief rot.');
     expect(n['schritt-schneiden'].live.slice(0, 2)).toStrictEqual([
       'Timer 5 min: Linie hochziehen, darunter schieben – nicht kopieren.',
-      'Beim „oder“: was zum Lernen reicht, nach oben; die anderen darunter.',
+      'Bei Orange: was zum Lernen reicht, nach oben, die anderen darunter.',
     ]);
     expect(n['schritt-outcome'].live[0]).toBe('Timer 2 min: Pink aus dem Streifen, links unter die Fragekarte.');
     expect(vorlage).toContain('in Schritt 8 legt ihr Pink und Cyan links unter die Fragekarte.');
@@ -319,6 +319,37 @@ describe('Story Map: geführt Schritt für Schritt', () => {
       'Bekommt die zweite Person ein eigenes grünes Sticky?',
     ]);
     expect(JSON.stringify(n)).not.toContain('Kursregel');
+  });
+
+  // 28.11.2026 (Markus, Miro): Farben aufgeteilt – blau = Detail, orange = oder (andere Art, Alternative), rot = geht schief.
+  // Pattons vier Fragen bleiben; dass sie Farben haben, ist Kurs und steht als Vorsicht im Begleiter, nicht auf der Folie.
+  it('Farben: blau Detail, orange oder, rot geht schief – Folien, Beispiel, Vorlage, Begleiter', () => {
+    expect(seite).not.toMatch(/Blau( ·|:)? Details?(\/|, )Varianten|Details\/Varianten/);
+    expect(sichtbar(folie('vorgehen'))).toContain('<span class="farbe orange">Orange: oder</span>');
+    expect(sichtbar(folie('schritt-erkunden'))).toContain('oder (orange)');
+    expect(handout(folie('schritt-erkunden'))).toContain('blau = Detail, orange = oder (eine andere Art, eine Alternative), rot = geht schief');
+    expect(sichtbar(folie('schritt-erkunden'))).not.toMatch(/Kurs/);
+    expect(sichtbar(folie('schritt-schneiden'))).toMatch(/<strong>Bei Orange \(oder\):<\/strong>/);
+    expect(sichtbar(folie('schritt-schneiden'))).not.toContain('Wo ein „oder“ hängt');
+
+    const beispiel = folie('beispiel');
+    for (const t of ['Link in den Favoriten', 'Zug aus der Liste', 'Becher mit Zug beschriftet', 'vorher online zahlen']) expect(sichtbar(beispiel), t).toContain(`<span class="oder">${t}</span>`);
+    expect(sichtbar(beispiel)).toContain('<td>Größe, Milch · <span class="oder">');
+    const h = handout(beispiel);
+    expect(h).toContain('darunter orange: Link in den Favoriten (Slice 2), Stammbestellung (später);');
+    expect(h).toContain('Größe und Milch (blau, Slice 2)');
+    expect(h).toContain('Zug aus der Liste (orange, Slice 2)');
+    expect(h).toContain('orange: Becher mit Zug beschriftet (Slice 2), Abholfach (später);');
+    expect(h).toContain('orange: vorher online zahlen (Slice 2);');
+
+    const vorlage = seite.slice(seite.indexOf('<h2 id="vorlage">'), seite.indexOf('<h2 id="pruefen">'));
+    expect(vorlage).toContain('Blau, Orange, Rot und Grau hängen unter dem Task');
+    expect(vorlage).toContain('ein blaues „Detail“ und ein oranges „oder: …“');
+    expect(vorlage).toContain('Gelb Task (Meereshöhe) · Blau Details · Orange oder: andere Art, Alternative · Rot geht schief');
+
+    const k = NOTIZEN_STORY_MAP['schritt-erkunden'].kern ?? [];
+    expect(k.at(-1)?.text).toMatch(/^Vorsicht beim Erzählen: Die Farben \(blau = Detail, orange = oder, rot = geht schief\) legt der Kurs fest\./);
+    expect(NOTIZEN_STORY_MAP.vorgehen.miro?.schritte.join(' ') ?? '').toContain('Orange oder');
   });
 
   it('Begleiter: Warm-up-Notiz erinnert ans Teilen des eigenen Boards, ohne Link', () => {
