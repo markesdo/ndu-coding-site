@@ -221,7 +221,7 @@ describe('Tests zur Auswahl und Beispiel', () => {
     expect(sichtbar('test-arten')).not.toContain('gibt Zahlungsdaten');
     const n = NOTIZEN[EX]['test-arten'];
     expect(n.live?.[0]).toBe('Eine Zeile pro Klick, von schwach nach stark.');
-    expect(n.verstaendnis?.antwort).toMatch(/^Ein Kaufklick kostet mehr als eine E-Mail/);
+    expect(n.verstaendnis?.antwort).toMatch(/^Der Kaufklick hängt an einem Preis, der Eintrag auf der Landingpage nicht/);
     expect(n.verstaendnis?.antwort).toContain('„Purchase clicks are relatively strong“');
   });
   // Markus 27.11.: Was ist ein Mock Sale, sind die Testpersonen schon Kund*innen, und wie bleibt das ehrlich?
@@ -397,10 +397,11 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
 });
 
 describe('Überholte Annahmen (27.11.2026)', () => {
-  it('nirgends in src steht „Überholtes: Abhaken“', () => {
+  it('nirgends in src kommt Überholtes nach „Abhaken“', () => {
     const alle = import.meta.glob(['/src/**/*.{astro,ts,tsx}', '!/src/**/*.test.{ts,tsx}'], { query: '?raw', import: 'default', eager: true }) as Record<string, string>;
     expect(Object.keys(alle).length).toBeGreaterThan(50);
-    const alt = 'Überholtes: ' + 'Abhaken';
-    expect(Object.entries(alle).filter(([, t]) => t.includes(alt)).map(([p]) => p)).toStrictEqual([]);
+    // Auch „kommt unter „Abhaken““ und Varianten wie „Überholte Annahmen … Abhaken“ in einem Satz.
+    const alt = /[Üü]berholt[^.]{0,80}Abhaken|unter „Abhaken“/;
+    expect(Object.entries(alle).filter(([, t]) => alt.test(t)).map(([p]) => p)).toStrictEqual([]);
   });
 });
