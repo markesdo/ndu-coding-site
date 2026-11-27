@@ -434,7 +434,7 @@ export const METHODEN: Methode[] = [
       { id: 'scrum-termine', text: 'Der Sprint hat ein Datum für Planning, Review und Retro; das Daily hat Zeit und Ort am Kurstag und eine Regel für dazwischen.' },
       { id: 'scrum-dod', text: 'Die Definition of Done ist eine Liste von Punkten, die sich im Browser, auf GitHub oder in Supabase prüfen lassen, und gilt für alle drei Produkte.' },
       { id: 'scrum-dod-messung', text: 'In der Definition of Done steht das Ereignis, das die Outcome-Metrik des Produkt-Briefs misst, mit seinen Feldern – ohne Name und E-Mail.' },
-      { id: 'scrum-abweichungen', text: 'Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, ein einziger Sprint von einer Woche, schriftliches Daily.' },
+      { id: 'scrum-abweichungen', text: 'Unter „Abweichungen vom Scrum Guide“ stehen mindestens: drei Produkte in einem Takt, nur ein Sprint ohne nächsten danach, schriftliches Daily.' },
     ],
     ki: 'Keine Rolle – Scrum lernt ihr an der Kaffeebar und im Team.',
     quelle: 'Schwaber & Sutherland, Scrum Guide 2020; Manifesto for Agile Software Development (2001); Alexey Krivitsky, lego4scrum (2023); Ron Jeffries, The Nature of Software Development (2015)',

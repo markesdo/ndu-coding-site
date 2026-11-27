@@ -367,10 +367,10 @@ describe('Tests zur Auswahl und Beispiel', () => {
     expect(wahl).toContain('Kursregel: E1 führt ihr nicht durch.');
     expect(n.geschichte?.text).toContain('von schwach nach stark.');
     expect(n.geschichte?.text).toContain('Der Kaufklick allein ist „relatively strong“; „sehr stark“ wird der Mock Sale erst mit Zahlungsdaten (S. 290).');
-    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test, in dieser Reihenfolge.
+    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test, in dieser Reihenfolge; danach der Vorsicht-Hinweis (Audit 27.11.).
     expect(n.kern?.map((k) => k.text.split(':')[0])).toStrictEqual([
       'Simulierter Moment – Aufbau', 'Simulierter Moment – gemessen', 'Landingpage / Aufsteller – Aufbau', 'Landingpage – gemessen',
-      'Concierge – Aufbau', 'Concierge – Testpersonen', 'Mock Sale – Aufbau', 'Mock Sale – Achtung',
+      'Concierge – Aufbau', 'Concierge – Testpersonen', 'Mock Sale – Aufbau', 'Mock Sale – Achtung', 'Vorsicht beim Erzählen',
     ]);
   });
   it('#beispiel: Schritt – Annahme – Art, A3 an Schritt 2, A4 an Schritt 5', () => {

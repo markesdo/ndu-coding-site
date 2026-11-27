@@ -396,6 +396,12 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Fragen: Welches Sticky oben fehlt der Lernfrage nicht?',
     ],
     uebung: { dauer: '5 min', form: 'allein' },
+    kern: [
+      {
+        text: 'Nicht behaupten: „Slice 1 hat selten mehr als ein, zwei Stickies pro Aktivität“ sei Pattons Regel – es ist eine Faustregel des Kurses. Patton sagt: Der erste Slice „cuts all the way through the functionality“, und ist er „production ready“, „you’ve likely done too much“.',
+        quelle: `${PATTON}, Kap. 4, Plan to Build Piece by Piece; Kap. 3, Really Minimize Your Experiments; Faustregel: Kurs`,
+      },
+    ],
     ueberleitung: 'Reicht Slice 1? Das zeigt euch „und dann“.',
   },
 

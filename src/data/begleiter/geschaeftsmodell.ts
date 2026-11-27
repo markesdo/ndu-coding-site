@@ -77,6 +77,10 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
         text: '„weniger Business-Plan, dafür mehr haptische Realisierung“.',
         quelle: `${GASSMANN}, I-2.5`,
       },
+      {
+        text: 'Vorsicht beim Erzählen: Torres sagt, die meisten Teams haben einen blinden Fleck – Wirtschaftlichkeit ist eines ihrer Beispiele, keine Statistik. Den blinden Fleck „most product teams“ nennt sie bei ethischen Annahmen.',
+        quelle: `${TORRES}, S. 128`,
+      },
     ],
     fragen: [
       {
@@ -126,6 +130,10 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
       {
         text: 'Partner stehen in der Checkliste für das neue Modell unter Wie? (Ressourcen, Aktivitäten & Fähigkeiten, Partner).',
         quelle: `${GASSMANN}, Tabelle 2.2 (I-2.4.1)`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: „Über die Hälfte aller App-Entwickler verdient weniger als 1.000 US-Dollar im Monat“ stammt aus Gassmann (2017), ohne Quelle und Jahr – nicht als heutigen Stand erzählen.',
+        quelle: `${GASSMANN}, I-2.2.2`,
       },
     ],
   },

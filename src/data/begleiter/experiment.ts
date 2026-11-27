@@ -33,6 +33,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: '„Our first test was designed to be completed in a day or two. This test will take up to two weeks“ – „Design your tests to be completed in a day or two, or a week, at most.“',
         quelle: `${TORRES}, S. 138, 144`,
       },
+      {
+        text: 'Vorsicht beim Erzählen: „Wochen“ ist unsere Schätzung; Torres sagt nur, dass man drei Ideen nicht bauen und vergleichen kann (S. 117). Belegt ist die andere Hälfte: Tests in „a day or two“ (S. 138, 144).',
+        quelle: `${TORRES}, S. 117, 138, 144`,
+      },
     ],
     ueberleitung: 'Woher kommen die Annahmen? Aus den Schritten eurer Idee.',
   },
@@ -220,6 +224,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Bland ordnet dasselbe als Achse der Belegstärke: „What people say in an interview or survey is not necessarily what they do in real life or will do in the future.“',
         quelle: `${BLAND}, S. 52`,
       },
+      {
+        text: 'Vorsicht beim Erzählen: Thomke spricht von „two versions of the software“ – ob beide Knöpfe nebeneinander standen, sagt er nicht eindeutig. Sicher ist: Keine*r der 20 im Usability-Test wollte es, 58 % wählten „Pay employees first“, die Conversion stieg um 14 %.',
+        quelle: `${THOMKE}, S. 72`,
+      },
     ],
     fragen: [
       {
@@ -397,6 +405,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Mock Sale – Achtung: Bland lässt im Laden „intercept and explain that the product is not yet available“ und die Kundschaft „with a gift card for the inconvenience“ entschädigen; online kommt der Hinweis sofort nach dem Klick. Zahlungsdaten nicht speichern ist Kursregel. Kaffeebar: Knopf „Vorbestellen für 2,90 €“, danach „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“.',
         quelle: `${BLAND}, S. 289; Kaffeebar und Speicherregel: Kurs`,
       },
+      {
+        text: 'Vorsicht beim Erzählen: „bis mittel“ bei Landingpage und Aufsteller ist unsere Einordnung – Bland sagt nur, eine E-Mail sei ein schwacher Beleg (S. 262). Mittel wird es bei uns, weil der Aufsteller in der echten Situation steht.',
+        quelle: `${BLAND}, S. 52, 262; Einordnung: Kurs`,
+      },
     ],
     verstaendnis: {
       frage: 'Warum ist Mock Sale stärker als Landingpage?',
@@ -552,6 +564,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         text: 'Die Zeile verbindet jedes mögliche Ergebnis mit einer Handlung, bevor gezählt wird: „a decision matrix that links possible outcomes to predetermined actions before any data comes in.“ Ab 10 der Concierge, 5–9 denselben Test wiederholen und eine Sache ändern, unter 5 umschwenken auf die Wartezeit-Anzeige (A6). Die Grenze 5 ist eine Setzung der Kaffeebar.',
         quelle: `${THOMKE}, S. 86`,
       },
+      {
+        text: 'Nicht behaupten: Bland nenne den Eintrag einen mittleren Beleg. Bei ihm ist er „relatively weak“ (S. 52). „Mittel“ auf der Lernkarte ist unsere Einordnung: kleiner Einsatz (schwach), aber echte Situation, kein Labor (S. 52, Punkt 3).',
+        quelle: `${BLAND}, S. 52, 262; Einordnung: Kurs`,
+      },
     ],
     fragen: [
       {
@@ -640,6 +656,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         text: 'Zeile „Weicht ab von ‚Wir entscheiden vorher‘? Grund: …“ – macht die Ausnahme prüfbar. E1 läuft in diesem Kurs nicht (Entscheidung 27.11.); eine Lernkarte schreibt nur, wer E2 mit dem Prototyp testet.',
         quelle: 'Kurs (Entscheidungen Markus 26. und 27.11.2026)',
+      },
+      {
+        text: 'Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ ist unsere Einordnung. Bland nennt einen Eintrag „relatively weak evidence“ (S. 52) und rechnet die vier Achsen nicht zu einer Stufe zusammen; mittel wird es bei uns, weil der Aufsteller in der echten Situation steht.',
+        quelle: `${BLAND}, S. 52; Einordnung: Kurs`,
       },
     ],
     ueberleitung: 'Und wenn man nach dem Test anders entscheiden will, als die Karte sagt? Das geht – aber offen.',
