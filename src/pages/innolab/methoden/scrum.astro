@@ -17,7 +17,7 @@ import SprintKreislauf from '../../../components/bild/SprintKreislauf.astro';
 import MiroFrame from '../../../components/MiroFrame.astro';
 import MiroLink from '../../../components/MiroLink.astro';
 import { Eye, MessagesSquare, RefreshCw, Target } from '@lucide/astro';
-import { AGIL_SCRUM_FOLIEN, FOLIENSATZ_TITEL, FOLIENSATZ_URL } from '../../../lib/foliensatz';
+import { FOLIENSATZ_TITEL, FOLIENSATZ_URL } from '../../../lib/foliensatz';
 
 const GUIDE = 'Ken Schwaber & Jeff Sutherland, „The Scrum Guide“ (2020)';
 const JEFFRIES = 'Ron Jeffries, „The Nature of Software Development“ (2015)';
@@ -50,135 +50,25 @@ const NACH_LEGO = LEGO_NICHT_DIESES_JAHR;
   <MethodenKarte slug="scrum" />
 
   {/* Tag 4, 16:35 (seit 27.11.; Entscheidung Markus 26.11.2026, Variante B): Die Theorie zeigt Markus aus dem Foliensatz, dann geht es
-      hier weiter mit „Wo wir abweichen“, der Übung und dem Beispiel. Die Folien „Warum nicht Wasserfall“ bis „Fertig heißt
-      fertig“ bleiben die Nachlese mit Zitaten und Seitenzahlen. */}
+      hier weiter mit „Wo wir abweichen“, der Übung und dem Beispiel. Seit 27.11.2026 sind „Warum nicht Wasserfall“ bis „Fertig
+      heißt fertig“ keine Folien mehr: Der Foliensatz zeigt dieselbe Theorie. Sie stehen nur im Handout als Nachlese mit Zitaten
+      und Seitenzahlen (#nachlese); die Anker #agil, #manifest, #scrum, #verantwortlichkeiten, #events und #fertig bleiben als h3.
+      Die Nachlese steht am Seitenende hinter der letzten Folie: Ein nur-handout-Block zwischen zwei Folien nähme im Beamer
+      der zweiten den Trennstrich (beamer.css, .folie + .folie). Welche Folien des Foliensatzes Markus zeigt, steht im
+      Begleiter (AGIL_SCRUM_FOLIEN, live), nicht auf der Folie; „Folien 1–62“ steht nur im Handout. */}
   <Folie>
     <h2 id="foliensatz">Agil &amp; Scrum: die Theorie im Foliensatz</h2>
     <p class="folie-satz">Erst die Folien, dann hier weiter: wo wir abweichen, die Kaffeebar, das Beispiel.</p>
     <ul class="gross">
-      <li><strong>Foliensatz:</strong> <a href={FOLIENSATZ_URL} target="_blank" rel="noopener noreferrer">„{FOLIENSATZ_TITEL}“</a>, Teil Agile &amp; Scrum (Folien 1–62).</li>
-      <li><strong>An Tag 4 gezeigt:</strong> Folien {AGIL_SCRUM_FOLIEN}.</li>
+      <li><strong>Warum agil:</strong> Wasserfall gegen Inkremente, das Agile Manifest.</li>
+      <li><strong>Scrum nach dem Guide:</strong> der Kreislauf, drei Verantwortlichkeiten, der Sprint und seine Events.</li>
+      <li><strong>Fertig:</strong> das Inkrement und die Definition of Done.</li>
       <li><strong>Danach hier:</strong> <a href="#abweichungen">Wo wir abweichen</a> → <a href="#kaffeebar-sortieren">Kaffeebar auf der Scrum-Karte</a> → <a href="#beispiel">Gleis-1-Express</a>.</li>
     </ul>
+    <p class="small">Foliensatz: <a href={FOLIENSATZ_URL} target="_blank" rel="noopener noreferrer">„{FOLIENSATZ_TITEL}“</a>, Teil Agile &amp; Scrum.</p>
     <div class="nur-handout">
-      <p>Die Folien von „Warum nicht Wasserfall“ bis „Fertig heißt fertig“ fassen dieselbe Theorie zum Nachlesen zusammen, mit wörtlichen Zitaten und Seitenzahlen aus dem Scrum Guide 2020, dem Agilen Manifest und Jeffries. Wo Foliensatz und Guide verschieden klingen, gilt der Guide: Developers statt „Development Team“ ({GUIDE}, S. 5), der Sprint als Behälter der vier anderen Events (S. 7), das Sprint Review als Arbeitssitzung, nicht als Präsentation (S. 9).</p>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="agil">Warum nicht Wasserfall</h2>
-    <p class="folie-satz">Erst wenn ihr die Software seht, wisst ihr, wo ihr steht.</p>
-    <BildText>
-      <BuchAbbildung src="/quellen/jeffries/phasen.jpg" alt="Handgezeichnetes Diagramm: senkrecht Features, waagrecht die Zeit mit den Phasen A, D, C, T; eine grüne Linie bleibt lange flach und steigt erst spät steil zu einem Stern an der Deadline" quelle={`Ein Projekt in Phasen. ${JEFFRIES}, S. 20.`} />
-      <ul>
-        <li data-schritt><strong>Phasen nacheinander:</strong> Analyse, Entwurf, Code, Test.</li>
-        <li data-schritt><strong>Bis zum Test</strong> sieht niemand Software – Probleme kommen spät.</li>
-        <li data-schritt><strong>Das Produkt ist ein Monolith:</strong> alles oder nichts.</li>
-        <li data-schritt><strong>Stattdessen:</strong> von Anfang an mehrere Releases, Feature für Feature.</li>
-      </ul>
-    </BildText>
-    <div class="nur-handout">
-      <p>„Many projects plan with activity-based phases: Analysis, Design, Coding, and finally Testing.“ Selbst wenn die Analyse pünktlich fertig ist, sagt das nichts über Entwurf und Code: „Until we begin to see the software, we can’t really tell how well we’re doing“ ({JEFFRIES}, S. 20). „The activity-based product is a monolith.“ Daraus folgt: „Instead, let’s plan for multiple releases from the very beginning“ (S. 22). Und: „A project that delivers feature by feature is more predictable“ (S. 23).</p>
-      <p>Ihr erlebt das bis Tag 5 im Kleinen: E1 und die Usability-Tests mit dem Prototyp von heute zeigen euch nach wenigen Tagen etwas, worauf ein Wasserfall bis zur Testphase gewartet hätte. Was es bei euch war, sagt ihr an Tag 5 im Debrief.</p>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="manifest">Das Agile Manifest</h2>
-    <p class="folie-satz">Die Dinge rechts sind wertvoll – die links zählen mehr.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Individuen und Interaktionen</strong> mehr als Prozesse und Werkzeuge</li>
-      <li data-schritt><strong>Funktionierende Software</strong> mehr als umfassende Dokumentation</li>
-      <li data-schritt><strong>Zusammenarbeit mit Kund*innen</strong> mehr als Vertragsverhandlung</li>
-      <li data-schritt><strong>Reagieren auf Veränderung</strong> mehr als das Befolgen eines Plans</li>
-    </ul>
-    <p class="small muted" data-schritt>Dazu zwölf Prinzipien, etwa Nr. 7: „Working software is the primary measure of progress.“</p>
-    <div class="nur-handout">
-      <p>„We are uncovering better ways of developing software by doing it and helping others do it.“ Die vier Werte im Original: „Individuals and interactions over processes and tools · Working software over comprehensive documentation · Customer collaboration over contract negotiation · Responding to change over following a plan“. Schluss: „That is, while there is value in the items on the right, we value the items on the left more.“ Unterzeichnet haben 17 Personen, darunter Kent Beck, Alistair Cockburn, Martin Fowler, Ron Jeffries, Ken Schwaber und Jeff Sutherland ({MANIFEST}).</p>
-      <p>Aus den zwölf Prinzipien (agilemanifesto.org/principles.html), die für diese Woche zählen:</p>
-      <ul>
-        <li>(1) „Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.“ – früh und laufend Nützliches liefern.</li>
-        <li>(2) „Welcome changing requirements, even late in development.“ – Änderungen willkommen heißen.</li>
-        <li>(3) „Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.“ – oft liefern, lieber kürzer.</li>
-        <li>(7) „Working software is the primary measure of progress.“ – Fortschritt ist, was läuft.</li>
-        <li>(10) „Simplicity--the art of maximizing the amount of work not done--is essential.“ – weglassen ist eine Kunst.</li>
-        <li>(11) „The best architectures, requirements, and designs emerge from self-organizing teams.“</li>
-        <li>(12) „At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.“ – das ist die Retrospektive.</li>
-      </ul>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="scrum">Scrum auf einem Bild</h2>
-    <p class="folie-satz">Eine Person ordnet, das Team baut ein Inkrement, alle prüfen und passen an – wiederholen.</p>
-    <SprintKreislauf id="sk-scrum" aufdecken={1} quelle={`Eigene Zeichnung nach ${GUIDE}, übersetzt. Lizenz wie der Guide: CC BY-SA 4.0.`} />
-    <div class="nur-handout">
-      <p><strong>Der Zyklus:</strong> Product Backlog → Inkrement im Sprint → prüfen mit Stakeholdern → nächster Sprint. <strong>Absichtlich unvollständig:</strong> Regeln für die Zusammenarbeit, keine Anleitung. <strong>Aus Erfahrung lernen:</strong> Transparenz, Überprüfung, Anpassung. <strong>Fünf Werte:</strong> Commitment, Fokus, Offenheit, Respekt, Mut.</p>
-      <p>„Scrum is a lightweight framework that helps people, teams and organizations generate value through adaptive solutions for complex problems.“ Die vier Schritte: Ein Product Owner ordnet die Arbeit in ein Product Backlog; das Scrum Team macht daraus im Sprint ein Inkrement; Team und Stakeholder „inspect the results and adjust for the next Sprint“; wiederholen ({GUIDE}, S. 3).</p>
-      <p>„The Scrum framework is purposefully incomplete, only defining the parts required to implement Scrum theory.“ Und: „Rather than provide people with detailed instructions, the rules of Scrum guide their relationships and interactions“ (S. 3). Scrum beruht auf Empirismus und Lean Thinking; die drei Säulen sind Transparenz, Überprüfung und Anpassung. „Inspection without adaptation is considered pointless“ (S. 3–4). Die Werte: „Commitment, Focus, Openness, Respect, and Courage“ (S. 4). Der Scrum Guide steht unter CC BY-SA 4.0.</p>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="verantwortlichkeiten">Drei Verantwortlichkeiten</h2>
-    <p class="folie-satz">Eine Person ordnet, alle bauen, eine sorgt dafür, dass Scrum funktioniert.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Product Owner:</strong> Produktziel, Backlog-Einträge, Reihenfolge – eine Person, kein Gremium.</li>
-      <li data-schritt><strong>Developers:</strong> Sprint Backlog, Qualität nach der Definition of Done, Plan täglich anpassen.</li>
-      <li data-schritt><strong>Scrum Master:</strong> Wirksamkeit des Teams, Hindernisse weg, Events in der Timebox.</li>
-      <li data-schritt><strong>Ein Team, meist zehn oder weniger:</strong> Es entscheidet selbst, wer was wann wie macht.</li>
-    </ul>
-    <div class="nur-handout">
-      <p>Ein Scrum Team besteht aus „one Scrum Master, one Product Owner, and Developers“, ohne „sub-teams or hierarchies“, und ist „focused on one objective at a time, the Product Goal“. Es ist cross-functional und self-managing: „they internally decide who does what, when, and how“; „typically 10 or fewer people“ ({GUIDE}, S. 5). Der Guide spricht seit 2020 nicht mehr von Rollen: „Scrum defines three specific accountabilities“ (S. 5).</p>
-      <p>Developers sind verantwortlich für den Sprint Backlog, „Instilling quality by adhering to a Definition of Done“, die tägliche Anpassung des Plans und „Holding each other accountable as professionals“ (S. 5). Der Product Owner ist „accountable for maximizing the value of the product“: Produktziel entwickeln und kommunizieren, Backlog-Einträge erstellen und ordnen, den Backlog transparent halten; „The Product Owner is one person, not a committee“ (S. 5–6). Der Scrum Master ist „accountable for the Scrum Team’s effectiveness“, unter anderem durch „Causing the removal of impediments“ und indem alle Events stattfinden und „kept within the timebox“ sind (S. 6). Arbeiten Product Owner oder Scrum Master an Einträgen des Sprint Backlogs mit, „they participate as Developers“ (S. 9).</p>
-      <p>Wird ein Team zu groß: „If Scrum Teams become too large, they should consider reorganizing into multiple cohesive Scrum Teams, each focused on the same product. Therefore, they should share the same Product Goal, Product Backlog, and Product Owner“ (S. 5). Krivitsky baut sein Lego-Spiel nach derselben Logik: ein Produkt, ein Product Backlog, ein Product Owner, ein Sprint zur gleichen Zeit, ein Inkrement ({KRIVITSKY}, S. 40). Skalierungsrahmenwerke beschreibt der Guide nicht. Wenn ihr in einem Unternehmen anfangt, fragt, welches Rahmenwerk über den Teams gilt.</p>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="events">Ein Sprint von innen</h2>
-    <p class="folie-satz">Der Sprint ist der Behälter; vier Events darin prüfen und passen an.</p>
-    <Fluss label="Die vier Events im Sprint: Planning, Daily Scrum, Review, Retrospektive" knoten={[
-      { t: 'Sprint Planning', sub: 'Warum? Was? Wie?', icon: Target },
-      { t: 'Daily Scrum', sub: '15 Minuten, Plan für heute', icon: MessagesSquare },
-      { t: 'Sprint Review', sub: 'Arbeitssitzung mit Stakeholdern', icon: Eye },
-      { t: 'Retrospektive', sub: 'Wie werden wir besser?', icon: RefreshCw },
-    ]} />
-    <ul>
-      <li data-schritt><strong>Höchstens ein Monat, feste Länge:</strong> nichts, was das Sprint-Ziel gefährdet; die Qualität sinkt nicht.</li>
-      <li data-schritt><strong>Drei Verpflichtungen:</strong> Produktziel – Sprint-Ziel – Definition of Done.</li>
-    </ul>
-    <div class="nur-handout">
-      <p>„The Sprint is a container for all other events.“ Sprints „are fixed length events of one month or less to create consistency“. Im Sprint gilt: „No changes are made that would endanger the Sprint Goal“, „Quality does not decrease“, „The Product Backlog is refined as needed“, und „Scope may be clarified and renegotiated with the Product Owner as more is learned“ ({GUIDE}, S. 7). Nur der Product Owner kann einen Sprint abbrechen (S. 8).</p>
-      <div style="overflow-x:auto">
-        <table>
-          <thead><tr><th></th><th>Was der Guide sagt</th></tr></thead>
-          <tbody>
-            <tr><th>Sprint Planning</th><td>Drei Themen: „Why is this Sprint valuable?“ – der Product Owner schlägt vor, „The whole Scrum Team then collaborates to define a Sprint Goal“. „What can be Done this Sprint?“ – die Developers wählen aus. „How will the chosen work get done?“ – „No one else tells them how“ (S. 8). Ziel, Auswahl und Plan zusammen sind der Sprint Backlog (S. 9).</td></tr>
-            <tr><th>Daily Scrum</th><td>„a 15-minute event for the Developers“, „at the same time and place every working day“; die Struktur ist frei, solange es um den Fortschritt zum Sprint-Ziel geht und „an actionable plan for the next day of work“ herauskommt (S. 9).</td></tr>
-            <tr><th>Sprint Review</th><td>„inspect the outcome of the Sprint and determine future adaptations“; „The Sprint Review is a working session and the Scrum Team should avoid limiting it to a presentation“ (S. 9).</td></tr>
-            <tr><th>Retrospektive</th><td>„plan ways to increase quality and effectiveness“: Individuen, Interaktionen, Prozesse, Werkzeuge und die Definition of Done. „The Sprint Retrospective concludes the Sprint“ (S. 10).</td></tr>
-            <tr><th>Product Backlog</th><td>Verpflichtung: das Produktziel – „a future state of the product which can serve as a target“, „the long-term objective for the Scrum Team“ (S. 10–11).</td></tr>
-            <tr><th>Sprint Backlog</th><td>Verpflichtung: das Sprint-Ziel – „the single objective for the Sprint“, mit „flexibility in terms of the exact work needed to achieve it“ (S. 10–11).</td></tr>
-            <tr><th>Inkrement</th><td>Verpflichtung: die Definition of Done. „In order to provide value, the Increment must be usable“ (S. 11).</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </Folie>
-
-  <Folie>
-    <h2 id="fertig">Fertig heißt fertig</h2>
-    <p class="folie-satz">Was die Definition of Done nicht erfüllt, wird im Review nicht gezeigt – es geht zurück ins Backlog.</p>
-    <ul class="gross">
-      <li data-schritt><strong>Die Definition of Done</strong> beschreibt, wann ein Inkrement die nötige Qualität hat.</li>
-      <li data-schritt><strong>Ohne Firmenstandard</strong> schreibt das Team sie selbst – passend zum Produkt.</li>
-      <li data-schritt><strong>„Done“ oder „not done“</strong> – nichts dazwischen.</li>
-      <li data-schritt><strong>Bei uns gehört die Messung dazu</strong> – das schreibt ihr an Tag 5.</li>
-    </ul>
-    <div class="nur-handout">
-      <p>„The Definition of Done is a formal description of the state of the Increment when it meets the quality measures required for the product.“ „If a Product Backlog item does not meet the Definition of Done, it cannot be released or even presented at the Sprint Review. Instead, it returns to the Product Backlog for future consideration.“ Gibt es keinen Standard der Organisation, „the Scrum Team must create a Definition of Done appropriate for the product“ ({GUIDE}, S. 12).</p>
-      <p>Jeffries: „We can’t accept ‚90 percent done.‘ Features need to be ‚done‘ or ‚not done‘: there is no middle ground“ ({JEFFRIES}, S. 46). Und: „Eliminate the test-and-fix finish“ (S. 48) – getestet wird im Sprint, nicht danach.</p>
+      <p>Im Foliensatz: Teil Agile &amp; Scrum (Folien 1–62).</p>
+      <p>Dieselbe Theorie steht unten auf dieser Seite in der <a href="#nachlese">Nachlese</a>, mit wörtlichen Zitaten und Seitenzahlen aus dem Scrum Guide 2020, dem Agilen Manifest und Jeffries.</p>
     </div>
   </Folie>
 
@@ -488,6 +378,103 @@ Developers: alle drei in allen drei Produkten · Scrum Master: [Name]
     <p class="folie-satz">Was antwortet ihr als Product Owner, wenn mitten im Sprint jemand etwas Neues will?</p>
     <p class="nur-handout">Im Sprint gilt: „No changes are made that would endanger the Sprint Goal“; der Umfang darf mit dem Product Owner neu verhandelt werden, das Ziel nicht ({GUIDE}, S. 7). Was Neues kommt, landet im Product Backlog – und im nächsten Planning entscheidet ihr, ob es dran ist.</p>
   </Folie>
+
+  <div class="nur-handout">
+  <h2 id="nachlese">Nachlese: Agil &amp; Scrum mit Zitaten und Seitenzahlen</h2>
+  <p>Was der Foliensatz zeigt, hier zum Nachlesen: nach Jeffries, dem Agilen Manifest und dem Scrum Guide 2020.</p>
+
+  <h3 id="agil">Warum nicht Wasserfall</h3>
+  <p><strong>Erst wenn ihr die Software seht, wisst ihr, wo ihr steht.</strong></p>
+  <BildText>
+    <BuchAbbildung src="/quellen/jeffries/phasen.jpg" alt="Handgezeichnetes Diagramm: senkrecht Features, waagrecht die Zeit mit den Phasen A, D, C, T; eine grüne Linie bleibt lange flach und steigt erst spät steil zu einem Stern an der Deadline" quelle={`Ein Projekt in Phasen. ${JEFFRIES}, S. 20.`} />
+    <ul>
+      <li><strong>Phasen nacheinander:</strong> Analyse, Entwurf, Code, Test.</li>
+      <li><strong>Bis zum Test</strong> sieht niemand Software – Probleme kommen spät.</li>
+      <li><strong>Das Produkt ist ein Monolith:</strong> alles oder nichts.</li>
+      <li><strong>Stattdessen:</strong> von Anfang an mehrere Releases, Feature für Feature.</li>
+    </ul>
+  </BildText>
+  <p>„Many projects plan with activity-based phases: Analysis, Design, Coding, and finally Testing.“ Selbst wenn die Analyse pünktlich fertig ist, sagt das nichts über Entwurf und Code: „Until we begin to see the software, we can’t really tell how well we’re doing“ ({JEFFRIES}, S. 20). „The activity-based product is a monolith.“ Daraus folgt: „Instead, let’s plan for multiple releases from the very beginning“ (S. 22). Und: „A project that delivers feature by feature is more predictable“ (S. 23).</p>
+  <p>Ihr erlebt das bis Tag 5 im Kleinen: E1 und die Usability-Tests mit dem Prototyp von heute zeigen euch nach wenigen Tagen etwas, worauf ein Wasserfall bis zur Testphase gewartet hätte. Was es bei euch war, sagt ihr an Tag 5 im Debrief.</p>
+
+  <h3 id="manifest">Das Agile Manifest</h3>
+  <p><strong>Die Dinge rechts sind wertvoll – die links zählen mehr.</strong></p>
+  <ul>
+    <li><strong>Individuen und Interaktionen</strong> mehr als Prozesse und Werkzeuge</li>
+    <li><strong>Funktionierende Software</strong> mehr als umfassende Dokumentation</li>
+    <li><strong>Zusammenarbeit mit Kund*innen</strong> mehr als Vertragsverhandlung</li>
+    <li><strong>Reagieren auf Veränderung</strong> mehr als das Befolgen eines Plans</li>
+  </ul>
+  <p>„We are uncovering better ways of developing software by doing it and helping others do it.“ Die vier Werte im Original: „Individuals and interactions over processes and tools · Working software over comprehensive documentation · Customer collaboration over contract negotiation · Responding to change over following a plan“. Schluss: „That is, while there is value in the items on the right, we value the items on the left more.“ Unterzeichnet haben 17 Personen, darunter Kent Beck, Alistair Cockburn, Martin Fowler, Ron Jeffries, Ken Schwaber und Jeff Sutherland ({MANIFEST}).</p>
+  <p>Aus den zwölf Prinzipien (agilemanifesto.org/principles.html), die für diese Woche zählen:</p>
+  <ul>
+    <li>(1) „Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.“ – früh und laufend Nützliches liefern.</li>
+    <li>(2) „Welcome changing requirements, even late in development.“ – Änderungen willkommen heißen.</li>
+    <li>(3) „Deliver working software frequently, from a couple of weeks to a couple of months, with a preference to the shorter timescale.“ – oft liefern, lieber kürzer.</li>
+    <li>(7) „Working software is the primary measure of progress.“ – Fortschritt ist, was läuft.</li>
+    <li>(10) „Simplicity--the art of maximizing the amount of work not done--is essential.“ – weglassen ist eine Kunst.</li>
+    <li>(11) „The best architectures, requirements, and designs emerge from self-organizing teams.“</li>
+    <li>(12) „At regular intervals, the team reflects on how to become more effective, then tunes and adjusts its behavior accordingly.“ – das ist die Retrospektive.</li>
+  </ul>
+
+  <h3 id="scrum">Scrum auf einem Bild</h3>
+  <p><strong>Eine Person ordnet, das Team baut ein Inkrement, alle prüfen und passen an – wiederholen.</strong></p>
+  <SprintKreislauf id="sk-scrum" quelle={`Eigene Zeichnung nach ${GUIDE}, übersetzt. Lizenz wie der Guide: CC BY-SA 4.0.`} />
+  <p><strong>Der Zyklus:</strong> Product Backlog → Inkrement im Sprint → prüfen mit Stakeholdern → nächster Sprint. <strong>Absichtlich unvollständig:</strong> Regeln für die Zusammenarbeit, keine Anleitung. <strong>Aus Erfahrung lernen:</strong> Transparenz, Überprüfung, Anpassung. <strong>Fünf Werte:</strong> Commitment, Fokus, Offenheit, Respekt, Mut.</p>
+  <p>„Scrum is a lightweight framework that helps people, teams and organizations generate value through adaptive solutions for complex problems.“ Die vier Schritte: Ein Product Owner ordnet die Arbeit in ein Product Backlog; das Scrum Team macht daraus im Sprint ein Inkrement; Team und Stakeholder „inspect the results and adjust for the next Sprint“; wiederholen ({GUIDE}, S. 3).</p>
+  <p>„The Scrum framework is purposefully incomplete, only defining the parts required to implement Scrum theory.“ Und: „Rather than provide people with detailed instructions, the rules of Scrum guide their relationships and interactions“ (S. 3). Scrum beruht auf Empirismus und Lean Thinking; die drei Säulen sind Transparenz, Überprüfung und Anpassung. „Inspection without adaptation is considered pointless“ (S. 3–4). Die Werte: „Commitment, Focus, Openness, Respect, and Courage“ (S. 4). Der Scrum Guide steht unter CC BY-SA 4.0.</p>
+
+  <h3 id="verantwortlichkeiten">Drei Verantwortlichkeiten</h3>
+  <p><strong>Eine Person ordnet, alle bauen, eine sorgt dafür, dass Scrum funktioniert.</strong></p>
+  <ul>
+    <li><strong>Product Owner:</strong> Produktziel, Backlog-Einträge, Reihenfolge – eine Person, kein Gremium.</li>
+    <li><strong>Developers:</strong> Sprint Backlog, Qualität nach der Definition of Done, Plan täglich anpassen.</li>
+    <li><strong>Scrum Master:</strong> Wirksamkeit des Teams, Hindernisse weg, Events in der Timebox.</li>
+    <li><strong>Ein Team, meist zehn oder weniger:</strong> Es entscheidet selbst, wer was wann wie macht.</li>
+  </ul>
+  <p>Ein Scrum Team besteht aus „one Scrum Master, one Product Owner, and Developers“, ohne „sub-teams or hierarchies“, und ist „focused on one objective at a time, the Product Goal“. Es ist cross-functional und self-managing: „they internally decide who does what, when, and how“; „typically 10 or fewer people“ ({GUIDE}, S. 5). Der Guide spricht seit 2020 nicht mehr von Rollen: „Scrum defines three specific accountabilities“ (S. 5).</p>
+  <p>Developers sind verantwortlich für den Sprint Backlog, „Instilling quality by adhering to a Definition of Done“, die tägliche Anpassung des Plans und „Holding each other accountable as professionals“ (S. 5). Der Product Owner ist „accountable for maximizing the value of the product“: Produktziel entwickeln und kommunizieren, Backlog-Einträge erstellen und ordnen, den Backlog transparent halten; „The Product Owner is one person, not a committee“ (S. 5–6). Der Scrum Master ist „accountable for the Scrum Team’s effectiveness“, unter anderem durch „Causing the removal of impediments“ und indem alle Events stattfinden und „kept within the timebox“ sind (S. 6). Arbeiten Product Owner oder Scrum Master an Einträgen des Sprint Backlogs mit, „they participate as Developers“ (S. 9).</p>
+  <p>Wird ein Team zu groß: „If Scrum Teams become too large, they should consider reorganizing into multiple cohesive Scrum Teams, each focused on the same product. Therefore, they should share the same Product Goal, Product Backlog, and Product Owner“ (S. 5). Krivitsky baut sein Lego-Spiel nach derselben Logik: ein Produkt, ein Product Backlog, ein Product Owner, ein Sprint zur gleichen Zeit, ein Inkrement ({KRIVITSKY}, S. 40). Skalierungsrahmenwerke beschreibt der Guide nicht. Wenn ihr in einem Unternehmen anfangt, fragt, welches Rahmenwerk über den Teams gilt.</p>
+
+  <h3 id="events">Ein Sprint von innen</h3>
+  <p><strong>Der Sprint ist der Behälter; vier Events darin prüfen und passen an.</strong></p>
+  <Fluss label="Die vier Events im Sprint: Planning, Daily Scrum, Review, Retrospektive" knoten={[
+    { t: 'Sprint Planning', sub: 'Warum? Was? Wie?', icon: Target },
+    { t: 'Daily Scrum', sub: '15 Minuten, Plan für heute', icon: MessagesSquare },
+    { t: 'Sprint Review', sub: 'Arbeitssitzung mit Stakeholdern', icon: Eye },
+    { t: 'Retrospektive', sub: 'Wie werden wir besser?', icon: RefreshCw },
+  ]} />
+  <ul>
+    <li><strong>Höchstens ein Monat, feste Länge:</strong> nichts, was das Sprint-Ziel gefährdet; die Qualität sinkt nicht.</li>
+    <li><strong>Drei Verpflichtungen:</strong> Produktziel – Sprint-Ziel – Definition of Done.</li>
+  </ul>
+  <p>„The Sprint is a container for all other events.“ Sprints „are fixed length events of one month or less to create consistency“. Im Sprint gilt: „No changes are made that would endanger the Sprint Goal“, „Quality does not decrease“, „The Product Backlog is refined as needed“, und „Scope may be clarified and renegotiated with the Product Owner as more is learned“ ({GUIDE}, S. 7). Nur der Product Owner kann einen Sprint abbrechen (S. 8).</p>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr><th></th><th>Was der Guide sagt</th></tr></thead>
+      <tbody>
+        <tr><th>Sprint Planning</th><td>Drei Themen: „Why is this Sprint valuable?“ – der Product Owner schlägt vor, „The whole Scrum Team then collaborates to define a Sprint Goal“. „What can be Done this Sprint?“ – die Developers wählen aus. „How will the chosen work get done?“ – „No one else tells them how“ (S. 8). Ziel, Auswahl und Plan zusammen sind der Sprint Backlog (S. 9).</td></tr>
+        <tr><th>Daily Scrum</th><td>„a 15-minute event for the Developers“, „at the same time and place every working day“; die Struktur ist frei, solange es um den Fortschritt zum Sprint-Ziel geht und „an actionable plan for the next day of work“ herauskommt (S. 9).</td></tr>
+        <tr><th>Sprint Review</th><td>„inspect the outcome of the Sprint and determine future adaptations“; „The Sprint Review is a working session and the Scrum Team should avoid limiting it to a presentation“ (S. 9).</td></tr>
+        <tr><th>Retrospektive</th><td>„plan ways to increase quality and effectiveness“: Individuen, Interaktionen, Prozesse, Werkzeuge und die Definition of Done. „The Sprint Retrospective concludes the Sprint“ (S. 10).</td></tr>
+        <tr><th>Product Backlog</th><td>Verpflichtung: das Produktziel – „a future state of the product which can serve as a target“, „the long-term objective for the Scrum Team“ (S. 10–11).</td></tr>
+        <tr><th>Sprint Backlog</th><td>Verpflichtung: das Sprint-Ziel – „the single objective for the Sprint“, mit „flexibility in terms of the exact work needed to achieve it“ (S. 10–11).</td></tr>
+        <tr><th>Inkrement</th><td>Verpflichtung: die Definition of Done. „In order to provide value, the Increment must be usable“ (S. 11).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3 id="fertig">Fertig heißt fertig</h3>
+  <p><strong>Was die Definition of Done nicht erfüllt, wird im Review nicht gezeigt – es geht zurück ins Backlog.</strong></p>
+  <ul>
+    <li><strong>Die Definition of Done</strong> beschreibt, wann ein Inkrement die nötige Qualität hat.</li>
+    <li><strong>Ohne Firmenstandard</strong> schreibt das Team sie selbst – passend zum Produkt.</li>
+    <li><strong>„Done“ oder „not done“</strong> – nichts dazwischen.</li>
+    <li><strong>Bei uns gehört die Messung dazu</strong> – das schreibt ihr an Tag 5 (<a href="#dod">Definition of Done</a>).</li>
+  </ul>
+  <p>„The Definition of Done is a formal description of the state of the Increment when it meets the quality measures required for the product.“ „If a Product Backlog item does not meet the Definition of Done, it cannot be released or even presented at the Sprint Review. Instead, it returns to the Product Backlog for future consideration.“ Gibt es keinen Standard der Organisation, „the Scrum Team must create a Definition of Done appropriate for the product“ ({GUIDE}, S. 12).</p>
+  <p>Jeffries: „We can’t accept ‚90 percent done.‘ Features need to be ‚done‘ or ‚not done‘: there is no middle ground“ ({JEFFRIES}, S. 46). Und: „Eliminate the test-and-fix finish“ (S. 48) – getestet wird im Sprint, nicht danach.</p>
+  </div>
 
   <p class="small muted">Nach {GUIDE}; {MANIFEST}; {JEFFRIES}, Kap. 3 und 5; {KRIVITSKY}.</p>
 

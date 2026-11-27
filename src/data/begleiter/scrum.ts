@@ -1,24 +1,33 @@
 import type { Notiz } from './typen';
+import { AGIL_SCRUM_FOLIEN } from '../../lib/foliensatz';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/scrum.astro. Zwei Tage auf einer Seite:
 // - Tag 4 (28.11., 16:35–17:15, Variante B): Theorie aus dem Foliensatz (27 min), dann hier „Wo wir abweichen“ (2 min),
 //   Kaffeebar auf der Scrum-Karte (4 + 3 min), Gleis-1-Express (4 min); „Weiter heute“ führt in den Abschluss (17:15).
-//   Die Folien agil … fertig und planen sind Nachlese im Handout: an Tag 4 im Beamer überspringen.
+//   Die Nummern der gezeigten Folien stehen nur hier (live), nicht auf der Folie. „Warum nicht Wasserfall“ bis „Fertig heißt
+//   fertig“ sind seit 27.11.2026 keine Folien mehr (Nachlese nur im Handout, #nachlese), darum ohne Notiz. Die Folie
+//   planen ist Nachlese: an Tag 4 im Beamer überspringen.
 // - Tag 5 (12.12., 09:40–10:20): team, dod, vorgehen, uebertrag – im Code unten markiert.
 // Abgeschaltet und darum ohne Notiz (folienAus lässt sie weg): produktziel (PRODUKTSATZ_AN_TAG_4), Lego4Scrum.
 // Guide und Jeffries = gedruckte Seiten.
 const GUIDE = 'Ken Schwaber & Jeff Sutherland, The Scrum Guide (2020)';
 const JEFFRIES = 'Ron Jeffries, The Nature of Software Development (2015)';
 const MANIFEST = 'Manifesto for Agile Software Development (2001), https://agilemanifesto.org';
-const NACHLESE = 'Nachlese-Folie: an Tag 4 überspringen, nur bei Fragen zeigen.';
+
+// Die Foliennummern gehören in den Live-Block: „Nur live“ blendet Ablauf und Kern aus (begleiter.astro). Ein live-Stichwort
+// hat höchstens 12 Wörter, und jede Nummer zählt als Wort; darum steht die Liste auf zwei Stichworten, halbiert aus
+// AGIL_SCRUM_FOLIEN (so folgt sie der Konstante, wenn sich die Nummern ändern).
+const FOLIEN = AGIL_SCRUM_FOLIEN.split(', ');
+const HAELFTE = Math.ceil(FOLIEN.length / 2);
 
 export const NOTIZEN_SCRUM: Record<string, Notiz> = {
   // Tag 4
   foliensatz: {
     live: [
-      'Foliensatz öffnen, Teil Agile & Scrum: nur die 20 angegebenen Folien.',
+      `Im Foliensatz zeigen: ${FOLIEN.slice(0, HAELFTE).join(', ')} …`,
+      `Dann: ${FOLIEN.slice(HAELFTE).join(', ')}.`,
       'Zeit: 27 min Foliensatz, dann hier weiter.',
-      'Wo Foliensatz und Guide verschieden klingen, gilt der Guide.',
+      'Fragen zur Theorie: Nachlese im Handout, mit Zitaten und Seitenzahlen.',
       'Danach über den Link auf der Folie zu „Wo wir abweichen“.',
     ],
     kern: [
@@ -26,114 +35,16 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         text: 'Begriffe nach dem Guide 2020: „Developers“ statt Development Team (S. 5); „The Sprint is a container for all other events“ (S. 7); „The Sprint Review is a working session and the Scrum Team should avoid limiting it to a presentation“ (S. 9).',
         quelle: `${GUIDE}, S. 5, 7, 9`,
       },
-    ],
-    ueberleitung: 'So weit der Guide. Jetzt: wo wir zu dritt mit drei Produkten davon abweichen.',
-  },
-
-  agil: {
-    live: [
-      NACHLESE,
-      'Kern: Bis zum Test sieht niemand Software.',
-      'Brücke: E1 und Usability-Tests zeigen es nach wenigen Tagen.',
-    ],
-    kern: [
       {
-        text: '„Until we begin to see the software, we can’t really tell how well we’re doing.“ – „The activity-based product is a monolith.“ – „Instead, let’s plan for multiple releases from the very beginning.“',
-        quelle: `${JEFFRIES}, S. 20, 22`,
+        text: '„Until we begin to see the software, we can’t really tell how well we’re doing.“',
+        quelle: `${JEFFRIES}, S. 20`,
       },
-    ],
-    ueberleitung: 'Was stattdessen zählt, haben 17 Leute 2001 aufgeschrieben.',
-  },
-
-  manifest: {
-    live: [
-      NACHLESE,
-      '„Die Dinge rechts sind wertvoll – die links zählen mehr.“',
-      'Prinzip 7: Fortschritt ist, was läuft.',
-    ],
-    kern: [
       {
-        text: '„That is, while there is value in the items on the right, we value the items on the left more.“ Prinzip 7: „Working software is the primary measure of progress.“',
+        text: '„That is, while there is value in the items on the right, we value the items on the left more.“',
         quelle: MANIFEST,
       },
     ],
-    ueberleitung: 'Scrum ist ein Rahmen, der diese Werte in Regeln fasst.',
-  },
-
-  scrum: {
-    live: [
-      NACHLESE,
-      'Zyklus: Backlog, Sprint, Inkrement, prüfen und anpassen.',
-      '„Absichtlich unvollständig: Regeln für die Zusammenarbeit, keine Anleitung.“',
-    ],
-    kern: [
-      {
-        text: '„Scrum is a lightweight framework that helps people, teams and organizations generate value through adaptive solutions for complex problems.“ – „The Scrum framework is purposefully incomplete, only defining the parts required to implement Scrum theory.“',
-        quelle: `${GUIDE}, S. 3`,
-      },
-      {
-        text: 'Drei Säulen: Transparenz, Überprüfung, Anpassung. „Inspection without adaptation is considered pointless.“ Werte: „Commitment, Focus, Openness, Respect, and Courage“.',
-        quelle: `${GUIDE}, S. 3–4`,
-      },
-    ],
-    ueberleitung: 'Wer macht was in diesem Kreislauf?',
-  },
-
-  verantwortlichkeiten: {
-    live: [
-      NACHLESE,
-      'Seit 2020: drei Verantwortlichkeiten, keine Rollen.',
-      'Product Owner ist eine Person, kein Gremium.',
-    ],
-    kern: [
-      {
-        text: '„Scrum defines three specific accountabilities“; „typically 10 or fewer people“; „they internally decide who does what, when, and how“.',
-        quelle: `${GUIDE}, S. 5`,
-      },
-      {
-        text: '„The Product Owner is one person, not a committee.“',
-        quelle: `${GUIDE}, S. 6`,
-      },
-    ],
-    ueberleitung: 'Und wie läuft ein Sprint von innen?',
-  },
-
-  events: {
-    live: [
-      NACHLESE,
-      'Sprint = Behälter für vier Events, höchstens ein Monat.',
-      'Drei Verpflichtungen: Produktziel, Sprint-Ziel, Definition of Done.',
-    ],
-    kern: [
-      {
-        text: '„The Sprint is a container for all other events.“ Im Sprint: „No changes are made that would endanger the Sprint Goal“; „Quality does not decrease“.',
-        quelle: `${GUIDE}, S. 7`,
-      },
-      {
-        text: 'Daily Scrum: „a 15-minute event for the Developers“, „held at the same time and place every working day of the Sprint“.',
-        quelle: `${GUIDE}, S. 9`,
-      },
-    ],
-    ueberleitung: 'Was heißt am Ende des Sprints „fertig“?',
-  },
-
-  fertig: {
-    live: [
-      NACHLESE,
-      '„Done“ oder „not done“ – nichts dazwischen.',
-      '„Unsere Definition of Done mit Messung schreibt ihr an Tag 5.“',
-    ],
-    kern: [
-      {
-        text: '„If a Product Backlog item does not meet the Definition of Done, it cannot be released or even presented at the Sprint Review. Instead, it returns to the Product Backlog for future consideration.“',
-        quelle: `${GUIDE}, S. 12`,
-      },
-      {
-        text: '„We can’t accept ‚90 percent done.‘ Features need to be ‚done‘ or ‚not done‘: there is no middle ground.“',
-        quelle: `${JEFFRIES}, S. 46`,
-      },
-    ],
-    ueberleitung: 'So weit der Guide – jetzt, wo wir abweichen.',
+    ueberleitung: 'So weit der Guide. Jetzt: wo wir zu dritt mit drei Produkten davon abweichen.',
   },
 
   abweichungen: {

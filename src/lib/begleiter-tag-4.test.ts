@@ -18,7 +18,8 @@ const SEITEN: Record<string, number> = {
   '/innolab/methoden/usage-story': 6,
   // Seit 26.11.2026 nachts Prototyp auf Papier: ohne Zeitbox, Bauen und Ansehen.
   '/innolab/methoden/prototyp-spike': 14,
-  '/innolab/methoden/scrum': 16,
+  // Seit 27.11.2026 ohne die sechs Theorie-Folien agil … fertig (Nachlese nur im Handout, #nachlese).
+  '/innolab/methoden/scrum': 10,
 };
 
 describe('Begleiter Tag 4: Notizen decken die Folien', () => {
