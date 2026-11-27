@@ -218,9 +218,9 @@ describe('Tests zur Auswahl und Beispiel', () => {
     const t = sichtbar('test-arten');
     expect([...t.matchAll(/<tr data-schritt><th>([^<]+)<\/th>/g)].map((x) => x[1])).toStrictEqual(['Simulierter Moment', 'Landingpage / Aufsteller', 'Concierge', 'Mock Sale']);
   });
-  // Markus 27.11.: Ohne Zahlungsdaten zählt der Mock Sale Kaufklicks – „relatively strong“; „very strong“ erst mit Zahlungsdaten (Bland S. 290).
-  it('#test-arten: Mock Sale – die Person klickt auf Kaufen, Beleg stark (Zahlungsdaten: sehr stark)', () => {
-    expect(sichtbar('test-arten')).toContain('<tr data-schritt><th>Mock Sale</th><td>Kaufen-Knopf, ohne abzubuchen</td><td>klickt auf Kaufen</td><td>stark (Zahlungsdaten: sehr stark)</td></tr>');
+  // Markus 27.11.: „eher stark“ wie Bland („relatively strong“). Ohne Zahlungsdaten zählt der Mock Sale Kaufklicks – „relatively strong“; „very strong“ erst mit Zahlungsdaten (Bland S. 290).
+  it('#test-arten: Mock Sale – die Person klickt auf Kaufen, Beleg eher stark (Zahlungsdaten: sehr stark)', () => {
+    expect(sichtbar('test-arten')).toContain('<tr data-schritt><th>Mock Sale</th><td>Kaufen-Knopf, ohne abzubuchen</td><td>klickt auf Kaufen</td><td>eher stark (Zahlungsdaten: sehr stark)</td></tr>');
     expect(sichtbar('test-arten')).not.toContain('gibt Zahlungsdaten');
     const n = NOTIZEN[EX]['test-arten'];
     expect(n.live?.[0]).toBe('Eine Zeile pro Klick, von schwach nach stark.');
