@@ -118,13 +118,41 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(lis('concept-story')).toStrictEqual(['Anfang', 'Krise = die Konkurrenz:', 'Höhepunkt = euer Wertversprechen:', 'Schluss']);
   });
 
-  it('hoch erzählt die Figur, hoch-lehre zieht die Lehre – mit Kursregel', () => {
+  // 27.11.: Kursregel-Zeile auf hoch-lehre gestrichen (Markus). Der Satz „Ist eure Story die Linie, fehlt die Krise“ steht auf hoch-lehre nicht mehr;
+  // im Handout bleibt nur, dass das Nebeneinanderlegen der beiden Lösungen eine Kursregel ist.
+  it('hoch erzählt die Figur, hoch-lehre zieht die Lehre – Kursregel-Zeile weg, im Handout nur das Nebeneinanderlegen', () => {
     expect(folie('hoch')).toContain('<h2 id="hoch">Dieselbe Figur, jetzt mit Bogen</h2>');
     expect(lis('hoch')).toStrictEqual(['Anfang wie zuvor', 'Krise:', 'Höhepunkt:', 'Danach:']);
     expect(folie('hoch')).not.toContain(' hochkant');
-    expect(lis('hoch-lehre')).toStrictEqual(['Niemand hatte 3-in-1 verlangt:', 'Der Linie fehlen zwei Stationen:', 'Zwei Fragen von Lichaw:', 'Kursregel:']);
-    expect(folie('hoch-lehre')).toContain('<li data-schritt><strong>Kursregel:</strong> Schreibt beide auf. Ist eure Story die Linie, fehlt die Krise.</li>');
+    expect(lis('hoch-lehre')).toStrictEqual(['Niemand hatte 3-in-1 verlangt:', 'Der Linie fehlen zwei Stationen:', 'Zwei Fragen von Lichaw:']);
+    expect(folie('hoch-lehre')).not.toContain('Schreibt beide auf');
+    expect(NOTIZEN_CONCEPT_STORY['hoch-lehre'].live.filter((s) => s.startsWith('Kursregel'))).toStrictEqual([]);
     expect(folie('hoch-lehre')).toContain('Dass ihr beide nebeneinanderlegt, ist eine Kursregel');
+  });
+
+  it('Begleiter hoch und baut-mit: Geschichte, Fragen, Lesarten markiert (27.11.)', () => {
+    const hoch = NOTIZEN_CONCEPT_STORY.hoch;
+    expect(hoch.geschichte?.text).toContain('„Are you getting it?“');
+    expect(hoch.kern?.some((k) => k.text.startsWith('Abb. 3.4 von links gelesen') && k.text.includes('„I want an iPhone!“'))).toBe(true);
+    expect(hoch.fragen?.map((f) => f.frage)).toStrictEqual([
+      'Was heißt „dieselbe Figur“?',
+      'Warum 3-in-1 und nicht 2-in-1 – mehr Funktionen = besser?',
+      'Warum ist der Touchscreen eine Krise?',
+      'Was hat das mit unserem Produkt zu tun?',
+    ]);
+    expect(hoch.zusatz?.map((z) => z.titel)).toStrictEqual(['Hintergrund (nicht bei Lichaw): die Keynote']);
+    const bautMit = NOTIZEN_CONCEPT_STORY['baut-mit'];
+    expect(bautMit.geschichte?.text).toContain('„Animation supported the story. Cut-and-paste did not.“');
+    expect(bautMit.fragen?.find((f) => f.frage.startsWith('Warum stützte Kopieren'))?.antwort).toMatch(/^Lesart dieses Kurses, nicht bei Lichaw:/);
+    expect(bautMit.fragen?.find((f) => f.frage.startsWith('Wie findet ihr'))?.antwort).toContain('Übertrag des Kurses');
+  });
+
+  it('slack: die Linie als naheliegende Lösung erklärt, Übertrag als Lesart markiert (27.11.)', () => {
+    expect(folie('slack')).toContain('<p data-schritt><strong>Die naheliegende Lösung wäre die Linie:</strong> eine Plattform, die „easier to use“ ist als E-Mail. Aber Schwierigkeit war nicht das Problem – das Problem war: nichts an einem Ort.</p>');
+    expect(folie('slack')).not.toContain('Die Linie daneben:</strong>');
+    const fragen = NOTIZEN_CONCEPT_STORY.slack.fragen ?? [];
+    expect(fragen.map((f) => f.frage)).toStrictEqual(['Was heißt „die Linie“ hier?', 'Was ist bei euch die Linie?']);
+    expect(fragen[1].antwort).toMatch(/^Lesart dieses Kurses:/);
   });
 
   it('baut-mit: Kette Krise → Höhepunkt → Anforderung → Gebaut, letzte Zeile als Kursregel, keine eigene Begründung', () => {
