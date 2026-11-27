@@ -288,7 +288,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'sechs-schritte': {
     live: [
       'Pattons sechs Schritte, rechts, wo ihr sie gleich tut.',
-      'Kursregel: 4 und 5 in einem Slice – Outcome und Lernziel.',
+      '4 und 5 in einem Slice – ihr baut nur einen.',
       'Schritt 6 erst an Tag 5.',
     ],
     kern: [{ text: '„I can boil down the last four chapters into just six steps.“', quelle: `${PATTON}, Kap. 5, Six Simple Steps to Story Mapping` }],
@@ -299,7 +299,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
     live: [
       'Elf Schritte, jeder mit eigener Folie, Uhr und Prüffrage.',
       'Farblegende zeigen – gilt auf allen Story-Map-Frames.',
-      'Kursregel: jede*r allein an der eigenen Map.',
+      'Jede*r allein an der eigenen Map – drei Produkte.',
     ],
     uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein' },
     miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
@@ -313,14 +313,15 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Fragen: Mensch, Verhalten, Idee – oder nur ein Produktname?',
     ],
     uebung: { dauer: '3 min', form: 'allein' },
-    ueberleitung: 'Die Jetzt-Map habt ihr schon – holt euch daraus die Pains.',
+    ueberleitung: 'Jetzt die Pains aus eurem Kundenprofil.',
   },
 
   'schritt-jetzt-map': {
     live: [
-      'Timer 2 min: Experience Map öffnen, Momente lesen.',
-      'Zwei, drei Pains, die Pain Relievers lindern, mit Zitat-ID an den Rand.',
-      '„Jeder dieser Pains braucht einen Task in der Später-Map.“',
+      'Timer 2 min: Pains aus dem Kundenprofil, auf die ✓-Pain-Reliever zeigen.',
+      'Mit ID an den Rand der Story Map.',
+      '„Jeder davon braucht später einen Task.“',
+      'Fragen: Steht jeder Pain mit ID am Rand?',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
     ueberleitung: 'Jetzt die Später-Map: ein Tag im Leben, wenn das Produkt live ist.',

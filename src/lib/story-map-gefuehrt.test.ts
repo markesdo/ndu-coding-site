@@ -135,20 +135,56 @@ describe('Story Map: geführt Schritt für Schritt', () => {
 
   // 27.11.2026: Die Studierenden erfahren, wozu die Pains am Rand stehen (Value Map wählt sie, am Ende braucht jeder einen
   // Task) – nicht nur der Begleiter. Auf der Folie, im Handout und in der Prüfliste.
-  it('Pains am Rand: Schritt 2 sagt, welche und wozu; Schritt 3 prüft sichtbar, ob jeder einen Task hat', () => {
+  // 27.11.2026 (Markus, später): Schritt 2 vereinfacht – nur noch eine Quelle, der Canvas (T3 · 4). Kein Lesen der
+  // Experience Map, keine Zitat-ID: Die P-IDs führen ins Kundenprofil und zu seinen Zitaten.
+  it('Pains holen: Schritt 2 holt die Pains mit ✓ aus der Value Map; Schritt 3 prüft sichtbar, ob jeder einen Task hat', () => {
     const jetzt = folie('schritt-jetzt-map');
-    expect(sichtbar(jetzt)).toContain('<li data-schritt><strong>Die zwei, drei stärksten Pains, die eure Pain Relievers lindern</strong> (Value Map, Miro: <MiroLink name="T3 · 4 · Canvas · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Produkt 3">Produkt 3</MiroLink>), als Notiz an den Rand eurer Story Map, mit Zitat-ID – jeder braucht später einen Task, der ihn löst. <Timer minuten={2} /></li>');
-    for (const n of [1, 2, 3]) expect(MIRO_FRAMES[`T3 · 4 · Canvas · Produkt ${n}`], `Canvas ${n}`).toMatch(/^\d+$/);
-    expect(handout(jetzt)).toContain('Die Pains am Rand halten die Später-Map an dem fest, was heute wehtut: Ohne sie mappt man schnell Bildschirme und Features. Beim Schreiben der Tasks prüft ihr, ob jeder Pain einen Task hat, der ihn löst.');
+    const s = sichtbar(jetzt);
+    expect(jetzt).toMatch(/^<h2 id="schritt-jetzt-map">2 · Pains holen<\/h2>/);
+    expect(s).toContain('<p class="folie-satz">Welche Pains löst euer Spitzenreiter? Das zeigt euer Canvas.</p>');
+    // Review #488: Die Pains stehen im Kundenprofil, nicht in der Value Map; die Canvas-Links stehen im ersten Schritt, mit der Uhr.
+    const schritte = [...s.matchAll(/<li data-schritt>([\s\S]*?)<\/li>/g)].map((m) => m[1]);
+    expect(schritte).toHaveLength(1);
+    expect(schritte[0]).toMatch(/^<strong>Holt die Pains aus eurem Kundenprofil, auf die ein Pain Reliever mit ✓ zeigt<\/strong> – mit ID \(P1, P2 …\) an den Rand eurer Story Map\. Euer Canvas auf Miro: .*<Timer minuten=\{2\} \/>$/);
+    expect(s).not.toContain('Value Map die Pains');
+    for (const n of [1, 2, 3]) {
+      expect(schritte[0], `Canvas ${n}`).toContain(`<MiroLink name="T3 · 4 · Canvas · Produkt ${n}">Produkt ${n}</MiroLink>`);
+      expect(MIRO_FRAMES[`T3 · 4 · Canvas · Produkt ${n}`], `Canvas ${n}`).toMatch(/^\d+$/);
+    }
+    expect(s).toContain('<p class="pruefen" data-schritt><strong>Prüft:</strong> Steht jeder Pain mit ID am Rand?</p>');
+    // Nur eine Quelle: kein Weg mehr über die Experience Map, keine Zitat-ID.
+    expect(s).not.toMatch(/Experience Map|So entsteht eure Map|Zitat-ID|Momente/);
+    // Kaffeebar: alle drei Pain Relievers tragen ✓ (value-map.astro) – also P1, P2 und P3, Wortlaut wie im Kundenprofil.
+    expect(s).toContain('<p class="mini" data-schritt><strong>Kaffeebar:</strong> P1 Nicht wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht · P2 Bei mehr als fünf Leuten in der Schlange reicht die Zeit nicht · P3 Nicht wissen, wann der Kaffee fertig ist.</p>');
+    const profil = quellen['/innolab/methoden/kundenprofil'] ?? '';
+    for (const p of ['P1 Nicht wissen, ob sich ein Kaffee bis zur Abfahrt ausgeht', 'P2 Bei mehr als fünf Leuten in der Schlange reicht die Zeit nicht', 'P3 Nicht wissen, wann der Kaffee fertig ist']) expect(profil, p).toContain(p);
+    expect(handout(jetzt)).toContain('Jeder dieser Pains braucht später einen Task – das ist ein Übertrag des Kurses:');
+    expect(handout(jetzt)).toContain('Eure Experience Map von Tag 2 ist die Jetzt-Map im Sinne Pattons ({PATTON}, Kap. 5, It’s a Now Map, Not a Later Map; Folie <a href="#jetzt-spaeter">„Jetzt-Map und Später-Map“</a>).');
+    expect(seite).toContain('<h2 id="jetzt-spaeter">');
+    expect(handout(jetzt)).not.toMatch(/Öffnet|lest|holt nur/);
+    expect(sichtbar(folie('vorgehen'))).toContain('1 Rahmen · 2 Pains holen · 3 Tasks');
+    expect(seite).not.toContain('Jetzt-Map holen');
+    expect(handout(folie('vorgehen'))).toContain('In Schritt 2 holt ihr aus eurem Kundenprofil die Pains, auf die ein Pain Reliever mit ✓ zeigt');
+    expect(seite).not.toContain('Ihre Momente und Pains sind der Stoff für Schritt 2');
+    expect(sichtbar(folie('sechs-schritte'))).toContain('<strong>Das Ganze:</strong> Pains holen, Tasks bis zum Ende');
     expect(seite).not.toContain('am Ende braucht jeder');
-    expect(handout(jetzt)).toContain('„If you don’t have a clear solution in mind, or even if you think you do, try mapping the world as it is today, including pains and joys your users have“');
     expect(sichtbar(folie('schritt-tasks'))).toMatch(/<p class="pruefen" data-schritt><strong>Prüft:<\/strong> [^<]*Hat jeder Pain am Rand einen Task, der ihn löst\? Wenn nicht: Ergänzt einen Task – oder streicht den Pain Reliever, der nicht hält\.<\/p>/);
     expect(handout(folie('schritt-tasks'))).toContain('Fangt deshalb beim Anlass im Alltag der Person an und hört auf, wenn der Outcome eingetreten ist:');
-    expect(folie('schritt-tasks')).not.toMatch(/Kursregel/);
+    // Review #488: keine „Kursregel“-Etiketten mehr – weder auf der Seite noch im Begleiter; stattdessen was und warum.
+    expect(seite).not.toMatch(/Kursregel/);
+    expect(JSON.stringify(NOTIZEN_STORY_MAP)).not.toMatch(/Kursregel/);
+    expect(sichtbar(folie('sechs-schritte'))).toContain('<td><strong>Lernen:</strong> im selben Slice – „Wir lernen, ob …“; ihr baut nur einen Slice</td>');
+    expect(sichtbar(folie('vorgehen'))).toContain('<li data-schritt><strong>Allein:</strong> Jede*r mappt das eigene Produkt – ihr habt drei verschiedene.</li>');
     const liste = METHODEN.find((m) => m.slug === 'story-map')!.pruefliste!;
     expect(liste.find((p) => p.id === 'story-map-pains')?.text).toBe('Jeder Pain am Rand hat einen Task, der ihn löst – oder der Pain Reliever, der nicht hält, ist in der Value Map gestrichen.');
     const n = NOTIZEN['/innolab/methoden/story-map'];
-    expect(n['schritt-jetzt-map'].live).toContain('Zwei, drei Pains, die Pain Relievers lindern, mit Zitat-ID an den Rand.');
+    expect(n['schritt-jetzt-map'].live).toStrictEqual([
+      'Timer 2 min: Pains aus dem Kundenprofil, auf die ✓-Pain-Reliever zeigen.',
+      'Mit ID an den Rand der Story Map.',
+      '„Jeder davon braucht später einen Task.“',
+      'Fragen: Steht jeder Pain mit ID am Rand?',
+    ]);
+    expect(JSON.stringify(n['schritt-jetzt-map'])).not.toMatch(/Experience Map|Zitat-ID|Momente/);
     // Die alte Formulierung „vom Rand“ stand nur im Begleiter.
     expect(JSON.stringify(NOTIZEN_STORY_MAP)).not.toContain('vom Rand');
   });

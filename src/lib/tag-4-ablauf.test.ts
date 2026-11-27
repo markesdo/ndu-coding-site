@@ -137,7 +137,8 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     const gm = folie('/innolab/methoden/geschaeftsmodell', 'vorgehen');
     expect([sm, gm].flatMap((x) => x.match(/zu dritt|die anderen beiden (gehen|ergänzen)|die anderen fragen/gi) ?? [])).toStrictEqual([]);
     expect(seite('/innolab/methoden/geschaeftsmodell')).not.toContain('zu dritt sechs Karten');
-    expect(sm).toContain('<li data-schritt><strong>Kursregel:</strong> Jede*r arbeitet allein an der eigenen Map.</li>');
+    // Review #488: ohne Etikett „Kursregel“ – was und warum.
+    expect(sm).toContain('<li data-schritt><strong>Allein:</strong> Jede*r mappt das eigene Produkt – ihr habt drei verschiedene.</li>');
     // Markus 27.11.: Während der Story Map gibt es kein 1:1 – nicht auf der Seite, nicht im Begleiter (auch nicht in
     // uebung.form), und die live-Stichworte zu #vorgehen nennen auch „keine Runde“ nicht mehr.
     expect(NOTIZEN['/innolab/methoden/story-map'].vorgehen.live.filter((s) => /1:1|Runde/.test(s))).toStrictEqual([]);
