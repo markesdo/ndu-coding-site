@@ -215,8 +215,21 @@ describe('Tests zur Auswahl und Beispiel', () => {
   });
   it('#beispiel: Schritt – Annahme – Art, A3 an Schritt 2, A4 an Schritt 5', () => {
     const b = sichtbar('beispiel');
-    expect(b).toContain('<tr data-schritt><td>2 Code scannen</td><td><strong>A3:</strong>');
+    expect(b).toContain('<tr data-schritt><td>2 Code scannen, Seite öffnet sich am Handy</td><td><strong>A3:</strong>');
+    // Seit 28.11.2026 nennt auch das Handout die Seite in Schritt 2.
+    expect(folie('beispiel')).toContain('(2) scannt den Code, die Seite öffnet sich am Handy –');
     expect(b).toContain('<tr data-schritt><td>5 Abholen, bar zahlen</td><td><strong>A4:</strong>');
+  });
+});
+
+describe('Seite am Handy in den Schritten (28.11.2026)', () => {
+  it('#vorgehen Schritt 1 fragt im Beamer nach der Seite am Handy, mit Anleitung und Timer', () => {
+    const schritt1 = sichtbar('vorgehen').match(/<li data-schritt><strong>Schritte, auf Miro:<\/strong>[\s\S]*?<\/li>/)?.[0] ?? '';
+    expect(schritt1).toContain('als gäbe es euren Spitzenreiter schon – wer tut was, und wo kommt eure Seite am Handy ins Spiel? In eurer Spalte im Frame oben rechts (<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>).');
+    expect(schritt1).toContain('<Timer minuten={3} />');
+  });
+  it('#schritte-der-idee: Handout nennt die Seite als Beteiligte, mit Torres S. 120 und Kursregel', () => {
+    expect(folie('schritte-der-idee')).toContain('Bei euch ist die Seite am Handy einer der Beteiligten: „the interface or software itself may be an actor in your map“ (S. 120). Kursregel: Mindestens ein Schritt passiert auf der Seite.');
   });
 });
 
