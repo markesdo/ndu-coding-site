@@ -344,6 +344,28 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       antwort: 'Zahlungsdaten kosten mehr als eine E-Mail: „Email is a rather weak strength of evidence, in that everyone has email and they give it out freely if even mildly interested“ (S. 262); „Payment info submissions are very strong evidence“ (S. 290).',
       falsch: '„Weil mehr Leute klicken“ – es klicken eher weniger; dafür kostet der Klick mehr.',
     },
+    geschichte: {
+      text: 'Die vier Tests an der Kaffeebar, von schwach nach sehr stark. Simulierter Moment: Zehn Pendler*innen in der Halle sehen am Handy den Bestellbildschirm – wer tippt auf „Bestellen“? Sie wählen, aber in einer gestellten Lage. Aufsteller: An der Hallentür steht „Trag deinen Zug ein“ mit QR-Code; wer auf dem Weg zum Zug vorbeikommt, trägt sich ein oder nicht, gezählt gegen die Strichliste am Automaten. Concierge: Ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar; die Pendler*innen bekommen echten Kaffee und sehen, wer ihn holt. Mock Sale: Der Knopf „Vorbestellen für 2,90 €“; wer tippt, liest „Gibt es noch nicht – wir sagen dir Bescheid“. Von Stufe zu Stufe gibt die Person mehr her: eine Wahl am Bild, einen Eintrag, eine echte Bestellung, einen Kaufklick zu einem Preis.',
+      quelle: `Kaffeebar: Kurs; Stärken nach ${TORRES}, S. 135, 142–144, und ${BLAND}, S. 250, 262, 290`,
+    },
+    fragen: [
+      {
+        frage: 'Was ist ein Mock Sale?',
+        antwort: 'Ein Angebot mit Preis und Kaufen-Knopf für etwas, das es noch nicht gibt: „Presenting a sale for your product without processing any payment information.“ Nach dem Klick erfährt die Person, dass es das noch nicht gibt – online ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Es fließt kein Geld (Bland, Mock Sale, S. 288–289). Gut für Preise: „Mock sale is ideal for determining different price points for your product“ (S. 288). Kaffeebar: „Vorbestellen für 2,90 €“ → „Gibt es noch nicht – wir sagen dir Bescheid“.',
+      },
+      {
+        frage: 'Sind die Testpersonen schon echte Kund*innen?',
+        antwort: 'Mögliche Kund*innen: Gekauft hat noch niemand, weil es das Produkt noch nicht gibt. Wer teilnimmt, hängt vom Test ab. Simulierter Moment: angeworbene Menschen aus der Zielgruppe, denen ihr ein Mock-up zeigt – „you need to be thoughtful about who you recruit“, mit Streuung statt zehn Gleichen (Torres, S. 139, 143; bei Torres sind es Abonnent*innen eines bestehenden Dienstes, „we need to recruit our own subscribers“). Landingpage / Aufsteller: wer vorbeikommt, in der echten Lage – Bland rechnet mit „about 100 unique visitors a day“ (S. 262). Mock Sale: eine bestimmte Zielgruppe in einer echten Kaufsituation, online oder im Laden – „target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290). Ausnahme Concierge: echte Kund*innen, die bestellen und den Wert von Hand bekommen; Bland: „acquire customers for it“ (S. 250). Einordnung des Kurses: Nur beim Concierge bekommt jemand schon etwas geliefert.',
+      },
+      {
+        frage: 'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
+        antwort: 'Unehrlich wäre es, wenn die Person es nicht erfährt. Bland löst sofort auf: im Laden „intercept and explain that the product is not yet available“, nach Rückmeldung fragen und die Person „with a gift card for the inconvenience“ entschädigen; Ladenleitung und Personal kennen Dauer und Art des Tests vorher. Online kommt der Hinweis direkt nach dem Klick (S. 289). Grundsatz: „Are you experimenting with your customers or on them?“ – das Buch sei kein Grund „to scam people out of their money … In short, don’t be evil“ (S. 86). Beim Pop-up-Store schreibt Bland zum Mock Sale „do not collect payment information“ (S. 303). Kursregel: Zahlungsdaten nie speichern, und am Ende klar sagen, dass es ein Test war. Torres fragt bei den ethischen Annahmen auch: „Can we meet customers’ expectations, or will we leave them disappointed?“ (S. 127).',
+      },
+      {
+        frage: 'Welcher Test passt zu uns?',
+        antwort: 'Blands Faustregeln von der Folie davor: am Anfang schnell und billig, dann der stärkste Beleg, den ihr euch leisten könnt (S. 93). Habt ihr keinen Ort und keine Besucher*innen, bleibt der simulierte Moment: Bild am Handy, Situation in einem Satz (Torres, S. 135, 142–144). Concierge kostet vor allem Zeit (Bland S. 250); ein Mock Sale braucht einen durchgerechneten Preis – „If you test a ridiculously low price, then you’ll receive false positives“ (S. 290). Kursregel: E1 führt ihr nicht durch. Heute beschreibt ihr auf der Karte, welcher Test es wäre und wie er liefe; an Tag 5 besprecht ihr, was er gezeigt hätte.',
+      },
+    ],
     ueberleitung: 'Alles zusammen an der Kaffeebar: erst die Schritte.',
   },
 

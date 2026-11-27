@@ -213,6 +213,27 @@ describe('Tests zur Auswahl und Beispiel', () => {
     const t = sichtbar('test-arten');
     expect([...t.matchAll(/<tr data-schritt><th>([^<]+)<\/th>/g)].map((x) => x[1])).toStrictEqual(['Simulierter Moment', 'Landingpage / Aufsteller', 'Concierge', 'Mock Sale']);
   });
+  // Markus 27.11.: Was ist ein Mock Sale, sind die Testpersonen schon Kund*innen, und wie bleibt das ehrlich?
+  it('#test-arten: Begleiter beantwortet Mock Sale, Testpersonen, Ehrlichkeit und Testwahl', () => {
+    const n = NOTIZEN[EX]['test-arten'];
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual([
+      'Was ist ein Mock Sale?',
+      'Sind die Testpersonen schon echte Kund*innen?',
+      'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
+      'Welcher Test passt zu uns?',
+    ]);
+    const [mock, personen, ehrlich, wahl] = n.fragen!.map((f) => f.antwort);
+    expect(mock).toContain('„Vorbestellen für 2,90 €“ → „Gibt es noch nicht – wir sagen dir Bescheid“');
+    expect(mock).toContain('Es fließt kein Geld (Bland, Mock Sale, S. 288–289)');
+    expect(personen).toContain('Mögliche Kund*innen: Gekauft hat noch niemand');
+    expect(personen).toContain('Ausnahme Concierge: echte Kund*innen');
+    expect(ehrlich).toContain('„with a gift card for the inconvenience“');
+    expect(ehrlich).toContain('Kursregel: Zahlungsdaten nie speichern');
+    expect(wahl).toContain('Kursregel: E1 führt ihr nicht durch.');
+    expect(n.geschichte?.text).toContain('von schwach nach sehr stark');
+    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test.
+    expect(n.kern).toHaveLength(8);
+  });
   it('#beispiel: Schritt – Annahme – Art, A3 an Schritt 2, A4 an Schritt 5', () => {
     const b = sichtbar('beispiel');
     expect(b).toContain('<tr data-schritt><td>2 Code scannen</td><td><strong>A3:</strong>');
