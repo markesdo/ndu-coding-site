@@ -71,7 +71,9 @@ describe('Annahmen-Map wie der Miro-Frame', () => {
     expect(sichtbar('beispiel-map')).toContain('<AnnahmenMap label="Annahmen-Map der Kaffeebar.');
     expect(ACHSE_Y).toStrictEqual({ titel: 'Wichtigkeit: fällt die Idee um, wenn es falsch ist?', oben: 'wichtig', unten: 'weniger wichtig' });
     expect(ACHSE_X).toStrictEqual({ titel: 'Beleg: was wissen wir schon?', links: 'viel Beleg', rechts: 'kein Beleg' });
-    expect(m).toContain('Sortieren auf Miro – festhalten in der Werkstatt (ID, Art, Wichtigkeit, Beleg) – die Karte E1 auf Miro, im selben Frame.');
+    // Seit 27.11. abends: die Werkstatt erst am Abend, die IDs stehen schon auf Miro.
+    expect(m).toContain('Sortieren auf Miro – die Karte E1 auf Miro, im selben Frame – am Abend festhalten in der Werkstatt (Art, Wichtigkeit, Beleg).');
+    expect(m).not.toContain('festhalten in der Werkstatt (ID,');
     // Feldnamen in dieser Reihenfolge (oben links, oben rechts, unten links, unten rechts), wie im Frame.
     const felder = FELDER.map((x) => `${x.klasse}:${x.name}`);
     expect(felder).toStrictEqual(['ol:Beleg prüfen, darauf bauen', 'or:Zuerst testen', 'ul:Abhaken', 'ur:Später prüfen']);
@@ -86,7 +88,7 @@ describe('Annahmen-Map wie der Miro-Frame', () => {
     expect(v).not.toMatch(/Map:<\/strong> Beleg nach rechts/);
     const orte = [...v.matchAll(/<li data-schritt><strong>[^<]*?, (auf Miro|[^<:]+):<\/strong>/g)].map((x) => x[1]);
     expect(orte).toStrictEqual(['auf Miro', 'auf Miro', 'auf Miro', 'auf Miro', 'auf Miro']);
-    expect(v).toContain('<a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a> jetzt: „Zuerst testen“');
+    expect(v).toContain('<a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend.');
     expect(v).toContain('<strong>Karte E1, auf Miro:</strong> im Feld „Karte E1 für die oberste rechts“');
     expect(v).toContain('<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">');
     expect(MIRO_FRAMES['T4 · 0 · Anleitung Annahmen der Idee']).toBe('3458764691725321671');
@@ -379,29 +381,33 @@ describe('E1 nur Theorie: Spitzenreiter-Handout, Slice im Baum, Umschwenken', ()
 
 describe('Weg von den Schritten zur Map (27.11.2026)', () => {
   const NOTIZ = NOTIZEN['/innolab/methoden/experiment'] as Record<string, { live?: string[] }> | undefined;
-  it('#vorgehen Schritt 2: Art und Schritt auf dem Zettel, ohne feste ID, gleich in die Felder; im Handout die nächste freie ID', () => {
-    expect(sichtbar('vorgehen')).toContain('<li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt („A… · S1 · …“) gleich in die Felder der Map; dazu das Pre-Mortem. <Timer minuten={5} /></li>');
-    expect(folie('vorgehen')).toContain('Je Schritt mindestens zwei Annahmen. Neue Annahmen bekommen die nächste freie ID eurer Werkstatt – heute kamen schon welche aus Concept Story und Geschäftsmodell dazu.');
+  // 27.11. abends: neue IDs ab A7 (A1–A4 Tag 1, A5 Concept Story, A6 Geschäftsmodell), damit die Übung ohne Werkstatt läuft.
+  it('#vorgehen Schritt 2: Art und Schritt auf dem Zettel, neue IDs ab A7, gleich in die Felder; im Handout, woher A1 bis A6 kommen', () => {
+    expect(sichtbar('vorgehen')).toContain('<li data-schritt><strong>Annahmen, auf Miro:</strong> die fünf Fragen an jeden Schritt, je Schritt mindestens zwei, mit Art und Schritt, ab A7 („A7 · S1 · …“), gleich in die Felder der Map; dazu das Pre-Mortem. <Timer minuten={5} /></li>');
+    expect(folie('vorgehen')).toContain('Je Schritt mindestens zwei Annahmen. Neue Annahmen zählt ihr ab A7: A1 bis A4 sind von Tag 1, A5 kam aus der Concept Story, A6 aus dem Geschäftsmodell. So braucht ihr die Werkstatt während der Übung nicht.');
+    expect(folie('vorgehen')).not.toContain('nächste freie ID');
+    expect(sichtbar('vorgehen')).toContain('<p class="folie-satz">Alles auf Miro – allein. Die Werkstatt kommt am Abend.</p>');
   });
   // Markus 27.11.: Überholtes ist nicht „Abhaken“ (unwichtig und belegt), es rutscht nach unten; ohne „(Kursregel)“ auf der Folie.
-  it('#vorgehen Schritt 3: bisherige Annahmen dazu, Überholtes rutscht nach unten, jetzt nur „Zuerst testen“ in die Werkstatt, Rest bis zum Abend', () => {
+  it('#vorgehen Schritt 3: die Tag-1-Zettel liegen schon in der Spalte, jede in ein Feld, Überholtes nach unten, Werkstatt am Abend in der Reihenfolge der Nummern', () => {
     const v = sichtbar('vorgehen');
-    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts; eure bisherigen Annahmen dazu – Überholtes rutscht nach unten. <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a> jetzt: „Zuerst testen“, Rest bis abends. <Timer minuten={3} /></li>');
+    expect(v).toContain('<li data-schritt><strong>Map, auf Miro:</strong> wichtig nach oben, wenig Beleg nach rechts. Eure Annahmen von Tag 1 liegen schon in eurer Spalte („A1 · Tag 1 · …“): Zieht jede in ein Feld – Überholtes nach unten. <a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend. <Timer minuten={3} /></li>');
     const schritt3 = v.match(/<li data-schritt><strong>Map, auf Miro:<\/strong>.*<\/li>/)?.[0] ?? '';
-    expect(schritt3).toContain('rutscht nach unten');
+    expect(schritt3).toContain('Überholtes nach unten');
     expect(schritt3).not.toContain('Abhaken');
     expect(schritt3).not.toContain('Kursregel');
-    expect(folie('vorgehen')).toContain('holt eure bisherigen Annahmen aus der Werkstatt dazu, je ein Zettel. Überholtes rutscht nach unten (nicht mehr wichtig) – in der Werkstatt setzt ihr die Wichtigkeit herunter, gelöscht wird nichts. Die Schritte bleiben in ihrem Feld. In die Werkstatt tragt ihr jetzt nur die Annahmen in „Zuerst testen“ ein, mit Art, Wichtigkeit und Beleg; die übrigen bis zum Abend, denn alle Zeilen auszufüllen dauert länger als die drei Minuten.');
+    expect(folie('vorgehen')).toContain('im Schritt danach schiebt ihr die Zettel relativ zueinander. Eure Annahmen von Tag 1 liegen schon als Zettel in eurer Spalte, rechts neben den Schritten, mit „Tag 1“ nach der ID. Zieht jede in das Feld, in das sie für diese Idee gehört: Was die Interviews geklärt haben, wandert nach links; Überholtes rutscht nach unten (nicht mehr wichtig). In der Werkstatt setzt ihr am Abend die Wichtigkeit herunter, gelöscht wird nichts. Die Schritte bleiben in ihrem Feld. In die Werkstatt tragt ihr die Annahmen am Abend ein, mit Art, Wichtigkeit und Beleg – in der Reihenfolge ihrer Nummern, denn die Werkstatt vergibt die IDs der Reihe nach, und so stimmen sie mit Miro überein. Alle Zeilen auszufüllen dauert länger als die drei Minuten.');
+    expect(folie('vorgehen')).not.toMatch(/aus der Werkstatt dazu|jetzt nur die Annahmen in „Zuerst testen“/);
     expect(folie('vorgehen')).not.toContain('kommt unter „Abhaken“');
     expect([...v.matchAll(/<Timer minuten=\{(\d+)\} \/>/g)].map((m) => Number(m[1]))).toStrictEqual([3, 5, 3, 5, 2]);
-    expect(folie('vorgehen')).toContain('dazu. „S1“ auf dem Zettel nennt den Schritt, aus dem die Annahme kommt – eine Kursregel');
+    expect(folie('vorgehen')).toContain('während der Übung nicht. „S1“ auf dem Zettel nennt den Schritt, aus dem die Annahme kommt – eine Kursregel');
   });
-  it('#annahmen-finden: A5 ist die Kaffeebar-Nummer, ohne feste eigene ID, mit A5 zusammen aufgedeckt', () => {
-    expect(sichtbar('annahmen-finden')).toContain('(wünschenswert)</span><br><span class="small muted">Kaffeebar-Nummer. Bei euch geht es mit der nächsten freien ID der Werkstatt weiter.</span></p>');
+  it('#annahmen-finden: A5 ist die Kaffeebar-Nummer, bei euch geht es ab A7 weiter, mit A5 zusammen aufgedeckt', () => {
+    expect(sichtbar('annahmen-finden')).toContain('(wünschenswert)</span><br><span class="small muted">Kaffeebar-Nummer. Bei euch geht es ab A7 weiter.</span></p>');
   });
   it('#map: die Schritte bleiben in ihrem Feld', () => {
     expect(folie('map')).toContain('Die Schritte bleiben in ihrem Feld; auf die Map kommen nur die Annahmen');
-    expect(folie('map')).toContain('(Frame „T4 · 0 · Annahmen der Idee“); festgehalten wird in der Werkstatt, in eurer Annahmen-Map, mit der nächsten freien ID, Art, Wichtigkeit und Beleg – jetzt die aus „Zuerst testen“, den Rest bis zum Abend;');
+    expect(folie('map')).toContain('(Frame „T4 · 0 · Annahmen der Idee“); festgehalten wird am Abend in der Werkstatt, in eurer Annahmen-Map, in der Reihenfolge der Nummern, mit Art, Wichtigkeit und Beleg;');
   });
   it('#ergebnis-gilt: „vor dem Test“ fett', () => {
     expect(sichtbar('ergebnis-gilt')).toContain('<li data-schritt><strong>Darum:</strong> Auf eurer Karte steht <strong>vor dem Test</strong>, was ihr bei jedem Ergebnis tut.</li>');
@@ -447,12 +453,16 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
     expect(n.beispiel.live).toContain('Schritt 4 kennt ihr schon: zwei Treffer.');
     expect(folie('annahmen-finden')).toContain('Die nächste Folie geht einen Schritt mit allen fünf Fragen durch, die übernächste zeigt die Annahmen aller Schritte.');
   });
-  it('Begleiter #annahmen-finden: keine feste ID für die Studierenden', () => {
-    expect(NOTIZ?.['annahmen-finden']?.live ?? []).toContain('Antwort mit „hoffentlich“ → Annahme, hier A5 – bei euch: nächste freie ID.');
+  it('Begleiter #map: Wege mit der Werkstatt am Abend', () => {
+    expect(NOTIZ?.map?.live ?? []).toContain('Wege nennen: Miro sortieren, Karte E1 auf Miro, Werkstatt am Abend.');
   });
-  it('Begleiter: Check nach 11 min fragt nur nach „Zuerst testen“', () => {
+  it('Begleiter #annahmen-finden: bei den Studierenden ab A7', () => {
+    expect(NOTIZ?.['annahmen-finden']?.live ?? []).toContain('Antwort mit „hoffentlich“ → Annahme, hier A5 – bei euch: ab A7.');
+  });
+  it('Begleiter: Check nach 11 min fragt nach den Tag-1-Zetteln, die Werkstatt erst abends', () => {
     const live = NOTIZ?.vorgehen?.live ?? [];
-    expect(live).toContain('Nach 11 min: „Zuerst testen“ in der Werkstatt? Rest bis abends.');
+    expect(live).toContain('Nach 11 min: Liegen alle Tag-1-Zettel in einem Feld? Werkstatt erst abends.');
+    expect(live).not.toContain('Nach 11 min: „Zuerst testen“ in der Werkstatt? Rest bis abends.');
     expect(live).not.toContain('Nach 11 min: Stehen die Annahmen in der Werkstatt?');
   });
 });
