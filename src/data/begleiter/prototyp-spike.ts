@@ -14,8 +14,8 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     live: [
       'Anknüpfen: Usage Story, Stationen 2 bis 6 – daraus werden Bildschirme.',
       'Papier-Skizzen: ein Blatt pro Bildschirm oder lo-fi in Figma; Pfeile je Knopf.',
-      'Kursregel: Figma nur lo-fi – Graustufen, keine Komponenten, keine Klicks.',
-      'Kursregel: Papier vor Claude – an Tag 5 baut Claude genau das.',
+      'Figma nur lo-fi: Graustufen, keine Komponenten, keine Klicks – Ablauf zählt.',
+      'Papier vor Claude: ihr entscheidet, an Tag 5 baut Claude genau das.',
       'Testen auf Papier: jemand tippt; nächstes Blatt legen oder Frame wechseln.',
     ],
     verstaendnis: {
@@ -35,7 +35,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Dürfen wir Figma nehmen?',
-        antwort: 'Ja, lo-fi: Graustufen-Rahmen mit Kästen, Text und Pfeilen, ein Frame pro Bildschirm, als Bild in euren Miro-Frame. Keine Farben, keine Komponenten, keine Klick-Verbindungen (Kursregel). Der Grund: Heute zählen Ablauf und Inhalt, nicht das Aussehen. Bland stellt den Papier-Prototyp an den Anfang, „ideal for rapidly testing the concept“ (S. 182); der klickbare kommt danach (S. 185) – bei euch an Tag 5, gebaut von Claude Code. Im Trockenlauf wechselt ihr den Frame statt das Blatt.',
+        antwort: 'Ja, lo-fi: Graustufen-Rahmen mit Kästen, Text und Pfeilen, ein Frame pro Bildschirm, als Bild in euren Miro-Frame. Keine Farben, keine Komponenten, keine Klick-Verbindungen. Der Grund: Heute zählen Ablauf und Inhalt, nicht das Aussehen. Bland stellt den Papier-Prototyp an den Anfang, „ideal for rapidly testing the concept“ (S. 182); der klickbare kommt danach (S. 185) – bei euch an Tag 5, gebaut von Claude Code. Im Trockenlauf wechselt ihr den Frame statt das Blatt.',
       },
     ],
     ueberleitung: 'Was zeigt so ein Prototyp – und was zeigt er nicht?',
@@ -161,9 +161,16 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
 
   beispiel: {
     live: [
-      'Fünf Blätter zeigen: eines pro Bildschirm; Blatt 3 ist der Höhepunkt.',
-      'Abnahmekriterien: drei Tipps, heute auf Papier, an Tag 5 am Handy.',
+      'Fünf Bildschirme zeigen: Blatt oder Frame; 3 ist der Höhepunkt.',
+      'Figma-Modell kurz zeigen: so roh darf es sein.',
+      'Kriterien: drei Tipps; heute Papier oder Figma, an Tag 5 am Handy.',
       'Nicht drin: Login, Zahlung, Datenbank.',
+    ],
+    fragen: [
+      {
+        frage: 'Papier oder Figma – was ist besser?',
+        antwort: 'Keins von beiden. Heute zählen Ablauf und Inhalt, nicht das Aussehen: Kästen und Wörter reichen, ein Blatt oder Frame je Bildschirm. Wer Figma nimmt, bleibt lo-fi – Graustufen-Rahmen mit Kästen, Text und Pfeilen, keine Farben, keine Komponenten, keine Klick-Verbindungen. Im Trockenlauf legt ihr dann das nächste Blatt oder wechselt den Frame.',
+      },
     ],
     ueberleitung: 'Angenommen, die Kaffeebar testet mit fünf Menschen: Das käme dabei heraus.',
   },
@@ -209,7 +216,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
     live: [
       'Timer 3 min: „zeigt … / läuft … / hat nicht …“.',
       'Prüfbar: Ja oder Nein – heute am Papier, Tag 5 am Handy.',
-      'Drei Sätze sind Kursregel; an Tag 5 Auftrag für Claude Code.',
+      'Drei kurze Sätze, prüfbar – an Tag 5 Auftrag für Claude.',
     ],
     uebung: { dauer: '3 min', form: 'allein, Feld 2 auf Miro' },
     kern: [
@@ -236,7 +243,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
       'Timer 10 min, drei Runden à gut drei Minuten nach Tabelle.',
       'Wem er gehört: Blatt/Frame zeigen, Aufgabe vorlesen, nächstes Blatt/Frame.',
       'Dritte Person notiert in Feld 4, Zeile 0 des fremden Frames.',
-      'Kursregel – keine Kritik: kein Feedback, nächste Runde.',
+      'Keine Kritik: kein Feedback, nächste Runde – geprüft wird der Ablauf.',
     ],
     uebung: { dauer: '10 min', form: 'zu dritt in Teams, drei Runden, Blätter vor der Kamera; keine Kritik' },
     ablauf: {
@@ -251,7 +258,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 183`,
       },
       {
-        text: 'Paper Prototype: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction.“ Online-Form (Blätter vor der Kamera, die Testperson sagt an, wem der Prototyp gehört, legt das nächste Blatt) und „keine Kritik“ sind Kursregeln.',
+        text: 'Paper Prototype: „Sketched interface on paper, manipulated by another person to represent the software’s reactions to the customer interaction.“ Online-Form (Blätter vor der Kamera, die Testperson sagt an, wem der Prototyp gehört, legt das nächste Blatt) und „keine Kritik“ gehen über Bland hinaus.',
         quelle: `${BLAND}, S. 182; Kurs: prototyp-spike.astro, Folie schritt-trockenlauf (Handout)`,
       },
     ],
