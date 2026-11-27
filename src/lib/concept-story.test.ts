@@ -118,8 +118,9 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(lis('concept-story')).toStrictEqual(['Anfang', 'Krise = die Konkurrenz:', 'Höhepunkt = euer Wertversprechen:', 'Schluss']);
   });
 
-  // 27.11.: Kursregel-Zeile auf hoch-lehre gestrichen (Markus); die Regel steht nur noch im Handout.
-  it('hoch erzählt die Figur, hoch-lehre zieht die Lehre – Kursregel nur im Handout', () => {
+  // 27.11.: Kursregel-Zeile auf hoch-lehre gestrichen (Markus). Der Satz „Ist eure Story die Linie, fehlt die Krise“ steht auf hoch-lehre nicht mehr;
+  // im Handout bleibt nur, dass das Nebeneinanderlegen der beiden Lösungen eine Kursregel ist.
+  it('hoch erzählt die Figur, hoch-lehre zieht die Lehre – Kursregel-Zeile weg, im Handout nur das Nebeneinanderlegen', () => {
     expect(folie('hoch')).toContain('<h2 id="hoch">Dieselbe Figur, jetzt mit Bogen</h2>');
     expect(lis('hoch')).toStrictEqual(['Anfang wie zuvor', 'Krise:', 'Höhepunkt:', 'Danach:']);
     expect(folie('hoch')).not.toContain(' hochkant');
