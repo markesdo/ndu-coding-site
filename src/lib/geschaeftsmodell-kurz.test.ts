@@ -97,11 +97,11 @@ describe('Geschäftsmodell: Warum vor der Experiment-Karte, Links (27.11.2026)',
     expect(f).toContain('mitte="Im Gehen bestellen" ideeSichtbar hervor={2}');
     expect([...f.matchAll(/<li data-schritt>(.*?)<\/li>/g)].map((m) => m[1])).toStrictEqual([
       '<strong>Wirtschaftlich heißt:</strong> Die Idee funktioniert für die Kundschaft – trägt sie sich auch für euch? („Should we build it?“)',
-      '<strong>Oft vergessen:</strong> An Wunsch und Bedienung denkt man, an Kosten und Einnahmen selten.',
-      '<strong>Kaffeebar, A4:</strong> Die zusätzlichen Bestellungen bringen mehr ein, als Aufsteller, Bildschirm und Bestellseite kosten – ohne weitere Kraft am Morgen.',
-      '<strong>Ein Satz, keine Kalkulation</strong> – getestet wird trotzdem zuerst, ob es jemand will (Kaffeebar: A5 vor A4).',
+      '<strong>Oft vergessen:</strong> An Kosten und Einnahmen denkt man selten.',
+      '<strong>Kaffeebar, A4:</strong> Die zusätzlichen Bestellungen bringen mehr ein, als Aufsteller, Bildschirm und Bestellseite kosten.',
+      '<strong>Ein Satz, keine Kalkulation</strong> – getestet wird zuerst, ob es jemand will.',
     ]);
-    // A4 auf der Folie = A4 auf #annahme, nur ohne „Wir glauben, dass“.
+    // A4 auf der Folie = A4 auf #annahme, ohne „Wir glauben, dass“ und (Beamer-Platz) ohne „ohne weitere Kraft am Morgen“.
     expect(folie('annahme')).toContain('„Wir glauben, dass die zusätzlichen Bestellungen mehr einbringen, als Aufsteller, Bildschirm und Bestellseite kosten – ohne weitere Kraft am Morgen.“');
   });
 
