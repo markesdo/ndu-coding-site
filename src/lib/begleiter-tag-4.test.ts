@@ -49,6 +49,42 @@ describe('Begleiter Tag 4: Notizen decken die Folien', () => {
 describe('Begleiter Tag 4: Slice 1 im Baum', () => {
   const n = NOTIZEN['/innolab/tag-4']['slice-im-baum'];
   const kern = n.kern ?? [];
+  // Folie rechts oben: „Wer tut danach was anders? – derselbe Satz wie im Brief“. Der Begleiter erklärt zuerst Pattons
+  // Outcome-Frage und die zwei Ebenen: Brief-Satz im Rahmen über der Map (Wurzel des Baums), enger am pinken Sticky von
+  // Slice 1. Die Vorsicht-Notiz verweist darauf, statt das Kaffeebar-Beispiel ein zweites Mal zu erzählen.
+  it('„Wer tut danach was anders?“: Outcome-Frage nach Patton, zwei Ebenen, Brief oben, Slice 1 enger', () => {
+    const was = kern.find((k) => k.text.startsWith('Was heißt „Wer tut danach was anders?“ '));
+    expect(was).toBeDefined();
+    if (!was) return;
+    expect(was.text).toContain('Die Folienfrage ist unsere Kurzform von Pattons Outcome-Begriff');
+    expect(was.text).toContain('„We measure what people actually do differently to reach their goals as a consequence of what you’ve built“');
+    expect(was.text).toContain('„The secret to breaking down that really big chunk of output was to focus on a smaller, specific outcome.“');
+    expect(was.text).toContain('„Outcomes are often something you can observe right away after delivery“');
+    expect(was.quelle).toContain('User Story Mapping, Read This First, Software Isn’t the Point und OK, It’s Not Just About People; Kap. 2, Don’t Prioritize Features—Prioritize Outcomes');
+    // Brief-Satz = Wurzel des Baums; Slice-Satz und A5 wörtlich wie auf den Methodenseiten.
+    expect(was.text).toContain(`„${KAFFEEBAR_BAUM_TAG_4.t}“`);
+    const slice = 'Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt';
+    expect(was.text).toContain(`„${slice}“`);
+    expect(quellen['/innolab/methoden/story-map']).toContain(`Outcome: ${slice}`);
+    const a5 = 'Wer die Schlange sieht, bestellt am Aufsteller statt am Automaten';
+    expect(was.text).toContain(`A5 ist der Kern davon als Annahme: „${a5}“`);
+    // E1 läuft vorab, ohne das Produkt (und im Kurs gar nicht): Beobachtbar wäre der Slice-Outcome erst mit Slice 1.
+    for (const t of [was.text, n.fragen?.[0].antwort ?? '']) {
+      expect(t).toContain('schon vorab, ohne das Produkt (Aufsteller an der Hallentür)');
+      expect(t.match(/A5 sagt dasselbe|genau das prüfen A5 und E1|Ihn können .{0,40}E1 prüfen/g) ?? []).toStrictEqual([]);
+    }
+    expect(was.text).toContain('im Rahmen über der Map steht der Outcome aus dem Brief');
+    expect(quellen['/innolab/methoden/experiment']).toContain(`<strong>A5:</strong> ${a5}.`);
+    expect(was.text).toContain('„[Wer] tut [was] statt [was bisher]“');
+    expect(was.text).toContain('Beim Vorlesen der Folie heißt „derselbe Satz wie im Brief“ also: der Rahmen über der Map. An Slice 1 selbst wird der Satz enger.');
+    expect(n.live).toContain('Wer tut danach was anders? Brief oben, Slice 1 enger.');
+    expect(n.fragen?.[0].frage).toBe('Warum steht am Slice nicht einfach der Satz aus dem Brief?');
+    expect(n.fragen?.[0].antwort).toContain('der Slice-Outcome dient ihm');
+    // Kein Doppel: Die Vorsicht-Notiz verweist nach oben und erzählt das Kaffeebar-Beispiel nicht noch einmal.
+    const vorsicht = kern.find((k) => k.text.startsWith('Vorsicht beim Erzählen: „derselbe Satz wie im Brief“'))?.text ?? '';
+    expect(vorsicht).toContain('(siehe „Was heißt ‚Wer tut danach was anders?‘“ oben)');
+    expect(vorsicht.match(/im Gehen|Automat/g) ?? []).toStrictEqual([]);
+  });
   it('vier Zeilen in der Reihenfolge der Folie, je mit Quelle aus Torres und Patton', () => {
     const zeilen = kern.filter((k) => k.text.startsWith('Zeile '));
     expect(zeilen.map((k) => k.text.slice(0, k.text.indexOf('.')))).toStrictEqual([
@@ -93,13 +129,13 @@ describe('Begleiter Tag 4: Slice 1 im Baum', () => {
     expect(vorsicht.some((k) => k.text.includes('Pattons Slices kommen bei ihr nicht vor'))).toBe(true);
     expect(JSON.stringify(n).match(/Kursregel/g) ?? []).toStrictEqual([]);
   });
-  it('Rundgang zum Vorlesen nennt den Baum der Kaffeebar wie die Folie; dazu ein bis zwei Fragen mit Antwort', () => {
+  it('Rundgang zum Vorlesen nennt den Baum der Kaffeebar wie die Folie; dazu ein bis drei Fragen mit Antwort', () => {
     const chance = KAFFEEBAR_BAUM_TAG_4.kinder![0];
     const spitze = chance.kinder!.find((k) => k.t.startsWith('Spitzenreiter: '))!;
     const text = n.geschichte?.text ?? '';
     for (const s of [KAFFEEBAR_BAUM_TAG_4.t, chance.t, spitze.t.replace('Spitzenreiter: ', ''), 'A5 mit E1']) expect(text).toContain(s);
     expect(n.fragen?.length).toBeGreaterThanOrEqual(1);
-    expect(n.fragen?.length).toBeLessThanOrEqual(2);
+    expect(n.fragen?.length).toBeLessThanOrEqual(3);
     expect(n.fragen?.filter((f) => f.antwort.trim() === '')).toStrictEqual([]);
   });
 });
