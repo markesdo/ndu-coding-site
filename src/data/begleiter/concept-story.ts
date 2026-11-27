@@ -10,7 +10,8 @@ import type { Notiz } from './typen';
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
 // selbst kommt bei der Usage Story, hier geht es um den Bogen dahinter.
 // Lichaw liegt als EPUB vor: Quellen mit Kapitel + Abschnitt + Seite nach den Seitenmarken der Druckausgabe im EPUB.
-// Was nicht von Lichaw stammt, ist als „Kursformulierung“ oder „Kursregel“ markiert.
+// Was nicht von Lichaw stammt, ist markiert: ältere Notizen mit „Kursformulierung“ oder „Kursregel“, neuere mit „Übertrag des Kurses“,
+// „Beispiel des Kurses“ bzw. „Kursbeispiel“ (Kaffeebar) oder „Lesart des Kurses“ bzw. „Lesart dieses Kurses“, oft mit „nicht bei Lichaw“.
 const LICHAW = 'Donna Lichaw, The User’s Journey';
 
 export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
@@ -101,11 +102,11 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   stationen: {
     live: [
-      'Fragen: Wer kennt „Zurück in die Zukunft“? Sonst Drachen der Abbildung erzählen.',
+      'Fragen: Wer kennt „Zurück in die Zukunft“?',
       'Zeit: Sprechzeit ~2 min; Film an der Abbildung, je Station ein Satz.',
       '„Ihr müsst Marty nicht mögen. Ihr müsst nur verstehen, was er will.“',
       'Krise betonen: Nichts hat funktioniert, das Ziel ist weiter weg denn je.',
-      'Bei Bedarf: jede Station unten im Begleiter, mit Kaffeebar-Beispiel.',
+      'Bei Bedarf: Film unbekannt – Drachen der Abbildung erzählen.',
     ],
     verstaendnis: {
       frage: 'Worin unterscheiden sich Auslöser und Krise?',
@@ -120,7 +121,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 2, Story Has a Structure, S. 9–10, Abb. 2.2–2.3; Kap. 3, How Concept Stories Work, S. 24–25; Kap. 5, How Usage Stories Work, S. 71`,
       },
       {
-        text: '1 Exposition. Was sie tut: „During the exposition, you are introduced to the world of the story, the characters, and some kind of big goal. There is a main character, and that character wants something. Big.“ Sie soll euch an die Figur binden: „At the very least, it compels you to empathize with them.“ Frage: Wer? Welche Ziele? Was steht im Weg? – bei Lichaw „Who is your target customer?“, „What are her goals as they relate to your product?“, „What is the problem or impediment standing in the way of this person meeting her goal?“ (Usage Story). Für die Concept Story fragt sie statt nach dem Hindernis: „What’s good in her world as it relates to your product or service?“ – das Hindernis kommt dort erst an Station 2. Film: Marty McFly lebt in Hill Valley, „any suburb USA“. „His family isn’t very ambitious, but Marty has plans. He’s going to make something of himself.“ Sein Freund Doc, ein verrückter Wissenschaftler, hat eine Zeitmaschine gebaut. „You don’t have to like him. You just have to understand him, his goals and why he wants to pursue them.“ Mehr sagt Lichaw zur Exposition nicht: Was schief ist, ist die Familie ohne Ehrgeiz; was Marty vor 1955 im Weg steht, nennt sie nicht. Band und Freundin kommen bei ihr erst später vor (die Gitarre am Höhepunkt, der Truck in der fallenden Handlung, die Freundin am Ende), Namen wie Jennifer gar nicht. Kaffeebar (Kursbeispiel): Concept Story – Pendler*innen, werktags zwischen 7:15 und 7:45, mit festem Morgenzug; gut in ihrer Welt: Die Bar liegt am Weg, die Barista kennt die Stammgäste (G3, I3-6), und „wenn der erste Schluck passt, ist der Morgen gerettet“ (I1-4); großes Ziel: auf dem Weg zum Zug Kaffee besorgen (J1), ohne gehetzt in den Tag zu starten (J2). Usage Story – I1, Zug 7:38, „eigentlich immer knapp dran“ (I1-1); will Kaffee, ohne den Zug zu riskieren (J1, P1). Falle: nur die Person beschreiben, ohne dass sie etwas will. Lichaw: „Your character is someone, and she wants something.“',
+        text: '1 Exposition. Was sie tut: „During the exposition, you are introduced to the world of the story, the characters, and some kind of big goal. There is a main character, and that character wants something. Big.“ Sie soll euch an die Figur binden: „At the very least, it compels you to empathize with them.“ Frage: Wer? Welche Ziele? Was steht im Weg? – bei Lichaw „Who is your target customer?“, „What are her goals as they relate to your product?“, „What is the problem or impediment standing in the way of this person meeting her goal?“ (Usage Story). Für die Concept Story fragt sie statt nach dem Hindernis: „What’s good in her world as it relates to your product or service?“ – das Hindernis kommt dort erst an Station 2. Film: Marty McFly lebt in Hill Valley, „any suburb USA“. „His family isn’t very ambitious, but Marty has plans. He’s going to make something of himself.“ Sein Freund Doc, ein verrückter Wissenschaftler, hat eine Zeitmaschine gebaut. „You don’t have to like him. You just have to understand him, his goals and why he wants to pursue them.“ Mehr sagt Lichaw zur Exposition nicht: Was schief ist, ist die Familie ohne Ehrgeiz; was Marty vor 1955 im Weg steht, nennt sie nicht. Eine Band nennt sie nicht; die Gitarre kommt erst am Höhepunkt, die Freundin am Ende, Namen wie Jennifer gar nicht. Kaffeebar (Kursbeispiel): Concept Story – Pendler*innen, werktags zwischen 7:15 und 7:45, mit festem Morgenzug; gut in ihrer Welt: Die Bar liegt am Weg, die Barista kennt die Stammgäste (G3, I3-6), und „wenn der erste Schluck passt, ist der Morgen gerettet“ (I1-4); großes Ziel: auf dem Weg zum Zug Kaffee besorgen (J1), ohne gehetzt in den Tag zu starten (J2). Usage Story – I1, Zug 7:38, „eigentlich immer knapp dran“ (I1-1); will Kaffee, ohne den Zug zu riskieren (J1, P1). Falle: nur die Person beschreiben, ohne dass sie etwas will. Lichaw: „Your character is someone, and she wants something.“',
         quelle: `${LICHAW}, Kap. 2, Exposition, S. 11, Abb. 2.4; Kap. 3, Mapping a Concept Story, S. 34; Kap. 5, Exposition, S. 71–72, und Mapping the Usage Story, S. 82–83. Kaffeebar: Kursbeispiel (concept-story#beispiel, usage-story#beispiel)`,
       },
       {
@@ -167,7 +168,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       },
       {
         frage: 'Was gehört in eine gute Exposition? Gibt es Beispiele?',
-        antwort: 'Vier Dinge, nach Lichaws Fragen: eine Person, ihre Welt, ihr Ziel und was ihr im Weg steht (Kap. 2, Exposition, S. 11; Kap. 5, Mapping the Usage Story, S. 82–83). Lichaws eigenes Beispiel ist die Studieninteressierte: Will sie die richtige Schule, um einmal Tierärztin zu werden, will sie Berufe erkunden oder mit Gleichgesinnten studieren? „Each exposition is the beginning of a very different story.“ (Kap. 5, Exposition, S. 72). Beispiele des Kurses, nicht bei Lichaw: (a) Kaffeebar – „Pendler I1, Zug 7:38, eigentlich immer knapp dran. Die Bar liegt am Weg, die Barista kennt die Stammgäste. Er will Kaffee, ohne den Zug zu riskieren – ob es sich ausgeht, weiß er erst in der Halle.“ (I1-1, G3, J1, P1). (b) Lern-App – „Studentin im zweiten Semester, arbeitet 20 Stunden die Woche neben dem Studium, lernt abends in der Bahn. Sie will die Statistik-Prüfung im ersten Anlauf schaffen – aber die Übungsblätter gibt es nur als PDF für den Laptop.“ (c) Rechnungs-Tool – „Selbstständiger Grafiker mit drei Kund*innen im Monat, schreibt die Rechnungen am Monatsende in Word. Er will pünktlich bezahlt werden – aber wer noch nicht gezahlt hat, merkt er erst Wochen später.“ In der Concept Story wird das Hindernis zum Auslöser (Station 2); in ihrer Exposition steht stattdessen, was in der Welt der Figur gut ist.',
+        antwort: 'Vier Dinge: eine Person, ihre Welt und ihr Ziel (Kap. 2, Exposition, S. 11) und was ihr im Weg steht – danach fragt Lichaw nur in Kap. 5 („What is the problem or impediment standing in the way of this person meeting her goal?“, Mapping the Usage Story, S. 83). Lichaws eigenes Beispiel ist die Studieninteressierte: Will sie die richtige Schule, um einmal Tierärztin zu werden, will sie Berufe erkunden oder mit Gleichgesinnten studieren? „Each exposition is the beginning of a very different story.“ (Kap. 5, Exposition, S. 72). Beispiele des Kurses, nicht bei Lichaw: (a) Kaffeebar – „Pendler I1, Zug 7:38, eigentlich immer knapp dran. Die Bar liegt am Weg, die Barista kennt die Stammgäste. Er will Kaffee, ohne den Zug zu riskieren – ob es sich ausgeht, weiß er erst in der Halle.“ (I1-1, G3, J1, P1). (b) Lern-App – „Studentin im zweiten Semester, arbeitet 20 Stunden die Woche neben dem Studium, lernt abends in der Bahn. Sie will die Statistik-Prüfung im ersten Anlauf schaffen – aber die Übungsblätter gibt es nur als PDF für den Laptop.“ (c) Rechnungs-Tool – „Selbstständiger Grafiker mit drei Kund*innen im Monat, schreibt die Rechnungen am Monatsende in Word. Er will pünktlich bezahlt werden – aber wer noch nicht gezahlt hat, merkt er erst Wochen später.“ In der Concept Story wird das Hindernis zum Auslöser (Station 2); in ihrer Exposition steht stattdessen, was in der Welt der Figur gut ist.',
       },
       {
         frage: 'Reicht eine Persona-Beschreibung als Exposition?',
@@ -356,12 +357,12 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Zeit: Sprechzeit ~2 min; Abbildung von links, je Punkt zeigen.',
       'Anfang: dieselbe Figur wie beim Patent – neu nur „smartphones suck“.',
       'Krise: auf die Hürde zeigen – iPod, Handy, Preis, Bedienung.',
-      'Höhepunkt: auf die Glühbirne zeigen – kommunizieren, „works like magic“.',
+      'Höhepunkt: auf die Glühbirne zeigen – kommunizieren, „worked like magic“.',
       '„Danach nur ein Gedanke: Ich will ein iPhone. Gekauft ist noch nichts.“',
     ],
     verstaendnis: {
       frage: 'Was hat die Version von 2007, das der Patent-Version fehlt?',
-      antwort: 'Eine Krise (schon ein iPod und ein Handy, Preis, Angst vor dem Touchscreen) und einen Höhepunkt, der sie auflöst: der beste Weg zu kommunizieren, mit Internet, Karten und E-Mail, und „it worked like magic“ (Kap. 3, S. 27–28).',
+      antwort: 'Eine Krise (schon ein iPod und ein Handy, Preis, Angst vor dem Touchscreen) und einen Höhepunkt, der sie auflöst: der beste Weg zu kommunizieren, mit Internet, Karten und E-Mail, und „the iPhone worked like magic“ (Kap. 3, S. 27–28).',
       falsch: '„Mehr Funktionen“ – es zählt, dass der Höhepunkt die Krise auflöst.',
     },
     geschichte: {
@@ -393,7 +394,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       },
       {
         frage: 'Warum 3-in-1 und nicht 2-in-1 – mehr Funktionen = besser?',
-        antwort: 'Nein. Der Höhepunkt muss auflösen, was Auslöser und Krise aufwerfen: „The climax is where the problem outlined in the inciting incident and the additional hurdles that surface during your crisis are resolved and overcome.“ (Kap. 3, Climax/Resolution, S. 28). Das Internet zählt, weil es zum besten Weg zu kommunizieren gehört; „works like magic“ antwortet auf die Angst vor dem Touchscreen. Ausführlich auf der nächsten Folie, „Krise und Höhepunkt geben Höhe“.',
+        antwort: 'Nein. Der Höhepunkt muss auflösen, was Auslöser und Krise aufwerfen: „The climax is where the problem outlined in the inciting incident and the additional hurdles that surface during your crisis are resolved and overcome.“ (Kap. 3, Climax/Resolution, S. 28). Das Internet zählt, weil es zum besten Weg zu kommunizieren gehört; „worked like magic“ antwortet auf die Angst vor dem Touchscreen. Ausführlich auf der nächsten Folie, „Krise und Höhepunkt geben Höhe“.',
       },
       {
         frage: 'Warum ist der Touchscreen eine Krise?',
@@ -446,7 +447,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       },
       {
         text: 'Die zwei Fragen stehen am Anfang von Kap. 3, als die letzten von zehn: „Concept stories, when used to define products, help you answer the following questions“ – darunter „What is the straightforward solution to the problem?“ und „What is the awesome solution to the problem?“. In der Liste „Mapping a Concept Story“ kommen sie nicht vor; danach greift Lichaw sie am Slack-Beispiel auf: „there is always a simple solution to every story, which can look like a straight line. People want to communicate and collaborate? So give them a better communication and collaboration tool. However, while you might want to design solutions that are simply better than whatever else is out there, “better” isn’t always enough.“ Ein festes Vorgehen für die zwei Fragen gibt sie nicht; das Nebeneinanderlegen (Flach-Probe) ist ein Übertrag des Kurses.',
-        quelle: `${LICHAW}, Kap. 3, What Is a Concept Story?, S. 23; Mapping a Concept Story, S. 35`,
+        quelle: `${LICHAW}, Kap. 3, What Is a Concept Story?, S. 23; Mapping a Concept Story, S. 35; Übertrag des Kurses`,
       },
       {
         text: 'Wann die naheliegende Lösung reicht: Beim Kalender von iOS, dessen Kernaufgabe flach bleibt, fragt Lichaw: „Is Apple in trouble? Not at all. Unless calendaring becomes core to their business and engagement strategies.“ Und: „When it matters, you should plot even the smallest and seemingly trivial core tasks story-first.“ Zu „leicht zu bedienen“: „But ‚easy to use‘ is a pretty boring story when difficulty isn’t really the problem.“ Dass „leicht“ dann der Gipfel sein kann, wenn die Schwierigkeit wirklich das Problem ist, folgt daraus, sagt Lichaw aber nicht ausdrücklich.',
@@ -476,7 +477,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       },
       {
         frage: 'Vorsicht beim Erzählen: Was davon steht so bei Lichaw?',
-        antwort: '„Niemand hatte 3-in-1 verlangt“ und „hätte gereicht“ sind Lichaws Sätze („No one had asked …“, „would have been content …“, Kap. 3, S. 22), aber ihre Einschätzung, ohne Beleg oder Zahl – erzählt es als ihre Sicht, nicht als Marktforschung. „3-in-1 war der Gipfel“ heißt nicht „mehr Funktionen“: Ihr Höhepunkt ist „the best way to communicate“ und „works like magic“ (S. 28). Die gestrichelte Linie in Abb. 3.6 erklärt sie nicht; wir lesen sie als möglichen Bogen. Und das Nebeneinanderlegen der zwei Lösungen ist ein Übertrag des Kurses, kein Schritt bei Lichaw.',
+        antwort: '„Niemand hatte 3-in-1 verlangt“ und „hätte gereicht“ sind Lichaws Sätze („No one had asked …“, „would have been content …“, Kap. 3, S. 22), aber ihre Einschätzung, ohne Beleg oder Zahl – erzählt es als ihre Sicht, nicht als Marktforschung. „3-in-1 war der Gipfel“ heißt nicht „mehr Funktionen“: Ihr Höhepunkt ist „the best way to communicate“ und „worked like magic“ (S. 28). Die gestrichelte Linie in Abb. 3.6 erklärt sie nicht; wir lesen sie als möglichen Bogen. Und das Nebeneinanderlegen der zwei Lösungen ist ein Übertrag des Kurses, kein Schritt bei Lichaw.',
       },
     ],
     ueberleitung: 'Die Story war mehr als die Rede dazu: Sie hat entschieden, was gebaut wurde.',
@@ -491,7 +492,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     ],
     verstaendnis: {
       frage: 'Warum fehlte Kopieren und Einfügen?',
-      antwort: 'Weil es die Story – „works like magic“, leicht mit dem Finger – nicht stützte: „Animation supported the story. Cut-and-paste did not.“ (Kap. 3, S. 33). Die Krise war die Angst vor dem Touchscreen; Animation und Technik zum Tippen statt Stift lösten sie auf. Lichaw nennt keinen weiteren Grund.',
+      antwort: 'Weil es die Story – „worked like magic“, leicht mit dem Finger – nicht stützte: „Animation supported the story. Cut-and-paste did not.“ (Kap. 3, S. 33). Die Krise war die Angst vor dem Touchscreen; Animation und Technik zum Tippen statt Stift lösten sie auf. Lichaw nennt keinen weiteren Grund.',
       falsch: '„Weil Apple es nicht konnte“ – das sagt Lichaw nicht; der Palm Treo hatte es längst (Kap. 7, S. 129).',
     },
     geschichte: {
@@ -501,7 +502,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     fragen: [
       {
         frage: 'Warum stützte Kopieren und Einfügen die Story nicht – was hätte es ihr gebracht?',
-        antwort: 'Lesart dieses Kurses, nicht bei Lichaw: Sie nennt keinen Grund. Am Bogen gelesen trägt es keine Station. Es nimmt nicht die Angst vor dem Touchscreen (Krise), und es macht den Höhepunkt – „works like magic“, leicht mit dem Finger – nicht stärker. Und der alte Weg hatte es schon: Der Palm Treo konnte Kopieren und Einfügen (Kap. 7, S. 129). Damit hätte das iPhone auf dem Feld der Konkurrenz mitgehalten, statt die Krise aufzulösen. Technische Gründe nennt Lichaw nicht.',
+        antwort: 'Lesart dieses Kurses, nicht bei Lichaw: Sie nennt keinen Grund. Am Bogen gelesen trägt es keine Station. Es nimmt nicht die Angst vor dem Touchscreen (Krise), und es macht den Höhepunkt – „worked like magic“, leicht mit dem Finger – nicht stärker. Und der alte Weg hatte es schon: Der Palm Treo konnte Kopieren und Einfügen (Kap. 7, S. 129). Damit hätte das iPhone auf dem Feld der Konkurrenz mitgehalten, statt die Krise aufzulösen. Technische Gründe nennt Lichaw nicht.',
       },
       {
         frage: 'Wie findet ihr euer „Kopieren und Einfügen“?',

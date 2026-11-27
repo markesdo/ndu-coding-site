@@ -250,6 +250,7 @@ describe('Begleiter: sieben Stationen einzeln, zwei Fragen erklärt (27.11.)', (
     expect(k).toHaveLength(8);
     expect(k[0].text).toContain('Lichaw begründet die Zahl sieben nicht eigens');
     expect(k.slice(1).map((e) => stationen.find((s) => e.text.startsWith(s)))).toStrictEqual(stationen);
+    expect(k.slice(1).filter((e) => !/^\d [^.]+\. Was (sie|er|es) tut: /.test(e.text)).map((e) => e.text.slice(0, 40))).toStrictEqual([]);
     k.slice(1).forEach((e, i) => {
       for (const teil of ['Was ', 'Frage:', 'Film:', 'Kaffeebar (Kursbeispiel):', 'Falle:']) expect(e.text, `${stationen[i]} ${teil}`).toContain(teil);
       expect(e.quelle, stationen[i]).toMatch(new RegExp(`Kap\\. 2, ${abschnitte[i]}, S\\. \\d+`));
@@ -303,7 +304,19 @@ describe('Begleiter: sieben Stationen einzeln, zwei Fragen erklärt (27.11.)', (
     expect(f(3)).toContain('(b) Lern-App');
     expect(f(3)).toContain('(c) Rechnungs-Tool');
     expect(f(4)).toMatch(/^Nein\. Schwach \(Beispiel des Kurses\): .* Stark: /);
-    expect(st.live).toContain('Bei Bedarf: jede Station unten im Begleiter, mit Kaffeebar-Beispiel.');
+    expect(st.live).toContain('Bei Bedarf: Film unbekannt – Drachen der Abbildung erzählen.');
+    expect(st.live.length).toBeGreaterThanOrEqual(3);
+    expect(st.kern?.[1].text).toContain('Eine Band nennt sie nicht; die Gitarre kommt erst am Höhepunkt, die Freundin am Ende');
+    expect(f(3)).toContain('was ihr im Weg steht – danach fragt Lichaw nur in Kap. 5');
+  });
+
+  // Lichaw, Kap. 3, Climax/Resolution, S. 28: „the iPhone worked like magic“. „works like magic“ steht nur in Kap. 8 (A × B = C)
+  // und als Beschriftung in Abb. 3.4 – als eigenes Zitat in „…“ kommt es in den Notizen nicht vor.
+  it('Zitat „worked like magic“ wie bei Lichaw, nirgends als „works like magic“', () => {
+    const alle = JSON.stringify(NOTIZEN_CONCEPT_STORY);
+    expect(alle.match(/„works like magic“/g) ?? []).toStrictEqual([]);
+    expect(alle.match(/„worked like magic“/g) ?? []).toHaveLength(5);
+    expect(JSON.stringify(NOTIZEN_CONCEPT_STORY['hoch-lehre'].kern)).toContain('„the iPhone worked like magic. It was easy to use.“');
     expect(JSON.stringify(st).match(/Kursregel/g) ?? []).toStrictEqual([]);
   });
 
