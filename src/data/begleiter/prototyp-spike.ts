@@ -161,9 +161,16 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
 
   beispiel: {
     live: [
-      'Fünf Blätter zeigen: eines pro Bildschirm; Blatt 3 ist der Höhepunkt.',
-      'Abnahmekriterien: drei Tipps, heute auf Papier, an Tag 5 am Handy.',
+      'Fünf Bildschirme zeigen: Blatt oder Frame; 3 ist der Höhepunkt.',
+      'Figma-Modell kurz zeigen: so roh darf es sein.',
+      'Kriterien: drei Tipps; heute Papier oder Figma, an Tag 5 am Handy.',
       'Nicht drin: Login, Zahlung, Datenbank.',
+    ],
+    fragen: [
+      {
+        frage: 'Papier oder Figma – was ist besser?',
+        antwort: 'Keins von beiden. Heute zählen Ablauf und Inhalt, nicht das Aussehen: Kästen und Wörter reichen, ein Blatt oder Frame je Bildschirm. Wer Figma nimmt, bleibt lo-fi – Graustufen-Rahmen mit Kästen, Text und Pfeilen, keine Farben, keine Komponenten, keine Klick-Verbindungen. Im Trockenlauf legt ihr dann das nächste Blatt oder wechselt den Frame.',
+      },
     ],
     ueberleitung: 'Angenommen, die Kaffeebar testet mit fünf Menschen: Das käme dabei heraus.',
   },

@@ -13,13 +13,15 @@ import Timer from '../../../components/Timer.astro';
 import Fluss from '../../../components/Fluss.astro';
 import BildText from '../../../components/bild/BildText.astro';
 import NielsenKurve from '../../../components/bild/NielsenKurve.astro';
-import { BookOpen, Code, PenLine, Users } from '@lucide/astro';
+import { BookOpen, Code, ExternalLink, PenLine, Users } from '@lucide/astro';
 
 const BLAND = 'David J. Bland & Alexander Osterwalder, „Testing Business Ideas“ (2019)';
 const TORRES = 'Teresa Torres, „Continuous Discovery Habits“ (2021)';
 // Seit 26.11.2026 nachts (Dozent): Tag 4 ohne Claude. Aus dem Prototyp-Spike wird ein Prototyp auf Papier; der Bau mit
 // Claude Code (früher Schritt 3 Zeitbox und Schritt 4 Bauen, Prompts „Spike“ und „Spike sichern“) steht jetzt auf
 // tag-5#bauen-skizzen. Der Slug bleibt prototyp-spike, damit Links, Begleiter, Arbeitsfluss und Prüfliste gleich bleiben.
+// Lo-fi-Modell der Kaffeebar in Figma (Dozent 27.11.2026), fünf Frames wie die fünf Kästen auf der Folie „beispiel“.
+const FIGMA_KAFFEEBAR = 'https://www.figma.com/design/K0qxTMOsdEwIpl9YCJWvzK/Untitled?node-id=0-1';
 ---
 <Layout title="Prototyp auf Papier & Usability-Test">
   <span class="eyebrow">Innolab · Tag 4 · Methode</span>
@@ -136,20 +138,26 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
   </Folie>
 
   <Folie>
-    <h2 id="beispiel">Am Beispiel: der Papier-Prototyp der Kaffeebar</h2>
-    <p class="folie-satz">Fünf Blätter, drei Abnahmekriterien – an Tag 5 der Auftrag für Claude Code.</p>
-    <ol class="blaetter" aria-label="Fünf Papier-Skizzen der Kaffeebar, ein Blatt pro Bildschirm">
-      <li><span>Blatt 1</span>Getränk wählen</li>
-      <li><span>Blatt 2</span>Zug wählen</li>
-      <li class="gipfel"><span>Blatt 3 · Höhepunkt</span>„Fertig 7:31. Dein Zug fährt 7:38.“</li>
-      <li><span>Blatt 4</span>Abholnummer</li>
-      <li class="bar"><span>Blatt 5</span>Ansicht für die Bar</li>
+    <h2 id="beispiel">Am Beispiel: der Prototyp der Kaffeebar – auf Papier oder lo-fi in Figma</h2>
+    <p class="folie-satz">Fünf Bildschirme, drei Abnahmekriterien – an Tag 5 der Auftrag für Claude Code.</p>
+    <ol class="blaetter" aria-label="Fünf Skizzen der Kaffeebar, ein Blatt oder Figma-Frame pro Bildschirm">
+      <li><span>Bildschirm 1</span>Getränk wählen<span class="inhalt">3 Getränke → 2</span></li>
+      <li><span>Bildschirm 2</span>Zug wählen<span class="inhalt">Abfahrtszeit · Weiter → 3</span></li>
+      <li class="gipfel"><span>Bildschirm 3 · Höhepunkt</span>„Fertig 7:31. Dein Zug fährt 7:38.“<span class="inhalt">Bestellen → 4</span></li>
+      <li><span>Bildschirm 4</span>Abholnummer<span class="inhalt">17 · Express-Ausgabe</span></li>
+      <li class="bar"><span>Bildschirm 5</span>Ansicht für die Bar<span class="inhalt">sortiert nach Abfahrt</span></li>
     </ol>
     <ul class="gross">
-      <li data-schritt><strong>Der Prototyp zeigt</strong> den Weg bis „Fertig 7:31“ – in drei Tipps. <strong>Er läuft</strong> heute auf Papier, an Tag 5 am Handy.</li>
+      <li data-schritt><strong>Der Prototyp zeigt</strong> den Weg bis „Fertig 7:31“ – in drei Tipps. <strong>Er läuft</strong> heute auf Papier oder lo-fi in Figma, an Tag 5 am Handy.</li>
       <li data-schritt><strong>Er hat nicht:</strong> Login, Zahlung, Datenbank.</li>
     </ul>
-    <p class="nur-handout">Die fünf Papier-Skizzen der Kaffeebar, je ein Blatt pro Bildschirm, von Hand gezeichnet: Blatt 1: Getränk wählen · Blatt 2: Zug wählen · Blatt 3: „Fertig 7:31. Dein Zug fährt 7:38.“ (Höhepunkt) · Blatt 4: Abholnummer · Blatt 5: Ansicht für die Bar. Blatt 1 bis 4 sieht die Pendlerin nacheinander; Blatt 5 sieht die Barista.</p>
+    {/* Figma-Link mit Absicht auf dieser Beispielfolie und als einfacher Link, nicht als MiroLink-Komponente: Die Regel „Miro-Links nur
+        auf Arbeitsfolien“ gilt für das Board; das Figma-Modell zeigt nur, wie roh es sein darf (Dozent 27.11.2026). */}
+    <p class="small modell-link"><a href={FIGMA_KAFFEEBAR} target="_blank" rel="noopener noreferrer">Modell in Figma: Kaffeebar, fünf Frames <ExternalLink size={14} aria-hidden="true" /><span class="sr-only">(öffnet in neuem Tab)</span></a></p>
+    <div class="nur-handout">
+      <p>Die fünf Skizzen der Kaffeebar, je ein Blatt oder Figma-Frame pro Bildschirm: Bildschirm 1: Getränk wählen (Cappuccino, Filterkaffee, Tee) · Bildschirm 2: Zug wählen (Abfahrtszeit, „Weiter“) · Bildschirm 3: „Fertig 7:31. Dein Zug fährt 7:38.“ (Höhepunkt, „Bestellen“) · Bildschirm 4: Abholnummer 17, „Abholen an der Express-Ausgabe.“ · Bildschirm 5: Ansicht für die Bar, sortiert nach Abfahrt. Bildschirm 1 bis 4 sieht die Pendlerin nacheinander; Bildschirm 5 sieht die Barista.</p>
+      <p>Das Modell in Figma zeigt, was lo-fi heißt: graue Kästen und Wörter, ein Frame je Bildschirm, der Pfeil „→ 2“ steht als Notiz neben dem Knopf und gehört nicht zum Bildschirm. Nummer und Stern stehen im Frame selbst, damit sie beim „Copy as PNG“ nach Miro mitkommen. Auf Bildschirm 4 steht „Express-Ausgabe“, nicht „an der Bar“: So kann der Test noch zeigen, wo die Leute ihren Kaffee suchen (Befund U3 auf der nächsten Folie).</p>
+    </div>
   </Folie>
 
   <Folie>
@@ -209,7 +217,7 @@ Wir entscheiden vorher: ab 4 → Slice 1 bauen · 3 → Hänger beheben, mit dre
     </ol>
     <div class="beispiel-box">
       <p><strong>Kaffeebar:</strong> Der Prototyp zeigt den Weg von „Getränk wählen“ bis „Fertig 7:31. Dein Zug fährt 7:38.“ – in drei Tipps.</p>
-      <p>Er läuft heute auf Papier, an Tag 5 am Handy im Browser.</p>
+      <p>Er läuft heute auf Papier oder lo-fi in Figma, an Tag 5 am Handy im Browser.</p>
       <p>Er hat nicht: Login, Zahlung, Datenbank.</p>
     </div>
     <p class="wo-fertig"><span><strong>Wo:</strong> Feld „2 · Abnahmekriterien“ (<MiroLink name="T4 · 5 · Prototyp · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 5 · Prototyp · Produkt 3">3</MiroLink>)</span><span><strong>Fertig, wenn:</strong> ihr jeden Satz mit Ja oder Nein beantworten könnt – heute am Papier, an Tag 5 am Handy</span> <Timer minuten={3} /></p>
@@ -335,6 +343,9 @@ Abnahme – zeigt: ja / nein · läuft: ja / nein · hat nicht: ja / nein`} />
   .blaetter li span { font-size: .8em; font-weight: 400; color: var(--muted); }
   .blaetter .gipfel { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 12%, var(--bg)); }
   .blaetter .bar { border-style: dashed; }
+  .blaetter li .inhalt { margin-top: auto; font-size: .75em; }
+  .modell-link { margin: .4rem 0 0; }
+  .modell-link a { display: inline-flex; align-items: center; gap: .3rem; }
   .befunde th, .befunde td { vertical-align: top; }
   /* Schritt-Folien: Beispiel in einem Kasten, unten immer dieselbe Leiste „Wo · Fertig, wenn · Timer“. */
   .beispiel-box { margin: .6rem 0; padding: .5rem .8rem; border-left: 3px solid var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); border-radius: 4px; }

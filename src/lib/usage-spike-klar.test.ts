@@ -153,13 +153,32 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     expect(t).toContain('<strong>Zu zweit:</strong> eine*r führt und legt die Blätter oder wechselt die Frames, eine*r notiert in „T4 · 5 · Prototyp · Produkt n“ – geschafft?, Zeit, wo gehangen; daraus U1, U2 …');
     expect(folie(PS, 'test-ablauf')).toContain('„Have one person conduct the interviews and interact with the customer“, „Have another person write notes and act as a scribe“');
   });
-  it('beispiel: fünf nummerierte Blätter, Blatt 3 ist der Höhepunkt; Kriterien heute auf Papier, an Tag 5 am Handy', () => {
+  it('beispiel: fünf Bildschirme wie im Figma-Modell, 3 ist der Höhepunkt; Kriterien heute auf Papier oder in Figma, Link aufs Modell', () => {
     const b = beamer(folie(PS, 'beispiel'));
-    expect([...b.matchAll(/<li(?: class="[^"]+")?><span>([^<]+)<\/span>([^<]+)<\/li>/g)].map((m) => `${m[1]}: ${m[2]}`)).toStrictEqual([
-      'Blatt 1: Getränk wählen', 'Blatt 2: Zug wählen', 'Blatt 3 · Höhepunkt: „Fertig 7:31. Dein Zug fährt 7:38.“', 'Blatt 4: Abholnummer', 'Blatt 5: Ansicht für die Bar',
+    expect(b).toContain('<h2 id="beispiel">Am Beispiel: der Prototyp der Kaffeebar – auf Papier oder lo-fi in Figma</h2>');
+    expect([...b.matchAll(/<li(?: class="[^"]+")?><span>([^<]+)<\/span>([^<]+)<span class="inhalt">([^<]+)<\/span><\/li>/g)].map((m) => `${m[1]}: ${m[2]} | ${m[3]}`)).toStrictEqual([
+      'Bildschirm 1: Getränk wählen | 3 Getränke → 2',
+      'Bildschirm 2: Zug wählen | Abfahrtszeit · Weiter → 3',
+      'Bildschirm 3 · Höhepunkt: „Fertig 7:31. Dein Zug fährt 7:38.“ | Bestellen → 4',
+      'Bildschirm 4: Abholnummer | 17 · Express-Ausgabe',
+      'Bildschirm 5: Ansicht für die Bar | sortiert nach Abfahrt',
     ]);
-    expect(b).toContain('<strong>Er läuft</strong> heute auf Papier, an Tag 5 am Handy.');
-    expect(b).not.toMatch(/40 Minuten|nicht echt/);
+    expect(b).toContain('<li class="gipfel"><span>Bildschirm 3 · Höhepunkt</span>');
+    expect(b).toContain('<li class="bar"><span>Bildschirm 5</span>');
+    expect(b).not.toMatch(/Blatt \d/);
+    expect(b).toContain('<strong>Er läuft</strong> heute auf Papier oder lo-fi in Figma, an Tag 5 am Handy.');
+    expect(b).not.toMatch(/40 Minuten|nicht echt|an der Bar abholen/);
+    // Link aufs Modell im Beamer, als einfacher Link in neuem Tab (kein MiroLink).
+    expect(seite(PS)).toContain("const FIGMA_KAFFEEBAR = 'https://www.figma.com/design/K0qxTMOsdEwIpl9YCJWvzK/Untitled?node-id=0-1';");
+    expect(b).toContain('<a href={FIGMA_KAFFEEBAR} target="_blank" rel="noopener noreferrer">Modell in Figma: Kaffeebar, fünf Frames <ExternalLink');
+    expect(b).not.toContain('<MiroLink');
+    const h = folie(PS, 'beispiel');
+    expect(h).toContain('Das Modell in Figma zeigt, was lo-fi heißt: graue Kästen und Wörter, ein Frame je Bildschirm');
+    expect(h).toContain('Auf Bildschirm 4 steht „Express-Ausgabe“, nicht „an der Bar“');
+    const n = NOTIZEN_PROTOTYP_SPIKE.beispiel;
+    expect(n?.live).toContain('Figma-Modell kurz zeigen: so roh darf es sein.');
+    for (const z of n?.live ?? []) expect(z.split(/\s+/).length, z).toBeLessThanOrEqual(12);
+    expect(n?.fragen?.map((f) => f.frage)).toStrictEqual(['Papier oder Figma – was ist besser?']);
   });
   it('karte-e2: Papier-Prototyp statt Klick-Prototyp, Zeit nur notiert, „Wir entscheiden vorher“ auf Karte und in der Vorlage', () => {
     const f = folie(PS, 'karte-e2');
@@ -208,7 +227,7 @@ describe('Prototyp auf Papier: geteilte Folien, Karte E2 entscheidet vorher, Tro
     const k = beamer(folie(PS, 'schritt-kriterien'));
     expect([...k.matchAll(/<li data-schritt><strong>(„[^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['„Der Prototyp zeigt …“', '„Er läuft …“', '„Er hat nicht …“']);
     expect(k).toContain('<p class="folie-satz">Was der Prototyp zeigen muss – heute auf Papier, an Tag 5 als Auftrag für Claude Code.</p>');
-    expect(k).toContain('<p>Er läuft heute auf Papier, an Tag 5 am Handy im Browser.</p>');
+    expect(k).toContain('<p>Er läuft heute auf Papier oder lo-fi in Figma, an Tag 5 am Handy im Browser.</p>');
     expect(seite(PS)).not.toMatch(/3 · Zeitbox|Zeitbox: bis/);
   });
   it('Schritt 3 und 4: Karte E2 mit „Wir entscheiden vorher“; Trockenlauf in drei Runden, wer besitzt, legt die Blätter, keine Kritik', () => {
