@@ -58,11 +58,16 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
   'slice-im-baum': {
     live: [
       'Zeilenweise lesen: links der Baum, rechts Slice 1 – je ein Gegenstück.',
+      'Wer tut danach was anders? Brief oben, Slice 1 enger.',
       '„Slice 1 ist kein Knoten im Baum – er macht den Spitzenreiter konkret.“',
       'Annahme nur ankündigen: gewählt wird an der Experiment-Karte.',
       'Tag 5: ab 10 Slice bleibt, 5–9 weiter testen, unter 5 Baum.',
     ],
     kern: [
+      {
+        text: 'Was heißt „Wer tut danach was anders?“ Das ist Pattons Frage nach dem Outcome: nicht, was ihr baut (Output), sondern was Menschen danach anders tun. „We measure what people actually do differently to reach their goals as a consequence of what you’ve built“. Die Frage hat zwei Ebenen. Oben steht der Satz aus dem Produkt-Brief, im Baum als Wurzel und auf der Story Map im Rahmen über der Map: „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“. Links an Slice 1 steht auf dem pinken Sticky ein engerer Satz in der Form „[Wer] tut [was] statt [was bisher]“: „Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt“. Der Slice-Outcome dient dem Outcome aus dem Brief: Wer im Gehen bestellt, steigt mit Kaffee ein. So zerlegt Patton ein großes Vorhaben: „The secret to breaking down that really big chunk of output was to focus on a smaller, specific outcome.“ Der engere Satz hat drei Vorteile. Man kann ihn innerhalb eines Slice beobachten („Outcomes are often something you can observe right away after delivery“). Ihn können „Wir lernen, ob sie es tun (A5)“ und E1 prüfen, denn A5 sagt dasselbe als Annahme: „Wer die Schlange sieht, bestellt am Aufsteller statt am Automaten“. Und er nennt das alte Verhalten, das ersetzt wird: den Automaten. Beim Vorlesen der Folie heißt „derselbe Satz wie im Brief“ also: der Rahmen über der Map. An Slice 1 selbst wird der Satz enger.',
+        quelle: `${PATTON}, Read This First, Software Isn’t the Point und OK, It’s Not Just About People; Kap. 2, Don’t Prioritize Features—Prioritize Outcomes; Kaffeebar: story-map#beispiel, A5: experiment#beispiel-map`,
+      },
       {
         text: 'Zeile 1 – Outcome. Im Baum ist er die Wurzel: „The root of the tree is your desired outcome“. Auf der Story Map steht derselbe Satz aus dem Brief im Rahmen über der Map, und links an Slice 1 steht, wer danach was anders tut. So schneidet Patton: „Focus on outcomes—what users need to do and see when the system comes out—and slice out releases that will get you those outcomes.“ Links an jedem Slice hängen „their target outcomes“, und die Liste ist „a list of real-world benefits“, keine Feature-Liste. An der Kaffeebar: Wurzel „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“, links an Slice 1 „Pendler*innen mit knapper Zeit bestellen im Gehen, statt zum Automaten auszuweichen, und haben den Kaffee vor der Abfahrt“.',
         quelle: `${TORRES}, S. 26; ${PATTON}, Kap. 2, Slice Out a Minimum Viable Product Release und Slice Out a Release Roadmap`,
@@ -92,7 +97,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
         quelle: `${PATTON}, Kap. 5, Six Simple Steps to Story Mapping; Kap. 2, The New MVP Isn’t a Product at All!`,
       },
       {
-        text: 'Vorsicht beim Erzählen: „derselbe Satz wie im Brief“ gilt für den Rahmen über der Map. Das Outcome-Sticky links an Slice 1 ist enger, an der Kaffeebar nennt es, wer im Gehen bestellt, statt zum Automaten auszuweichen. Im Lern-Sticky der Kaffeebar steht neben A5 auch A2 (40 Bestellungen in 30 Minuten), im Baum hängt nur A5 mit E1. Und die Folie kennt zwei Ausgänge, die Karte E1 drei: Im mittleren Band wird weiter getestet, wie in der Lernkarte E1 der Kaffeebar (8 von 30, unklar, Spitzenreiter bleibt).',
+        text: 'Vorsicht beim Erzählen: „derselbe Satz wie im Brief“ gilt für den Rahmen über der Map, nicht für das engere Outcome-Sticky an Slice 1 (siehe „Was heißt ‚Wer tut danach was anders?‘“ oben). Im Lern-Sticky der Kaffeebar steht neben A5 auch A2 (40 Bestellungen in 30 Minuten), im Baum hängt nur A5 mit E1. Und die Folie kennt zwei Ausgänge, die Karte E1 drei: Im mittleren Band wird weiter getestet, wie in der Lernkarte E1 der Kaffeebar (8 von 30, unklar, Spitzenreiter bleibt).',
         quelle: 'Kursseiten: story-map#beispiel, tag-4#slice-im-baum (Handout), tag-5#debrief (Lernkarte E1)',
       },
       {
@@ -105,6 +110,10 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
       quelle: 'Kaffeebar: tag-4#faden (Baum ab Tag 4), story-map#beispiel (Slice 1), experiment (Karte E1)',
     },
     fragen: [
+      {
+        frage: 'Warum steht am Slice nicht einfach der Satz aus dem Brief?',
+        antwort: 'Weil sich der Satz aus dem Brief an einem Slice nicht ablesen lässt. „Mehr Pendler*innen steigen morgens mit Kaffee in den Zug“ ist das Ziel des ganzen Produkts, über alle Slices hinweg. Ob Pendler*innen mit knapper Zeit im Gehen bestellen, statt zum Automaten auszuweichen, sieht man, sobald Slice 1 steht, und genau das prüfen A5 und E1. Das „statt“ sagt außerdem, welches Verhalten wegfällt: das Ausweichen zum Automaten. Der Satz aus dem Brief bleibt im Rahmen über der Map stehen, der Slice-Outcome dient ihm.',
+      },
       {
         frage: 'Warum hängen wir Slice 1 nicht einfach als Knoten unter den Spitzenreiter?',
         antwort: 'Weil der Baum Lösungen vergleicht und Slice 1 keine eigene Lösung ist. Unter einer Lösung hängen bei Torres nur die Annahmen-Tests (S. 27). Slice 1 beschreibt, wie der Spitzenreiter gebaut würde, und hätte im Baum kein Geschwister, mit dem man ihn vergleichen könnte. Verbunden sind beide über dieselbe ID: A5 hängt im Baum unter dem Spitzenreiter und steht am Lern-Sticky von Slice 1.',
