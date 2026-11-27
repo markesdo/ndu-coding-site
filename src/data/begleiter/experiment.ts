@@ -134,7 +134,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       '„Die Map kennt ihr von Tag 1 – jetzt mit dem Spitzenreiter von 9:05.“',
       'Vier Felder wie auf Miro: „Zuerst testen“ oben rechts.',
       'Höchstens zehn Minuten: relativ zueinander, nicht genau.',
-      'Wege nennen: Miro sortieren, Werkstatt festhalten, Karte E1 auf Miro.',
+      'Wege nennen: Miro sortieren, Karte E1 auf Miro, Werkstatt am Abend.',
     ],
     miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Annahmen der Idee auf die Map: wichtig nach oben, wenig Beleg nach rechts.'] },
     kern: [
@@ -373,7 +373,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
     live: [
       'Fünf Fragen nacheinander aufdecken, je mit Art.',
       'Kaffeebar Schritt 1 laut durchgehen: Wollen sie?',
-      'Antwort mit „hoffentlich“ → Annahme, hier A5 – bei euch: nächste freie ID.',
+      'Antwort mit „hoffentlich“ → Annahme, hier A5 – bei euch: ab A7.',
       'Pre-Mortem-Frage von vorhin dazu.',
       'Zeit: Sprechzeit ~2 min.',
     ],
@@ -502,7 +502,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Anleitung-Frame links neben „T4 · 0“ zeigen.',
-      'Nach 11 min: „Zuerst testen“ in der Werkstatt? Rest bis abends.',
+      'Nach 11 min: Liegt jeder Tag-1-Zettel in einem Feld? Werkstatt erst abends.',
       'Nach 13 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
       'Nach 16 min: Annahme und E1 in den Baum – Timer 2 min.',
     ],
