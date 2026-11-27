@@ -54,6 +54,8 @@ describe('Story Map: Begleiter mit Kontext aus Patton', () => {
     expect(n.warum.verstaendnis?.falsch).toMatch(/^„Die Map ist einfach übersichtlicher\.“/);
     expect(n.warum.fragen?.map((f) => f.frage)).toStrictEqual(['Ist eine Liste dann falsch?', 'Ich baue allein und habe alles im Kopf – brauche ich das?', 'Warum hat der kleine Anfang funktioniert?', 'Was hat das mit unserem Produkt zu tun?']);
     expect(n.warum.fragen?.[0].antwort).toContain('„Eric’s backlog is organized as a story map“');
+    // Wörtlich wie im Buch: Die Stelle steht mitten im Satz („you’ll find that no matter …“), darum Auslassung und klein.
+    expect(n.warum.fragen?.[1].antwort).toContain('„… no matter how clear you are about your story, talking through it while you map will help you discover the holes in your own thinking“ (Kap. 1, Tell Your Users’ Stories)');
     expect(n.warum.fragen?.[3].antwort).toMatch(/^Kursübertrag, nicht aus dem Buch: .*Tag 5 .*Slice 1/);
   });
 

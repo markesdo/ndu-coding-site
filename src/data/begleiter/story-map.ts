@@ -168,7 +168,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       },
       {
         frage: 'Ich baue allein und habe alles im Kopf – brauche ich das?',
-        antwort: 'Gerade dann: „Even Gary—the guy who held the vision of the product in his head—didn’t have a clear understanding of the size and complexity of his product“ (Kap. 14, Discovery Is for Building Shared Understanding). „No matter how clear you are about your story, talking through it while you map will help you discover the holes in your own thinking“ (Kap. 1, Tell Your Users’ Stories).',
+        antwort: 'Gerade dann: „Even Gary—the guy who held the vision of the product in his head—didn’t have a clear understanding of the size and complexity of his product“ (Kap. 14, Discovery Is for Building Shared Understanding). „… no matter how clear you are about your story, talking through it while you map will help you discover the holes in your own thinking“ (Kap. 1, Tell Your Users’ Stories).',
       },
       {
         frage: 'Warum hat der kleine Anfang funktioniert?',
