@@ -345,32 +345,37 @@ describe('Tests zur Auswahl und Beispiel', () => {
       'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
       'Welcher Test passt zu uns?',
       'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
+      'Ist Concierge nicht einfach das Produkt ohne App?',
+      'Warum ist ein Kauf beim Concierge ein starker Beleg, obwohl alles von Hand läuft?',
+      'Warum Concierge und nicht gleich Wizard of Oz?',
     ]);
     const [mock, personen, ehrlich, wahl] = n.fragen!.map((f) => f.antwort);
     // Review #465: Der Hinweis nach dem Klick sagt, dass es ein Test ist, und fragt nach der E-Mail (Bland S. 289).
     const hinweis = '„Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“';
     expect(mock).toContain(`„Vorbestellen für 2,90 €“ → ${hinweis}`);
     expect(n.geschichte?.text).toContain(hinweis);
-    expect(n.kern?.[7].text).toContain(hinweis);
+    expect(n.kern?.find((k) => k.text.startsWith('Mock Sale – Achtung:'))?.text).toContain(hinweis);
     expect(JSON.stringify(n)).not.toContain('wir sagen dir Bescheid“');
     // 27.11.2026: überall derselbe Hinweis mit Dankeschön, kein kurzer mehr.
     expect(JSON.stringify(n)).not.toContain('noch nicht. Sollen wir');
     expect(mock).toContain('Es fließt kein Geld (Bland, Mock Sale, S. 288–289)');
     // Ohne Zahlungsdaten: Kaufklicks und E-Mails, „relatively strong“ – nicht „sehr stark“.
-    expect(mock).toContain('Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks');
+    expect(mock).toContain('Ohne Zahlungsdaten (Vorgabe des Kurses: nie speichern) zählt euer Mock Sale die Kaufklicks');
     expect(personen).toMatch(/^Bei drei der vier Tests hat noch niemand gekauft/);
     expect(personen).toContain('Ausnahme Concierge: echte Kund*innen, die bestellen, zahlen können');
     expect(ehrlich).toContain('„with a gift card for the inconvenience“');
-    expect(ehrlich).toContain('Kursregel: Zahlungsdaten nie speichern');
+    expect(ehrlich).toContain('Vorgabe des Kurses: Zahlungsdaten nie speichern');
     expect(ehrlich).toContain('„Do your customers understand that you’ll be collecting that data?“ (S. 127)');
     expect(ehrlich).not.toContain('Can we meet customers’ expectations');
-    expect(wahl).toContain('Kursregel: E1 führt ihr nicht durch.');
+    expect(wahl).toContain('Vorgabe des Kurses: E1 führt ihr nicht durch.');
     expect(n.geschichte?.text).toContain('von schwach nach stark.');
     expect(n.geschichte?.text).toContain('Der Kaufklick allein ist „relatively strong“; „sehr stark“ wird der Mock Sale erst mit Zahlungsdaten (S. 290).');
-    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test, in dieser Reihenfolge.
+    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test, in dieser Reihenfolge; Concierge ausführlich (Markus 27.11.); danach die Vorsicht-Hinweise.
     expect(n.kern?.map((k) => k.text.split(':')[0])).toStrictEqual([
       'Simulierter Moment – Aufbau', 'Simulierter Moment – gemessen', 'Landingpage / Aufsteller – Aufbau', 'Landingpage – gemessen',
-      'Concierge – Aufbau', 'Concierge – Testpersonen', 'Mock Sale – Aufbau', 'Mock Sale – Achtung',
+      'Concierge – Aufbau', 'Concierge – Testpersonen', 'Concierge – Bewertung', 'Concierge – Ablauf', 'Concierge – gemessen, und warum stark',
+      'Concierge – davor und danach', 'Concierge – Blands Fall, Realtor.com', 'Concierge – Kaffeebar',
+      'Mock Sale – Aufbau', 'Mock Sale – Achtung', 'Vorsicht beim Erzählen', 'Vorsicht beim Erzählen',
     ]);
   });
   it('#beispiel: Schritt – Annahme – Art, A3 an Schritt 2, A4 an Schritt 5', () => {
@@ -502,7 +507,8 @@ describe('E1 nur Theorie: Spitzenreiter-Handout, Slice im Baum, Umschwenken', ()
     expect(t4).toContain('<p class="nur-beamer">An Tag 5, im Debrief: Hätte die Annahme gehalten, bleibt der Slice. Sonst geht ihr zurück in den Baum.</p>');
     expect(t4).not.toContain('Nach den Tests');
     expect(t4).toContain('An Tag 5 markiert ihr im Baum, was E1 gezeigt hätte (und E2, falls getestet)');
-    expect(NOTIZEN['/innolab/tag-4']['slice-im-baum'].live).toContain('Tag 5, Debrief: hätte die Annahme gehalten → Slice bleibt; sonst Baum.');
+    // Seit Review #483: Die live-Zeile nennt die drei Bänder der Karte E1 statt zwei Ausgänge; der Konjunktiv steht in kern.
+    expect(NOTIZEN['/innolab/tag-4']['slice-im-baum'].live).toContain('Tag 5: ab 10 Slice bleibt, 5–9 weiter testen, unter 5 Baum.');
   });
   it('tag-5 #umschwenken: die geteilte Annahme ist A8, nicht „zuerst getestet“', () => {
     const t5 = seite('/innolab/tag-5');
@@ -639,13 +645,14 @@ describe('Zwei Blöcke: Stopp nach Schritt 3', () => {
     expect(ids.indexOf('karte-e1')).toBeGreaterThanOrEqual(0);
     expect(ids.indexOf('vorgehen-karte')).toBe(ids.indexOf('karte-e1') + 1);
   });
-  // Review #480: „Nicht fertig?“ erst nach Schritt 5 aufdecken – sonst steht es schon beim ersten Klick da.
-  it('#vorgehen-karte: „Nicht fertig?“ ist ein eigener Schritt nach Schritt 5', () => {
+  // Markus 27.11.2026: Die Zeile „Nicht fertig? …“ ist gestrichen – auf der Folie und im Begleiter.
+  it('#vorgehen-karte: ohne „Nicht fertig?“, die Folie endet mit Schritt 5', () => {
     const k = sichtbar('vorgehen-karte');
-    const zeile = '<p class="stopp" data-schritt><strong>Nicht fertig?</strong>';
-    expect(k).toContain(zeile);
-    expect(k.indexOf(zeile)).toBeGreaterThan(k.indexOf('</ol>'));
+    expect(k).not.toContain('Nicht fertig?');
+    expect(k).not.toContain('class="stopp"');
+    expect(k.trimEnd().endsWith('</ol>')).toBe(true);
     expect(k.indexOf('</ol>')).toBeGreaterThan(k.indexOf('<strong>Euer Baum – Tests, auf Miro:</strong>'));
+    expect(JSON.stringify(NOTIZEN['/innolab/methoden/experiment']['vorgehen-karte'])).not.toContain('Nicht fertig');
   });
   // Review #480: „Karte“ heißt auf diesen Folien nur die Experiment-Karte; die Anleitung auf Miro hat Punkte 1–5, wie ihre
   // nummerierten Kreise (Frame „T4 · 0 · Anleitung Annahmen der Idee“, gelesen am 27.11.2026).

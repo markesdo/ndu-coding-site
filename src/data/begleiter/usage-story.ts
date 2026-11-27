@@ -77,6 +77,14 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
         text: '„The flow can’t just end on a high point—it has to go somewhere and take the user with it.“ Und: „the falling action or denouement should happen as quickly as possible.“',
         quelle: `${LICHAW}, Kap. 5 (Falling Action); Kap. 2`,
       },
+      {
+        text: 'Vorsicht beim Erzählen: Die Peak-End-Regel nur benennen (Tag 2). Lichaws Version der Koloskopie-Studie nicht nacherzählen – sie datiert sie falsch auf die 1970er. Die Studie ist von Redelmeier & Kahneman (1996); der Versuch zur Regel steht bei der Experience Map.',
+        quelle: `${LICHAW}, Kap. 5; Redelmeier & Kahneman, Pain 66 (1996); Kahneman u. a. (1993) in journey-map`,
+      },
+      {
+        text: 'Nicht behaupten: Lichaw sage, ein Satz reiche als Boom. Sie nennt als kleinsten Boom eine Animation; dass ein einziger Satz reicht („Fertig 7:31“), ist unser Übertrag.',
+        quelle: `${LICHAW}, Kap. 8, Make Things Go Boom!`,
+      },
     ],
     ueberleitung: 'So sieht das an der Kaffeebar aus – Pendler I1 um 7:27.',
   },
