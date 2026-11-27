@@ -10,6 +10,8 @@ import { AGIL_SCRUM_FOLIEN, FOLIENSATZ_URL } from './foliensatz';
 import { MIRO_FRAMES } from '../components/miro-frames';
 import { gliederung } from '../components/gliederung';
 import { folienAus } from './begleiter';
+import { textAusHtml } from '../components/abschnitt';
+import { NOTIZEN_SCRUM } from '../data/begleiter/scrum';
 
 // Entscheidung Markus 26.11.2026: Agil & Scrum an Tag 4 nach Variante B – 20 Folien aus dem Foliensatz, dann auf der
 // Site „Wo wir abweichen“, die Übung „Kaffeebar auf der Scrum-Karte“ (4 + 3 min) und das Beispiel als Auflösung.
@@ -78,10 +80,12 @@ describe('Tag 4: Agil & Scrum 16:35–17:15 mit Foliensatz', () => {
 });
 
 describe('Scrum-Seite: Zeiger auf den Foliensatz und Übung vor dem Beispiel', () => {
-  it('gerendert: die Folie „foliensatz“ zeigt Link und Folien auf dem Beamer, nicht nur im Handout', async () => {
+  // Seit 27.11.2026 (Markus: „the numbers of the slides are not important“): Die Folie sagt in Stichworten, was der
+  // Foliensatz bringt, und nennt keine Foliennummern; die stehen nur im Begleiter.
+  it('gerendert: die Folie „foliensatz“ zeigt Link und Themen auf dem Beamer, ohne Foliennummern', async () => {
     const html = await (await AstroContainer.create()).renderToString(Scrum);
     const ids = [...html.matchAll(/<h2[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
-    expect(ids.slice(ids.indexOf('foliensatz'), ids.indexOf('foliensatz') + 2)).toStrictEqual(['foliensatz', 'agil']);
+    expect(ids.slice(ids.indexOf('foliensatz'), ids.indexOf('foliensatz') + 3)).toStrictEqual(['foliensatz', 'nachlese', 'abweichungen']);
     const folie = ausschnitt(html, 'foliensatz');
     // Ohne Handout-Teil wäre „beamer“ die ganze Folie – dann bewiese der Test nicht, dass der Link auf dem Beamer steht.
     const handout = folie.indexOf('nur-handout');
@@ -89,10 +93,91 @@ describe('Scrum-Seite: Zeiger auf den Foliensatz und Übung vor dem Beispiel', (
     const beamer = folie.slice(0, handout);
     expect(beamer).not.toContain('Nachlese');
     expect(beamer).toContain(href);
-    expect(beamer).toContain(`Folien ${AGIL_SCRUM_FOLIEN}.`);
+    expect(textAusHtml(beamer.match(/<p class="folie-satz"[^>]*>([^]*?)<\/p>/)?.[1] ?? '')).toBe('Erst die Folien, dann hier weiter: wo wir abweichen, die Kaffeebar, das Beispiel.');
+    expect([...beamer.matchAll(/<li\b[^>]*>([^]*?)<\/li>/g)].map((m) => textAusHtml(m[1]))).toStrictEqual([
+      'Warum agil: Wasserfall gegen Inkremente, das Agile Manifest.',
+      'Scrum nach dem Guide: der Kreislauf, drei Verantwortlichkeiten, der Sprint und seine Events.',
+      'Fertig: das Inkrement und die Definition of Done.',
+      'Danach hier: Wo wir abweichen → Kaffeebar auf der Scrum-Karte → Gleis-1-Express.',
+    ]);
+    expect(textAusHtml(beamer)).toContain('Foliensatz: „ndu – Innolab 26/27 Students parts“, Teil Agile & Scrum.');
+    // Keine Foliennummern: weder die Auswahl noch der Bereich 1–62, auch nicht im Handout-Teil.
+    expect(folie).not.toContain(AGIL_SCRUM_FOLIEN);
+    expect(textAusHtml(folie)).not.toMatch(/Folien? \d|1–62/);
+    expect(folie.slice(handout)).toContain('href="#nachlese"');
     // Auch „So geht ihr vor“ nennt den Foliensatz.
     expect(ausschnitt(html, 'vorgehen')).toContain(href);
   }, 60_000);
+
+  it('Begleiter: die Nummern der gezeigten Folien stehen in der Notiz zu „foliensatz“', () => {
+    expect(NOTIZEN_SCRUM.foliensatz.ablauf?.schritte?.join(' ')).toContain(`: ${AGIL_SCRUM_FOLIEN}.`);
+    expect(QUELLE_SCRUM).not.toMatch(/import \{[^}]*AGIL_SCRUM_FOLIEN/);
+  });
+});
+
+// Seit 27.11.2026: „Warum nicht Wasserfall“ bis „Fertig heißt fertig“ wiederholen den Foliensatz (Vergleich in
+// tag4-vorbereitung/scrum-folien-vergleich.md) und sind darum keine Folien mehr, sondern die Nachlese im Handout.
+describe('Scrum-Seite: Nachlese statt sechs Theorie-Folien', () => {
+  const THEORIE = ['agil', 'manifest', 'scrum', 'verantwortlichkeiten', 'events', 'fertig'];
+
+  it('Quelltext: ein nur-handout-Block mit h2 #nachlese und den sechs Ankern als h3, ohne <Folie>', () => {
+    const von = QUELLE_SCRUM.indexOf('<div class="nur-handout">\n  <h2 id="nachlese">');
+    expect(von).toBeGreaterThan(0);
+    const bis = QUELLE_SCRUM.indexOf('<h2 id="abweichungen">', von);
+    expect(bis).toBeGreaterThan(von);
+    const block = QUELLE_SCRUM.slice(von, bis);
+    expect([...block.matchAll(/<h3 id="([^"]+)">/g)].map((m) => m[1])).toStrictEqual(THEORIE);
+    // Im Block steht keine Folie; er endet mit </div>, danach kommt nur die Folie mit #abweichungen.
+    const innen = block.slice(0, block.lastIndexOf('<Folie>'));
+    expect(innen).not.toMatch(/<\/?Folie\b/);
+    expect(innen.trimEnd().endsWith('</div>')).toBe(true);
+    expect(block).not.toContain('data-schritt');
+    expect(block).not.toContain('aufdecken=');
+  });
+
+  it('Begleiter und Inhaltsverzeichnis: keine eigenen Folien mehr; die Anker gehören zur Folie „foliensatz“', () => {
+    const folien = folienAus('/innolab/methoden/scrum', QUELLE_SCRUM);
+    expect(folien.map((f) => f.id).filter((id) => THEORIE.includes(id))).toStrictEqual([]);
+    expect(folien.find((f) => f.id === 'foliensatz')?.unterIds).toStrictEqual(['nachlese', ...THEORIE]);
+    for (const id of THEORIE) expect(NOTIZEN_SCRUM, id).not.toHaveProperty(id);
+    expect(gliederung(QUELLE_SCRUM).map((a) => a.id).slice(0, 3)).toStrictEqual(['foliensatz', 'nachlese', 'abweichungen']);
+  });
+
+  it('gerendert: die Nachlese steht im Handout mit Zitaten und Seitenzahlen, außerhalb jeder Folie', async () => {
+    const html = await (await AstroContainer.create()).renderToString(Scrum);
+    const von = html.indexOf('<h2 id="nachlese"');
+    const bis = html.indexOf('<h2 id="abweichungen"');
+    expect(von).toBeGreaterThan(0);
+    expect(bis).toBeGreaterThan(von);
+    // Der Abschnitt steckt in einem nur-handout-Element, das keine Folie ist.
+    const davor = html.slice(0, von);
+    expect(davor.slice(davor.lastIndexOf('<'))).toMatch(/^<div class="nur-handout"[^>]*>\s*$/);
+    // Bis zur Folie mit #abweichungen (<section … data-folie>), nicht bis zu ihrer Überschrift.
+    const ende = html.lastIndexOf('<section', bis);
+    expect(ende).toBeGreaterThan(von);
+    const nachlese = html.slice(von, ende);
+    expect(nachlese).not.toContain('data-folie');
+    for (const id of THEORIE) expect(nachlese).toContain(`<h3 id="${id}"`);
+    const text = textAusHtml(nachlese);
+    for (const t of [
+      '„Until we begin to see the software, we can’t really tell how well we’re doing“ (Ron Jeffries, „The Nature of Software Development“ (2015), S. 20)',
+      'we value the items on the left more.“',
+      '„Inspection without adaptation is considered pointless“ (S. 3–4)',
+      '„The Product Owner is one person, not a committee“ (S. 5–6)',
+      '„The Sprint is a container for all other events.“',
+      'it returns to the Product Backlog for future consideration.“',
+    ]) expect(text, t).toContain(t);
+    expect(nachlese).toContain('src="/quellen/jeffries/phasen.jpg"');
+    expect(nachlese).toContain('id="sk-scrum"');
+  }, 60_000);
+});
+
+describe('Scrum-Seite: Links auf die Theorie-Anker', () => {
+  it('sprint.astro verlinkt #events, und den Anker gibt es noch', () => {
+    const sprint = readFileSync(new URL('../pages/innolab/methoden/sprint.astro', import.meta.url), 'utf8');
+    expect(sprint).toContain('href="/innolab/methoden/scrum#events"');
+    expect(QUELLE_SCRUM).toContain('<h3 id="events">');
+  });
 
   it('gerendert: Abweichungen → Übung → Beispiel; die Übung mit Timer 4 + 3 und den Frames je Person', async () => {
     const html = await (await AstroContainer.create()).renderToString(Scrum);
