@@ -32,8 +32,10 @@ export function zeileTeilen(zeile: string): KartenZeile {
   const rest = (r: string) => teile(r.replace(/^\s+/, ''));
   const bekannt = SATZANFAENGE.find((s) => z.startsWith(s));
   if (bekannt) {
-    // Folgt dem bekannten Satzanfang direkt ein Doppelpunkt („Wir messen:“), gehört er zum fetten Teil.
-    const stamm = z.slice(bekannt.length).startsWith(':') ? `${bekannt}:` : bekannt;
+    // Folgt dem bekannten Satzanfang direkt ein Doppelpunkt oder Komma („Wir messen:“, „Wir messen, wer …“), gehört es zum
+    // fetten Teil – sonst stünde nach dem fetten Teil ein Leerzeichen vor dem Komma.
+    const zeichen = z.charAt(bekannt.length);
+    const stamm = zeichen === ':' || zeichen === ',' ? `${bekannt}${zeichen}` : bekannt;
     return { stamm, rest: rest(z.slice(stamm.length)) };
   }
   const d = z.indexOf(':');

@@ -208,6 +208,20 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     expect([...g.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((x) => x[1])).toStrictEqual(['Die Regel:', 'Die Ausnahme:', 'Nie:']);
   });
 
+  // Dozent 27.11.2026: Karte E1 der Kaffeebar folgt der Vorlage (#vorlage) wie auf Miro; dazu der Kontakt (E-Mail).
+  it('#karte-e1 folgt der Vorlage: „Wir messen, …“, „Danach erfahren die Testpersonen: … · Wir sammeln: …“, Zug und E-Mail', () => {
+    const k = sichtbar('karte-e1');
+    expect(k).toContain('Die Seite verspricht „Im Gehen bestellen – bald“ und bittet, den eigenen Zug und eine E-Mail-Adresse einzutragen. Bestellen geht noch nicht; das steht auf der Seite.\n');
+    expect(k).toContain('\nWir messen, wer bei Schlange zum Automaten geht (Strichliste) und wer am Aufsteller einen Zug einträgt.\n');
+    expect(k).toContain('\nWir haben recht, wenn von den ersten 30, die bei Schlange zum Automaten gehen oder einen Zug eintragen, mindestens 10 eintragen.\n');
+    expect(k).toContain('\nDanach erfahren die Testpersonen: wann es losgeht, per E-Mail · Wir sammeln: den eingetragenen Zug und eine E-Mail-Adresse\n');
+    expect(k).not.toContain('Danach: Wer eingetragen hat');
+    expect(k).not.toContain('Wir messen:');
+    // Die Vorlage hat dieselben Satzanfänge.
+    expect(seite(EX)).toContain('\nWir messen [Handlung].\n');
+    expect(seite(EX)).toContain('\nDanach erfahren die Testpersonen: [...] · Wir sammeln: [...]\n');
+  });
+
   it('#karte-e1 kennzeichnet die Zeilen des Kurses', () => {
     expect(sichtbar('karte-e1')).toContain('Kursregel: Zeilen 2–5 nach Blands Test Card, die letzten drei vom Kurs.');
   });

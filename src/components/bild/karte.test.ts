@@ -22,6 +22,10 @@ describe('Karte: Text wie im Prompt → Titel und Zeilen mit festem Satzanfang',
     expect(zeileTeilen('Wir messen: wer bei Schlange zum Automaten geht')).toStrictEqual({ stamm: 'Wir messen:', rest: [{ text: 'wer bei Schlange zum Automaten geht', luecke: false }] });
     expect(zeileTeilen('Wir messen [Handlung].').stamm).toBe('Wir messen');
   });
+  // 27.11.2026: Karte E1 folgt der Vorlage („Wir messen, wer …“) – das Komma gehört zum fetten Teil, kein Leerzeichen davor.
+  it('bekannter Satzanfang mit Komma: das Komma ist fett', () => {
+    expect(zeileTeilen('Wir messen, wer bei Schlange zum Automaten geht')).toStrictEqual({ stamm: 'Wir messen,', rest: [{ text: 'wer bei Schlange zum Automaten geht', luecke: false }] });
+  });
   it('Lücken „[…]“ getrennt; eingerückte Zeilen gehören zur Zeile davor', () => {
     const k = karteAus('E1 · A[n] ([Art])\nWir glauben, dass [...].\nUm das zu prüfen, geben wir:\n  „Aufgabe“');
     expect(k.titel.map((t) => t.luecke)).toStrictEqual([false, true, false, true, false]);
@@ -30,9 +34,11 @@ describe('Karte: Text wie im Prompt → Titel und Zeilen mit festem Satzanfang',
     expect(k.zeilen[1].rest.map((t) => t.text).join('')).toContain('„Aufgabe“');
   });
   it('gerendert: Leerzeichen zwischen Lücke und Text bleiben, „Wir messen:“ ganz fett', async () => {
-    const html = await (await AstroContainer.create()).renderToString(Karte, { props: { text: 'E2\nWir haben recht, wenn [x] von 5 den Höhepunkt erreichen.\nWir messen: Zeit bis dahin' } });
+    const html = await (await AstroContainer.create()).renderToString(Karte, { props: { text: 'E2\nWir haben recht, wenn [x] von 5 den Höhepunkt erreichen.\nWir messen: Zeit bis dahin\nWir messen, wer einträgt.' } });
     const ohneAttr = html.replace(/ data-astro-[a-z-]+(="[^"]*")?/g, '');
     expect(ohneAttr).toContain('<strong>Wir haben recht, wenn</strong> <span class="luecke">[x]</span> von 5 den Höhepunkt erreichen.');
     expect(ohneAttr).toContain('<strong>Wir messen:</strong> Zeit bis dahin');
+    expect(ohneAttr).toContain('<strong>Wir messen,</strong> wer einträgt.');
+    expect(ohneAttr).not.toContain(' ,');
   }, 60_000);
 });
