@@ -103,10 +103,10 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(n).toContain('A: Products & Services. B: Pain Reliever (→ P2).');
   });
 
-  it('Prüfliste: Studierende lesen nur die Pfeil-Form, Claude toleriert die alte (Review #444)', () => {
+  it('Prüfliste: Pfeil-Form, ältere IDs ohne Pfeil dürfen bleiben (Markus 27.11.: Selbstprüfung ohne Claude)', () => {
     const m = METHODEN.find((x) => x.slug === 'value-map')!;
     const p = m.pruefliste!.find((x) => x.id === 'value-map-wirkung')!;
-    expect(p.text).toBe('Bei Pain Relievers und Gain Creators stehen keine Produkte, sondern was sich für die Kundschaft ändert – mit der ID dessen, was der Zettel trifft: (→ P1), (→ G1), auch (→ J1) oder zwei IDs wie (→ P2, G1).');
+    expect(p.text).toBe('Bei Pain Relievers und Gain Creators stehen keine Produkte, sondern was sich für die Kundschaft ändert – mit der ID dessen, was der Zettel trifft: (→ P1), (→ G1), auch (→ J1) oder zwei IDs wie (→ P2, G1). Ältere IDs ohne Pfeil wie (P1) dürfen bleiben.');
     expect(p.frage).toBe('Eine ID ohne Pfeil wie „(P1)“ ist die ältere Schreibweise und kein Befund; frag nur nach, wenn unklar ist, was der Zettel trifft.');
     // Die Toleranz landet im Prüf-Prompt (pruefFragen), nicht in der Checkliste.
     expect(pruefPrompt(m)).toContain('Bei value-map-wirkung: Eine ID ohne Pfeil wie „(P1)“ ist die ältere Schreibweise und kein Befund');

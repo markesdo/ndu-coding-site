@@ -306,8 +306,8 @@ export const METHODEN: Methode[] = [
       { id: 'value-map-wahl', text: 'Der Spitzenreiter auf Papier ist gewählt, mit einem Satz warum; die anderen beiden bleiben offen.' },
       {
         id: 'value-map-wirkung',
-        text: 'Bei Pain Relievers und Gain Creators stehen keine Produkte, sondern was sich für die Kundschaft ändert – mit der ID dessen, was der Zettel trifft: (→ P1), (→ G1), auch (→ J1) oder zwei IDs wie (→ P2, G1).',
-        // Entscheidung 26.11.2026: Pfeil-Schreibweise; auf Miro stehen teils noch IDs ohne Pfeil – nur Claude toleriert sie.
+        text: 'Bei Pain Relievers und Gain Creators stehen keine Produkte, sondern was sich für die Kundschaft ändert – mit der ID dessen, was der Zettel trifft: (→ P1), (→ G1), auch (→ J1) oder zwei IDs wie (→ P2, G1). Ältere IDs ohne Pfeil wie (P1) dürfen bleiben.',
+        // Entscheidung 26.11.2026: Pfeil-Schreibweise. Seit 27.11. (Selbstprüfung ohne Claude) steht die Toleranz für IDs ohne Pfeil auch im Text.
         frage: 'Eine ID ohne Pfeil wie „(P1)“ ist die ältere Schreibweise und kein Befund; frag nur nach, wenn unklar ist, was der Zettel trifft.',
       },
       { id: 'value-map-geordnet', text: 'Products and Services, Pain Relievers und Gain Creators sind je für sich geordnet: das Unverzichtbare oben.' },
