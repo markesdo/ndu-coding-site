@@ -235,3 +235,66 @@ describe('Experiment-Seite ohne Claude-Pro-Block', () => {
     expect(seite(EX)).toContain("prev={{ href: '/innolab/methoden/geschaeftsmodell', t: 'Geschäftsmodell' }}");
   });
 });
+
+// 27.11.2026 (Markus): Der Begleiter zu #spitzenreiter braucht mehr – Geschichte, Verständnisfrage, Fragen aus dem Raum.
+describe('Begleiter #spitzenreiter: Geschichte, Verständnisfrage, Fragen', () => {
+  const n = NOTIZEN[EX].spitzenreiter;
+  it('Geschichte: Torres’ Begründung mit Seite, die Abweichung als Kursregel', () => {
+    expect(n.geschichte?.text).toContain('„If we test only one idea at a time, confirmation bias will rear its ugly head.');
+    expect(n.geschichte?.quelle).toContain('S. 116, 134–136');
+    expect(n.geschichte?.quelle).toContain('Kursregel');
+    // Review #463: Torres nennt Portland auf S. 134 nicht – der Bezug ist unserer; die Zeile unter der Karte ist Kursregel.
+    expect(n.geschichte?.text).toContain('bei uns die Portland-Geschichte von Tag 1');
+    expect(n.geschichte?.text).toContain('ebenfalls als Kursregel, die anderen beiden als Zeile „Falls E1 scheitert“');
+    expect(n.fragen?.[3].antwort).toContain('Die Zeile „Falls E1 scheitert“ für die anderen beiden ist eine Kursregel');
+  });
+  it('Umschwenken wie auf der Folie „Vorher festlegen“: auf die Idee aus der Zeile, als Lesart des Kurses', () => {
+    expect(n.fragen?.[2].antwort).toContain('pivot – eine deutliche Änderung an Idee, Wertversprechen oder Geschäftsmodell');
+    expect(n.fragen?.[2].antwort).toContain('das ist eine Lesart des Kurses');
+    expect(n.fragen?.[2].antwort).not.toContain('ein Teil der Idee ändert sich deutlich');
+  });
+  it('Verständnisfrage mit erwarteter und falscher Antwort', () => {
+    expect(n.verstaendnis?.frage).toBe('Was heißt „Spitzenreiter auf Papier“?');
+    expect(n.verstaendnis?.antwort).toContain('auf den Fit zwischen Value Map und Kundenprofil, nicht auf einen Test');
+    expect(n.verstaendnis?.antwort).toContain('dann entscheidet ihr nach Blands drei Möglichkeiten');
+    expect(n.verstaendnis?.falsch).toContain('„Wir haben uns entschieden.“');
+  });
+  it('fünf Fragen, die letzte lässt die Wahl bei der Person', () => {
+    expect(n.fragen?.map((f) => f.frage)).toStrictEqual([
+      'Was ist eine gemeinsame Annahme?',
+      'Was passiert mit den anderen beiden Ideen?',
+      'Und wenn der Spitzenreiter scheitert?',
+      'Warum nicht alle drei testen, wie Torres?',
+      'Der Spitzenreiter ist nicht meine Idee – was jetzt?',
+    ]);
+    expect(n.fragen?.[0].antwort).toContain('A8');
+    expect(n.fragen?.[4].antwort).toContain('Du entscheidest: bestätigen oder ändern.');
+  });
+});
+
+// 27.11.2026 (Markus, Widersprüche aus #463): E1 läuft nicht – kein Satz darf so tun, als wäre vor Tag 5 getestet worden.
+describe('E1 nur Theorie: Spitzenreiter-Handout, Slice im Baum, Umschwenken', () => {
+  it('#spitzenreiter-Handout: ohne „zwei Wochen“, Entscheidung im Konjunktiv, Zeile unter der Karte als Kursregel', () => {
+    const f = folie('spitzenreiter');
+    expect(f).not.toContain('zwei Wochen');
+    expect(f).not.toContain('entschieden wird nach den Tests');
+    expect(f).toContain('Ihr seid drei, jede*r mit einem eigenen Produkt, und Story Map, Usage Story und Prototyp von heute brauchen eine Idee.');
+    expect(f).toContain('entschieden würde nach einem Test');
+    expect(f).toContain('an Tag 5 besprecht ihr als Gedankenexperiment, was E1 gezeigt hätte');
+    expect(f).toContain('(S. 117 PDF)');
+    expect(f).toContain('Dazu kommt eine Kursregel: Die riskanteste Annahme jeder anderen Idee steht als eine Zeile unter eurer Karte');
+    expect(f).toContain('heißt Lernkarte – bei uns nur für E2, falls ihr mit dem Prototyp testet');
+  });
+  it('tag-4 #slice-im-baum: Beamer-Zeile und Handout im Konjunktiv', () => {
+    const t4 = seite('/innolab/tag-4');
+    expect(t4).toContain('<p class="nur-beamer">An Tag 5, im Debrief: Hätte die Annahme gehalten, bleibt der Slice. Sonst geht ihr zurück in den Baum.</p>');
+    expect(t4).not.toContain('Nach den Tests');
+    expect(t4).toContain('An Tag 5 markiert ihr im Baum, was E1 gezeigt hätte (und E2, falls getestet)');
+    expect(NOTIZEN['/innolab/tag-4']['slice-im-baum'].live).toContain('Tag 5, Debrief: hätte die Annahme gehalten → Slice bleibt; sonst Baum.');
+  });
+  it('tag-5 #umschwenken: die geteilte Annahme ist A8, nicht „zuerst getestet“', () => {
+    const t5 = seite('/innolab/tag-5');
+    expect(t5).toContain('und die geteilte Annahme (A8)');
+    expect(t5).not.toContain('die ihr zuerst getestet habt');
+  });
+});
