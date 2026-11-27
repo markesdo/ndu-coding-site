@@ -1,7 +1,7 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu /innolab/methoden/experiment (Tag 4, 28.11.: 11:00–11:40 Experiment-Karte mit Theorie und Beispiel,
-// 18 min Übung; seit 26.11.2026 nachts ohne den Claude-Pro-Block davor – dessen Notizen stehen jetzt in tag-5.ts). Jede Folie hat eine Notiz
+// Übung in zwei Blöcken: 11 min Schritte 1–3 (#vorgehen), nach der Theorie zur Karte 7 min Schritte 4–5 (#vorgehen-karte); seit 26.11.2026 nachts ohne den Claude-Pro-Block davor – dessen Notizen stehen jetzt in tag-5.ts). Jede Folie hat eine Notiz
 // (begleiter-tag-4.test.ts). Die Origin Story steht seit 26.11. im Abschluss von Tag 4 (tag-4#abschluss), nicht mehr hier.
 // Seit 26.11. ohne die Intuit-Folien (Geschichte im Handout von #karte); neu: schritte-der-idee,
 // ergebnis-gilt, test-arten, beispiel-map; gegen-den-beleg steht nach der Lernkarte. Seit dem Nachtrag 26.11. abends
@@ -15,7 +15,7 @@ const TORRES = 'Teresa Torres, Continuous Discovery Habits';
 export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
   'annahmen-der-idee': {
     live: [
-      'Zeit: Theorie und Beispiel bis zur Übung, dann 18 min allein.',
+      'Zeit: zwei Runden – erst Annahmen und Map, dann Karte E1.',
       '„Euer Spitzenreiter steht auf Papier – an welcher Annahme hängt er?“',
       'Zwei Fallen: Bestätigung suchen, sich in Investiertes verlieben.',
       'Ergebnis um 11:40 nennen: Karte E1.',
@@ -126,7 +126,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Du entscheidest: bestätigen oder ändern. Der Vorschlag in T3 · 4 war ein Ausgangspunkt, keine Vorgabe. Maßstab ist derselbe wie um 9:05: Welche deiner drei Ideen trifft dein Kundenprofil am besten (✓ ✗ ?)? Bleibst du beim Vorschlag, ist er ab jetzt deine Wahl. Wechselst du, arbeitest du mit der anderen Idee weiter und ziehst Value Map und Fit nach.',
       },
     ],
-    ueberleitung: 'Mit welcher Annahme fangt ihr an? Das zeigt die Map.',
+    ueberleitung: 'Wie findet ihr die Annahmen eures Spitzenreiters? Mit fünf Fragen an jeden Schritt.',
   },
 
   map: {
@@ -157,7 +157,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Dort stehen wichtige Annahmen mit Beleg. Ihr baut auf ihnen auf, schaut aber nach, ob der Beleg wirklich trägt (Feldnamen wie im Miro-Frame).',
       },
     ],
-    ueberleitung: 'Für die Annahme oben rechts schreibt ihr eine Karte. So sieht sie aus.',
+    ueberleitung: 'So sieht das an der Kaffeebar aus.',
   },
 
   karte: {
@@ -366,7 +366,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Blands Faustregeln von der Folie davor: am Anfang schnell und billig, dann der stärkste Beleg, den ihr euch leisten könnt (S. 93). Habt ihr keinen Ort und keine Besucher*innen, bleibt der simulierte Moment: Bild am Handy, Situation in einem Satz (Torres, S. 135, 142–144). Concierge kostet vor allem Zeit (Bland S. 250); ein Mock Sale braucht einen durchgerechneten Preis – „If you test a ridiculously low price, then you’ll receive false positives“ (S. 290). Kursregel: E1 führt ihr nicht durch. Heute beschreibt ihr auf der Karte, welcher Test es wäre und wie er liefe; an Tag 5 besprecht ihr, was er gezeigt hätte.',
       },
     ],
-    ueberleitung: 'Alles zusammen an der Kaffeebar: erst die Schritte.',
+    ueberleitung: 'Alles zusammen an der Kaffeebar: die Karte E1 für A5.',
   },
 
   'annahmen-finden': {
@@ -449,7 +449,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: 'experiment.astro, Folie beispiel (Handout)',
       },
     ],
-    ueberleitung: 'Und welche davon zuerst? Die Map der Kaffeebar.',
+    ueberleitung: 'Und welche davon zuerst? Dafür gibt es die Map.',
   },
 
   'beispiel-map': {
@@ -469,7 +469,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 34–35`,
       },
     ],
-    ueberleitung: 'Für A5 die Karte E1.',
+    ueberleitung: 'Jetzt ihr: Schritte, Annahmen, Map – elf Minuten, allein. Nach Schritt 3 ist Stopp.',
   },
 
   'karte-e1': {
@@ -496,17 +496,32 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Dann entscheidet ihr offen dagegen: Auf der Lernkarte stehen der Beleg und der Grund (Folie „Gegen den Beleg entscheiden“ nach der Lernkarte). Die Zeile „Wir entscheiden vorher“ auf der Karte bleibt stehen.',
       },
     ],
-    ueberleitung: 'Jetzt ihr: Schritte, Annahmen, Map, Karte – 18 Minuten, allein.',
+    ueberleitung: 'Jetzt ihr: die Karte E1 für eure Annahme oben rechts, dann der Baum – sieben Minuten.',
   },
 
   vorgehen: {
     live: [
-      'Anleitung-Frame links neben „T4 · 0“ zeigen.',
+      'Anleitung-Frame links neben „T4 · 0“ zeigen: Karten 1 bis 3.',
+      'Nach 3 min: Schritte stehen? Dann fünf Fragen – Timer 5 min.',
+      'Nach 8 min: Pre-Mortem gemacht? Dann Map – Timer 3 min.',
       'Nach 11 min: Liegt jeder Tag-1-Zettel in einem Feld? Werkstatt erst abends.',
-      'Nach 13 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
-      'Nach 16 min: Annahme und E1 in den Baum – Timer 2 min.',
+      '„Stopp nach Schritt 3 – die Karte E1 schreibt ihr nach den nächsten Folien.“',
     ],
-    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.'] },
+    uebung: { dauer: '11 min (3 + 5 + 3)', form: 'allein' },
+    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.', 'Stopp nach Karte 3 der Anleitung; das Feld „Karte E1“ bleibt noch leer.'] },
+    ueberleitung: 'Stopp. Für die Annahme oben rechts schreibt ihr gleich eine Karte – so sieht sie aus.',
+  },
+
+  'vorgehen-karte': {
+    live: [
+      'Anleitung: Karte 4, dann Karte 5 – Feld „Karte E1“ in der Spalte.',
+      'Nach 3 min: Steht bei allen die Zeile „Wir entscheiden vorher“?',
+      'Nach 5 min: Annahme und E1 in den Baum – Timer 2 min.',
+      'Wenn hinten: Lernkarte und „Gegen den Beleg“ überspringen, weiter bei Übertrag.',
+      '„Nicht fertig? Karte E1 bis Tag 5 – das steht in der Hausaufgabe.“',
+    ],
+    uebung: { dauer: '7 min (5 + 2)', form: 'allein' },
+    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Karte E1 im Feld „Karte E1 für die oberste rechts“, mit Schwelle und „Wir entscheiden vorher“.', 'Riskanteste Annahme und E1 in „Baum · Produkt n“ unter den Spitzenreiter.'] },
     kern: [
       {
         text: 'Prüfpunkt experiment-schwelle: Die Schwelle steht als „x von y“ fest, bevor der Test läuft – und mit ihr, was ihr bei welchem Ergebnis tut. Grundlage: Thomkes Entscheidungsmatrix vor den Daten.',
