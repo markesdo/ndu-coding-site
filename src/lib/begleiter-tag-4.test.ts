@@ -62,9 +62,9 @@ describe('Begleiter Tag 4: Slice 1 im Baum', () => {
     expect(zeilen[3].quelle).toContain('S. 130');
   });
   it('Debrief im Konjunktiv: E1 läuft nicht, die Bänder der Karte E1 mit der Wartezeit-Anzeige als Weg zurück in den Baum', () => {
-    const debrief = kern.find((k) => k.text.startsWith('Warum „Hätte … gehalten“'));
-    expect(debrief?.text).toContain('E1 läuft in diesem Kurs nicht');
-    for (const s of ['Ab 10 von 30', 'Bei 5 bis 9', 'Unter 5', 'Wartezeit-Anzeige an der Tür', 'Kaffeewagen am Bahnsteig', '„nicht gelaufen“']) expect(debrief?.text).toContain(s);
+    const debrief = kern.find((k) => k.text.startsWith('Warum „Hätte … gehalten“'))?.text ?? '';
+    expect(debrief).toContain('E1 läuft in diesem Kurs nicht');
+    for (const s of ['Ab 10 von 30', 'Bei 5 bis 9', 'Unter 5', 'Wartezeit-Anzeige an der Tür', 'Kaffeewagen am Bahnsteig', '„nicht gelaufen“']) expect(debrief).toContain(s);
     expect(quellen['/innolab/tag-4']).toContain('Hätte die Annahme gehalten, bleibt der Slice. Sonst geht ihr zurück in den Baum.');
   });
   it('was die Quellen nicht sagen: mindestens drei „Vorsicht beim Erzählen“, jede mit Quelle, kein „Kursregel“', () => {
