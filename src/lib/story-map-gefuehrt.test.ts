@@ -90,14 +90,15 @@ describe('Story Map: geführt Schritt für Schritt', () => {
   it('Übung: die Regeln aus der Auswertung der Maps 25/26 stehen an ihrem Schritt', () => {
     expect(sichtbar(folie('schritt-tasks'))).toContain('<strong>Anfang und Ende:</strong> beim Anlass im Alltag der Person');
     expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('Anbahnung · Information · Registrierung · Onboarding · Kernnutzen');
-    expect(sichtbar(folie('schritt-reihen'))).toContain('<strong>Graue Reihe „System“:</strong> nur, worauf die Person wartet oder was sie sieht');
-    expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('das letzte Feld heißt „… danach“');
+    expect(sichtbar(folie('schritt-reihen'))).toContain('<strong>Grau, unter den Task, bei dem die Person wartet:</strong> nur, worauf sie wartet oder was sie sieht');
+    expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('die letzte heißt „… danach“');
     expect(sichtbar(folie('schritt-durchgehen'))).toContain('„Outcome erreicht? ja / nein, es fehlt: …“');
     expect(seite).not.toMatch(/reihum/i);
     expect(sichtbar(folie('schritt-erkunden'))).toContain('<strong>Mindestens ein rotes Sticky pro Aktivität.</strong>');
     expect(sichtbar(folie('schritt-outcome'))).toContain('„Outcome: [Wer] tut [was] statt [was bisher].“');
     const schneiden = sichtbar(folie('schritt-schneiden'));
-    expect(schneiden).toContain('nicht kopieren – jedes Sticky gibt es einmal');
+    expect(schneiden).toContain('was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal. Aktivitäten bleiben oben.');
+    expect(handout(folie('schritt-schneiden'))).toContain('Jedes Sticky gibt es dabei einmal.');
     expect(schneiden).toContain('<strong>Euer „bar an der Ausgabe“:</strong>');
     expect(sichtbar(folie('schritt-durchgehen'))).toContain('<strong>Prüft:</strong> An welchem Sticky passiert der Outcome?');
     // Fehlerquellen des alten Foliensatzes: keine „As a …, I want“-Stickies in der Map, keine Features als Ziel-Outcomes.
@@ -187,6 +188,88 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(JSON.stringify(n['schritt-jetzt-map'])).not.toMatch(/Experience Map|Zitat-ID|Momente/);
     // Die alte Formulierung „vom Rand“ stand nur im Begleiter.
     expect(JSON.stringify(NOTIZEN_STORY_MAP)).not.toContain('vom Rand');
+  });
+
+  // 27.11.2026 abends (Markus, Layout C): Jeder Bereich sieht aus wie der Warm-up-Frame – eine offene Fläche zum Sammeln,
+  // Varianten und Fehler unter ihrem Task, die Slice-Linie mit Pink und Cyan wartet im Streifen unten bis Schritt 9.
+  // Keine festen Reihen mehr für System, Körper, Durchgang oder Slice 2.
+  it('Layout C: offene Fläche, alles unter seinem Task, Slice-Linie im Streifen unten bis Schritt 9', () => {
+    const geaendert = ['vorgehen', 'schritt-tasks', 'schritt-aktivitaeten', 'schritt-reihen', 'schritt-erkunden', 'schritt-outcome', 'schritt-schneiden', 'schritt-durchgehen'];
+    const vorlage = seite.slice(seite.indexOf('<h2 id="vorlage">'), seite.indexOf('<h2 id="pruefen">'));
+    for (const text of [...geaendert.map(folie), vorlage]) {
+      expect(text).not.toMatch(/Vier Reihen unter der Linie|Graue Reihe|Reihe „System“|Reihe „Durchgang“|Gelbe Reihe|Grüne Felder|grüne Felder|Linie „Slice 1“|Pro Spalte eine Variante|„oder“ bleibt unten|Kursregel/);
+    }
+    expect(sichtbar(folie('schritt-tasks'))).toContain('<strong>Gelbe Stickies in eure Fläche:</strong> Verb-Sätze, erst bis zum Ende. Alles, was die Person tut – geschnitten wird in Schritt 9.');
+    expect(handout(folie('schritt-tasks'))).toContain('Die Fläche ist offen und breit, Platz ist nach unten, stapeln ist erlaubt');
+    expect(sichtbar(folie('schritt-aktivitaeten'))).toContain('<strong>Tasks zu Gruppen schieben,</strong> ein grünes Sticky über jede Gruppe: ein Verb in der Sprache der Person.');
+    expect(sichtbar(folie('schritt-erkunden'))).toContain('<strong>Unter den Task, zu dem es gehört:</strong> genauer · oder · richtig gut (blau) · geht schief (rot).');
+    expect(handout(folie('schritt-erkunden'))).toContain('Varianten und was schiefgeht hängen deshalb als Spalte unter ihrem Task, nicht in eigenen Reihen');
+    const outcome = sichtbar(folie('schritt-outcome'));
+    expect(outcome).toContain('<strong>Pink aus dem Streifen, links unter die Fragekarte:</strong>');
+    expect(outcome).toContain('<strong>Cyan daneben:</strong>');
+    const schneiden = sichtbar(folie('schritt-schneiden'));
+    expect(schneiden).toContain('<strong>Slice-Linie hochziehen,</strong> quer durch die Map; darunter schieben, was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal. Aktivitäten bleiben oben.');
+    expect(schneiden).toContain('<strong>Wo ein „oder“ hängt:</strong> Die Variante, die zum Lernen reicht, kommt über die Linie, die anderen darunter. Was fehlt oben noch?');
+    expect(schneiden).toContain('darunter schieben, was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal.');
+    expect(schneiden).toContain('Slice 1 = bar an der Ausgabe* · darunter: vorher online zahlen');
+    expect(schneiden).not.toContain('Slice 2');
+    expect(handout(folie('schritt-schneiden'))).toContain('Bis hierher lag die Linie im Streifen unter eurer Fläche; erst jetzt zieht ihr sie hoch');
+    const durchgehen = sichtbar(folie('schritt-durchgehen'));
+    expect(durchgehen).toContain('ein ✓ auf jedes grüne Sticky mit Task über der Linie');
+    expect(durchgehen).toContain('Rechts im Kasten: „Outcome erreicht? ja / nein, es fehlt: …“');
+    expect(handout(folie('vorgehen'))).toContain('Die Slice-Linie, Pink und Cyan warten im Streifen unter der Fläche bis Schritt 8 (Outcome) und 9 (Schneiden).');
+    // Handout „So sieht euer Bereich aus“: fünf Einträge statt acht Reihen.
+    expect(vorlage.match(/<li>/g) ?? []).toHaveLength(5);
+    expect(vorlage).toContain('<strong>Offene Fläche für Tasks und alles darunter:</strong>');
+    expect(vorlage).toContain('<strong>Streifen „Schneiden“</strong> unter der Fläche: die gestrichelte Slice-Linie');
+    expect(vorlage).not.toMatch(/Slice 2|Später|Genauer|Durchgang/);
+    const n = NOTIZEN['/innolab/methoden/story-map'];
+    expect(n['schritt-erkunden'].live[0]).toBe('Timer 6 min: vier Fragen unter den Task – gut blau, schief rot.');
+    expect(n['schritt-schneiden'].live.slice(0, 2)).toStrictEqual([
+      'Timer 5 min: Linie hochziehen, darunter schieben – nicht kopieren.',
+      'Beim „oder“: was zum Lernen reicht, nach oben; die anderen darunter.',
+    ]);
+    expect(n['schritt-outcome'].live[0]).toBe('Timer 2 min: Pink aus dem Streifen, links unter die Fragekarte.');
+    expect(vorlage).toContain('in Schritt 8 legt ihr Pink und Cyan links unter die Fragekarte.');
+    expect(vorlage).toContain('Sie warten dort bis Schritt 8 (Outcome) und 9 (Schneiden)');
+    expect(vorlage).toContain('Rechts neben der Fläche der Kasten „Outcome erreicht?');
+    expect(vorlage).not.toContain('wie bisher');
+    for (const id of ['vorgehen', 'schritt-erkunden', 'schritt-outcome', 'schritt-schneiden']) expect(JSON.stringify(n[id]), id).not.toMatch(/vier Zeilen|nach unten schieben|Pro Spalte|links an den Tasks|Kursregel/);
+    // Live-Zeilen bleiben kurz: höchstens zwölf Wörter.
+    for (const id of ['vorgehen', 'schritt-erkunden', 'schritt-outcome', 'schritt-schneiden']) {
+      for (const z of n[id].live) expect(z.split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length, z).toBeLessThanOrEqual(12);
+    }
+  });
+
+  // 27.11.2026 nachts (Markus, Miro): „Wer handelt“ ist eine Reihe kleiner violetter Stickies über dem Backbone, jedes über
+  // der Aktivität, bei der die Person handelt (Patton, Kap. 2, Narrative Flow Across Many Users). Keine eigene Reihe „Wer
+  // noch“ links; Tasks anderer Personen in die Fläche, unter die Tasks der Hauptperson; Grau unter den Task, bei dem sie wartet.
+  it('Wer handelt: violette Stickies über der Aktivität, keine eigene Reihe für „Wer noch“', () => {
+    expect(sichtbar(folie('schritt-rahmen'))).toContain('<strong>Violett „Wer handelt: …“:</strong> eure Hauptperson, klein in die Reihe „Wer handelt“ über dem Backbone.');
+    const reihen = folie('schritt-reihen');
+    const s = sichtbar(reihen);
+    expect(reihen).toMatch(/^<h2 id="schritt-reihen">5 · Wer noch handelt: über die Aktivität<\/h2>/);
+    expect(s).toContain('<strong>Kleines violettes Sticky „Wer noch: …“</strong> in die Reihe „Wer handelt“, über die Aktivität, bei der diese Person handelt. Ihre Tasks in die Fläche, unter die Tasks eurer Person.');
+    expect(s).toContain('violett „Barista“ über „Bestellen“, darunter „Bestellung sehen, zubereiten“');
+    expect(handout(reihen)).toContain('Wer gerade handelt, zeigt ein kleines Personen-Sticky über der Aktivität');
+    for (const text of [reihen, folie('schritt-rahmen'), folie('schritt-loecher')]) {
+      expect(text).not.toMatch(/in die eigene Reihe|\(eigene Reihe\)|Reihe der Barista|Reihe der Pendler|Wessen Reihe|links vor dem Backbone|Wer muss noch handeln, damit der Wert ankommt\?“/);
+    }
+    const vorlage = seite.slice(seite.indexOf('<h2 id="vorlage">'), seite.indexOf('<h2 id="pruefen">'));
+    expect(vorlage).toContain('<strong>Reihe „Wer handelt“</strong> über dem Backbone: kleine violette Stickies');
+    expect(vorlage).not.toContain('<li><strong>Violett „Wer noch: …“</strong>');
+    expect(vorlage.indexOf('Reihe „Wer handelt“')).toBeLessThan(vorlage.indexOf('Backbone-Reihe'));
+    const n = NOTIZEN['/innolab/methoden/story-map'];
+    expect(n['schritt-reihen'].live).toStrictEqual([
+      'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie handelt.',
+      'Ihre Tasks in die Fläche, unter die Tasks eurer Person.',
+      'System grau, unter den Task, bei dem die Person wartet.',
+      'Fragen: Wer muss noch handeln, damit der Wert ankommt?',
+    ]);
+    expect(n['schritt-rahmen'].live).toContain('Violett „Wer handelt“: Hauptperson, klein in die Reihe über dem Backbone.');
+    for (const id of ['schritt-rahmen', 'schritt-reihen']) {
+      for (const z of n[id].live) expect(z.split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length, z).toBeLessThanOrEqual(12);
+    }
   });
 
   it('Begleiter: Warm-up-Notiz erinnert ans Teilen des eigenen Boards, ohne Link', () => {

@@ -309,7 +309,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'schritt-rahmen': {
     live: [
       'Timer 3 min: Kopfzeile „Für | Outcome (Brief) | Idee (Value Map)“.',
-      'Violett „Wer handelt“: die Hauptperson, links vor dem Backbone.',
+      'Violett „Wer handelt“: Hauptperson, klein in die Reihe über dem Backbone.',
       'Fragen: Mensch, Verhalten, Idee – oder nur ein Produktname?',
     ],
     uebung: { dauer: '3 min', form: 'allein' },
@@ -351,9 +351,10 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-reihen': {
     live: [
-      'Timer 2 min: violett „Wer noch“, ihre Tasks in die eigene Reihe.',
-      'System grau, aktiv, nur wenn die Person wartet oder etwas sieht.',
-      'Fragen: Wessen Reihe ist leer, obwohl ohne sie nichts ankommt?',
+      'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie handelt.',
+      'Ihre Tasks in die Fläche, unter die Tasks eurer Person.',
+      'System grau, unter den Task, bei dem die Person wartet.',
+      'Fragen: Wer muss noch handeln, damit der Wert ankommt?',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
     ueberleitung: 'Jetzt in die Tiefe – mit den vier Fragen.',
@@ -361,7 +362,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-erkunden': {
     live: [
-      'Timer 6 min: vier Zeilen – Genauer, Oder, Richtig gut, Geht schief.',
+      'Timer 6 min: vier Fragen unter den Task – gut blau, schief rot.',
       'Mindestens ein rotes Sticky pro Aktivität.',
       'Falle: Kanal oder Feature-Name statt Verb-Satz.',
     ],
@@ -380,9 +381,9 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-outcome': {
     live: [
-      'Timer 2 min: pinkes Outcome-Sticky links an den Tasks.',
+      'Timer 2 min: Pink aus dem Streifen, links unter die Fragekarte.',
       '„[Wer] tut [was] statt [was bisher].“',
-      'Darunter cyan „Wir lernen, ob … (A_)“ mit Annahmen-ID.',
+      'Cyan daneben: „Wir lernen, ob … (A_)“ mit Annahmen-ID.',
       'Falle: „können“, „wird informiert“, „Umsatz“.',
     ],
     uebung: { dauer: '2 min', form: 'allein' },
@@ -391,8 +392,8 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-schneiden': {
     live: [
-      'Timer 5 min: Linie, nach unten schieben – nicht kopieren.',
-      'Pro Spalte eine Variante oben; „oder“ bleibt unten.',
+      'Timer 5 min: Linie hochziehen, darunter schieben – nicht kopieren.',
+      'Beim „oder“: was zum Lernen reicht, nach oben; die anderen darunter.',
       'Fragen: Was ist euer „bar an der Ausgabe“?',
       'Fragen: Welches Sticky oben fehlt der Lernfrage nicht?',
     ],
