@@ -270,6 +270,8 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
   // 27.11.2026: Regel ohne „(Kohl’s)“; Begleiter erzählt Netflix nach Thomke S. 126–127 und baut die Brücke zu E1.
   it('#gegen-den-beleg: „Die Regel: Das Ergebnis gilt.“; Begleiter mit Netflix-Fall, Umdeuten und Kaffeebar-Brücke', () => {
     expect(sichtbar('gegen-den-beleg')).toContain('<li data-schritt><strong>Die Regel:</strong> Das Ergebnis gilt.</li>');
+    expect(folie('gegen-den-beleg')).toContain('sagt, warum ihr trotzdem so entscheidet – so bleiben Beleg und Grund für alle sichtbar, wie bei Netflix.</p>');
+    expect(folie('gegen-den-beleg')).not.toContain('Kursregel');
     const n = NOTIZEN[EX]['gegen-den-beleg'];
     expect(n.geschichte?.quelle).toBe('Stefan H. Thomke, The Scientific Mindset, S. 127');
     for (const zitat of [
@@ -336,11 +338,13 @@ describe('Tests zur Auswahl und Beispiel', () => {
     ]);
     const [mock, personen, ehrlich, wahl] = n.fragen!.map((f) => f.antwort);
     // Review #465: Der Hinweis nach dem Klick sagt, dass es ein Test ist, und fragt nach der E-Mail (Bland S. 289).
-    const hinweis = '„Das ist ein Test – das gibt es noch nicht. Sollen wir dir Bescheid sagen? [E-Mail]“';
+    const hinweis = '„Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“';
     expect(mock).toContain(`„Vorbestellen für 2,90 €“ → ${hinweis}`);
     expect(n.geschichte?.text).toContain(hinweis);
     expect(n.kern?.[7].text).toContain(hinweis);
     expect(JSON.stringify(n)).not.toContain('wir sagen dir Bescheid“');
+    // 27.11.2026: überall derselbe Hinweis mit Dankeschön, kein kurzer mehr.
+    expect(JSON.stringify(n)).not.toContain('noch nicht. Sollen wir');
     expect(mock).toContain('Es fließt kein Geld (Bland, Mock Sale, S. 288–289)');
     // Ohne Zahlungsdaten: Kaufklicks und E-Mails, „relatively strong“ – nicht „sehr stark“.
     expect(mock).toContain('Ohne Zahlungsdaten (Kursregel: nie speichern) zählt euer Mock Sale die Kaufklicks');
