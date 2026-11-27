@@ -46,7 +46,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Satz 2 vorlesen – der Spitzenreiter von eben.',
       'Vor jedem Klick offen fragen: In welches Feld gehört dieser Teil?',
       '„Der Halbsatz vor (P1) ist euer erster Pain Reliever.“',
-      'Die Idee wird ausgeschrieben: was im Schaufenster steht.',
+      'Die Idee wird ausgeschrieben: was es braucht, damit sie passiert.',
       '„Ein Satz, ein Pain, ein Gain – die Map ergänzt.“',
       'Wenn hinten: nur Zeile Pain Reliever, dann letzter Klick.',
     ],
@@ -101,12 +101,12 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
   'ps-finden': {
     live: [
       'Nachschlage-Folie: an Tag 4 nur zeigen, wenn jemand fragt.',
-      'Schaufenster-Frage: Was gibt es bei euch zu sehen?',
+      'Fragen: Was braucht es, damit eure Idee passiert?',
       'Gelb, ohne ID im Quadrat – die ID kommt erst beim Fit.',
       'Kaffeebar: QR-Code mit Browser-Bestellung, Express-Ausgabe.',
     ],
     kern: [
-      { text: 'Products & Services: „all the items your customers can see in your shop window“; sie schaffen nur im Verhältnis zu einem Segment Wert. Vier Arten: physisch, immateriell, digital, finanziell.', quelle: `${VPD}, S. 83–84` },
+      { text: 'Products & Services: „all the items your customers can see in your shop window“; sie schaffen nur im Verhältnis zu einem Segment Wert. Vier Arten: physisch, immateriell, digital, finanziell. Die Frage „Was braucht es, damit eure Idee passiert?“ ist eine Regel dieses Kurses; das Buch listet, was im Schaufenster liegt.', quelle: `${VPD}, S. 83–84` },
       { text: 'Erster Schritt der Übung: „List products and services“. Fehler: alle eigenen Produkte statt nur die für dieses Segment.', quelle: `${VPD}, S. 99, 105` },
     ],
     ueberleitung: 'Jetzt das Hellgrüne: je Pain von oben.',
@@ -297,7 +297,7 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Bestätigen (3 min): Lückensätze, Vergleich (✓, ✗ oder ? je Satz gegen die obersten Einträge) und ein Spitzenreiter liegen in T3 · 4 als Vorschlag da (cyan, „Markus · Vorschlag“); alle prüfen und bestätigen oder ändern, den Vergleich füllt niemand mehr selbst. Dazu die Frage: Was davon ist die Website, die ihr baut, und trifft sie allein noch P1? (Der Kurs baut eine Website; der Spitzenreiter darf hybrid sein, die Website ist der Teil, den ihr prototypt.) Die anderen beiden bleiben offen (VPD S. 347–348, 117; Torres würde alle drei testen, S. 113).',
-        'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – die Idee wird zu Products & Services (ersetzt durch die Produkte, in die ihr sie zerlegt), der Halbsatz vor (P…) zum Pain Reliever, der Halbsatz vor (G…) zum Gain Creator; b) Profil von oben: ein Zettel je Wirkung (VPD S. 100–101) mit (→ P…) oder (→ G…), auch (→ J…), kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID. IDs, „Profil von oben“ und „Produkte ohne ID“ sind Regeln dieses Kurses. Check: Welcher gelbe Zettel ist die Website – trifft sie allein noch P1? Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
+        'Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe), wie auf der Miro-Anleitung links neben dem Canvas: den Sticky mit dem Satz des Spitzenreiters in den Canvas mitnehmen; a) aus dem Lückensatz drei Zettel – die Idee wird zu Products & Services (ersetzt durch die Produkte, die es braucht, damit die Idee passiert), der Halbsatz vor (P…) zum Pain Reliever, der Halbsatz vor (G…) zum Gain Creator; b) Profil von oben: ein Zettel je Wirkung (VPD S. 100–101) mit (→ P…) oder (→ G…), auch (→ J…), kein Zettel, wo das Angebot nichts bewirkt; Produkte ohne ID. IDs, „Profil von oben“, „Produkte ohne ID“ und die Frage „Was braucht es, damit die Idee passiert?“ sind Regeln dieses Kurses. Check: Welcher gelbe Zettel ist die Website – trifft sie allein noch P1? Markus geht ab Minute 5 zu jeder Person (Produkt 3, 2, 1, je drei Minuten) und fragt: „Euer Spitzenreiter hat ein ✗ oben im Profil – nehmt ihr das bewusst in Kauf, und warum?“ – oder, wenn oben kein ✗ steht: „Was bleibt oben offen?“ – gemeint ist das ✗ aus dem Vergleich der drei Lückensätze (VPD S. 105–106). Kursformat statt Runde zu dritt, weil jede*r ein eigenes Produkt hat.',
         'Ordnen (4 min): alle Zettel auf die Skalen links unten, je Spalte, Unverzichtbares oben (VPD S. 102).',
         'Fit prüfen (8 min): Links, Zettel für Zettel – trifft er etwas, ID mit Pfeil dazu, etwa (→ P1), ✓ auf den Zettel und ✓ am Eintrag rechts; Rechts, was übrig ist – ✗, oder „?“ mit Frage, wo ihr es erst herausfinden müsst (das Buch kennt nur ✓ und ✗); Von oben lesen – oberste Einträge getroffen, höchstes ✗ bewusst? (VPD S. 109–113).',
         'Festhalten und prüfen (2 min): rechts ein Zeichen je Zettel, links jeder ✓ mit (→ …), jedes ? mit Frage. Die ? bleiben, wo sie stehen – am Satz in T3 · 4, am Zettel im Canvas; an der Experiment-Karte werden sie Annahmen. Claude-Prüfung nach dem Kurstag.',

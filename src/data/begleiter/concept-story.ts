@@ -20,7 +20,6 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Fragen: Wer hat im Entrepreneur Lab ein Storyboard gezeichnet?',
       '„Ihr wisst nicht, ob eure Idee gut ist? Lichaw sagt: Das ist eine Geschichte.“',
       'Bogen zeigen: x Zeit, y Spannung; Cliffhanger endet am Gipfel.',
-      'Kursregel nennen: Der Bogen entscheidet später, was in den Prototyp kommt.',
     ],
     verstaendnis: {
       frage: 'Was ist ein Cliffhanger auf dieser Kurve?',
@@ -37,7 +36,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Introduction (vor Kap. 1), S. xiii–xiv`,
       },
       {
-        text: 'Bezug: Hauptfigur und Ziel stehen seit Tag 3 im Kundenprofil (Segment, Jobs); offen ist die erste Frage. Die vierte Zeile der Folie ist eine Kursregel: Am Bogen prüft ihr, was in den Prototyp kommt. Sie stützt sich auf Lichaws iPhone-Beispiel (Folie „Die Story entscheidet, was ihr baut“).',
+        text: 'Bezug: Hauptfigur und Ziel stehen seit Tag 3 im Kundenprofil (Segment, Jobs); offen ist die erste Frage. Im Handout steht dazu eine Kursregel: Am Bogen prüft ihr, was in den Prototyp kommt. Sie stützt sich auf Lichaws iPhone-Beispiel (Folie „Die Story entscheidet, was ihr baut“).',
         quelle: 'Kursregel; vgl. Lichaw, Kap. 3, Supporting the Story, S. 33',
       },
       {
