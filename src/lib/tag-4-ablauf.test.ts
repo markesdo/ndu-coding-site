@@ -126,16 +126,20 @@ describe('Tag 4: Ablauf vom 25.11.2026 (NDU-66)', () => {
     expect([...funde, ...(weiter.match(/\b(9|1[0-7]):[0-5]\d\b/g) ?? [])]).toStrictEqual([]);
   });
 
-  // Kursregel (Markus 12.11.): drei Produkte – keine Runden aufs eigene Produkt, sondern allein und 1:1 mit Markus.
-  it('Story Map und Geschäftsmodell: keine Runde zu dritt aufs eigene Produkt, stattdessen allein und 1:1', () => {
+  // Kursregel (Markus 12.11.): drei Produkte – keine Runden aufs eigene Produkt, sondern allein (Geschäftsmodell mit 1:1;
+  // die Story Map seit 27.11. ohne 1:1).
+  it('Story Map und Geschäftsmodell: keine Runde zu dritt aufs eigene Produkt, stattdessen allein', () => {
     const sm = folie('/innolab/methoden/story-map', 'vorgehen');
     const gm = folie('/innolab/methoden/geschaeftsmodell', 'vorgehen');
     expect([sm, gm].flatMap((x) => x.match(/zu dritt|die anderen beiden (gehen|ergänzen)|die anderen fragen/gi) ?? [])).toStrictEqual([]);
     expect(seite('/innolab/methoden/geschaeftsmodell')).not.toContain('zu dritt sechs Karten');
     expect(sm).toContain('<li data-schritt><strong>Kursregel:</strong> Jede*r arbeitet allein an der eigenen Map.</li>');
-    // Markus 27.11.: Die live-Stichworte zu #vorgehen nennen 1:1 und „keine Runde“ nicht mehr (uebung.form bleibt).
+    // Markus 27.11.: Während der Story Map gibt es kein 1:1 – nicht auf der Seite, nicht im Begleiter (auch nicht in
+    // uebung.form), und die live-Stichworte zu #vorgehen nennen auch „keine Runde“ nicht mehr.
     expect(NOTIZEN['/innolab/methoden/story-map'].vorgehen.live.filter((s) => /1:1|Runde/.test(s))).toStrictEqual([]);
-    expect(folie('/innolab/methoden/story-map', 'schritt-loecher')).toContain('<li data-schritt><strong>Markus kommt ins 1:1</strong> und stellt dieselben Fragen; ihr ergänzt, ohne zu verteidigen.</li>');
+    expect(seite('/innolab/methoden/story-map').match(/1:1|Markus kommt/g)).toBeNull();
+    expect(JSON.stringify(NOTIZEN['/innolab/methoden/story-map']).match(/1:1|Markus kommt|Map zu Map/g)).toBeNull();
+    expect(folie('/innolab/methoden/story-map', 'schritt-loecher')).toContain('<li data-schritt><strong>Allein:</strong> Geht eure Map von links nach rechts durch');
     expect(folie('/innolab/methoden/story-map', 'schritt-durchgehen')).toContain('<li data-schritt><strong>Erzählt Slice 1 allein</strong>');
     expect(gm).toContain('Jede*r arbeitet allein am eigenen Produkt; Markus fragt im 1:1 nach.');
   });

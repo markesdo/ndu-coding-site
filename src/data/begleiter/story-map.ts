@@ -296,7 +296,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Farblegende zeigen – gilt auf allen Story-Map-Frames.',
       'Kursregel: jede*r allein an der eigenen Map.',
     ],
-    uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein, 1:1 mit Markus' },
+    uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein' },
     miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
     ueberleitung: 'Schritt 1: der Rahmen.',
   },
@@ -366,10 +366,9 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'schritt-loecher': {
     live: [
       'Timer 5 min: allein „Was ist, wenn …?“ und „Was dazwischen?“.',
-      'Du gehst von Map zu Map, 1:1, je gut eine Minute.',
-      'Ergänzen, nicht verteidigen.',
+      'Offene Fragen als Sprechblase.',
     ],
-    uebung: { dauer: '5 min', form: 'allein, 1:1 mit Markus' },
+    uebung: { dauer: '5 min', form: 'allein' },
     ueberleitung: 'Bevor ihr schneidet: Was soll Slice 1 bewirken?',
   },
 
