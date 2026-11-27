@@ -237,16 +237,16 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
 
   'pinocchio-abc': {
     live: [
-      'Zeit: Sprechzeit ~1 min; drei Kästen von links lesen.',
+      'Zeit: Sprechzeit ~1 min; A und B als Gegenkräfte zeigen, dann C.',
       '„Jetzt steht etwas dazwischen. Erst dadurch ist die Verwandlung verdient.“',
       'Quelle: Illustration des Kurses nach Disney 1940, nicht Lichaw.',
-      'Fragen: Was hält eure Figur heute ab?',
+      'Fragen: Was spricht für eure Figur dagegen, es anders zu machen?',
       'Falle: Collodis Roman einmischen – die Folie folgt nur Disney.',
     ],
     verstaendnis: {
       frage: 'Was ist bei Pinocchio B – und warum braucht C es?',
       antwort: 'B sind Versuchungen und Lügen: Er lässt sich weglocken, seine Nase wächst. Erst weil er dagegen ankommt und Geppetto rettet, ist die Verwandlung der Höhepunkt – ohne B wäre es wieder „bought some magic“.',
-      falsch: '„B ist der Bösewicht“ – B ist jede Kraft gegen das Ziel, auch die eigene Versuchung.',
+      falsch: '„Dass er aus Holz ist“ – das ist die Ausgangslage, nicht die Kraft, die ihn auf dem Weg bremst (wie „die Schlange“ bei der Kaffeebar).',
     },
     kern: [
       {

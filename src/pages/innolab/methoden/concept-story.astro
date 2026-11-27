@@ -122,17 +122,19 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
   <Folie>
     <h2 id="pinocchio-abc">Pinocchio, jetzt mit A × B = C</h2>
     <p class="folie-satz">Dieselbe Figur, dasselbe Ziel – jetzt mit einer Kraft dagegen.</p>
-    <Fluss label="Pinocchio mit A × B = C, Illustration des Kurses nach Disneys Film von 1940" hervor={[2]} knoten={[
-      { t: 'A', sub: 'will ein echter Junge werden – mutig, ehrlich, selbstlos' },
-      { t: 'B', sub: 'Versuchungen und Lügen: Er lässt sich weglocken, seine Nase wächst' },
-      { t: 'C', sub: 'rettet Geppetto – und wird ein echter Junge' },
-    ]} />
+    <figure class="abc" aria-label="Pinocchio mit A × B = C, Illustration des Kurses nach Disneys Film von 1940">
+      <div class="abc-kraft"><strong>A</strong><span>will ein echter Junge werden – mutig, ehrlich, selbstlos</span></div>
+      <span class="abc-op">×</span>
+      <div class="abc-kraft"><strong>B</strong><span>Versuchungen und Lügen: Er lässt sich weglocken, seine Nase wächst</span></div>
+      <span class="abc-op">=</span>
+      <div class="abc-kraft abc-c"><strong>C</strong><span>rettet Geppetto – und wird ein echter Junge</span></div>
+    </figure>
     <ul class="gross">
-      <li data-schritt><strong>B findet ihr in euren Interviews:</strong> was eure Figur heute von ihrem Ziel abhält.</li>
-      <li data-schritt><strong>C ist euer Höhepunkt:</strong> der Moment, in dem euer Produkt beides auflöst.</li>
+      <li data-schritt><strong>B findet ihr in euren Interviews:</strong> was eure Figur auf dem Weg bremst – Alternativen, Zweifel, Aufwand.</li>
+      <li data-schritt><strong>C zählt nur, weil er B überwindet:</strong> Er lässt sich nicht mehr weglocken und rettet Geppetto.</li>
     </ul>
     <p class="small muted">Illustration des Kurses nach Disneys „Pinocchio“ (1940). Lichaw erzählt nur die Fassung ohne Konflikt (Kap. 8, S. 136).</p>
-    <p class="nur-handout">Lichaw erzählt Pinocchio nur in der Fassung ohne Konflikt (siehe „Pinocchio, kurz erzählt“) und nennt dort keine Kraft, die gegen ihn wirkt. Sie fordert nur: „Every character and every goal in a story should always have some kind of force working in opposition to it.“ Ihr Beispiel für A × B = C ist das iPhone ({LICHAW}, Kap. 8, Conflict Is Key und Math Is Fun, S. 136–137). Die Lesart auf dieser Folie ist eine Illustration des Kurses, nach Disneys Zeichentrickfilm „Pinocchio“ (1940): Pinocchio will ein echter Junge werden; die Blaue Fee sagt ihm, dafür müsse er sich als mutig, ehrlich und selbstlos erweisen. Er lässt sich weglocken, zu Stromboli und auf die Vergnügungsinsel, und wenn er lügt, wächst seine Nase. Am Ende rettet er Geppetto aus dem Wal Monstro; dafür macht ihn die Blaue Fee zu einem echten Jungen. Carlo Collodis Roman (1883) erzählt die Geschichte anders; die Folie folgt nur dem Film. Für euch: Die Kraft dagegen müsst ihr nicht erfinden, sie steht in euren Interviews. C ist, wie bei Lichaw, der Höhepunkt, der beide Kräfte auflöst – bei euch der Moment, in dem euer Produkt es tut.</p>
+    <p class="nur-handout">Lichaw erzählt Pinocchio nur in der Fassung ohne Konflikt (siehe „Pinocchio, kurz erzählt“) und nennt dort keine Kraft, die gegen ihn wirkt. Sie fordert nur: „Every character and every goal in a story should always have some kind of force working in opposition to it.“ Ihr Beispiel für A × B = C ist das iPhone ({LICHAW}, Kap. 8, Conflict Is Key und Math Is Fun, S. 136–137). Die Lesart auf dieser Folie ist eine Illustration des Kurses, nach Disneys Zeichentrickfilm „Pinocchio“ (1940): Pinocchio will ein echter Junge werden; die Blaue Fee sagt ihm, dafür müsse er sich als mutig, ehrlich und selbstlos erweisen. Er lässt sich weglocken, zu Stromboli und auf die Vergnügungsinsel, und wenn er lügt, wächst seine Nase. Am Ende rettet er Geppetto aus dem Wal Monstro; dafür macht ihn die Blaue Fee zu einem echten Jungen. Carlo Collodis Roman (1883) erzählt die Geschichte anders; die Folie folgt nur dem Film. Wie in Lichaws Abb. 8.1 stehen A und B auf der Folie nebeneinander: zwei Kräfte, die gegeneinander wirken, nicht nacheinander. B ist nicht die Ausgangslage (dass er aus Holz ist), sondern was ihn auf dem Weg zum Ziel bremst; C zählt nur, weil er B überwindet. Für euch: Die Kraft dagegen müsst ihr nicht erfinden, sie steht in euren Interviews – Alternativen, Zweifel, Aufwand, wie auf der Folie „A × B = C“. Euer Höhepunkt trägt nur, wenn euer Produkt genau dieses B überwindet.</p>
   </Folie>
 
   <Folie>
@@ -397,6 +399,17 @@ const LICHAW_KURZ = 'Lichaw, „The User’s Journey“ (2016)';
   }
   /* hoch: Abb. 3.4 ist fast quadratisch und dicht beschriftet; der Folien-Satz hat nur eine Zeile, die Abbildung bekommt die Höhe. */
   :global(html[data-beamer] [data-folie]:has(#hoch) .buch-abbildung img) { max-height: calc(100vh - 15rem); }
+  /* pinocchio-abc: A und B nebeneinander als Gegenkräfte, „ד und „=“ dazwischen, C hervorgehoben (wie Lichaw Abb. 8.1). */
+  .abc { margin: 1.5rem 0; display: flex; align-items: stretch; gap: 1rem; }
+  .abc-kraft { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: .3rem; text-align: center; padding: .9rem .75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-2); }
+  .abc-kraft strong { font-size: 1.1rem; }
+  .abc-kraft span { font-size: .95rem; line-height: 1.4; color: var(--muted); }
+  .abc-c { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 10%, var(--bg-2)); }
+  .abc-op { align-self: center; font-size: 1.6rem; font-weight: 600; color: var(--muted); }
+  @media (max-width: 720px) {
+    .abc { flex-direction: column; gap: .4rem; }
+    .abc-kraft { flex: none; }
+  }
   /* ein-satz: Stationsnummern an den Lücken des Satzes. */
   .stationsnr { color: var(--accent); font-weight: 600; font-size: .6em; margin-left: .1em; }
 </style>

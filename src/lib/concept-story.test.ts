@@ -243,16 +243,33 @@ describe('pinocchio-abc: Pinocchio mit A × B = C', () => {
     expect(NOTIZEN_CONCEPT_STORY['a-mal-b'].ueberleitung).toBe('Rechnet die Formel einmal nach – an Pinocchio.');
     expect(NOTIZEN_CONCEPT_STORY['pinocchio-abc'].ueberleitung).toBe('Wie sieht dieser Bogen aus, wenn er ein Produkt erzählt?');
   });
-  it('A, B und C im Fluss, C hervorgehoben; zwei Zeilen zur eigenen Arbeit', () => {
+  it('A und B nebeneinander als Gegenkräfte mit × und =, C hervorgehoben – keine Kette mit Pfeilen', () => {
     const f = folie('pinocchio-abc');
     expect(f).toContain('<h2 id="pinocchio-abc">Pinocchio, jetzt mit A × B = C</h2>');
-    expect([...f.matchAll(/\{ t: '([^']+)', sub: '([^']+)' \}/g)].map((m) => `${m[1]}: ${m[2]}`)).toStrictEqual([
+    const abc = f.slice(f.indexOf('<figure class="abc"'), f.indexOf('</figure>'));
+    expect([...abc.matchAll(/<div class="([^"]+)"><strong>([ABC])<\/strong><span>([^<]+)<\/span><\/div>|<span class="abc-op">([^<]+)<\/span>/g)]
+      .map((m) => (m[4] ?? `${m[2]}${m[1].includes('abc-c') ? '*' : ''}: ${m[3]}`))).toStrictEqual([
       'A: will ein echter Junge werden – mutig, ehrlich, selbstlos',
+      '×',
       'B: Versuchungen und Lügen: Er lässt sich weglocken, seine Nase wächst',
-      'C: rettet Geppetto – und wird ein echter Junge',
+      '=',
+      'C*: rettet Geppetto – und wird ein echter Junge',
     ]);
-    expect(f).toContain('hervor={[2]}');
-    expect([...f.matchAll(/<li data-schritt><strong>([^<]+)<\/strong>/g)].map((m) => m[1])).toStrictEqual(['B findet ihr in euren Interviews:', 'C ist euer Höhepunkt:']);
+    expect(f).not.toContain('<Fluss');
+  });
+  it('B bremst auf dem Weg (wie a-mal-b), C überwindet B', () => {
+    const f = folie('pinocchio-abc');
+    expect([...f.matchAll(/<li data-schritt>(.+?)<\/li>/g)].map((m) => m[1])).toStrictEqual([
+      '<strong>B findet ihr in euren Interviews:</strong> was eure Figur auf dem Weg bremst – Alternativen, Zweifel, Aufwand.',
+      '<strong>C zählt nur, weil er B überwindet:</strong> Er lässt sich nicht mehr weglocken und rettet Geppetto.',
+    ]);
+    // Dieselben drei Formen von B wie auf der Folie a-mal-b.
+    expect(folie('a-mal-b')).toContain('<li data-schritt><strong>B:</strong> was dagegen wirkt – Alternativen, Zweifel, Aufwand.</li>');
+    expect(f).toContain('B ist nicht die Ausgangslage (dass er aus Holz ist), sondern was ihn auf dem Weg zum Ziel bremst; C zählt nur, weil er B überwindet.');
+    const n = NOTIZEN_CONCEPT_STORY['pinocchio-abc'];
+    expect(n.live).toContain('Fragen: Was spricht für eure Figur dagegen, es anders zu machen?');
+    expect(n.live.join(' ')).not.toContain('heute ab');
+    expect(n.verstaendnis?.falsch).toMatch(/^„Dass er aus Holz ist“ – das ist die Ausgangslage/);
   });
   it('Quelle: sichtbar als Illustration des Kurses markiert, nach Disney 1940; Handout trennt Lichaw und Film, ohne Kursregel-Etikett', () => {
     const f = folie('pinocchio-abc');
