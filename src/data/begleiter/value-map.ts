@@ -346,8 +346,8 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
       'Fragen: Trifft eure gewählte Idee den obersten Pain – oder die bequemen?',
       'Allein: obersten verfehlten Eintrag am Canvas markieren; Markus fragt nach.',
       '„Wenige Pains, die aber extrem gut.“',
-      'Aufdecken: Fit auf Papier ist kein Beweis – getestet wird ab Tag 4.',
-      'Ausblick: gleich „Was bauen wir?“ – und Slice 1 im Baum.',
+      'Aufdecken: Fit auf Papier ist kein Beweis – getestet wird ab heute.',
+      'Ausblick: gleich „Was bauen wir?“ – dann die Concept Story.',
     ],
     kern: [
       {
@@ -359,6 +359,6 @@ export const NOTIZEN_VALUE_MAP: Record<string, Notiz> = {
         quelle: `${VPD}, S. 115–118`,
       },
     ],
-    ueberleitung: 'Direkt weiter: Warum sollte das jemanden interessieren?',
+    ueberleitung: 'Euer Spitzenreiter steht auf Papier – was wird heute daraus?',
   },
 };

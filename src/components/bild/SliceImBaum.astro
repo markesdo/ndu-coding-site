@@ -1,11 +1,11 @@
 ---
-// „Slice 1 im Baum“ (Tag 4, 9:35, nach der Value Map und „Was bauen wir?“): links der Pfad im Baum der Kaffeebar ab Tag 4 – Outcome,
+// „Slice 1 im Baum“ (Tag 4, 14:05, nach der Story Map, vor der Usage Story; seit 28.11.2026, vorher 9:35): links der Pfad im Baum der Kaffeebar ab Tag 4 – Outcome,
 // Ziel-Chance, Spitzenreiter, A5 → E1 –, rechts, was davon auf der Story Map bei Slice 1 steht. Farben und Icons der
 // drei Linien wie in WasBauenWir.astro (LINIE); Slice 1 gelb mit Stern. Slice 1 ist kein Knoten im Baum (Torres kennt
 // unter der Lösung nur die Annahmen-Tests): Er steht in der rechten Spalte, neben dem Spitzenreiter.
-// Rechts nur Begriffe, die um 9:35 schon bekannt sind (Durchsicht 26.11.): kein „Lern-Sticky“, kein „links neben Slice 1“ –
-// das Layout der Story Map kommt erst ab 11:40.
-// Ohne Schritte: Die Folie ist die letzte des Morgens vor #faden, → von #faden, #methoden oder #abschluss aus deckte sonst erst
+// Rechts ohne Layout-Wörter der Story Map (Durchsicht 26.11., damals noch für 9:35): kein „Lern-Sticky“, kein „links neben
+// Slice 1“ – die Zeilen nennen, was dort steht, nicht wo.
+// Ohne Schritte: Die Folie steht in tag-4.astro direkt vor #faden; → von #faden, #methoden oder #abschluss aus deckte sonst erst
 // unsichtbar ihre Schritte auf (wie WasBauenWir schritte={false}).
 import { FlaskConical, Lightbulb, MessageSquareQuote, Star, Target } from '@lucide/astro';
 import { LINIE } from '../arbeitsfluss';
@@ -33,7 +33,7 @@ const test = spitze.kinder[0].t;
 
   <div class="knoten k-annahme"><small><FlaskConical size={16} aria-hidden="true" />{LINIE.annahme.name} · Test</small>{test}</div>
   <div class="steg"></div>
-  <div class="feld f-annahme">„Wir lernen, ob …“ – die riskanteste Annahme (gleich an der Experiment-Karte)</div>
+  <div class="feld f-annahme">„Wir lernen, ob …“ – die riskanteste Annahme, mit derselben ID wie im Baum</div>
 </figure>
 
 <style>

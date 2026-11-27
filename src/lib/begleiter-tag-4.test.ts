@@ -10,7 +10,7 @@ import { KAFFEEBAR_BAUM_TAG_4 } from '../components/innolab-beispiel';
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 
 const SEITEN: Record<string, number> = {
-  // Tagesseite: 9:00 Arbeitsfluss, 9:35 Was bauen wir? und Slice 1 im Baum, 17:15 Abschluss mit Beispiel, Hausaufgabe, Ende.
+  // Tagesseite: 9:00 Arbeitsfluss, 9:35 Was bauen wir?, 14:05 Slice 1 im Baum (nach der Story Map), 17:15 Abschluss mit Beispiel, Hausaufgabe, Ende.
   '/innolab/tag-4': 7,
   // Seit 26.11.2026 nachts ohne die beiden Claude-Pro-Folien (jetzt auf tag-5).
   // Seit 27.11.2026 abends mit ein-schritt-fuenf-fragen (ein Kaffeebar-Schritt durch alle fünf Fragen).

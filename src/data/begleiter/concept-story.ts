@@ -766,6 +766,6 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 3, What Is a Concept Story?, S. 23; Climax/Resolution, S. 28; Mapping a Concept Story, S. 35`,
       },
     ],
-    ueberleitung: 'Nach der Pause: wer dafür zahlt – das Geschäftsmodell.',
+    ueberleitung: 'Nach der Pause: Die Concept Story sagt, warum jemand wechselt. Offen ist, ob es sich für euch trägt.',
   },
 };

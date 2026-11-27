@@ -568,8 +568,11 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
       'Können sie? → kein Zettel',
       'Können wir? → <strong>A2</strong> · S4 · machbar',
       'Rechnet es sich? → weiter',
-      'Schadet es jemandem? → kein Zettel',
+      'Kann es jemandem schaden? → kein Zettel',
     ]);
+    // 28.11.: dieselbe Frage wie in #annahmen-finden und auf der Miro-Karte.
+    expect(sichtbar('annahmen-finden')).toContain('<tr data-schritt><td>Kann es jemandem schaden?</td><td>ethisch</td></tr>');
+    expect(seite(EX)).not.toContain('Schadet es jemandem');
     expect(s).toContain('<p class="ein-schritt-regel" data-schritt><strong>Eine Frage darf leer bleiben – ein Schritt nicht.</strong> Je Schritt mindestens zwei; bleibt eine Art an allen Schritten leer: noch einmal fragen.</p>');
     // Folie und Handout: was zu tun ist und warum, keine Kursregel und kein Vergleich mit Torres’ drei Arten je Schritt.
     const f = folie('ein-schritt-fuenf-fragen');
