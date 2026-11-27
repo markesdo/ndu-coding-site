@@ -358,6 +358,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         antwort: 'Kursregel: etwa bei der halben Schwelle, vor dem Test als Zahl festgelegt. Bei der Kaffeebar 5 von 30 – eine Setzung, keine Regel aus dem Buch.',
       },
       {
+        frage: 'Was heißt „ab 10 → Concierge“ genau?',
+        antwort: 'Der nächste, stärkere Test: Ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar – echter Kaffee, noch ohne Software, und die Pendler*innen sehen, wer ihn holt. Bei Bland folgt der Concierge auf die Landingpage (S. 251), und „Payments are strong evidence, even if you are manually delivering value“ (S. 250). Ablauf, Messgrößen und Fall: Begleiter zur Folie „Vier Tests zur Auswahl“.',
+      },
+      {
         frage: 'E1 ergibt 8 von 30, und jemand sagt: „Der Aufsteller stand ungünstig.“ Ist das Wegerklären?',
         antwort: 'Nicht, wenn es vorher auf der Karte stand: Für 5–9 heißt die Zeile „Wir entscheiden vorher“ schon „wiederholen, eine Sache ändern“ – den Ort ändern ist dann die vereinbarte Handlung. Prüffrage nach Thomke (S. 14): Hättet ihr den Ort auch bei 12 von 30 hinterfragt? Bei 3 von 30 gilt „unter 5 → Wartezeit-Anzeige“, auch wenn der Morgen ungewöhnlich wirkte.',
       },
@@ -426,6 +430,30 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
         quelle: `${BLAND}, S. 250`,
       },
       {
+        text: 'Concierge – Bewertung: In Blands Grafik Kosten 1 von 5 Punkten, Aufbau 2, Laufzeit 3, Belegstärke 5 – für alle drei Arten von Annahmen (desirability, feasibility, viability). „Concierge is ideal for learning firsthand about steps needed to create, capture, and deliver value to a customer.“ – „Concierge is not ideal for scaling a product or business.“ Billig, „As long as you keep the concierge experiments small and simple“; der Aufbau dauert länger, „because you have to manually plan out all of the steps and acquire customers for it“; Laufzeit „days to weeks“.',
+        quelle: `${BLAND}, Concierge, S. 248, 250`,
+      },
+      {
+        text: 'Concierge – Ablauf: Vorbereiten – „Plan the steps of creating the product manually.“ „Create a board to track the orders and steps needed.“ „Test the steps with someone first to make sure they work.“ Durchführen – Bestellungen annehmen, die Zahlen „on grid paper or excel“ festhalten, die Dauer jeder Aufgabe notieren, dann „Gather feedback from customers with interviews and surveys.“ Auswerten – Zeit pro Aufgabe, „Where you experienced delays in the process.“, „How many purchased.“ – und daraus, „where to automate the process“.',
+        quelle: `${BLAND}, S. 249`,
+      },
+      {
+        text: 'Concierge – gemessen, und warum stark: Zufriedenheit zählt, „because you are asking for feedback after the value was delivered to the customer, instead of a hypothetical situation“; Käufe – „What are they willing to pay for a manual experience?“; die Durchlaufzeit (Lead Time: Bestellung bis Lieferung; Cycle Time: reine Arbeitszeit) ist „very strong“, weil man jeden Schritt aus erster Hand kennt. Wie viele Kund*innen, sagt Bland nicht als Zahl: Die Laufzeit hängt davon ab, „how many customers you involve“; B2B-Dienstleister liefern „manually to a handful of customers before scaling“.',
+        quelle: `${BLAND}, S. 250; S. 98`,
+      },
+      {
+        text: 'Concierge – davor und danach: Davor ein Trichter – Simple Landing Page („to collect interest in your concierge experiment“), Broschüre mit Handlungsaufruf oder Feature Stub. Danach Wizard of Oz („deliver the value manually, without making the human steps visible to the end customer“), Mash-Up („Automate manual steps from your concierge experiment with existing technology.“) oder Referral Program. Für Dienstleistungen an Endkund*innen: „Once they’ve conducted a few presales, B2C services can deliver the value manually to refine it before scaling.“ Bei der Kaffeebar also: Aufsteller (E1), dann Concierge.',
+        quelle: `${BLAND}, S. 251 (Pairings), S. 99`,
+      },
+      {
+        text: 'Concierge – Blands Fall, Realtor.com: Hypothese, dass Verkäufer*innen im selben Jahr auch kaufen. Ein Handlungsaufruf auf der Seite, ein paar Fragen; dann stellte der Produktmanager Dave Masters jede Auswertung von Hand als PDF zusammen und schickte sie per E-Mail, mit Link für ein Gespräch. Erwartet: 30 Anmeldungen in 3 Stunden; es kamen „more than 80 signups in a few minutes, faster than they could even shut it off.“ Lehre: „High volume could be a good sign but might require you to do a lot more manual work than you initially set out to do.“',
+        quelle: `${BLAND}, Fallstudie Concierge, S. 252–253`,
+      },
+      {
+        text: 'Concierge – Kaffeebar: Ab 10 von 30 bei E1 folgt der Concierge. An drei Morgen, 7:15–7:45, steht eine Person aus dem Team an der Hallentür, schreibt Getränk und Zug auf einen Bestellzettel (Blands „board“) und gibt die Bestellung an die Bar; die Bar bereitet zu, abgeholt und bezahlt wird an der Express-Ausgabe. Gemessen: Bestellungen und Zahlungen, ob der Kaffee vor dem Zug fertig war (Bestellung bis Übergabe), wo es stockte, und ein Satz zur Zufriedenheit bei der Übergabe. Erfolg steht vorher auf der nächsten Karte, als x von y – etwa: Von den ersten 30 Bestellungen sind mindestens 24 vor dem Zug fertig.',
+        quelle: `Kaffeebar: Kurs (Folie karte-e1); Messgrößen nach ${BLAND}, S. 249–250`,
+      },
+      {
         text: 'Mock Sale – Aufbau: „Presenting a sale for your product without processing any payment information.“ Online: nach dem Klick auf den Preis ein „we’re not ready yet“-Hinweis mit E-Mail-Feld. Gemessen: Kaufklicks, E-Mails, eingegebene Zahlungsdaten – „Purchase clicks are relatively strong“, „Payment info submissions are very strong evidence.“',
         quelle: `${BLAND}, Mock Sale, S. 288–290`,
       },
@@ -436,6 +464,10 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         text: 'Vorsicht beim Erzählen: „bis mittel“ gilt nur für den Aufsteller und ist unsere Einordnung, weil er in der echten Situation steht. Die Landingpage online bleibt „eher schwach“ – Bland: „Email is a rather weak strength of evidence“ (S. 262).',
         quelle: `${BLAND}, S. 52, 262; Einordnung: Kurs`,
+      },
+      {
+        text: 'Vorsicht beim Erzählen: Der Concierge der Kaffeebar – Hallentür, drei Morgen, Bestellzettel, Express-Ausgabe, „24 von 30“ – ist ein Beispiel des Kurses, nicht Blands. Von Bland sind Definition, Ablauf, Messgrößen, die Punkte der Grafik und der Fall Realtor.com.',
+        quelle: `Kurs; ${BLAND}, S. 248–253`,
       },
     ],
     verstaendnis: {
@@ -467,6 +499,18 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       {
         frage: 'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
         antwort: 'Ort: am selben Ort wie E1, als eigener Durchlauf nach E1 – der Aufsteller an der Hallentür, jetzt mit Angebot und Preis: „Kaffee im Gehen vorbestellen – fertig vor deinem Zug. Cappuccino 2,90 €“, darunter der QR-Code. Wer: Pendler*innen, die morgens ankommen und die Schlange sehen. Angeworben wird niemand – es ist die Zielgruppe in einer echten Kaufsituation; Bland: „target a specific audience with your solution and give them enough time to consider a purchase“ (S. 290). Ablauf: scannen; auf der ersten Seite steht „Fährt dein Zug in weniger als 5 Minuten? Dann bitte nicht jetzt.“ (Hinweis des Kurses: niemand soll durchs Tippen den Zug verpassen). Dann Getränk wählen, Abfahrtszeit eintragen, auf „Vorbestellen für 2,90 €“ tippen. Sofort danach: „Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“. Die Person: Sie bekommt durch den Test keinen Kaffee, und es fließt kein Geld. Sie erfährt es sofort, noch in der Halle und bevor sie das Anstellen aufgibt; ihren Kaffee holt sie wie sonst an der Bar oder am Automaten. Als Dank, nach Blands „gift card for the inconvenience“ (S. 289): Mit der Seite bekommt sie an der Bar eine kleine Aufmerksamkeit, etwa einen Gutschein – der Gutschein ist eine Anpassung des Kurses, Bland beschreibt die Entschädigung für den Test im Laden. Gezählt: Kaufklicks pro Besucher*in der Seite, dazu die E-Mails – und wie bei E1 gegen die Alternative: die Strichliste am Automaten in derselben Zeit, damit sichtbar wird, ob die Vorbestellung den Automaten verdrängt; gemessen wird die Wahl, nicht nur das Interesse am Neuen (wie bei Kohl’s: der ganze Laden zählt, nicht nur das Neue; Anpassung des Kurses). „Purchase clicks are relatively strong“, die E-Mails danach ebenfalls „relatively strong“ (S. 290); ohne Zahlungsdaten nicht „very strong“. Warum vertretbar: mit der Kundschaft, nicht an ihr – „Are you experimenting with your customers or on them?“ (S. 86). Die Person kostet es knapp eine Minute, und sie erfährt es sofort.',
+      },
+      {
+        frage: 'Ist Concierge nicht einfach das Produkt ohne App?',
+        antwort: 'Nein – es ist ein Test auf Zeit, kein Start. Ihr liefert echten Wert, aber von Hand, für wenige und nur ein paar Morgen, um zu lernen, welche Schritte es braucht: „Concierge is ideal for learning firsthand about steps needed to create, capture, and deliver value to a customer“, aber „not ideal for scaling a product or business“ (Bland, S. 248). Ergebnis sind Befunde, keine Kundschaft: wo es stockt, wie lange es dauert, wie viele kaufen – und daraus, „where to automate the process“ (S. 249). Wer ihn einfach weiterlaufen lässt, betreibt ein Geschäft von Hand; Realtor.com merkte, wie schnell die Handarbeit wächst (S. 253).',
+      },
+      {
+        frage: 'Warum ist ein Kauf beim Concierge ein starker Beleg, obwohl alles von Hand läuft?',
+        antwort: 'Weil die Person für Wert zahlt, den sie wirklich bekommt, nicht für ein Versprechen: „Payments are strong evidence, even if you are manually delivering value.“ Ebenso die Zufriedenheit, erfragt „after the value was delivered to the customer, instead of a hypothetical situation“ (Bland, S. 250). Auf Blands Achsen ist das Tun statt Sagen, echte Lage statt Labor und ein großer Einsatz (S. 52). Dass die Person die Menschen sieht, kann sie freundlicher machen – darum zählt der Kauf mehr als das Lob (Lesart des Kurses).',
+      },
+      {
+        frage: 'Warum Concierge und nicht gleich Wizard of Oz?',
+        antwort: 'Beim Concierge sieht die Kundschaft die Menschen, bei Wizard of Oz nicht: „Unlike Concierge, the people involved aren’t visible to the customer“ (Bland, S. 284). Sichtbar heißt: Ihr könnt fragen, zusehen und nachbessern – genau richtig, um die Schritte selbst zu lernen. Wizard of Oz kommt bei Bland danach: „Use what you’ve learned from the concierge experiment to deliver the value manually, without making the human steps visible to the end customer“ (S. 251). Dann zeigt sich, ob die Leute es auch ohne sichtbare Menschen nutzen (Lesart des Kurses).',
       },
     ],
     ueberleitung: 'Alles zusammen an der Kaffeebar: die Karte E1 für A5.',

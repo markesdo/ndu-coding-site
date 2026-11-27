@@ -345,13 +345,16 @@ describe('Tests zur Auswahl und Beispiel', () => {
       'Wie läuft das beim Mock Sale mit echten Menschen – ist das nicht unehrlich?',
       'Welcher Test passt zu uns?',
       'Wie sähe der Mock Sale an der Kaffeebar aus – und was ist mit der Person, die klickt und keinen Kaffee bekommt?',
+      'Ist Concierge nicht einfach das Produkt ohne App?',
+      'Warum ist ein Kauf beim Concierge ein starker Beleg, obwohl alles von Hand läuft?',
+      'Warum Concierge und nicht gleich Wizard of Oz?',
     ]);
     const [mock, personen, ehrlich, wahl] = n.fragen!.map((f) => f.antwort);
     // Review #465: Der Hinweis nach dem Klick sagt, dass es ein Test ist, und fragt nach der E-Mail (Bland S. 289).
     const hinweis = '„Das ist ein Test – das gibt es noch nicht. Zeig diese Seite an der Bar: dein Dankeschön. Sollen wir dir Bescheid sagen? [E-Mail]“';
     expect(mock).toContain(`„Vorbestellen für 2,90 €“ → ${hinweis}`);
     expect(n.geschichte?.text).toContain(hinweis);
-    expect(n.kern?.[7].text).toContain(hinweis);
+    expect(n.kern?.find((k) => k.text.startsWith('Mock Sale – Achtung:'))?.text).toContain(hinweis);
     expect(JSON.stringify(n)).not.toContain('wir sagen dir Bescheid“');
     // 27.11.2026: überall derselbe Hinweis mit Dankeschön, kein kurzer mehr.
     expect(JSON.stringify(n)).not.toContain('noch nicht. Sollen wir');
@@ -367,10 +370,12 @@ describe('Tests zur Auswahl und Beispiel', () => {
     expect(wahl).toContain('Kursregel: E1 führt ihr nicht durch.');
     expect(n.geschichte?.text).toContain('von schwach nach stark.');
     expect(n.geschichte?.text).toContain('Der Kaufklick allein ist „relatively strong“; „sehr stark“ wird der Mock Sale erst mit Zahlungsdaten (S. 290).');
-    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test, in dieser Reihenfolge; danach der Vorsicht-Hinweis (Audit 27.11.).
+    // Die bisherigen Kern-Einträge bleiben: je zwei pro Test, in dieser Reihenfolge; Concierge ausführlich (Markus 27.11.); danach die Vorsicht-Hinweise.
     expect(n.kern?.map((k) => k.text.split(':')[0])).toStrictEqual([
       'Simulierter Moment – Aufbau', 'Simulierter Moment – gemessen', 'Landingpage / Aufsteller – Aufbau', 'Landingpage – gemessen',
-      'Concierge – Aufbau', 'Concierge – Testpersonen', 'Mock Sale – Aufbau', 'Mock Sale – Achtung', 'Vorsicht beim Erzählen',
+      'Concierge – Aufbau', 'Concierge – Testpersonen', 'Concierge – Bewertung', 'Concierge – Ablauf', 'Concierge – gemessen, und warum stark',
+      'Concierge – davor und danach', 'Concierge – Blands Fall, Realtor.com', 'Concierge – Kaffeebar',
+      'Mock Sale – Aufbau', 'Mock Sale – Achtung', 'Vorsicht beim Erzählen', 'Vorsicht beim Erzählen',
     ]);
   });
   it('#beispiel: Schritt – Annahme – Art, A3 an Schritt 2, A4 an Schritt 5', () => {

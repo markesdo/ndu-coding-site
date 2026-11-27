@@ -38,6 +38,7 @@ describe('Begleiter Tag 4: Vorsicht-Hinweise', () => {
       'methoden/experiment#karte | Vorsicht beim Erzählen: Thomke spricht von „two versions of',
       'methoden/experiment#vorher-entscheiden | Vorsicht beim Erzählen: 30, 10 und 5 hat der Kurs gesetzt –',
       'methoden/experiment#test-arten | Vorsicht beim Erzählen: „bis mittel“ gilt nur für den Aufste',
+      'methoden/experiment#test-arten | Vorsicht beim Erzählen: Der Concierge der Kaffeebar – Hallen',
       'methoden/experiment#karte-e1 | Nicht behaupten: Bland nenne den Eintrag einen mittleren Bel',
       'methoden/experiment#lernkarte | Vorsicht beim Erzählen: „Verlässlichkeit: mittel“ ist unsere',
       'methoden/story-map#schritt-schneiden | Nicht behaupten: „Slice 1 hat selten mehr als ein, zwei Stic',
@@ -161,5 +162,33 @@ describe('experiment#vorher-entscheiden: Warum 30, warum ab 10 (Markus 27.11.)',
     expect(f['Wie finden wir unsere eigenen Zahlen?']).toContain('Die Schwelle als Anzahl, nicht als Prozent (S. 144–145)');
     // Passt zur Verständnisfrage „8 von 30“: dasselbe Band.
     expect(n.verstaendnis?.antwort).toContain('8 liegt im Band 5–9');
+  });
+});
+
+describe('experiment#test-arten: Concierge ausführlich (Markus 27.11.)', () => {
+  const n = NOTIZEN['/innolab/methoden/experiment']['test-arten'];
+  const kern = (titel: string) => (n.kern ?? []).find((k) => k.text.startsWith(`${titel}:`));
+  it('Bewertung, Ablauf, Messgrößen, Paarungen und Fall mit Blands Wortlaut und Seiten', () => {
+    expect(kern('Concierge – Bewertung')?.text).toContain('Kosten 1 von 5 Punkten, Aufbau 2, Laufzeit 3, Belegstärke 5');
+    expect(kern('Concierge – Bewertung')?.text).toContain('„Concierge is not ideal for scaling a product or business.“');
+    expect(kern('Concierge – Ablauf')?.text).toContain('„Create a board to track the orders and steps needed.“');
+    expect(kern('Concierge – Ablauf')?.quelle).toContain('S. 249');
+    expect(kern('Concierge – gemessen, und warum stark')?.text).toContain('„because you are asking for feedback after the value was delivered to the customer, instead of a hypothetical situation“');
+    expect(kern('Concierge – davor und danach')?.text).toContain('Simple Landing Page („to collect interest in your concierge experiment“)');
+    expect(kern('Concierge – davor und danach')?.text).toContain('„Once they’ve conducted a few presales, B2C services can deliver the value manually to refine it before scaling.“');
+    expect(kern('Concierge – Blands Fall, Realtor.com')?.quelle).toContain('S. 252–253');
+    expect(kern('Concierge – Kaffeebar')?.quelle).toContain('Kaffeebar: Kurs');
+  });
+  it('Fragen für den Raum, und der Verweis von #vorher-entscheiden', () => {
+    const f = Object.fromEntries((n.fragen ?? []).map((x) => [x.frage, x.antwort]));
+    expect(f['Ist Concierge nicht einfach das Produkt ohne App?']).toContain('es ist ein Test auf Zeit, kein Start');
+    expect(f['Warum Concierge und nicht gleich Wizard of Oz?']).toContain('„Unlike Concierge, the people involved aren’t visible to the customer“ (Bland, S. 284)');
+    const v = NOTIZEN['/innolab/methoden/experiment']['vorher-entscheiden'].fragen?.find((x) => x.frage === 'Was heißt „ab 10 → Concierge“ genau?');
+    expect(v?.antwort).toContain('Begleiter zur Folie „Vier Tests zur Auswahl“');
+  });
+  it('Karte E1: Handout und Folie beschreiben denselben Concierge', () => {
+    const f = folie('/innolab/methoden/experiment', 'karte-e1');
+    expect(f).not.toContain('per Nachricht vorbestellen');
+    expect(handout(f)).toContain('ein Concierge: ein paar Morgen nimmt jemand an der Hallentür Bestellungen von Hand an und gibt sie an die Bar.');
   });
 });
