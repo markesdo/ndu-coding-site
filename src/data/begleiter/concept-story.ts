@@ -405,7 +405,6 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       'Kette von links lesen: Krise, Höhepunkt, Anforderung, Gebaut.',
       'Fragen: Warum fehlte Kopieren und Einfügen?',
       '„Die Story sagt nicht nur, wie ihr redet, sondern was ihr baut.“',
-      'Kursregel nennen: Was die Story nicht stützt, kommt nicht in den Prototyp.',
     ],
     verstaendnis: {
       frage: 'Warum fehlte Kopieren und Einfügen?',
@@ -432,22 +431,22 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
         quelle: `${LICHAW}, Kap. 3, Supporting the Story, S. 33`,
       },
       {
-        text: '„There was a good reason why the iPhone launched with fancy animation but no cut-and-paste functionality.“ Gemeint ist das erste iPhone (2007), und gefehlt hat Kopieren und Einfügen auf dem iPhone selbst. Welche Animation, nennt Lichaw nicht, auch nicht, wann Kopieren und Einfügen kam. Zum Vergleich: „The Palm Treo, which was the best-selling smartphone the year before, not only had features like cut-and-paste, but it also let you install apps and games. The iPhone did neither.“',
-        quelle: `${LICHAW}, Kap. 3, Supporting the Story, S. 33; Kap. 7, S. 129`,
+        text: '„There was a good reason why the iPhone launched with fancy animation but no cut-and-paste functionality.“ Gemeint ist das erste iPhone (2007), und gefehlt hat Kopieren und Einfügen auf dem iPhone selbst. Welche Animation, sagt Lichaw hier nicht; in Kap. 7 nennt sie eine: die Pin-Animation in Maps, „a tiny animation that transpired when a pin dropped on a map“ – laut Abb. 7.9 „meticulously crafted for bounce and elasticity“. Wann Kopieren und Einfügen kam, nennt sie nicht. Zum Vergleich: „The Palm Treo, which was the best-selling smartphone the year before, not only had features like cut-and-paste, but it also let you install apps and games. The iPhone did neither.“',
+        quelle: `${LICHAW}, Kap. 3, Supporting the Story, S. 33; Kap. 7, Build and Communicate, S. 129–130, Abb. 7.9`,
       },
       {
         text: 'Die Story „wasn’t just a marketing pitch or shiny packaging—it drove everything from what the product requirements were to how the iPhone worked“; „concept stories don’t just help you figure out how to talk about a product, but how to build the product.“ Zur Krise: Frühe Touchscreens ohne Stift „simply weren’t easy to use, and that wasn’t a very good story“.',
         quelle: `${LICHAW}, Kap. 3, Supporting the Story, S. 33; Note „The Early Touchscreens Flopped“, S. 34`,
       },
       {
-        text: '„Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out.“ Die Kursregel auf der Folie und der Bezug zur Story Map (erster Slice) sind ein Übertrag des Kurses.',
+        text: '„Everything you want that person to experience must drive the story forward. If it doesn’t, you cut it out.“ Die Kursregel „Was eure Concept Story nicht stützt, kommt nicht in den Prototyp“ und der Bezug zur Story Map (erster Slice) sind ein Übertrag des Kurses; sie stehen im Handout.',
         quelle: `${LICHAW}, Kap. 8, Stories Are Character-Driven, S. 134; Kursregel`,
       },
     ],
     zusatz: [
       {
         titel: 'Hintergrund (nicht bei Lichaw): das erste iPhone',
-        text: 'Vorgestellt am 9. Januar 2007, in den USA verkauft ab 29. Juni 2007. Zu den Gesten von iPhone OS 1.0 gehörten Zoomen mit zwei Fingern (Pinch) und Scrollen mit Schwung. Kopieren und Einfügen fehlte zum Start; es kam erst 2009 mit iPhone OS 3.0. Welche Animationen Lichaw meint, ist damit nicht gesagt – nur, was es gab.',
+        text: 'Vorgestellt am 9. Januar 2007, in den USA verkauft ab 29. Juni 2007. Zu den Gesten von iPhone OS 1.0 gehörten Zoomen mit zwei Fingern (Pinch) und Scrollen mit Schwung. Kopieren und Einfügen fehlte zum Start; es kam erst 2009 mit iPhone OS 3.0. Lichaw selbst nennt als Beispiel die Pin-Animation in Maps (Kap. 7, S. 129–130, Abb. 7.9); was es sonst an Animationen gab, sagt sie nicht.',
         quelle: 'Apple Newsroom, 9.1.2007: https://www.apple.com/newsroom/2007/01/09Apple-Reinvents-the-Phone-with-iPhone/; Wikipedia, „IPhone (1st generation)“ und „IPhone OS 1“ (abgerufen 27.11.2026)',
       },
     ],

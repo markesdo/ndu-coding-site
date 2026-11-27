@@ -10,6 +10,7 @@ const GASSMANN = 'Gassmann, Frankenberger, Csik, Geschäftsmodelle entwickeln (2
 const VPD = 'Osterwalder u. a., Value Proposition Design (2014)';
 const CAGAN = 'Marty Cagan, Inspired (2. Aufl. 2018)';
 const TORRES = 'Teresa Torres, Continuous Discovery Habits (2021)';
+const BLAND = 'Bland & Osterwalder, Testing Business Ideas (2019)';
 
 export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
   'warum-jetzt': {
@@ -55,6 +56,10 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
       falsch: '„Weil das Geschäftsmodell als Erstes geklärt sein muss“ – Cagan nennt das in diesem Stadium „largely academic“; erst muss jemand das Produkt wollen.',
     },
     ueberleitung: 'Wie sieht ein Geschäftsmodell aus, wenn man es in vier Fragen fasst?',
+    geschichte: {
+      text: 'Wo wir im Tag stehen: Nach der Pause, ab 10:40, kommt das Geschäftsmodell. Um 11:00 folgt die Experiment-Karte: Annahmen der Idee, die Map, und dort wählt ihr die riskanteste. Die Map kennt ihr von Tag 1, mit Cagans vier Arten: wünschenswert, machbar, wirtschaftlich, bedienbar. Die meisten Teams haben einen blinden Fleck: „most teams have a bias toward one category or another.“ Ein Muster, das Torres nennt: „they always remember desirability and usability, but they forget viability.“ Darum schreibt ihr die wirtschaftliche Annahme jetzt auf – damit sie auf der Map steht, wenn ihr gleich wählt.',
+      quelle: `Tagesplan tag-4.astro (10:40 Geschäftsmodell, 11:00 Experiment-Karte); ${CAGAN}, S. 24 (vier Risiken); ${TORRES}, S. 118, 128; „Darum jetzt“: Kursentscheidung`,
+    },
     kern: [
       {
         text: '„Viability assumptions: Should we build it? There are many ideas that will work for our customers but won’t work for our business.“ Torres zählt fünf Arten, mit ethischen Annahmen; die Werkstatt arbeitet mit Cagans vier, „ethisch“ (Kann es schaden?) gibt es dort als Ergänzung.',
@@ -77,6 +82,22 @@ export const NOTIZEN_GESCHAEFTSMODELL: Record<string, Notiz> = {
       {
         frage: 'Ist das nicht viel zu früh für ein Geschäftsmodell?',
         antwort: 'Zum Durchrechnen ja (Cagan S. 189–190). Heute geht es nur um den einen Satz, an dem das Modell hängt – damit er bei der Wahl der riskantesten Annahme nicht fehlt.',
+      },
+      {
+        frage: 'Müssen wir einen Preis festlegen?',
+        antwort: 'Nein. Ihr benennt das Modell und seine Annahme, ihr rechnet es nicht durch (Kursentscheidung). Cagan: Preis und Kosten sind echte Risiken, aber in diesem Stadium „largely academic“ (S. 189–190).',
+      },
+      {
+        frage: 'Was, wenn bei uns niemand zahlt?',
+        antwort: 'Dann steht bei Wert?, wer sonst zahlt oder zu welchem Ziel es beiträgt. Wer zahlt, muss nicht wer nutzt (Gassmann, Tabelle 2.2); Torres nennt Loss Leader (S. 118). Wirtschaftlich bleibt die Annahme trotzdem: „somewhere down the line, the idea must create enough value for the business to be worth the effort“ (S. 118).',
+      },
+      {
+        frage: 'Warum testen wir sie nicht zuerst?',
+        antwort: 'Bland testet in dieser Reihenfolge: erst Wünschbarkeit, dann Machbarkeit, dann Wirtschaftlichkeit (S. 34–35, 39). Bestellt bei der Kaffeebar niemand im Gehen (A5), ist A4 egal.',
+      },
+      {
+        frage: 'Wie formulieren wir sie?',
+        antwort: 'Als einen Satz „Wir glauben, dass …“, wie A4 der Kaffeebar: „Wir glauben, dass die zusätzlichen Bestellungen mehr einbringen, als Aufsteller, Bildschirm und Bestellseite kosten – ohne weitere Kraft am Morgen.“ Ertrag gegen Kosten, nicht bloß „mehr Umsatz“.',
       },
     ],
   },
