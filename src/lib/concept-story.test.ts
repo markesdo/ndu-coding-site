@@ -39,7 +39,7 @@ describe('Story-Bogen (Entscheidung 66; seit 26.11. Theorie an Tag 4)', () => {
     expect(JSON.stringify(NOTIZEN_CONCEPT_STORY)).not.toMatch(/Bei Bedarf, als zweites Beispiel/);
     // Ohne die Übung von Tag 4 (vorgehen) und das Handout (vorlage, pruefen): die Folien des Story-Bogens von Tag 3.
     const ids = [...seite.matchAll(/<h2 id="([^"]+)">/g)].map((m) => m[1]).filter((id) => !['vorlage', 'vorgehen', 'pruefen'].includes(id));
-    expect(ids).toHaveLength(16);
+    expect(ids).toHaveLength(17);
     const minuten = ids.map((id) => {
       const z = NOTIZEN_CONCEPT_STORY[id]?.live.find((s) => s.startsWith('Zeit:') && s.includes('Sprechzeit ~'));
       return Number(z?.match(/Sprechzeit ~(\d+) min/)?.[1] ?? NaN);
@@ -104,8 +104,8 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
 
   it('Folien in der neuen Reihenfolge: concept-story vor flach, hoch-lehre nach hoch, drei-storys als Ausblick nach ein-satz', () => {
     expect(reihenfolge).toStrictEqual([
-      'story-bogen', 'facetime', 'stationen', 'hauptfigur', 'pinocchio', 'a-mal-b', 'concept-story', 'flach', 'hoch',
-      'hoch-lehre', 'baut-mit', 'slack', 'beispiel', 'woher', 'ein-satz', 'drei-storys', 'vorgehen', 'vorlage', 'pruefen',
+      'story-bogen', 'facetime', 'stationen', 'hauptfigur', 'pinocchio', 'a-mal-b', 'pinocchio-abc', 'concept-story', 'flach',
+      'hoch', 'hoch-lehre', 'baut-mit', 'slack', 'beispiel', 'woher', 'ein-satz', 'drei-storys', 'vorgehen', 'vorlage', 'pruefen',
     ]);
     // Der Begleiter folgt derselben Reihenfolge, ohne Notiz zu einer Folie, die es nicht gibt.
     expect(Object.keys(NOTIZEN_CONCEPT_STORY)).toStrictEqual(reihenfolge.filter((id) => !['vorlage', 'pruefen'].includes(id)));
@@ -230,5 +230,66 @@ describe('Concept Story: Satz im Brief, iPhone-Hintergrund', () => {
     expect(n.kern?.find((k) => k.text.includes('pin dropped'))?.quelle).toContain('Kap. 7, Build and Communicate, S. 129–130, Abb. 7.9');
     expect(n.zusatz?.[0].text).toContain('Lichaw selbst nennt als Beispiel die Pin-Animation in Maps');
     expect(JSON.stringify(NOTIZEN_CONCEPT_STORY.hoch.kern)).toContain('Blackberrys and Palm Treos');
+  });
+});
+
+// Markus 27.11.2026: Nach A × B = C erzählt eine dritte Folie Pinocchio richtig, mit A – B – C. Lichaw erzählt nur die Fassung
+// ohne Konflikt (Kap. 8, S. 136) – die A–B–C-Lesart ist eine Illustration des Kurses, nach Disney 1940.
+describe('pinocchio-abc: Pinocchio mit A × B = C', () => {
+  const reihenfolge = [...seite.matchAll(/<h2 id="([^"]+)">/g)].map((m) => m[1]);
+  it('steht direkt nach a-mal-b, vor concept-story; die Überleitungen führen hin und weiter', () => {
+    const i = reihenfolge.indexOf('pinocchio-abc');
+    expect(reihenfolge.slice(i - 2, i + 2)).toStrictEqual(['pinocchio', 'a-mal-b', 'pinocchio-abc', 'concept-story']);
+    expect(NOTIZEN_CONCEPT_STORY['a-mal-b'].ueberleitung).toBe('Rechnet die Formel einmal nach – an Pinocchio.');
+    expect(NOTIZEN_CONCEPT_STORY['pinocchio-abc'].ueberleitung).toBe('Wie sieht dieser Bogen aus, wenn er ein Produkt erzählt?');
+  });
+  it('A und B nebeneinander als Gegenkräfte mit × und =, C hervorgehoben – keine Kette mit Pfeilen', () => {
+    const f = folie('pinocchio-abc');
+    expect(f).toContain('<h2 id="pinocchio-abc">Pinocchio, jetzt mit A × B = C</h2>');
+    const abc = f.slice(f.indexOf('<figure class="abc"'), f.indexOf('</figure>'));
+    expect([...abc.matchAll(/<div class="([^"]+)"><strong>([ABC])<\/strong><span>([^<]+)<\/span><\/div>|<span class="abc-op">([^<]+)<\/span>/g)]
+      .map((m) => (m[4] ?? `${m[2]}${m[1].includes('abc-c') ? '*' : ''}: ${m[3]}`))).toStrictEqual([
+      'A: will ein echter Junge werden – mutig, ehrlich, selbstlos',
+      '×',
+      'B: Versuchungen und Lügen: Er lässt sich weglocken, seine Nase wächst',
+      '=',
+      'C*: rettet Geppetto – und wird ein echter Junge',
+    ]);
+    expect(f).not.toContain('<Fluss');
+  });
+  it('B bremst auf dem Weg (wie a-mal-b), C überwindet B', () => {
+    const f = folie('pinocchio-abc');
+    expect([...f.matchAll(/<li data-schritt>(.+?)<\/li>/g)].map((m) => m[1])).toStrictEqual([
+      '<strong>B findet ihr in euren Interviews:</strong> was eure Figur auf dem Weg bremst – Alternativen, Zweifel, Aufwand.',
+      '<strong>C zählt nur, weil er B überwindet:</strong> Er lässt sich nicht mehr weglocken und rettet Geppetto.',
+    ]);
+    // Dieselben drei Formen von B wie auf der Folie a-mal-b.
+    expect(folie('a-mal-b')).toContain('<li data-schritt><strong>B:</strong> was dagegen wirkt – Alternativen, Zweifel, Aufwand.</li>');
+    expect(f).toContain('B ist nicht die Ausgangslage (dass er aus Holz ist), sondern was ihn auf dem Weg zum Ziel bremst; C zählt nur, weil er B überwindet.');
+    const n = NOTIZEN_CONCEPT_STORY['pinocchio-abc'];
+    expect(n.live).toContain('Fragen: Was spricht für eure Figur dagegen, es anders zu machen?');
+    expect(n.live.join(' ')).not.toContain('heute ab');
+    expect(n.verstaendnis?.falsch).toMatch(/^„Dass er aus Holz ist“ – das ist die Ausgangslage/);
+  });
+  it('Quelle: sichtbar als Illustration des Kurses markiert, nach Disney 1940; Handout trennt Lichaw und Film, ohne Kursregel-Etikett', () => {
+    const f = folie('pinocchio-abc');
+    const sichtbar = f.slice(0, f.indexOf('<p class="nur-handout">'));
+    expect(sichtbar).toContain('<p class="small muted">Illustration des Kurses nach Disneys „Pinocchio“ (1940). Lichaw erzählt nur die Fassung ohne Konflikt (Kap. 8, S. 136).</p>');
+    expect(f).toContain('Die Lesart auf dieser Folie ist eine Illustration des Kurses, nach Disneys Zeichentrickfilm „Pinocchio“ (1940)');
+    expect(f).toContain('„Every character and every goal in a story should always have some kind of force working in opposition to it.“');
+    expect(f).toContain('Carlo Collodis Roman (1883) erzählt die Geschichte anders; die Folie folgt nur dem Film.');
+    expect(f).not.toContain('Kursregel');
+    const n = NOTIZEN_CONCEPT_STORY['pinocchio-abc'];
+    expect(n.kern?.map((k) => k.quelle)).toStrictEqual([
+      'Donna Lichaw, The User’s Journey, Kap. 8, Conflict Is Key und Math Is Fun, S. 136–137',
+      'Illustration des Kurses; Walt Disney, „Pinocchio“ (1940)',
+    ]);
+    expect(n.live).toContain('Quelle: Illustration des Kurses nach Disney 1940, nicht Lichaw.');
+    expect(n.verstaendnis?.frage).toBe('Was ist bei Pinocchio B – und warum braucht C es?');
+  });
+  it('pinocchio: Übertrag des Kurses ohne Kursregel-Etikett', () => {
+    expect(folie('pinocchio')).toContain('Übertrag des Kurses: Die Kraft dagegen müsst ihr für eure Concept Story nicht erfinden. Sie steht in euren Interviews.');
+    expect(folie('pinocchio')).not.toContain('Kursregel');
+    expect(JSON.stringify(NOTIZEN_CONCEPT_STORY.pinocchio)).not.toContain('Kursregel');
   });
 });
