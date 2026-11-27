@@ -302,7 +302,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Jede*r allein an der eigenen Map – drei Produkte.',
     ],
     uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein' },
-    miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
+    miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Orange oder, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
     ueberleitung: 'Schritt 1: der Rahmen.',
   },
 
@@ -351,10 +351,21 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-reihen': {
     live: [
-      'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie handelt.',
-      'Ihre Tasks in die Fläche, unter die Tasks eurer Person.',
+      'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie dazukommt.',
+      'Ihre Tasks gelb darunter, Name vorn: „Barista: zubereiten“.',
       'System grau, unter den Task, bei dem die Person wartet.',
-      'Fragen: Wer muss noch handeln, damit der Wert ankommt?',
+      'Falle: gelbes Sticky ohne Namen unter den Tasks eurer Person.',
+      'Vorlesen: erst die Spalte der Pendler*in fertig, dann die Barista.',
+    ],
+    kern: [
+      { text: '„I like to place stickies or simple persona thumbnails above the backbone so I can see who we’re talking about at particular times in the story.“', quelle: `${PATTON}, Kap. 2, Map in a Narrative Flow Across Many Users and Systems` },
+      { text: '„Activities organize a bunch of tasks done by similar people at similar times in order to reach a particular goal.“', quelle: `${PATTON}, Kap. 5, 4. Distill Your Map to Make a Backbone` },
+      { text: '„You may need to jump back and forth between players if they need to take turns taking actions.“ Abbildung: eine Zeile je Beteiligten, Name links (Subscriber, Platform, Local Channel); man nennt sie Swimlanes, Torres selbst nicht.', quelle: 'Teresa Torres, Continuous Discovery Habits, S. 120–121' },
+      { text: 'Vorsicht beim Erzählen: Der Name vorn auf dem Sticky („Barista: zubereiten“) ist eine Schreibweise des Kurses, aus keiner der beiden Quellen. Patton setzt ein Personen-Sticky über den Backbone, dort, wo die Person in der Geschichte dran ist; dass es genau über einer Aktivität steht, ist unsere Lesart. Torres markiert je Zeile (Name links) und nennt den Beteiligten in jedem Schritt. Der Kurs mischt beides: oben Pattons Kopf, darunter wie bei Torres der Name an jedem Schritt, nur ohne eigene Zeile. Die Barista hat bei uns keine eigenen Aktivitäten. Gleiche Spalte heißt nicht gleicher Moment: „Barista: Bestellung sehen“ kommt erst nach „Fertig 7:31“.', quelle: `Kurs; ${PATTON}, Kap. 2 und 5; Torres, S. 120–121` },
+    ],
+    fragen: [
+      { frage: 'Warum nicht eine Zeile je Person wie bei Torres heute früh?', antwort: 'Torres’ Map hat fünf Schritte und keinen Schnitt. Eure Stickies wandern in Schritt 9 unter die Linie – der Name muss mitwandern.' },
+      { frage: 'Bekommt die zweite Person ein eigenes grünes Sticky?', antwort: 'Bei Patton ja: Eine Aktivität bündelt Tasks ähnlicher Leute. Heute nicht – der Backbone erzählt eure Hauptperson.' },
     ],
     uebung: { dauer: '2 min', form: 'allein' },
     ueberleitung: 'Jetzt in die Tiefe – mit den vier Fragen.',
@@ -362,9 +373,13 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
 
   'schritt-erkunden': {
     live: [
-      'Timer 6 min: vier Fragen unter den Task – gut blau, schief rot.',
+      'Timer 6 min: genauer blau, oder orange, gut blau, schief rot.',
       'Mindestens ein rotes Sticky pro Aktivität.',
       'Falle: Kanal oder Feature-Name statt Verb-Satz.',
+    ],
+    kern: [
+      { text: '„What are the specific things they’d do here? What are alternative things they could do? What would make it really cool? What about when things go wrong?“', quelle: `${PATTON}, Kap. 1, Explore Details and Options` },
+      { text: 'Vorsicht beim Erzählen: Die Farben (blau = Detail, orange = oder, rot = geht schief) legt der Kurs fest. Patton stellt die vier Fragen, ordnet ihnen aber keine Farben zu; „details, alternatives, variations, and exceptions“ hängen bei ihm einfach unter dem Task.', quelle: `Kurs; ${PATTON}, Kap. 1, Explore Details and Options; Kap. 5, 3. Explore Alternative Stories` },
     ],
     uebung: { dauer: '6 min', form: 'allein' },
     ueberleitung: 'Und dann sucht ihr die Löcher.',
@@ -394,7 +409,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   'schritt-schneiden': {
     live: [
       'Timer 5 min: Linie hochziehen, darunter schieben – nicht kopieren.',
-      'Beim „oder“: was zum Lernen reicht, nach oben; die anderen darunter.',
+      'Bei Orange: was zum Lernen reicht, nach oben, die anderen darunter.',
       'Fragen: Was ist euer „bar an der Ausgabe“?',
       'Fragen: Welches Sticky oben fehlt der Lernfrage nicht?',
     ],

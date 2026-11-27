@@ -423,6 +423,8 @@ describe('#schritte-der-idee: Begleiter erklärt Torres’ Streaming-Beispiel (2
     const kb = frage('Wo stecken die drei Zeilen bei der Kaffeebar?');
     expect(kb).toMatch(/^Pendler\*in wie Subscriber: [\s\S]* Seite am Handy wie Platform: [\s\S]* Bar wie Local Channel: /);
     expect(kb).toContain('Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.');
+    // Review #492: Die Story Map zerlegt Schritt 4 feiner (Seite zeigt, Barista bereitet zu); die Experiment-Folien bleiben grob.
+    expect(kb).toContain('In der Story Map wird Schritt 4 feiner: Die Seite zeigt ‚Fertig 7:31‘ (grau, ‚System: zeigt …‘), die Barista bereitet zu.');
   });
   it('Review #477: keine Überdehnung von S. 122–124; die Seite handelt nicht für die Pendler*in', () => {
     const lesen = frage('Wie liest man die Map?');
