@@ -185,8 +185,9 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
 
   it('Übung auf Miro: Frames der Kaffeebar und je Produkt, keine docs-Datei (seit 26.11. abends)', () => {
     const f = folie('vorgehen');
-    // Die Übungsfolie zeigt prominent die eigenen Frames; das Kaffeebar-Beispiel hängt an #beispiel.
-    expect(f).not.toContain('<MiroFrame');
+    // Seit 27.11. (Dozent): Die Übungsfolie trägt die Miro-Pille der Anleitung wie die anderen Arbeitsfolien; die eigenen
+    // Frames und das Kaffeebar-Beispiel stehen in Schritt 1 (#beispiel hat keine Pille mehr).
+    expect(f.match(/<MiroFrame name="[^"]+" \/>/g)).toStrictEqual(['<MiroFrame name="T4 · 0 · Anleitung Concept Story" />']);
     // Seit 27.11.: die Frames im Schritt selbst, mit Beispiel und Anleitung.
     const schritt1 = f.slice(f.indexOf('<strong>Sieben Stationen, allein:</strong>'), f.indexOf('</li>', f.indexOf('<strong>Sieben Stationen, allein:</strong>')));
     for (const n of [1, 2, 3]) expect(schritt1).toMatch(new RegExp(`<MiroLink name="T4 · 0 · Concept Story · Produkt ${n}">(Produkt )?${n}</MiroLink>`));

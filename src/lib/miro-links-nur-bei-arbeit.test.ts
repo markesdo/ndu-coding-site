@@ -92,6 +92,35 @@ describe('Miro-Links nur auf Arbeitsfolien', () => {
   });
 });
 
+// Dozent 27.11.2026 (Usage Story „needs a link to miro“): Jede Folie, die einen Arbeitsblock eröffnet, zeigt im Beamer dasselbe
+// Muster – oben die Miro-Pille (die Anleitung, wo es eine gibt, sonst der gemeinsame Frame), dazu die eigenen Frames je
+// Produkt, das Kaffeebar-Beispiel und die Anleitung als Links, soweit es diese Frames auf dem Board gibt.
+const P = (f: string) => [1, 2, 3].map((n) => `${f} · Produkt ${n}`);
+const ERÖFFNEN: { s: string; id: string; pille: string; links: string[] }[] = [
+  { s: 'methoden/value-map', id: 'vorgehen', pille: 'T3 · 4 · Kundenprofil & Value Map', links: [...P('T3 · 4 · Canvas'), ...P('T3 · 4 · Anleitung Value Map'), 'T3 · 4 · Anleitung Value Map · Kaffeebar'] },
+  { s: 'methoden/concept-story', id: 'vorgehen', pille: 'T4 · 0 · Anleitung Concept Story', links: [...P('T4 · 0 · Concept Story'), 'T4 · 0 · Concept Story · Kaffeebar', 'T4 · 0 · Anleitung Concept Story'] },
+  { s: 'methoden/geschaeftsmodell', id: 'vorgehen', pille: 'T4 · 7 · Anleitung Geschäftsmodell', links: [...P('T4 · 7 · Geschäftsmodell'), 'T4 · 7 · Geschäftsmodell · Kaffeebar', 'T4 · 7 · Anleitung Geschäftsmodell'] },
+  { s: 'methoden/story-map', id: 'warmup', pille: 'T4 · 1 · Anleitung Warm-up · euer Morgen', links: [...P('T4 · 1 · Warm-up · euer Morgen'), 'T4 · 1 · Anleitung Warm-up · euer Morgen'] },
+  { s: 'methoden/story-map', id: 'vorgehen', pille: 'T4 · 1 · Story Map', links: ['T4 · 1 · Anleitung Story Map'] },
+  { s: 'methoden/usage-story', id: 'vorgehen', pille: 'T4 · 4 · Anleitung Usage Story', links: [...P('T4 · 4 · Usage Story'), 'T4 · 4 · Usage Story · Kaffeebar', 'T4 · 4 · Anleitung Usage Story'] },
+  { s: 'methoden/prototyp-spike', id: 'vorgehen', pille: 'T4 · 5 · Anleitung Prototyp', links: [...P('T4 · 5 · Prototyp'), 'T4 · 5 · Prototyp · Kaffeebar', 'T4 · 5 · Anleitung Prototyp'] },
+  { s: 'methoden/scrum', id: 'team', pille: 'T4 · 2 · Teamaufstellung & DoD', links: [] },
+  { s: 'methoden/backlog', id: 'vorgehen', pille: 'T5 · 1 · Backlog-Reihenfolge', links: [] },
+  { s: 'methoden/pitch', id: 'vorgehen', pille: 'T5 · 2 · Wertkurve & ERRC', links: [] },
+  { s: 'tag-4', id: 'hausaufgabe', pille: 'T4 · 6 · Anleitung Origin Story', links: [...P('T4 · 6 · Origin Story'), 'T4 · 6 · Origin Story · Kaffeebar', 'T4 · 6 · Anleitung Origin Story'] },
+];
+
+describe('Arbeitsfolien, die einen Block eröffnen: Pille, eigene Frames, Kaffeebar, Anleitung', () => {
+  for (const { s, id, pille, links } of ERÖFFNEN) {
+    it(`${s}#${id}`, () => {
+      const f = folien(quelle(s)).find((x) => x.id === id);
+      expect(f, `${s}#${id}`).toBeDefined();
+      expect([...f!.beamer.matchAll(/<MiroFrame name="([^"]+)" \/>/g)].map((m) => m[1])).toStrictEqual([pille]);
+      for (const l of links) expect(f!.beamer, l).toContain(`<MiroLink name="${l}">`);
+    });
+  }
+});
+
 describe('imBeamer und folien', () => {
   it('entfernt Handout und Kommentare, auch verschachtelte divs, und lässt den Rest stehen', () => {
     const f = '<h2 id="x">X</h2>{/* <MiroLink name="k"> */}<p class="small nur-handout"><MiroLink name="a">a</MiroLink></p>'
