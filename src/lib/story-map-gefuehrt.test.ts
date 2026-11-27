@@ -353,6 +353,32 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(NOTIZEN_STORY_MAP.vorgehen.miro?.schritte.join(' ') ?? '').toContain('Orange oder');
   });
 
+  // 28.11.2026 (Markus): dieselbe Aufteilung im Warm-up „euer Morgen“ – vorher „blau: Details, Varianten“ (klein
+  // geschrieben, darum griff die Prüfung oben nicht).
+  it('Warm-up: blau Detail, orange oder, rot geht schief – Folien, Handout, Begleiter; nirgends mehr „Details, Varianten“', () => {
+    const alt = /Details?(,| und|\/) ?Varianten/i;
+    expect(seite).not.toMatch(alt);
+    expect(JSON.stringify(NOTIZEN_STORY_MAP)).not.toMatch(alt);
+
+    const chips = '<span class="farbe blau">blau: Details</span> <span class="farbe orange">orange: oder</span> <span class="farbe rot">rot: geht schief</span>';
+    expect(sichtbar(folie('warmup'))).toContain(chips);
+    expect(handout(folie('warmup'))).toContain('darunter blau die Details, orange ein „oder“ (eine andere Art, eine Alternative) und rot, was schiefgeht.');
+    const v = sichtbar(folie('varianten'));
+    expect(v).toContain(chips);
+    expect(v).toContain('„Haare waschen“ (blau), „Kalt duschen“ (orange), „Kein warmes Wasser“ (rot)');
+    expect(v).not.toContain('Blaue Stickies');
+    expect(handout(folie('varianten'))).toContain('Im Frame heißt das: blau = Detail, orange = oder (eine andere Art, eine Alternative), rot = geht schief');
+    // Pattons Zitat bleibt wörtlich.
+    expect(handout(folie('varianten'))).toContain('„Details, alternatives, variations, and exceptions fill in the body of a map“');
+    expect(seite).toContain('im Warm-up habt ihr Grün, Gelb, Blau, Orange, Rot und Pink schon benutzt');
+    expect(seite).not.toContain('Neu ist Orange');
+
+    expect(NOTIZEN_STORY_MAP.warmup.live).toContain('Farben: gelb Tasks, grün Aktivitäten, blau Details, orange oder, rot geht schief.');
+    expect(NOTIZEN_STORY_MAP.varianten.live).toContain('Timer 4 min: darunter blau Detail, orange oder, rot geht schief.');
+    for (const id of ['warmup', 'varianten']) for (const z of NOTIZEN_STORY_MAP[id].live) expect(z.split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length, z).toBeLessThanOrEqual(12);
+    expect(NOTIZEN_STORY_MAP.varianten.kern?.at(-1)?.text).toMatch(/^Vorsicht beim Erzählen: Die Farben \(blau = Detail, orange = oder, rot = geht schief\) legt der Kurs fest/);
+  });
+
   it('Begleiter: Warm-up-Notiz erinnert ans Teilen des eigenen Boards, ohne Link', () => {
     const n = NOTIZEN['/innolab/methoden/story-map'];
     expect(n.warmup.live).toContain('Eigenes Board „Euer Morgen“ teilen (Link aus deinen Lesezeichen).');
