@@ -106,7 +106,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Wo stecken die drei Zeilen bei der Kaffeebar?',
-        antwort: 'Pendler*in wie Subscriber: will etwas und bekommt am Ende den Wert. Seite am Handy wie Platform: die Software als Beteiligte – sie öffnet sich nach dem Scan und nimmt Getränk und Abfahrtszeit entgegen (Schritte 2 und 3); Code scannen und wählen tut die Pendler*in. Bar wie Local Channel: liefert, was gewählt wurde – zeigt „Fertig 7:31“ und bereitet zu (Schritt 4). Die Schritte stehen auf der Folie „Am Beispiel“. Ein Unterschied: Der Sender ist bei Torres ein fremder Partner, die Bar gehört zum eigenen Geschäft. Auch dort hängen an der Seite und an der Bar Annahmen, die nicht die Kund*innen betreffen, etwa A2 (machbar: 40 Bestellungen in 30 Minuten). Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.',
+        antwort: 'Pendler*in wie Subscriber: will etwas und bekommt am Ende den Wert. Seite am Handy wie Platform: die Software als Beteiligte – sie öffnet sich nach dem Scan, nimmt Getränk und Abfahrtszeit entgegen und zeigt „Fertig 7:31“ (Schritte 2 bis 4); Code scannen und wählen tut die Pendler*in. Bar wie Local Channel: liefert, was gewählt wurde – bereitet die Bestellung zu (Schritt 4). Die Schritte stehen auf der Folie „Am Beispiel“. Ein Unterschied: Der Sender ist bei Torres ein fremder Partner, die Bar gehört zum eigenen Geschäft. Auch dort hängen an der Seite und an der Bar Annahmen, die nicht die Kund*innen betreffen, etwa A2 (machbar: 40 Bestellungen in 30 Minuten). Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.',
       },
     ],
     ueberleitung: 'Torres macht das für drei Ideen – wir für eine. Warum?',

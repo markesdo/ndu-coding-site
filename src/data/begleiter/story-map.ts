@@ -354,14 +354,14 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Timer 2 min: violett „Wer noch“ über die Aktivität, wo sie dazukommt.',
       'Ihre Tasks gelb darunter, Name vorn: „Barista: zubereiten“.',
       'System grau, unter den Task, bei dem die Person wartet.',
-      'Falle: gelbes Sticky ohne Namen in der zweiten Reihe.',
+      'Falle: gelbes Sticky ohne Namen unter den Tasks eurer Person.',
       'Vorlesen: erst die Spalte der Pendler*in fertig, dann die Barista.',
     ],
     kern: [
       { text: '„I like to place stickies or simple persona thumbnails above the backbone so I can see who we’re talking about at particular times in the story.“', quelle: `${PATTON}, Kap. 2, Map in a Narrative Flow Across Many Users and Systems` },
       { text: '„Activities organize a bunch of tasks done by similar people at similar times in order to reach a particular goal.“', quelle: `${PATTON}, Kap. 5, 4. Distill Your Map to Make a Backbone` },
       { text: '„You may need to jump back and forth between players if they need to take turns taking actions.“ Abbildung: eine Zeile je Beteiligten, Name links (Subscriber, Platform, Local Channel); man nennt sie Swimlanes, Torres selbst nicht.', quelle: 'Teresa Torres, Continuous Discovery Habits, S. 120–121' },
-      { text: 'Vorsicht beim Erzählen: Der Name vorn auf dem Sticky („Barista: zubereiten“) ist eine Schreibweise des Kurses, aus keiner der beiden Quellen. Patton markiert je Aktivität (Personen-Sticky über dem Backbone), Torres je Zeile (Name links). Der Kurs mischt beides: oben Pattons Kopf, darunter Torres’ zweite Zeile, nur ohne Zeile. Die Barista hat bei uns keine eigenen Aktivitäten. Gleiche Spalte heißt nicht gleicher Moment: „Barista: Bestellung sehen“ kommt erst nach „Fertig 7:31“.', quelle: `Kurs; ${PATTON}, Kap. 2 und 5; Torres, S. 120–121` },
+      { text: 'Vorsicht beim Erzählen: Der Name vorn auf dem Sticky („Barista: zubereiten“) ist eine Schreibweise des Kurses, aus keiner der beiden Quellen. Patton setzt ein Personen-Sticky über den Backbone, dort, wo die Person in der Geschichte dran ist; dass es genau über einer Aktivität steht, ist unsere Lesart. Torres markiert je Zeile (Name links) und nennt den Beteiligten in jedem Schritt. Der Kurs mischt beides: oben Pattons Kopf, darunter wie bei Torres der Name an jedem Schritt, nur ohne eigene Zeile. Die Barista hat bei uns keine eigenen Aktivitäten. Gleiche Spalte heißt nicht gleicher Moment: „Barista: Bestellung sehen“ kommt erst nach „Fertig 7:31“.', quelle: `Kurs; ${PATTON}, Kap. 2 und 5; Torres, S. 120–121` },
     ],
     fragen: [
       { frage: 'Warum nicht eine Zeile je Person wie bei Torres heute früh?', antwort: 'Torres’ Map hat fünf Schritte und keinen Schnitt. Eure Stickies wandern in Schritt 9 unter die Linie – der Name muss mitwandern.' },

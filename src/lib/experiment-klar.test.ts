@@ -423,6 +423,9 @@ describe('#schritte-der-idee: Begleiter erklärt Torres’ Streaming-Beispiel (2
     const kb = frage('Wo stecken die drei Zeilen bei der Kaffeebar?');
     expect(kb).toMatch(/^Pendler\*in wie Subscriber: [\s\S]* Seite am Handy wie Platform: [\s\S]* Bar wie Local Channel: /);
     expect(kb).toContain('Die Zuordnung ist eine Lesart des Kurses, nicht von Torres.');
+    // Review #492: „Fertig 7:31“ zeigt die Seite (System), die Bar bereitet zu.
+    expect(kb).toContain('nimmt Getränk und Abfahrtszeit entgegen und zeigt „Fertig 7:31“ (Schritte 2 bis 4)');
+    expect(kb.slice(kb.indexOf('Bar wie Local Channel:'))).not.toContain('Fertig 7:31');
   });
   it('Review #477: keine Überdehnung von S. 122–124; die Seite handelt nicht für die Pendler*in', () => {
     const lesen = frage('Wie liest man die Map?');
@@ -431,7 +434,7 @@ describe('#schritte-der-idee: Begleiter erklärt Torres’ Streaming-Beispiel (2
     const ann = frage('Welche Annahmen leitet Torres aus dieser Map ab?');
     expect(ann).toContain('Wünschbarkeit, Bedienbarkeit und Machbarkeit stecken überall dort, wo jemand etwas tun muss – „every time you assume that an end-user will do something“ (S. 122)');
     expect(ann).not.toContain('in jedem Schritt');
-    expect(frage('Wo stecken die drei Zeilen bei der Kaffeebar?')).toContain('sie öffnet sich nach dem Scan und nimmt Getränk und Abfahrtszeit entgegen (Schritte 2 und 3); Code scannen und wählen tut die Pendler*in.');
+    expect(frage('Wo stecken die drei Zeilen bei der Kaffeebar?')).toContain('sie öffnet sich nach dem Scan, nimmt Getränk und Abfahrtszeit entgegen und zeigt „Fertig 7:31“ (Schritte 2 bis 4); Code scannen und wählen tut die Pendler*in.');
   });
 });
 
