@@ -85,7 +85,7 @@ describe('Scrum-Seite: Zeiger auf den Foliensatz und Übung vor dem Beispiel', (
   it('gerendert: die Folie „foliensatz“ zeigt Link und Themen auf dem Beamer, ohne Foliennummern', async () => {
     const html = await (await AstroContainer.create()).renderToString(Scrum);
     const ids = [...html.matchAll(/<h2[^>]*\bid="([^"]+)"/g)].map((m) => m[1]);
-    expect(ids.slice(ids.indexOf('foliensatz'), ids.indexOf('foliensatz') + 3)).toStrictEqual(['foliensatz', 'nachlese', 'abweichungen']);
+    expect(ids.slice(ids.indexOf('foliensatz'), ids.indexOf('foliensatz') + 2)).toStrictEqual(['foliensatz', 'abweichungen']);
     const folie = ausschnitt(html, 'foliensatz');
     // Ohne Handout-Teil wäre „beamer“ die ganze Folie – dann bewiese der Test nicht, dass der Link auf dem Beamer steht.
     const handout = folie.indexOf('nur-handout');
@@ -101,16 +101,31 @@ describe('Scrum-Seite: Zeiger auf den Foliensatz und Übung vor dem Beispiel', (
       'Danach hier: Wo wir abweichen → Kaffeebar auf der Scrum-Karte → Gleis-1-Express.',
     ]);
     expect(textAusHtml(beamer)).toContain('Foliensatz: „ndu – Innolab 26/27 Students parts“, Teil Agile & Scrum.');
-    // Keine Foliennummern: weder die Auswahl noch der Bereich 1–62, auch nicht im Handout-Teil.
-    expect(folie).not.toContain(AGIL_SCRUM_FOLIEN);
-    expect(textAusHtml(folie)).not.toMatch(/Folien? \d|1–62/);
-    expect(folie.slice(handout)).toContain('href="#nachlese"');
+    // Auf dem Beamer keine Foliennummern: weder die Auswahl noch der Bereich 1–62.
+    expect(beamer).not.toContain(AGIL_SCRUM_FOLIEN);
+    expect(textAusHtml(beamer)).not.toMatch(/Folien? \d|1–62/);
+    // Im Handout steht der Bereich, damit Studierende den Teil im Foliensatz finden; die Auswahl von Tag 4 nicht.
+    const nurHandout = folie.slice(handout);
+    expect(textAusHtml(nurHandout)).toContain('Im Foliensatz: Teil Agile & Scrum (Folien 1–62).');
+    expect(nurHandout).not.toContain(AGIL_SCRUM_FOLIEN);
+    expect(nurHandout).toContain('href="#nachlese"');
     // Auch „So geht ihr vor“ nennt den Foliensatz.
     expect(ausschnitt(html, 'vorgehen')).toContain(href);
   }, 60_000);
 
-  it('Begleiter: die Nummern der gezeigten Folien stehen in der Notiz zu „foliensatz“', () => {
-    expect(NOTIZEN_SCRUM.foliensatz.ablauf?.schritte?.join(' ')).toContain(`: ${AGIL_SCRUM_FOLIEN}.`);
+  // „Nur live“ im Begleiter blendet Ablauf und Kern aus: Die Nummern müssen in live stehen, aufgeteilt auf zwei
+  // Stichworte (12-Wörter-Grenze, begleiter.test.ts), zusammen genau AGIL_SCRUM_FOLIEN.
+  it('Begleiter: die Nummern der gezeigten Folien stehen live in der Notiz zu „foliensatz“', () => {
+    const live = NOTIZEN_SCRUM.foliensatz.live;
+    const [a, b] = live;
+    expect(a).toMatch(/^Im Foliensatz zeigen: .+ …$/);
+    expect(b).toMatch(/^Dann: .+\.$/);
+    const teil1 = a.replace(/^Im Foliensatz zeigen: /, '').replace(/ …$/, '');
+    const teil2 = b.replace(/^Dann: /, '').replace(/\.$/, '');
+    expect(`${teil1}, ${teil2}`).toBe(AGIL_SCRUM_FOLIEN);
+    expect(live.join(' ')).not.toMatch(/unter Ablauf/);
+    expect(live.length).toBeLessThanOrEqual(5);
+    expect(NOTIZEN_SCRUM.foliensatz.ablauf).toBeUndefined();
     expect(QUELLE_SCRUM).not.toMatch(/import \{[^}]*AGIL_SCRUM_FOLIEN/);
   });
 });
@@ -120,43 +135,51 @@ describe('Scrum-Seite: Zeiger auf den Foliensatz und Übung vor dem Beispiel', (
 describe('Scrum-Seite: Nachlese statt sechs Theorie-Folien', () => {
   const THEORIE = ['agil', 'manifest', 'scrum', 'verantwortlichkeiten', 'events', 'fertig'];
 
-  it('Quelltext: ein nur-handout-Block mit h2 #nachlese und den sechs Ankern als h3, ohne <Folie>', () => {
+  // Die Nachlese steht hinter der letzten Folie der Seite: Ein nur-handout-Block zwischen zwei Folien nähme im Beamer der
+  // zweiten den Trennstrich (beamer.css: html[data-beamer] .folie + .folie).
+  it('Quelltext: ein nur-handout-Block mit h2 #nachlese und den sechs Ankern als h3, hinter der letzten Folie', () => {
     const von = QUELLE_SCRUM.indexOf('<div class="nur-handout">\n  <h2 id="nachlese">');
     expect(von).toBeGreaterThan(0);
-    const bis = QUELLE_SCRUM.indexOf('<h2 id="abweichungen">', von);
+    const bis = QUELLE_SCRUM.indexOf('<p class="small muted">Nach {GUIDE}', von);
     expect(bis).toBeGreaterThan(von);
     const block = QUELLE_SCRUM.slice(von, bis);
     expect([...block.matchAll(/<h3 id="([^"]+)">/g)].map((m) => m[1])).toStrictEqual(THEORIE);
-    // Im Block steht keine Folie; er endet mit </div>, danach kommt nur die Folie mit #abweichungen.
-    const innen = block.slice(0, block.lastIndexOf('<Folie>'));
-    expect(innen).not.toMatch(/<\/?Folie\b/);
-    expect(innen.trimEnd().endsWith('</div>')).toBe(true);
+    expect(block).not.toMatch(/<\/?Folie\b/);
+    expect(block.trimEnd().endsWith('</div>')).toBe(true);
+    expect(QUELLE_SCRUM.lastIndexOf('</Folie>')).toBeLessThan(von);
     expect(block).not.toContain('data-schritt');
     expect(block).not.toContain('aufdecken=');
   });
 
-  it('Begleiter und Inhaltsverzeichnis: keine eigenen Folien mehr; die Anker gehören zur Folie „foliensatz“', () => {
-    const folien = folienAus('/innolab/methoden/scrum', QUELLE_SCRUM);
-    expect(folien.map((f) => f.id).filter((id) => THEORIE.includes(id))).toStrictEqual([]);
-    expect(folien.find((f) => f.id === 'foliensatz')?.unterIds).toStrictEqual(['nachlese', ...THEORIE]);
-    for (const id of THEORIE) expect(NOTIZEN_SCRUM, id).not.toHaveProperty(id);
-    expect(gliederung(QUELLE_SCRUM).map((a) => a.id).slice(0, 3)).toStrictEqual(['foliensatz', 'nachlese', 'abweichungen']);
+  it('Quelltext: zwischen „foliensatz“ und „abweichungen“ steht nichts, die Folien grenzen aneinander (Trennstrich)', () => {
+    const a = QUELLE_SCRUM.indexOf('</Folie>', QUELLE_SCRUM.indexOf('<h2 id="foliensatz">'));
+    const b = QUELLE_SCRUM.indexOf('<h2 id="abweichungen">');
+    expect(a).toBeGreaterThan(0);
+    expect(QUELLE_SCRUM.slice(a, b)).toMatch(/^<\/Folie>\s*<Folie>\s*$/);
   });
 
-  it('gerendert: die Nachlese steht im Handout mit Zitaten und Seitenzahlen, außerhalb jeder Folie', async () => {
+  it('Begleiter und Inhaltsverzeichnis: keine eigenen Folien mehr; die Anker hängen an der letzten Folie', () => {
+    const folien = folienAus('/innolab/methoden/scrum', QUELLE_SCRUM);
+    expect(folien.map((f) => f.id).filter((id) => THEORIE.includes(id))).toStrictEqual([]);
+    expect(folien.at(-1)?.unterIds.slice(-7)).toStrictEqual(['nachlese', ...THEORIE]);
+    expect(folien.find((f) => f.id === 'foliensatz')?.unterIds).toStrictEqual([]);
+    for (const id of THEORIE) expect(NOTIZEN_SCRUM, id).not.toHaveProperty(id);
+    const toc = gliederung(QUELLE_SCRUM).map((a) => a.id);
+    expect(toc.slice(toc.indexOf('foliensatz'), toc.indexOf('foliensatz') + 2)).toStrictEqual(['foliensatz', 'abweichungen']);
+    expect(toc.at(-1)).toBe('nachlese');
+  });
+
+  it('gerendert: die Nachlese steht im Handout mit Zitaten und Seitenzahlen, hinter jeder Folie', async () => {
     const html = await (await AstroContainer.create()).renderToString(Scrum);
     const von = html.indexOf('<h2 id="nachlese"');
-    const bis = html.indexOf('<h2 id="abweichungen"');
     expect(von).toBeGreaterThan(0);
-    expect(bis).toBeGreaterThan(von);
-    // Der Abschnitt steckt in einem nur-handout-Element, das keine Folie ist.
+    // Der Abschnitt steckt in einem nur-handout-Element, und nach ihm kommt keine Folie mehr.
     const davor = html.slice(0, von);
     expect(davor.slice(davor.lastIndexOf('<'))).toMatch(/^<div class="nur-handout"[^>]*>\s*$/);
-    // Bis zur Folie mit #abweichungen (<section … data-folie>), nicht bis zu ihrer Überschrift.
-    const ende = html.lastIndexOf('<section', bis);
+    expect(html.indexOf('data-folie', von)).toBe(-1);
+    const ende = html.indexOf('Kap. 3 und 5', von); // Quellenzeile am Seitenende
     expect(ende).toBeGreaterThan(von);
     const nachlese = html.slice(von, ende);
-    expect(nachlese).not.toContain('data-folie');
     for (const id of THEORIE) expect(nachlese).toContain(`<h3 id="${id}"`);
     const text = textAusHtml(nachlese);
     for (const t of [

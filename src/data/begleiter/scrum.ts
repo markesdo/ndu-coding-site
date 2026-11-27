@@ -4,7 +4,7 @@ import { AGIL_SCRUM_FOLIEN } from '../../lib/foliensatz';
 // Begleiter-Notizen zu src/pages/innolab/methoden/scrum.astro. Zwei Tage auf einer Seite:
 // - Tag 4 (28.11., 16:35–17:15, Variante B): Theorie aus dem Foliensatz (27 min), dann hier „Wo wir abweichen“ (2 min),
 //   Kaffeebar auf der Scrum-Karte (4 + 3 min), Gleis-1-Express (4 min); „Weiter heute“ führt in den Abschluss (17:15).
-//   Die Nummern der gezeigten Folien stehen nur hier, nicht auf der Folie. „Warum nicht Wasserfall“ bis „Fertig heißt
+//   Die Nummern der gezeigten Folien stehen nur hier (live), nicht auf der Folie. „Warum nicht Wasserfall“ bis „Fertig heißt
 //   fertig“ sind seit 27.11.2026 keine Folien mehr (Nachlese nur im Handout, #nachlese), darum ohne Notiz. Die Folie
 //   planen ist Nachlese: an Tag 4 im Beamer überspringen.
 // - Tag 5 (12.12., 09:40–10:20): team, dod, vorgehen, uebertrag – im Code unten markiert.
@@ -14,11 +14,18 @@ const GUIDE = 'Ken Schwaber & Jeff Sutherland, The Scrum Guide (2020)';
 const JEFFRIES = 'Ron Jeffries, The Nature of Software Development (2015)';
 const MANIFEST = 'Manifesto for Agile Software Development (2001), https://agilemanifesto.org';
 
+// Die Foliennummern gehören in den Live-Block: „Nur live“ blendet Ablauf und Kern aus (begleiter.astro). Ein live-Stichwort
+// hat höchstens 12 Wörter, und jede Nummer zählt als Wort; darum steht die Liste auf zwei Stichworten, halbiert aus
+// AGIL_SCRUM_FOLIEN (so folgt sie der Konstante, wenn sich die Nummern ändern).
+const FOLIEN = AGIL_SCRUM_FOLIEN.split(', ');
+const HAELFTE = Math.ceil(FOLIEN.length / 2);
+
 export const NOTIZEN_SCRUM: Record<string, Notiz> = {
   // Tag 4
   foliensatz: {
     live: [
-      'Foliensatz öffnen, Teil Agile & Scrum: nur die 20 Folien unter Ablauf.',
+      `Im Foliensatz zeigen: ${FOLIEN.slice(0, HAELFTE).join(', ')} …`,
+      `Dann: ${FOLIEN.slice(HAELFTE).join(', ')}.`,
       'Zeit: 27 min Foliensatz, dann hier weiter.',
       'Fragen zur Theorie: Nachlese im Handout, mit Zitaten und Seitenzahlen.',
       'Danach über den Link auf der Folie zu „Wo wir abweichen“.',
@@ -37,9 +44,6 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
         quelle: MANIFEST,
       },
     ],
-    ablauf: {
-      schritte: [`Folien im Foliensatz, in dieser Reihenfolge: ${AGIL_SCRUM_FOLIEN}. Auf der Folie stehen keine Nummern.`],
-    },
     ueberleitung: 'So weit der Guide. Jetzt: wo wir zu dritt mit drei Produkten davon abweichen.',
   },
 
