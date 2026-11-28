@@ -13,7 +13,7 @@ import { NOTIZEN } from '../data/begleiter';
 const SRC = fileURLToPath(new URL('..', import.meta.url));
 const dateien = (d: string): string[] => readdirSync(d).flatMap((n) => {
   const p = join(d, n);
-  return statSync(p).isDirectory() ? dateien(p) : /\.(astro|ts|tsx|css)$/.test(n) ? [p] : [];
+  return statSync(p).isDirectory() ? dateien(p) : /\.(astro|ts|tsx|css|md|json|js|mjs)$/.test(n) ? [p] : [];
 });
 const QUELLEN = dateien(SRC).map((p) => ({ p: relative(SRC, p), text: readFileSync(p, 'utf8') }));
 const SEITEN = QUELLEN.filter(({ p }) => p.startsWith('pages/'));
@@ -22,10 +22,19 @@ const bekannt = (n: string) => Object.hasOwn(MIRO_FRAMES, n) || Object.hasOwn(MI
 const ALT = [...(ALT_NEU as [string, string][]), ...(KURZFORMEN as [string, string][])].map(([alt]) => alt);
 const NEU = (ALT_NEU as [string, string][]).map(([, neu]) => neu);
 
-/** Fundstellen alter Frame-Namen in den Quellen. */
+/** Fundstellen alter Frame-Namen in den Quellen (&amp; wie &). Ein „T4 · 0“ gibt es nach dem Umnummerieren gar nicht mehr. */
 export function alteNamen(quellen: { p: string; text: string }[]): string[] {
-  return quellen.flatMap(({ p, text }) => ALT.filter((a) => text.includes(a)).map((a) => `${p}: ${a}`));
+  return quellen.flatMap(({ p, text: roh }) => {
+    const text = roh.replaceAll('&amp;', '&');
+    const treffer = ALT.filter((a) => text.includes(a));
+    if (/T4 · 0(?!\d)/.test(text)) treffer.push('T4 · 0');
+    return treffer.map((a) => `${p}: ${a}`);
+  });
 }
+
+// Themenwörter: Steht eins in der Beschriftung, muss der Frame es auch im Namen tragen.
+const THEMEN = ['Concept Story', 'Geschäftsmodell', 'Annahmen der Idee', 'Story Map', 'Warm-up', 'Usage Story', 'Prototyp', 'Scrum',
+  'Origin Story', 'Lernkarten', 'Canvas', 'Ideation', 'Value Map', 'Baum', 'Experience Map'];
 
 /** MiroLinks, deren Beschriftung nicht zum Frame passt. vorher = sichtbarer Text vor dem Link (ohne Markup, bis 140 Zeichen), in
  *  dem eine Reihe wie „Anleitung Produkt 1 · 2 · 3“ ihr gemeinsames Wort trägt. */
@@ -43,6 +52,7 @@ export function falscheBeschriftung(links: { name: string; text: string; vorher:
     if (/Kaffeebar/.test(text) && !/Kaffeebar/.test(name) && !text.includes(name)) f('Beschriftung Kaffeebar, Frame nicht');
     if (/(Beispiel|[·-]) Kaffeebar$/.test(name) && !/Kaffeebar/.test(text)) f('Frame Kaffeebar, Beschriftung nicht');
     if (/Lösung/.test(text) !== /Lösung/.test(name)) f('Lösung nur auf einer Seite');
+    for (const t of THEMEN) if (text.includes(t) && !name.includes(t)) f(`Beschriftung ${t}, Frame nicht`);
   }
   return fehler;
 }
@@ -53,12 +63,24 @@ const LINKS = SEITEN.flatMap(({ p, text }) => [...text.matchAll(/<MiroLink name=
 describe('Tag-4-Frames umnummeriert', () => {
   it('kein alter Tag-4-Name mehr in src', () => {
     expect(QUELLEN.length).toBeGreaterThan(100);
-    expect(alteNamen(QUELLEN)).toStrictEqual([]);
+    // Diese Datei selbst nicht: Ihre Wächter-Proben nennen alte Namen.
+    expect(alteNamen(QUELLEN.filter(({ p }) => p !== 'lib/miro-links-pruefung.test.ts'))).toStrictEqual([]);
   });
   it('der Wächter findet einen alten Namen, und das Skript ersetzt ihn', () => {
-    const alt = `„${ALT_NEU[0][0]} · Produkt n“`;
-    expect(alteNamen([{ p: 'x', text: alt }])).toStrictEqual([`x: ${ALT_NEU[0][0]}`]);
+    const name = (ALT_NEU as [string, string][]).find(([a]) => a.startsWith('T4 · 6 · '))![0];
+    const alt = `„${name} · Produkt n“`;
+    expect(alteNamen([{ p: 'x', text: alt }])).toStrictEqual([`x: ${name}`]);
     expect(alteNamen([{ p: 'x', text: umnummerieren(alt) }])).toStrictEqual([]);
+  });
+  it('der Wächter findet ein bloßes „T4 · 0“ und alte Namen mit &amp;', () => {
+    expect(alteNamen([{ p: 'x', text: 'links neben „T4 · 0“' }])).toStrictEqual(['x: T4 · 0']);
+    expect(alteNamen([{ p: 'x', text: 'T4 · 03 ist kein Frame' }])).toStrictEqual([]);
+    const team = (ALT_NEU as [string, string][]).find(([a]) => a.includes('&'))![0];
+    expect(alteNamen([{ p: 'x', text: team.replace('&', '&amp;') }])).toStrictEqual([`x: ${team}`]);
+  });
+  it('das Skript ist wiederholbar und verkettet nicht', () => {
+    for (const alt of ALT) expect(umnummerieren(umnummerieren(alt)), alt).toBe(umnummerieren(alt));
+    expect(umnummerieren('T4 · 0 · Concept Story')).toBe('T4 · 1 · Concept Story');
   });
   it('jeder neue Name hat in MIRO_FRAMES eine ID, und jeder Tag-4-Eintrag dort folgt der neuen Zuordnung', () => {
     for (const neu of NEU) {
@@ -107,6 +129,7 @@ describe('Miro-Verweise', () => {
       { name: 'T4 · 8 · Origin Story · Kaffeebar', text: 'Anleitung', vorher: '' },
       { name: 'T4 · 8 · Anleitung Origin Story', text: 'Kaffeebar', vorher: '' },
       { name: 'T4 · 8 · Anleitung Lernkarten', text: 'Lernkarten', vorher: 'Anleitung auf Miro: ' },
+      { name: 'T4 · 8 · Anleitung Lernkarten', text: 'Origin Story', vorher: 'Anleitung auf Miro: ' },
     ])).toStrictEqual([
       'T4 · 8 · Origin Story · Produkt 2 ← „3“: Beschriftung Produkt 3, Frame Produkt 2',
       'T4 · 8 · Origin Story · Produkt 2 ← „3“: Frame Produkt 2, Beschriftung ohne 2',
@@ -114,6 +137,7 @@ describe('Miro-Verweise', () => {
       'T4 · 8 · Origin Story · Kaffeebar ← „Anleitung“: Frame Kaffeebar, Beschriftung nicht',
       'T4 · 8 · Anleitung Origin Story ← „Kaffeebar“: Frame ist eine Anleitung, Beschriftung sagt es nicht',
       'T4 · 8 · Anleitung Origin Story ← „Kaffeebar“: Beschriftung Kaffeebar, Frame nicht',
+      'T4 · 8 · Anleitung Lernkarten ← „Origin Story“: Beschriftung Origin Story, Frame nicht',
     ]);
   });
 });

@@ -37,10 +37,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T3 · 4 · Anleitung Value Map · Produkt 1': '3458764691611802580',
   'T3 · 4 · Anleitung Value Map · Produkt 2': '3458764691611859842',
   'T3 · 4 · Anleitung Value Map · Produkt 3': '3458764691611859843',
-  // Bis 19.11.2026 „T3 · 5 · Annahmen der Idee“; genutzt wird der Frame an Tag 4 (experiment.astro), darum T4 · 3.
-  'T4 · 3 · Annahmen der Idee': '3458764687894872786',
-  // Anleitung links neben T4 · 3 (seit 26.11.2026), verlinkt von experiment.astro#vorgehen und #vorgehen-karte.
-  'T4 · 3 · Anleitung Annahmen der Idee': '3458764691725321671',
+  // Nummern seit 28.11.2026 in der Reihenfolge des Tages (scripts/t4-frames-umnummerieren.mjs); die IDs blieben gleich.
   // Concept Story auf Miro (seit 26.11.2026): sieben Stationen auf dem Bogen und das Feld „Flach-Probe (Kursregel)“, ein Frame
   // je Person; das ausgefüllte Beispiel der Kaffeebar daneben. Seit dem Nachtrag 26.11. abends bleibt sie auf Miro (keine Datei).
   // Anleitungen auf Miro (seit 27.11.2026), je ein Frame links neben der Übung; verlinkt von deren „So geht ihr vor“.
@@ -49,6 +46,16 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 1 · Concept Story · Produkt 1': '3458764691724622640',
   'T4 · 1 · Concept Story · Produkt 2': '3458764691724622641',
   'T4 · 1 · Concept Story · Produkt 3': '3458764691724622642',
+  // Frames je Produkt für die Arbeit ohne docs-Dateien (seit 26.11.2026 nachts), je mit dem ausgefüllten Beispiel der Kaffeebar.
+  'T4 · 2 · Anleitung Geschäftsmodell': '3458764691728490336',
+  'T4 · 2 · Geschäftsmodell · Kaffeebar': '3458764691726674865',
+  'T4 · 2 · Geschäftsmodell · Produkt 1': '3458764691726674866',
+  'T4 · 2 · Geschäftsmodell · Produkt 2': '3458764691726674867',
+  'T4 · 2 · Geschäftsmodell · Produkt 3': '3458764691726674868',
+  // Bis 19.11.2026 „T3 · 5 · Annahmen der Idee“; genutzt wird der Frame an Tag 4 (experiment.astro) als dritte Übung des Tages.
+  'T4 · 3 · Annahmen der Idee': '3458764687894872786',
+  // Anleitung links neben T4 · 3 (seit 26.11.2026), verlinkt von experiment.astro#vorgehen und #vorgehen-karte.
+  'T4 · 3 · Anleitung Annahmen der Idee': '3458764691725321671',
   'T4 · 4 · Story Map': '3458764687894872787',
   'T4 · 4 · Anleitung Story Map': '3458764691728716904',
   'T4 · 4 · Anleitung Warm-up · euer Morgen': '3458764691728620654',
@@ -57,9 +64,6 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 4 · Warm-up · euer Morgen · Produkt 1': '3458764691725906138',
   'T4 · 4 · Warm-up · euer Morgen · Produkt 2': '3458764691725906820',
   'T4 · 4 · Warm-up · euer Morgen · Produkt 3': '3458764691725906821',
-  'T5 · 0 · Teamaufstellung & DoD': '3458764687968670113',
-  // Frames je Produkt für die Arbeit ohne docs-Dateien (seit 26.11.2026 nachts), je mit dem ausgefüllten Beispiel der Kaffeebar.
-  // Nummern seit 28.11.2026 in der Reihenfolge des Tages (scripts/t4-frames-umnummerieren.mjs); die IDs blieben gleich.
   'T4 · 5 · Anleitung Usage Story': '3458764691728596797',
   'T4 · 5 · Usage Story · Kaffeebar': '3458764691726734311',
   'T4 · 5 · Usage Story · Produkt 1': '3458764691726734312',
@@ -72,6 +76,12 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 6 · Prototyp · Produkt 1': '3458764691726853494',
   'T4 · 6 · Prototyp · Produkt 2': '3458764691726853495',
   'T4 · 6 · Prototyp · Produkt 3': '3458764691726853496',
+  // Übung „Kaffeebar auf der Scrum-Karte“ (seit 26.11.2026): ein Frame je Person; die Lösung ist auf dem Board bis zur
+  // Auflösung versteckt und wird nur von der Folie „Am Beispiel“ verlinkt, nicht von der Übung.
+  'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 1': '3458764691686327549',
+  'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 2': '3458764691686327550',
+  'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 3': '3458764691686327551',
+  'T4 · 7 · Scrum · Kaffeebar · Lösung': '3458764691686327552',
   'T4 · 8 · Anleitung Origin Story': '3458764691728490247',
   'T4 · 8 · Anleitung Lernkarten': '3458764691728384747',
   'T4 · 8 · Origin Story · Kaffeebar': '3458764691726786504',
@@ -82,17 +92,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 8 · Lernkarten · Produkt 1': '3458764691726588596',
   'T4 · 8 · Lernkarten · Produkt 2': '3458764691726588597',
   'T4 · 8 · Lernkarten · Produkt 3': '3458764691726588598',
-  'T4 · 2 · Anleitung Geschäftsmodell': '3458764691728490336',
-  'T4 · 2 · Geschäftsmodell · Kaffeebar': '3458764691726674865',
-  'T4 · 2 · Geschäftsmodell · Produkt 1': '3458764691726674866',
-  'T4 · 2 · Geschäftsmodell · Produkt 2': '3458764691726674867',
-  'T4 · 2 · Geschäftsmodell · Produkt 3': '3458764691726674868',
-  // Übung „Kaffeebar auf der Scrum-Karte“ (seit 26.11.2026): ein Frame je Person; die Lösung ist auf dem Board bis zur
-  // Auflösung versteckt und wird nur von der Folie „Am Beispiel“ verlinkt, nicht von der Übung.
-  'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 1': '3458764691686327549',
-  'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 2': '3458764691686327550',
-  'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 3': '3458764691686327551',
-  'T4 · 7 · Scrum · Kaffeebar · Lösung': '3458764691686327552',
+  'T5 · 0 · Teamaufstellung & DoD': '3458764687968670113',
   'T5 · 1 · Backlog-Reihenfolge': '3458764687968819129',
   'T5 · 2 · Wertkurve & ERRC': '3458764687968975610',
 };
