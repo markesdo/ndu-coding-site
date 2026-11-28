@@ -112,6 +112,16 @@ describe('Value Map: Pfeil-IDs links (Entscheidung 26.11.)', () => {
     expect(pruefPrompt(m)).toContain('Bei value-map-wirkung: Eine ID ohne Pfeil wie „(P1)“ ist die ältere Schreibweise und kein Befund');
   });
 
+  it('Prüfliste: die Fit-Zeichen in einem Punkt (value-map-fit-zeichen), adressiert ohne ✗/? – höchstens 8 Punkte (Review #496)', () => {
+    const m = METHODEN.find((x) => x.slug === 'value-map')!;
+    const text = (id: string) => m.pruefliste!.find((x) => x.id === id)?.text;
+    expect(text('value-map-fit-zeichen')).toBe('Im Fit trägt rechts jeder Eintrag genau ein Zeichen (✓, ✗ oder ?), links steht jeder ✓ bei einem Zettel mit Pfeil und ID, und zum höchsten ✗ steht ein Satz.');
+    expect(text('value-map-adressiert')).toBe('Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht.');
+    // Die Fit-Zeichen prüft nur ein Punkt; adressiert fragt nicht noch einmal nach ✗ oder ?.
+    expect(text('value-map-adressiert')).not.toMatch(/[✗?]/);
+    expect(m.pruefliste!.length).toBeLessThanOrEqual(8);
+  });
+
   it('Entscheidungen 26.11. (Runde 2): Satz statt „Satz mit Verb“, Pfeil auch auf Job/Gain, Ideen-Zettel ersetzt, Website-Check beim Füllen', () => {
     // A1: kein „ein Satz mit Verb“ mehr; die Regel steht als Regel dieses Kurses, „well-designed“ zählt.
     expect(vm.match(/[Ss]atz mit Verb/g) ?? []).toStrictEqual([]);
