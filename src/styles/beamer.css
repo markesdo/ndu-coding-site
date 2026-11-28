@@ -105,7 +105,7 @@ html[data-beamer] [data-schritt]:not(.gezeigt) { visibility: hidden; }
 html[data-beamer] .folie { position: relative; }
 /* Link-Zeile auf die eigenen Miro-Frames (ein Frame je Person): steht dort, wo sonst die Pille <MiroFrame> steht – kostet keine Höhe.
    Nur kurzer Text („Miro, euer …: drei Namen“), einzeilig, höchstens die halbe Folienbreite; Folien mit Pille führen die Zeile im Fluss. */
-html[data-beamer] .folie > .miro-zeile { position: absolute; top: .9rem; right: 0; margin: 0; max-width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+html[data-beamer] .folie:not(:has(> .miro-frame)) > .miro-zeile { position: absolute; top: .9rem; right: 0; margin: 0; max-width: 50%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 html[data-beamer] .folie[data-schritte]::after {
   content: attr(data-schritte); position: absolute; right: 0; bottom: .9rem;
   font-family: var(--mono); font-size: .9rem; color: var(--muted);

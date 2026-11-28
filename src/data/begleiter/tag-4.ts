@@ -34,7 +34,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
       '„Slice 1 ist die kleinste Version eures Spitzenreiters, die von Anfang bis Ende durchgeht.“',
       'Drei Zuläufe zeigen: je woher die Linie kommt, was daraus wird.',
       'Falle: Slice 1 als Feature-Liste; gemeint ist ein ganzer Weg.',
-      '„Heute auf Papier – an Tag 5 baut Claude Code daraus.“',
+      'Letzte Zeile aufdecken, dann weiter zur Concept Story.',
     ],
     verstaendnis: {
       frage: 'Was heißt „von Anfang bis Ende“ bei Slice 1?',
@@ -51,7 +51,7 @@ export const NOTIZEN_TAG_4: Record<string, Notiz> = {
         quelle: 'Kaffeebar: ausgedachtes Beispiel des Kurses, seit Tag 1 so markiert (tag-1, problem-rahmen)',
       },
     ],
-    ueberleitung: 'Bevor ihr Slice 1 schneidet: Versteht jemand in Sekunden, warum euer Spitzenreiter besser ist als das, was eure Person heute tut?',
+    ueberleitung: 'Zuerst: Warum ist euer Spitzenreiter besser als heute? Dafür die Concept Story.',
   },
 
   // 14:05, Wiedereinstieg nach der Mittagspause (seit 28.11.2026): von story-map#uebertrag; → führt zur Usage Story
