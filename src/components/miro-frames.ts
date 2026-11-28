@@ -53,7 +53,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 1 · Anleitung Story Map': '3458764691728716904',
   'T4 · 1 · Anleitung Warm-up · euer Morgen': '3458764691728620654',
   // Warm-up „euer Morgen“ (seit 26.11.2026): ein Frame je Person, sechs Anleitungskarten und eine Arbeitsfläche; Farben gelb Task,
-  // grün Aktivität, blau Detail/Variante (anders als „T4 · 1 · Story Map“: dort Aktivitäten hellblau, Tasks hellgelb).
+  // grün Aktivität, blau Detail · orange oder · rot geht schief (anders als „T4 · 1 · Story Map“: dort Aktivitäten hellblau, Tasks hellgelb).
   'T4 · 1 · Warm-up · euer Morgen · Produkt 1': '3458764691725906138',
   'T4 · 1 · Warm-up · euer Morgen · Produkt 2': '3458764691725906820',
   'T4 · 1 · Warm-up · euer Morgen · Produkt 3': '3458764691725906821',

@@ -12,7 +12,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Wo wir stehen: E1 steht – jetzt, was ihr zuerst baut.',
       'Eigenes Board „Euer Morgen“ teilen (Link aus deinen Lesezeichen).',
       'Frames zeigen: Produkt 1 · 2 · 3, je sechs Karten oben.',
-      'Farben: gelb Tasks, grün Aktivitäten, blau Details und Varianten.',
+      'Farben: gelb Tasks, grün Aktivitäten, blau Details, orange oder, rot geht schief.',
       '„Erst tun, dann kommen die Namen – wie bei Patton.“',
     ],
     kern: [{ text: '„It’s hands down my favorite way of teaching these basic mapping concepts.“', quelle: `${PATTON}, Kap. 5, Do Try This at Home, or at Work` }],
@@ -52,7 +52,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   varianten: {
     live: [
       'Drei Morgen vorlesen: typischer, bester, schlechtester.',
-      'Timer 4 min: blaue Stickies nach unten, unter den passenden Schritt.',
+      'Timer 4 min: unter den Schritt – blau Detail, orange oder, rot schief.',
       'Bei Bedarf: Reihenfolge unklar? Dann ist sie egal.',
       'Begriff: Körper der Map – Details, Alternativen, Varianten, Ausnahmen.',
     ],
@@ -61,6 +61,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       { text: '„Details, alternatives, variations, and exceptions fill in the body of a map.“', quelle: `${PATTON}, Kap. 5, 3. Explore Alternative Stories` },
       { text: '„the typical day story, the fabulous day story, and the story that has an emergency or two“ – daher typischer, bester, schlechtester Morgen.', quelle: `${PATTON}, Kap. 5, 3. Explore Alternative Stories` },
       { text: '„If you’re arguing, it likely means that it doesn’t matter.“', quelle: `${PATTON}, Kap. 5, Keep the Flow` },
+      { text: 'Vorsicht beim Erzählen: Die Farben (blau = Detail, orange = oder, rot = geht schief) legt der Kurs fest, wie später in Schritt 6 (Erkunden). Patton hängt „details, alternatives, variations, and exceptions“ ohne Farben unter den Task.', quelle: `Kurs; ${PATTON}, Kap. 5, 3. Explore Alternative Stories` },
     ],
     ueberleitung: 'Die Map wird breit und tief – jetzt geben wir ihr ein Rückgrat.',
   },
@@ -100,7 +101,10 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       '„Andere Ziele links – die Reihenfolge bleibt, die Tasks ändern sich.“',
     ],
     uebung: { dauer: '2 min', form: 'allein, eigener Warm-up-Frame' },
-    kern: [{ text: '„Use slices to identify all the tasks and details relevant to a specific outcome.“', quelle: `${PATTON}, Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome` }],
+    kern: [
+      { text: '„Use slices to identify all the tasks and details relevant to a specific outcome.“', quelle: `${PATTON}, Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome` },
+      { text: 'Vorsicht beim Erzählen: Das rote Sticky „Desired Outcome“ in Pattons Foto ist unser pinkes Outcome. Bei uns heißt Rot „geht schief“.', quelle: `Kurs; ${PATTON}, Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome` },
+    ],
     ueberleitung: 'Eine Frage ist offen geblieben: Wie groß darf ein Sticky sein?',
   },
 
