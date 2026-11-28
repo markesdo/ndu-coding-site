@@ -179,7 +179,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
       'Collaborator einladen – sonst kann niemand im fremden Repo bauen.',
     ],
     uebung: { dauer: '40 min (5 + 10 + 15 + 10)', form: 'alle drei gemeinsam auf Miro' },
-    miro: { frame: 'T5 · 1 · Teamaufstellung & DoD', schritte: ['Drei Stichworte aus dem Papier-Prototyp, dann je Produkt Product Owner, Produktziel, Linear-Projekt, Scrum Master.'] },
+    miro: { frame: 'T5 · 0 · Teamaufstellung & DoD', schritte: ['Drei Stichworte aus dem Papier-Prototyp, dann je Produkt Product Owner, Produktziel, Linear-Projekt, Scrum Master.'] },
     kern: [
       {
         text: 'Product Owner: „accountable for maximizing the value of the product“, entwickelt das Produktziel, erstellt und ordnet die Backlog-Einträge; „one person, not a committee“.',

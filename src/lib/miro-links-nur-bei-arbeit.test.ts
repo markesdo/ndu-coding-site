@@ -104,7 +104,7 @@ const ERÖFFNEN: { s: string; id: string; pille: string; links: string[] }[] = [
   { s: 'methoden/story-map', id: 'vorgehen', pille: 'T4 · 4 · Story Map', links: ['T4 · 4 · Anleitung Story Map'] },
   { s: 'methoden/usage-story', id: 'vorgehen', pille: 'T4 · 5 · Anleitung Usage Story', links: [...P('T4 · 5 · Usage Story'), 'T4 · 5 · Usage Story · Kaffeebar'] },
   { s: 'methoden/prototyp-spike', id: 'vorgehen', pille: 'T4 · 6 · Anleitung Prototyp', links: [...P('T4 · 6 · Prototyp'), 'T4 · 6 · Prototyp · Kaffeebar'] },
-  { s: 'methoden/scrum', id: 'team', pille: 'T5 · 1 · Teamaufstellung & DoD', links: [] },
+  { s: 'methoden/scrum', id: 'team', pille: 'T5 · 0 · Teamaufstellung & DoD', links: [] },
   { s: 'methoden/backlog', id: 'vorgehen', pille: 'T5 · 1 · Backlog-Reihenfolge', links: [] },
   { s: 'methoden/pitch', id: 'vorgehen', pille: 'T5 · 2 · Wertkurve & ERRC', links: [] },
   { s: 'tag-4', id: 'hausaufgabe', pille: 'T4 · 8 · Anleitung Origin Story', links: [...P('T4 · 8 · Origin Story'), 'T4 · 8 · Origin Story · Kaffeebar'] },

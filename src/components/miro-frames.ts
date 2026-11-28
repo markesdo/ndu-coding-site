@@ -57,7 +57,7 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T4 · 4 · Warm-up · euer Morgen · Produkt 1': '3458764691725906138',
   'T4 · 4 · Warm-up · euer Morgen · Produkt 2': '3458764691725906820',
   'T4 · 4 · Warm-up · euer Morgen · Produkt 3': '3458764691725906821',
-  'T5 · 1 · Teamaufstellung & DoD': '3458764687968670113',
+  'T5 · 0 · Teamaufstellung & DoD': '3458764687968670113',
   // Frames je Produkt für die Arbeit ohne docs-Dateien (seit 26.11.2026 nachts), je mit dem ausgefüllten Beispiel der Kaffeebar.
   // Nummern seit 28.11.2026 in der Reihenfolge des Tages (scripts/t4-frames-umnummerieren.mjs); die IDs blieben gleich.
   'T4 · 5 · Anleitung Usage Story': '3458764691728596797',

@@ -8,7 +8,7 @@ import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 // Neuer Name der Teamaufstellung (wandert zu Tag 5); den genauen Titel vergibt der Umbau auf dem Board.
-export const TEAMAUFSTELLUNG_NEU = 'T5 · 1 · Teamaufstellung & DoD';
+export const TEAMAUFSTELLUNG_NEU = 'T5 · 0 · Teamaufstellung & DoD';
 
 // Alter Titel-Anfang → neuer. Jeder Eintrag ist ein Präfix: „T4 · 0 · Concept Story“ trifft auch „… · Kaffeebar“, „… · Produkt n“.
 export const ALT_NEU = [
