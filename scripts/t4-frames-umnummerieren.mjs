@@ -7,7 +7,7 @@ import { readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Neuer Name der Teamaufstellung (wandert zu Tag 5); den genauen Titel vergibt der Umbau auf dem Board.
+// Neuer Name der Teamaufstellung (wandert zu Tag 5): so heißt der Frame auf dem Board seit dem Umbau am 28.11.2026.
 export const TEAMAUFSTELLUNG_NEU = 'T5 · 0 · Teamaufstellung & DoD';
 
 // Alter Titel-Anfang → neuer. Jeder Eintrag ist ein Präfix: „T4 · 0 · Concept Story“ trifft auch „… · Kaffeebar“, „… · Produkt n“.
@@ -66,7 +66,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
   const wurzel = fileURLToPath(new URL('..', import.meta.url));
   const zaehler = new Map();
   const geaendert = [];
-  for (const p of dateien(join(wurzel, 'src'))) {
+  // Der Wächter-Test nennt alte Namen absichtlich (Proben); das Skript lässt ihn aus.
+  for (const p of dateien(join(wurzel, 'src')).filter((p) => !p.endsWith('miro-links-pruefung.test.ts'))) {
     const alt = readFileSync(p, 'utf8');
     const neu = umnummerieren(alt, zaehler);
     if (neu !== alt) { writeFileSync(p, neu); geaendert.push(relative(wurzel, p)); }
