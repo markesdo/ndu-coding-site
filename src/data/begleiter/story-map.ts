@@ -1,8 +1,8 @@
 import type { Notiz } from './typen';
 
 // Begleiter-Notizen zu src/pages/innolab/methoden/story-map.astro (Tag 4, 28.11.2026, 11:40–13:05): Warm-up „euer Morgen“
-// in sechs Schritten (alle selbst, je ein Frame „T4 · 1 · Warm-up · euer Morgen · Produkt n“), Begriffe, Theorie,
-// Kaffeebar, dann die Übung in elf Schritten auf „T4 · 1 · Story Map“ (42 min). Patton = EPUB, zitiert nach Kapitel
+// in sechs Schritten (alle selbst, je ein Frame „T4 · 4 · Warm-up · euer Morgen · Produkt n“), Begriffe, Theorie,
+// Kaffeebar, dann die Übung in elf Schritten auf „T4 · 4 · Story Map“ (42 min). Patton = EPUB, zitiert nach Kapitel
 // und Abschnitt. Markus zeigt das Warm-up an seinem eigenen Morgen auf seinem eigenen Miro-Board (Link nicht im Repo).
 const PATTON = 'Jeff Patton, User Story Mapping (2014)';
 
@@ -16,7 +16,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       '„Erst tun, dann kommen die Namen – wie bei Patton.“',
     ],
     kern: [{ text: '„It’s hands down my favorite way of teaching these basic mapping concepts.“', quelle: `${PATTON}, Kap. 5, Do Try This at Home, or at Work` }],
-    miro: { frame: 'T4 · 1 · Warm-up · euer Morgen · Produkt 1', schritte: ['Jede*r öffnet den eigenen Frame (Produkt 1, 2 oder 3 = Spalte von links).', 'Karten 1–6 oben sind die Schritte dieser Folien; darunter die Arbeitsfläche mit Vorlage-Stickies.'] },
+    miro: { frame: 'T4 · 4 · Warm-up · euer Morgen · Produkt 1', schritte: ['Jede*r öffnet den eigenen Frame (Produkt 1, 2 oder 3 = Spalte von links).', 'Karten 1–6 oben sind die Schritte dieser Folien; darunter die Arbeitsfläche mit Vorlage-Stickies.'] },
     ueberleitung: 'Schritt 1: Augen zu – was habt ihr heute als Erstes getan?',
   },
 
@@ -285,7 +285,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Dicke Linie = Schnitt; darunter Slice 2, Stammgast.',
       'Sternchen: kein Software-Schritt – bar zahlen reicht zum Lernen.',
     ],
-    miro: { frame: 'T4 · 1 · Story Map', schritte: ['Kaffeebar-Map im Frame zeigen, falls dort aufgebaut.'] },
+    miro: { frame: 'T4 · 4 · Story Map', schritte: ['Kaffeebar-Map im Frame zeigen, falls dort aufgebaut.'] },
     ueberleitung: 'Wie das zu Pattons sechs Schritten passt.',
   },
 
@@ -306,7 +306,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       'Jede*r allein an der eigenen Map – drei Produkte.',
     ],
     uebung: { dauer: '42 min (3 + 2 + 6 + 2 + 2 + 6 + 5 + 2 + 5 + 5 + 4)', form: 'allein' },
-    miro: { frame: 'T4 · 1 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Orange oder, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
+    miro: { frame: 'T4 · 4 · Story Map', schritte: ['Jede*r mappt den eigenen Spitzenreiter im Story-Map-Frame.', 'Farben: Grün Aktivität, Gelb Task, Blau Details, Orange oder, Rot geht schief, Grau System, Pink Outcome, Cyan „Wir lernen, ob“, Violett wer handelt, * kein Software-Schritt, Sprechblase offene Frage.'] },
     ueberleitung: 'Schritt 1: der Rahmen.',
   },
 

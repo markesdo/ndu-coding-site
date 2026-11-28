@@ -192,11 +192,11 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     const f = folie('vorgehen');
     // Seit 27.11. (Dozent): Die Übungsfolie trägt die Miro-Pille der Anleitung wie die anderen Arbeitsfolien; die eigenen
     // Frames und das Kaffeebar-Beispiel stehen in Schritt 1 (#beispiel hat keine Pille mehr).
-    expect(f.match(/<MiroFrame name="[^"]+" \/>/g)).toStrictEqual(['<MiroFrame name="T4 · 0 · Anleitung Concept Story" />']);
+    expect(f.match(/<MiroFrame name="[^"]+" \/>/g)).toStrictEqual(['<MiroFrame name="T4 · 1 · Anleitung Concept Story" />']);
     // Seit 27.11.: die eigenen Frames und das Beispiel im Schritt selbst; die Anleitung nur in der Pille, nicht doppelt.
     const schritt1 = f.slice(f.indexOf('<strong>Sieben Stationen, allein:</strong>'), f.indexOf('</li>', f.indexOf('<strong>Sieben Stationen, allein:</strong>')));
-    for (const n of [1, 2, 3]) expect(schritt1).toMatch(new RegExp(`<MiroLink name="T4 · 0 · Concept Story · Produkt ${n}">(Produkt )?${n}</MiroLink>`));
-    expect(schritt1).toContain('<MiroLink name="T4 · 0 · Concept Story · Kaffeebar">Kaffeebar</MiroLink>');
+    for (const n of [1, 2, 3]) expect(schritt1).toMatch(new RegExp(`<MiroLink name="T4 · 1 · Concept Story · Produkt ${n}">(Produkt )?${n}</MiroLink>`));
+    expect(schritt1).toContain('<MiroLink name="T4 · 1 · Concept Story · Kaffeebar">Kaffeebar</MiroLink>');
     expect(schritt1).not.toContain('Anleitung Concept Story');
     // Seit 27.11. (Dozent): Links nur, wo die Arbeit beginnt – #beispiel ist Theorie, ohne Miro-Pille.
     expect(folie('beispiel')).not.toMatch(/<Miro(Frame|Link)\b/);
@@ -207,9 +207,9 @@ describe('Concept Story klar im Beamer (Durchsicht 26.11.)', () => {
     expect(seite).toContain('<h2 id="vorlage">So sieht euer Frame aus</h2>');
     expect(seite).not.toContain('<Prompt label="Vorlage · docs/STORYS.md">');
     // Seit 27.11.2026 (Dozent): Prüfen selbst mit der Prüfliste, ohne Claude (vorher an einem Bild des Frames in claude.ai).
-    expect(seite).toContain('Eure Story liegt nur auf Miro, in eurem Frame „T4 · 0 · Concept Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
+    expect(seite).toContain('Eure Story liegt nur auf Miro, in eurem Frame „T4 · 1 · Concept Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
     expect(seite).not.toContain('Ohne Claude Code');
-    expect(NOTIZEN_CONCEPT_STORY.vorgehen.miro?.frame).toBe('T4 · 0 · Concept Story · Produkt 1');
+    expect(NOTIZEN_CONCEPT_STORY.vorgehen.miro?.frame).toBe('T4 · 1 · Concept Story · Produkt 1');
   });
 });
 

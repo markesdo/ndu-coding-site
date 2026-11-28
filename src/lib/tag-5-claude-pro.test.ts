@@ -188,7 +188,7 @@ describe('Tag 5: Claude Pro und Claude Code gemeinsam (Markus 26.11.2026 nachts)
     expect(f).not.toContain('28. Dezember');
     expect(f).toContain('sagt es sofort – laut, in der Teams-Besprechung.');
     expect(f).toContain('keine Erstattung anfordern');
-    expect(f).toContain('Kurzer Test:</strong> Screenshot eures Frames „T4 · 0 · Concept Story · Produkt n“ einfügen');
+    expect(f).toContain('Kurzer Test:</strong> Screenshot eures Frames „T4 · 1 · Concept Story · Produkt n“ einfügen');
     expect(f).toContain('<p class="small">Meldet Claude ein Limit oder gibt es Opus nicht: <code>/model</code> und das vorgeschlagene Standardmodell wählen, dann weiter.</p>');
   });
 

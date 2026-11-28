@@ -212,11 +212,11 @@ describe('Scrum-Seite: Links auf die Theorie-Anker', () => {
     expect([...q.matchAll(/<li data-schritt>[^]*?<Timer minuten=\{(\d+)\} \/><\/li>/g)].map((m) => Number(m[1]))).toStrictEqual([4, 3]);
     expect(q).toContain('Still sortieren');
     for (const n of [1, 2, 3]) expect(q).toContain(`Produkt ${n}`);
-    for (const n of [1, 2, 3]) expect(q).toContain(`<MiroLink name="T4 · 3 · Scrum · Kaffeebar sortieren · Produkt ${n}">Produkt ${n}</MiroLink>`);
+    for (const n of [1, 2, 3]) expect(q).toContain(`<MiroLink name="T4 · 7 · Scrum · Kaffeebar sortieren · Produkt ${n}">Produkt ${n}</MiroLink>`);
     // Die Lösung ist auf dem Board bis zur Auflösung versteckt: Ihr Link steht nur in Schritt 2 „Auflösung“, und dort nur im
     // Beamer (.nur-beamer) – der zeigt ihn erst mit diesem Schritt. Auf der Seite und im Handout stehen alle Schritte zugleich da;
     // dort fehlt der Link in der Übung ganz. Seit 27.11. (Dozent) nicht mehr auf „Am Beispiel“: Links nur, wo gearbeitet wird.
-    const LOESUNG = '<MiroLink name="T4 · 3 · Scrum · Kaffeebar · Lösung">';
+    const LOESUNG = '<MiroLink name="T4 · 7 · Scrum · Kaffeebar · Lösung">';
     const schritte = [...q.matchAll(/<li data-schritt>([^]*?)<\/li>/g)].map((m) => m[1]);
     expect(schritte.map((s) => s.includes(LOESUNG))).toStrictEqual([false, true]);
     expect(schritte[1]).toContain(`<span class="nur-beamer"> (${LOESUNG}Lösung</MiroLink>)</span>`);
@@ -235,12 +235,12 @@ describe('Scrum-Seite: Links auf die Theorie-Anker', () => {
 
 describe('Miro: Frames der Übung „Kaffeebar auf der Scrum-Karte“', () => {
   it('drei Frames je Person und der Lösungs-Frame stehen mit ihren IDs in MIRO_FRAMES', () => {
-    const t4 = Object.fromEntries(Object.entries(MIRO_FRAMES).filter(([k]) => k.startsWith('T4 · 3 · Scrum')));
+    const t4 = Object.fromEntries(Object.entries(MIRO_FRAMES).filter(([k]) => k.startsWith('T4 · 7 · Scrum')));
     expect(t4).toStrictEqual({
-      'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 1': '3458764691686327549',
-      'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 2': '3458764691686327550',
-      'T4 · 3 · Scrum · Kaffeebar sortieren · Produkt 3': '3458764691686327551',
-      'T4 · 3 · Scrum · Kaffeebar · Lösung': '3458764691686327552',
+      'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 1': '3458764691686327549',
+      'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 2': '3458764691686327550',
+      'T4 · 7 · Scrum · Kaffeebar sortieren · Produkt 3': '3458764691686327551',
+      'T4 · 7 · Scrum · Kaffeebar · Lösung': '3458764691686327552',
     });
   });
 });

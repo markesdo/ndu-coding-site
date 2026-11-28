@@ -73,7 +73,7 @@ export const NOTIZEN_TAG_5: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         '/model opus in Claude Code; in der Claude-App Opus im Modellmenü.',
-        'Screenshot des Frames „T4 · 0 · Concept Story · Produkt n“ einfügen (Ctrl+V), Prompt „Sag mir in einem Satz …“.',
+        'Screenshot des Frames „T4 · 1 · Concept Story · Produkt n“ einfügen (Ctrl+V), Prompt „Sag mir in einem Satz …“.',
       ],
       achten: [
         'Keine Versionsnummer nennen – nur „Opus“.',

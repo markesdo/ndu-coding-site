@@ -4,7 +4,7 @@ import type { Notiz } from './typen';
 // Tag 3 (21.11.): Story-Bogen nur als Theorie. Tag 4 (28.11., NDU-66): Die Theorie läuft als eigener Teil vor der Übung,
 // alle 17 Folien von story-bogen bis drei-storys, in dieser Reihenfolge (Fable-Durchsicht 26.11.: concept-story vor flach,
 // hoehepunkt darin aufgegangen, flach – hoch – hoch-lehre – baut-mit als iPhone-Strang, drei-storys als Ausblick am Ende).
-// Danach 30 min Übung (vorgehen): sieben Stationen auf Miro in „T4 · 0 · Concept Story · Produkt n“ mit der Flach-Probe als Check (seit 27.11.),
+// Danach 30 min Übung (vorgehen): sieben Stationen auf Miro in „T4 · 1 · Concept Story · Produkt n“ mit der Flach-Probe als Check (seit 27.11.),
 // festhalten – allein, Markus 1:1, keine Erzählrunde. Die Story bleibt auf Miro – keine Datei (Entscheidung 26.11. abends).
 // Zeit: Die Sprechzeiten in den live-Stichworten ergeben zusammen rund 23 min; die Uhrzeiten des Blocks stehen in tag-4.astro.
 // Vorwissen: „unsicher“ – „storyboard“ aus dem Entrepreneur Lab genannt (vorwissen.ts). Zuerst fragen; das Storyboard
@@ -487,7 +487,7 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
       },
       {
         frage: 'Was machen wir heute konkret damit?',
-        antwort: 'Übertrag des Kurses, nicht bei Lichaw (Flach-Probe in Schritt 1 der Übung): 1. Die naheliegende Lösung als Linie hinschreiben, Problem → Produkt → Ende – im Feld „Flach-Probe“ unten links in „T4 · 0 · Concept Story · Produkt n“, freiwillig. 2. Daneben eure Story: Steht in der Krise eine Alternative oder ein Widerstand aus den Interviews, mit Zitat-ID? 3. Den Höhepunkt prüfen: Löst er genau diese Krise auf? Steht dort gegenüber der Linie nur „schneller“ oder „leichter“, fehlt die Krise. Fertig ist Schritt 1, wenn Krise und Höhepunkt stehen. Die Linie ist kein Fehler, sondern der Vergleich, an dem ihr seht, was euer Höhepunkt mehr hat.',
+        antwort: 'Übertrag des Kurses, nicht bei Lichaw (Flach-Probe in Schritt 1 der Übung): 1. Die naheliegende Lösung als Linie hinschreiben, Problem → Produkt → Ende – im Feld „Flach-Probe“ unten links in „T4 · 1 · Concept Story · Produkt n“, freiwillig. 2. Daneben eure Story: Steht in der Krise eine Alternative oder ein Widerstand aus den Interviews, mit Zitat-ID? 3. Den Höhepunkt prüfen: Löst er genau diese Krise auf? Steht dort gegenüber der Linie nur „schneller“ oder „leichter“, fehlt die Krise. Fertig ist Schritt 1, wenn Krise und Höhepunkt stehen. Die Linie ist kein Fehler, sondern der Vergleich, an dem ihr seht, was euer Höhepunkt mehr hat.',
       },
       {
         frage: 'Wie sieht das bei der Kaffeebar aus?',
@@ -737,16 +737,16 @@ export const NOTIZEN_CONCEPT_STORY: Record<string, Notiz> = {
     ],
     uebung: { dauer: '30 min (25 + 5)', form: 'allein auf Miro schreiben; Markus geht 1:1 von Person zu Person, keine Erzählrunde' },
     miro: {
-      frame: 'T4 · 0 · Concept Story · Produkt 1',
+      frame: 'T4 · 1 · Concept Story · Produkt 1',
       schritte: [
-        'Frame wie hier für Produkt 1, ebenso Produkt 2 und 3 (MiroLinks auf der Folie). Jede*r arbeitet im eigenen Frame „T4 · 0 · Concept Story · Produkt n“; das Kaffeebar-Beispiel hängt daneben.',
+        'Frame wie hier für Produkt 1, ebenso Produkt 2 und 3 (MiroLinks auf der Folie). Jede*r arbeitet im eigenen Frame „T4 · 1 · Concept Story · Produkt n“; das Kaffeebar-Beispiel hängt daneben.',
         'Unter jeder Station („1 Exposition“ bis „7 Ende“) ein Sticky mit Leitfrage – durch die eigene Antwort mit IDs ersetzen; Station 6 als Gedanke in „…“.',
         'Feld „Flach-Probe (Kursregel)“ unten links: freiwillig, als Hilfe für den Check in Schritt 1.',
       ],
     },
     ablauf: {
       schritte: [
-        'Schritt 1 (25 min, allein): die Stickies unter den sieben Stationen in „T4 · 0 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person. Fertig, wenn Krise und Höhepunkt stehen – sonst ist die Story eine Linie (Flach-Probe, Kursregel).',
+        'Schritt 1 (25 min, allein): die Stickies unter den sieben Stationen in „T4 · 1 · Concept Story · Produkt n“ füllen, je ein, zwei Sätze mit IDs; Markus ab Minute 5 je etwa vier Minuten bei jeder Person. Fertig, wenn Krise und Höhepunkt stehen – sonst ist die Story eine Linie (Flach-Probe, Kursregel).',
         'Schritt 2 (5 min): Satz in Abschnitt 3 des Produkt-Briefs (Werkstatt), fallende Handlung in die Annahmen-Map – beides auf der Folie verlinkt. Die Story bleibt auf Miro; geprüft wird selbst, mit der Prüfliste im Handout.',
       ],
       achten: [

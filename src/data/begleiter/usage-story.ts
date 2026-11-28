@@ -118,7 +118,7 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Timer je Schritt: 2 + 10 + 4 + 2 min.',
-      'Auf Miro, Frame „T4 · 4 · Usage Story · Produkt n“ – keine Datei.',
+      'Auf Miro, Frame „T4 · 5 · Usage Story · Produkt n“ – keine Datei.',
       'Boom-Probe allein: jede*r liest die eigenen Stationen 4–7.',
       '1:1 in Schritt 3, je gut 1 min: Produkt 1, 2, 3.',
       'Wenn hinten: nur Krise und Höhepunkt – die braucht der Prototyp.',
@@ -127,7 +127,7 @@ export const NOTIZEN_USAGE_STORY: Record<string, Notiz> = {
     ablauf: {
       schritte: [
         'Kernaufgabe wählen: der Weg durch Slice 1, den Menschen immer wieder gehen (2 min).',
-        'Sieben Stationen allein auf Miro im Frame „T4 · 4 · Usage Story · Produkt n“, mit Person aus den Interviews, Uhrzeit, Ort (10 min).',
+        'Sieben Stationen allein auf Miro im Frame „T4 · 5 · Usage Story · Produkt n“, mit Person aus den Interviews, Uhrzeit, Ort (10 min).',
         'Boom-Probe allein: die eigenen Stationen 4 bis 7 lesen – ist der Höhepunkt ein konkreter Bildschirm oder Moment, kommen danach höchstens ein, zwei Schritte, wo würde jemand lächeln? Markus geht zu jeder Person (Produkt 1, 2, 3, je gut eine Minute), liest die Stationen 4 bis 7 und fragt nach (4 min).',
         'Festhalten im selben Frame: Höhepunkt markieren, Belege mit ID; nach diesem Frame entsteht der Prototyp auf Papier (2 min).',
       ],

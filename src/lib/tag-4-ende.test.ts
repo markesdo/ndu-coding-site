@@ -323,7 +323,7 @@ describe('Handout ohne Beamer-Sätze', () => {
 describe('Origin Story: Vorlage verlinkt', () => {
   // Seit 26.11. abends: keine docs-Vorlage mehr – die Origin Story steht auf Miro im eigenen Frame.
   it('tag-4#abschluss nennt den Miro-Frame der Origin Story statt einer docs-Vorlage', () => {
-    expect(folie('/innolab/tag-4', 'abschluss')).toContain('in eurem Frame „T4 · 6 · Origin Story · Produkt n“: <MiroLink name="T4 · 6 · Origin Story · Produkt 1">Produkt 1</MiroLink>');
+    expect(folie('/innolab/tag-4', 'abschluss')).toContain('in eurem Frame „T4 · 8 · Origin Story · Produkt n“: <MiroLink name="T4 · 8 · Origin Story · Produkt 1">Produkt 1</MiroLink>');
     expect(folie('/innolab/tag-4', 'abschluss')).not.toContain('vorlage-origin-story');
     // Auf der Experiment-Seite zeigt der Abschnitt mit dieser id, wie der Miro-Frame aussieht.
     expect(seite('/innolab/methoden/experiment')).toContain('<h3 id="vorlage-origin-story">So sieht die Origin Story auf Miro aus</h3>');

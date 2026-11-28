@@ -55,7 +55,7 @@ describe('Geschäftsmodell gekürzt (26.11.2026)', () => {
     expect(v).toContain('<li><strong>Linie:</strong> [Outcome] führt zu [Impact], weil …</li>');
     expect(q.match(/docs\//g) ?? []).toStrictEqual([]);
     // Seit 27.11.2026 (Dozent): Prüfen selbst, ohne Claude-Hausaufgabe.
-    expect(q).toContain('Euer Modell liegt nur auf Miro, in eurem Frame „T4 · 7 · Geschäftsmodell · Produkt n“, die wirtschaftliche Annahme in der Werkstatt. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
+    expect(q).toContain('Euer Modell liegt nur auf Miro, in eurem Frame „T4 · 2 · Geschäftsmodell · Produkt n“, die wirtschaftliche Annahme in der Werkstatt. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
   });
 
   it('Begleiter: jede Folie hat eine Notiz mit live-Stichworten, Seite zwischen Concept Story und Experiment', () => {
@@ -135,11 +135,11 @@ describe('Geschäftsmodell: Warum vor der Experiment-Karte, Links (27.11.2026)',
   });
 
   it('#vorgehen: Miro-Pille oben rechts; #vorlage verlinkt die drei Frames, Kaffeebar, Anleitung und Werkstatt', () => {
-    expect(folie('vorgehen')).toContain('<h2 id="vorgehen">So geht ihr vor (10 min)</h2>\n    <p class="folie-satz">Zwei Zeilen, eine Linie, ein Satz.</p>\n    <MiroFrame name="T4 · 7 · Anleitung Geschäftsmodell" />');
+    expect(folie('vorgehen')).toContain('<h2 id="vorgehen">So geht ihr vor (10 min)</h2>\n    <p class="folie-satz">Zwei Zeilen, eine Linie, ein Satz.</p>\n    <MiroFrame name="T4 · 2 · Anleitung Geschäftsmodell" />');
     const v = q.slice(q.indexOf('<h2 id="vorlage">'), q.indexOf('<h2 id="pruefen">'));
-    for (const n of [1, 2, 3]) expect(v).toContain(`<MiroLink name="T4 · 7 · Geschäftsmodell · Produkt ${n}">`);
-    expect(v).toContain('<MiroLink name="T4 · 7 · Geschäftsmodell · Kaffeebar">Kaffeebar</MiroLink>');
-    expect(v).toContain('<MiroLink name="T4 · 7 · Anleitung Geschäftsmodell">Anleitung</MiroLink>');
+    for (const n of [1, 2, 3]) expect(v).toContain(`<MiroLink name="T4 · 2 · Geschäftsmodell · Produkt ${n}">`);
+    expect(v).toContain('<MiroLink name="T4 · 2 · Geschäftsmodell · Kaffeebar">Kaffeebar</MiroLink>');
+    expect(v).toContain('<MiroLink name="T4 · 2 · Anleitung Geschäftsmodell">Anleitung</MiroLink>');
     expect(v).toContain('<a href="/innolab/mappe?bearbeiten=annahmen">');
     // Jeder Frame-Name der Seite ist im Board bekannt, sonst bleibt der Link Text.
     const namen = [...q.matchAll(/<Miro(?:Link|Frame) name="([^"]+)"/g)].map((m) => m[1]);

@@ -99,9 +99,9 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
     ],
     uebung: { dauer: '7 min (4 + 3)', form: 'allein und gleichzeitig, je ein Frame; Auflösung gemeinsam' },
     miro: {
-      frame: 'T4 · 3 · Scrum · Kaffeebar · Lösung',
+      frame: 'T4 · 7 · Scrum · Kaffeebar · Lösung',
       schritte: [
-        'Jede*r sortiert im eigenen Frame „T4 · 3 · Scrum · Kaffeebar sortieren · Produkt n“ (eure Spalten von links).',
+        'Jede*r sortiert im eigenen Frame „T4 · 7 · Scrum · Kaffeebar sortieren · Produkt n“ (eure Spalten von links).',
         'Nach 4 min den Lösungs-Frame einblenden (Augen-Symbol).',
       ],
     },
@@ -179,7 +179,7 @@ export const NOTIZEN_SCRUM: Record<string, Notiz> = {
       'Collaborator einladen – sonst kann niemand im fremden Repo bauen.',
     ],
     uebung: { dauer: '40 min (5 + 10 + 15 + 10)', form: 'alle drei gemeinsam auf Miro' },
-    miro: { frame: 'T4 · 2 · Teamaufstellung & DoD', schritte: ['Drei Stichworte aus dem Papier-Prototyp, dann je Produkt Product Owner, Produktziel, Linear-Projekt, Scrum Master.'] },
+    miro: { frame: 'T5 · 0 · Teamaufstellung & DoD', schritte: ['Drei Stichworte aus dem Papier-Prototyp, dann je Produkt Product Owner, Produktziel, Linear-Projekt, Scrum Master.'] },
     kern: [
       {
         text: 'Product Owner: „accountable for maximizing the value of the product“, entwickelt das Produktziel, erstellt und ordnet die Backlog-Einträge; „one person, not a committee“.',

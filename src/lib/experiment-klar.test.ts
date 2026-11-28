@@ -96,8 +96,8 @@ describe('Annahmen-Map wie der Miro-Frame', () => {
     expect(v).toContain('<a href="/innolab/mappe?bearbeiten=annahmen">Werkstatt</a>: am Abend.');
     expect(k).toContain('<strong>Karte E1, auf Miro:</strong> im Feld „Karte E1 für die oberste rechts“');
     expect(v).not.toContain('<strong>Karte E1, auf Miro:</strong>');
-    for (const s of [v, k]) expect(s).toContain('<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">');
-    expect(MIRO_FRAMES['T4 · 0 · Anleitung Annahmen der Idee']).toBe('3458764691725321671');
+    for (const s of [v, k]) expect(s).toContain('<MiroLink name="T4 · 3 · Anleitung Annahmen der Idee">');
+    expect(MIRO_FRAMES['T4 · 3 · Anleitung Annahmen der Idee']).toBe('3458764691725321671');
   });
 
   it('#beispiel-map: A5 zuerst als ausgesprochene Ausnahme von „gemeinsame Annahmen zuerst“', () => {
@@ -125,14 +125,14 @@ describe('Pre-Mortem und Gegenprobe', () => {
     expect(q).not.toContain('Prüfen mit Claude am Ende des Tages');
     // Code-Review #470: der Zeitpunkt bleibt – experiment-origin lässt sich erst nach dem Abschluss abhaken.
     expect(q).toContain('Prüft sie selbst mit der Liste unter <a href="#pruefen">Prüfen</a> am Ende des Tages, wenn auch die Origin Story steht.</p>');
-    expect(q).toContain('die Origin Story in „T4 · 6 · Origin Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>\n  <Selbstpruefung slug="experiment" />');
+    expect(q).toContain('die Origin Story in „T4 · 8 · Origin Story · Produkt n“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>\n  <Selbstpruefung slug="experiment" />');
     expect(q).not.toMatch(/PRE_MORTEM\}|label="Pre-Mortem/);
   });
 
   it('keine docs-Dateien mehr für Studierende (Nachtrag 26.11. abends)', () => {
     expect(seite(EX)).not.toMatch(/docs\/[A-Z-]+\.md/);
     expect(seite(EX)).toContain('<h2 id="vorlage">So sieht die Karte auf Miro aus</h2>');
-    expect(seite(EX)).toContain('<Karte label="Lernkarte (freiwillig, für E2) · Miro, T4 · 6 · Lernkarten · Produkt n" text={`Lernkarte E[n] · A[n]');
+    expect(seite(EX)).toContain('<Karte label="Lernkarte (freiwillig, für E2) · Miro, T4 · 8 · Lernkarten · Produkt n" text={`Lernkarte E[n] · A[n]');
     // Seit 27.11.: Karten als Karte (kein Kopieren-Knopf), nicht als Prompt.
     expect(seite(EX)).not.toMatch(/<Prompt label="(Beispiel · Experiment-Karte E1|Feld „Karte E1|Lernkarte E1|Origin Story · Miro)/);
     expect(seite('/innolab/tag-5')).not.toContain('docs/EXPERIMENTE.md');
@@ -246,7 +246,7 @@ describe('Vorher entscheiden, Ergebnis gilt, gegen den Beleg', () => {
     const t5 = seite('/innolab/tag-5');
     const fragen = 'Was hätte euch umstimmen können? Welches Band hättet ihr erwartet – und was hättet ihr dann getan?';
     expect(t5).toContain(`<li data-schritt><strong>Karte E1 vorstellen:</strong> ${fragen}</li>`);
-    expect(t5).toContain('Eure Karte E1 auf Miro, im Frame „T4 · 0 · Annahmen der Idee“ – E1 ist in diesem Kurs nicht gelaufen');
+    expect(t5).toContain('Eure Karte E1 auf Miro, im Frame „T4 · 3 · Annahmen der Idee“ – E1 ist in diesem Kurs nicht gelaufen');
     expect(t5).not.toMatch(/Lernkarte E1 habt ihr|Lernkarte vorlesen|Lernkarten zu Beginn vor/);
     expect(t5).toContain('Wer mit dem Prototyp getestet hat (freiwillig), bringt die Lernkarte E2 mit');
   });
@@ -390,7 +390,7 @@ describe('Tests zur Auswahl und Beispiel', () => {
 describe('Seite am Handy in den Schritten (27.11.2026)', () => {
   it('#vorgehen Schritt 1 fragt im Beamer nach der Seite am Handy, mit Anleitung und Timer', () => {
     const schritt1 = sichtbar('vorgehen').match(/<li data-schritt><strong>Schritte, auf Miro:<\/strong>[\s\S]*?<\/li>/)?.[0] ?? '';
-    expect(schritt1).toContain('als gäbe es euren Spitzenreiter schon – wer tut was, und wo kommt eure Seite am Handy ins Spiel? In eurer Spalte im Frame oben rechts. → <MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung</MiroLink>, Punkt 1.');
+    expect(schritt1).toContain('als gäbe es euren Spitzenreiter schon – wer tut was, und wo kommt eure Seite am Handy ins Spiel? In eurer Spalte im Frame oben rechts. → <MiroLink name="T4 · 3 · Anleitung Annahmen der Idee">Anleitung</MiroLink>, Punkt 1.');
     expect(schritt1).toContain('<Timer minuten={3} />');
   });
   it('#schritte-der-idee: Handout nennt die Seite als Beteiligte, mit Torres S. 120 und Kursregel', () => {
@@ -553,7 +553,7 @@ describe('Weg von den Schritten zur Map (27.11.2026)', () => {
   });
   it('#map: die Schritte bleiben in ihrem Feld', () => {
     expect(folie('map')).toContain('Die Schritte bleiben in ihrem Feld; auf die Map kommen nur die Annahmen');
-    expect(folie('map')).toContain('(Frame „T4 · 0 · Annahmen der Idee“); festgehalten wird am Abend in der Werkstatt, in eurer Annahmen-Map, in der Reihenfolge der Nummern, mit Art, Wichtigkeit und Beleg;');
+    expect(folie('map')).toContain('(Frame „T4 · 3 · Annahmen der Idee“); festgehalten wird am Abend in der Werkstatt, in eurer Annahmen-Map, in der Reihenfolge der Nummern, mit Art, Wichtigkeit und Beleg;');
   });
   it('#ergebnis-gilt: „vor dem Test“ fett', () => {
     expect(sichtbar('ergebnis-gilt')).toContain('<li data-schritt><strong>Darum:</strong> Auf eurer Karte steht <strong>vor dem Test</strong>, was ihr bei jedem Ergebnis tut.</li>');
@@ -660,15 +660,15 @@ describe('Zwei Blöcke: Stopp nach Schritt 3', () => {
     expect(JSON.stringify(NOTIZEN['/innolab/methoden/experiment']['vorgehen-karte'])).not.toContain('Nicht fertig');
   });
   // Review #480: „Karte“ heißt auf diesen Folien nur die Experiment-Karte; die Anleitung auf Miro hat Punkte 1–5, wie ihre
-  // nummerierten Kreise (Frame „T4 · 0 · Anleitung Annahmen der Idee“, gelesen am 27.11.2026).
+  // nummerierten Kreise (Frame „T4 · 3 · Anleitung Annahmen der Idee“, gelesen am 27.11.2026).
   it('Verweise auf die Anleitung heißen „Anleitung, Punkt n“, in der Reihenfolge der Schritte; „Karte n“ gibt es nicht', () => {
-    const punkte = (s: string) => [...s.matchAll(/→ (?:Anleitung|<MiroLink name="T4 · 0 · Anleitung Annahmen der Idee">Anleitung<\/MiroLink>), Punkt (\d)/g)].map((m) => Number(m[1]));
+    const punkte = (s: string) => [...s.matchAll(/→ (?:Anleitung|<MiroLink name="T4 · 3 · Anleitung Annahmen der Idee">Anleitung<\/MiroLink>), Punkt (\d)/g)].map((m) => Number(m[1]));
     expect(punkte(sichtbar('vorgehen'))).toStrictEqual([1, 2, 3]);
     expect(punkte(sichtbar('vorgehen-karte'))).toStrictEqual([4, 5]);
     expect(sichtbar('vorgehen')).toContain('→ Anleitung, Punkt 2, darunter „Fünf Fragen an jeden Schritt“ und „Pre-Mortem“.');
     const n = NOTIZEN[EX];
     expect([seite(EX), JSON.stringify(n)].flatMap((t) => t.match(/\bKarten? [1-5]\b/g) ?? [])).toStrictEqual([]);
-    expect(n.vorgehen.live).toContain('Anleitung-Frame links neben „T4 · 0“ zeigen: Punkte 1 bis 3.');
+    expect(n.vorgehen.live).toContain('Anleitung-Frame links neben „T4 · 3“ zeigen: Punkte 1 bis 3.');
     expect(n['vorgehen-karte'].live).toContain('Anleitung: Punkt 4, dann Punkt 5 – Feld „Karte E1“ in der Spalte.');
   });
   // Review #480: was tun und warum, keine „Kursregel“-Markierung.
@@ -721,10 +721,10 @@ describe('Miro-Links nur auf den Arbeitsfolien', () => {
     expect(folien.filter((f) => f.text.includes('<Timer')).map((f) => f.id)).toStrictEqual(ARBEIT);
   });
   it('#map und #lernkarte nennen ihre Frames als Text; der Lernkarten-Link steht in #vorlage', () => {
-    expect(folie('map')).toContain('Sortiert wird auf Miro (Frame „T4 · 0 · Annahmen der Idee“)');
-    expect(folie('lernkarte')).toContain('(Anleitung im Frame „T4 · 6 · Anleitung Lernkarten“;');
+    expect(folie('map')).toContain('Sortiert wird auf Miro (Frame „T4 · 3 · Annahmen der Idee“)');
+    expect(folie('lernkarte')).toContain('(Anleitung im Frame „T4 · 8 · Anleitung Lernkarten“;');
     const q = seite(EX);
     const vorlage = q.slice(q.indexOf('<h2 id="vorlage">'), q.indexOf('<h2 id="pruefen">'));
-    expect(vorlage).toContain('<MiroLink name="T4 · 6 · Anleitung Lernkarten">Anleitung</MiroLink>');
+    expect(vorlage).toContain('<MiroLink name="T4 · 8 · Anleitung Lernkarten">Anleitung</MiroLink>');
   });
 });

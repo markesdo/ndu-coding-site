@@ -194,7 +194,7 @@ export const NOTIZEN_PROTOTYP_SPIKE: Record<string, Notiz> = {
   vorgehen: {
     live: [
       'Vier Schritte zeigen: Dauer und Ort je Schritt.',
-      'Wo: Frame „T4 · 5 · Prototyp · Produkt n“, Felder 1 bis 4.',
+      'Wo: Frame „T4 · 6 · Prototyp · Produkt n“, Felder 1 bis 4.',
       'Schritte 1–3 allein, nur Trockenlauf zu dritt.',
       '„Gebaut wird heute nichts – an Tag 5 baut Claude Code daraus.“',
     ],
