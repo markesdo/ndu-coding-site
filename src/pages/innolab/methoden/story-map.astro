@@ -82,7 +82,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
     <BildText>
       <BuchAbbildung src="/quellen/patton/varianten.jpg" alt="Die Reihe der Morgen-Stickies; unter einzelnen Schritten weitere Stickies mit Varianten, Alternativen und Details, beschriftet Variations, Alternatives, Details" quelle={`Varianten und Details. ${PATTON}, Kap. 5.`} />
       <ul>
-        <li data-schritt><strong>Nach unten,</strong> unter den Schritt, zu dem sie gehören: <span class="farbe blau">blau: Details</span> <span class="farbe orange">orange: oder</span> <span class="farbe rot">rot: geht schief</span> <Timer minuten={4} /></li>
+        <li data-schritt><strong>Neue Stickies nach unten,</strong> unter den Schritt, zu dem sie gehören: <span class="farbe blau">blau: Details</span> <span class="farbe orange">orange: oder</span> <span class="farbe rot">rot: geht schief</span> <Timer minuten={4} /></li>
         <li data-schritt><strong>Unter „Duschen“:</strong> „Haare waschen“ (blau), „Kalt duschen“ (orange), „Kein warmes Wasser“ (rot). Ähnliches in eine Spalte.</li>
         <li data-schritt><strong>Unsicher, was zuerst kommt?</strong> Dann ist die Reihenfolge egal.</li>
         <li data-schritt><strong>Begriff – Körper der Map:</strong> Details, Alternativen, Varianten, Ausnahmen unter den Tasks.</li>
@@ -556,6 +556,9 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   .farbe.violett { background: #ce93d8; }
   .farbe.stern { background: transparent; color: var(--fg); border: 1px solid var(--border); }
   .farben { line-height: 1.9; }
+  /* Warm-up: Die Pille mit dem Anleitungs-Frame (rund 23rem) steht oben rechts; die Überschrift
+     endet davor, sonst läuft „Story Map“ unter die Pille. Die Zeile „Miro: Produkt 1 · 2 · 3“ steht hier im Fluss (beamer.css). */
+  :global(html[data-beamer]) h2#warmup { padding-right: 24rem; }
   /* Schritt-Folien der Übung: „Nicht so / So“ am Beispiel der Kaffeebar, darunter die Prüffrage vor dem nächsten Schritt. */
   .paar { border-left: 4px solid var(--border); padding: .35rem .75rem; }
   .paar .nicht { font-weight: 600; color: var(--muted); }

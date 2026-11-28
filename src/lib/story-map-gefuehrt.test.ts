@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ohneAbgeschaltet } from '../components/abgeschaltet';
 import { METHODEN } from '../components/methoden';
@@ -355,10 +356,13 @@ describe('Story Map: geführt Schritt für Schritt', () => {
 
   // 28.11.2026 (Markus): dieselbe Aufteilung im Warm-up „euer Morgen“ – vorher „blau: Details, Varianten“ (klein
   // geschrieben, darum griff die Prüfung oben nicht).
-  it('Warm-up: blau Detail, orange oder, rot geht schief – Folien, Handout, Begleiter; nirgends mehr „Details, Varianten“', () => {
-    const alt = /Details?(,| und|\/) ?Varianten/i;
+  it('Warm-up: blau Detail, orange oder, rot geht schief – Folien, Handout, Begleiter; kein „Detail(s), Variante(n)“ auf der Seite, im Begleiter und in miro-frames.ts', () => {
+    const alt = /Details?(,| und|\/) ?Varianten?/i;
     expect(seite).not.toMatch(alt);
     expect(JSON.stringify(NOTIZEN_STORY_MAP)).not.toMatch(alt);
+    const frames = readFileSync(new URL('../components/miro-frames.ts', import.meta.url), 'utf8');
+    expect(frames).not.toMatch(alt);
+    expect(frames).toContain('blau Detail · orange oder · rot geht schief');
 
     const chips = '<span class="farbe blau">blau: Details</span> <span class="farbe orange">orange: oder</span> <span class="farbe rot">rot: geht schief</span>';
     expect(sichtbar(folie('warmup'))).toContain(chips);
@@ -366,6 +370,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     const v = sichtbar(folie('varianten'));
     expect(v).toContain(chips);
     expect(v).toContain('„Haare waschen“ (blau), „Kalt duschen“ (orange), „Kein warmes Wasser“ (rot)');
+    expect(v).toContain('<strong>Neue Stickies nach unten,</strong> unter den Schritt, zu dem sie gehören:');
     expect(v).not.toContain('Blaue Stickies');
     expect(handout(folie('varianten'))).toContain('Im Frame heißt das: blau = Detail, orange = oder (eine andere Art, eine Alternative), rot = geht schief');
     // Pattons Zitat bleibt wörtlich.
@@ -374,7 +379,8 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(seite).not.toContain('Neu ist Orange');
 
     expect(NOTIZEN_STORY_MAP.warmup.live).toContain('Farben: gelb Tasks, grün Aktivitäten, blau Details, orange oder, rot geht schief.');
-    expect(NOTIZEN_STORY_MAP.varianten.live).toContain('Timer 4 min: darunter blau Detail, orange oder, rot geht schief.');
+    expect(NOTIZEN_STORY_MAP.varianten.live).toContain('Timer 4 min: unter den Schritt – blau Detail, orange oder, rot schief.');
+    expect(NOTIZEN_STORY_MAP['verschlafen-slice'].kern?.at(-1)?.text).toBe('Vorsicht beim Erzählen: Das rote Sticky „Desired Outcome“ in Pattons Foto ist unser pinkes Outcome. Bei uns heißt Rot „geht schief“.');
     for (const id of ['warmup', 'varianten']) for (const z of NOTIZEN_STORY_MAP[id].live) expect(z.split(/\s+/).filter((w) => /[\p{L}\d]/u.test(w)).length, z).toBeLessThanOrEqual(12);
     expect(NOTIZEN_STORY_MAP.varianten.kern?.at(-1)?.text).toMatch(/^Vorsicht beim Erzählen: Die Farben \(blau = Detail, orange = oder, rot = geht schief\) legt der Kurs fest/);
   });

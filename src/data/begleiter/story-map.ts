@@ -52,7 +52,7 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
   varianten: {
     live: [
       'Drei Morgen vorlesen: typischer, bester, schlechtester.',
-      'Timer 4 min: darunter blau Detail, orange oder, rot geht schief.',
+      'Timer 4 min: unter den Schritt – blau Detail, orange oder, rot schief.',
       'Bei Bedarf: Reihenfolge unklar? Dann ist sie egal.',
       'Begriff: Körper der Map – Details, Alternativen, Varianten, Ausnahmen.',
     ],
@@ -101,7 +101,10 @@ export const NOTIZEN_STORY_MAP: Record<string, Notiz> = {
       '„Andere Ziele links – die Reihenfolge bleibt, die Tasks ändern sich.“',
     ],
     uebung: { dauer: '2 min', form: 'allein, eigener Warm-up-Frame' },
-    kern: [{ text: '„Use slices to identify all the tasks and details relevant to a specific outcome.“', quelle: `${PATTON}, Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome` }],
+    kern: [
+      { text: '„Use slices to identify all the tasks and details relevant to a specific outcome.“', quelle: `${PATTON}, Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome` },
+      { text: 'Vorsicht beim Erzählen: Das rote Sticky „Desired Outcome“ in Pattons Foto ist unser pinkes Outcome. Bei uns heißt Rot „geht schief“.', quelle: `Kurs; ${PATTON}, Kap. 5, 5. Slice Out Tasks That Help You Reach a Specific Outcome` },
+    ],
     ueberleitung: 'Eine Frage ist offen geblieben: Wie groß darf ein Sticky sein?',
   },
 

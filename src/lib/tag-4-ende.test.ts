@@ -182,7 +182,7 @@ describe('Tag 4: Folien des Abschlusses', () => {
   // Consult 28.11.2026 (consult-tag4-reihenfolge.md, Abschnitte 3 und 4): Überleitungen an den Nahtstellen, wörtlich.
   it('Überleitungen an den Nahtstellen des Tages', () => {
     expect(NOTIZEN_VALUE_MAP.uebertrag.ueberleitung).toBe('Euer Spitzenreiter steht auf Papier – was wird heute daraus?');
-    expect(NOTIZEN_TAG_4['was-bauen-wir'].ueberleitung).toBe('Bevor ihr Slice 1 schneidet: Versteht jemand in Sekunden, warum euer Spitzenreiter besser ist als das, was eure Person heute tut?');
+    expect(NOTIZEN_TAG_4['was-bauen-wir'].ueberleitung).toBe('Zuerst: Warum ist euer Spitzenreiter besser als heute? Dafür die Concept Story.');
     expect(NOTIZEN_STORY_MAP.uebertrag.ueberleitung).toBe('Nach der Pause: erst ein Blick, wo Slice 1 in eurem Baum hängt – dann die Usage Story.');
     expect(NOTIZEN_TAG_4['slice-im-baum'].ueberleitung).toBe('Slice 1 steht und hängt am Baum – jetzt erzählt ihr den Weg durch ihn: die Usage Story.');
     // Concept Story → Geschäftsmodell (10:40): die Folie danach öffnet mit dem Fit der Value Map, darum die Brücke.

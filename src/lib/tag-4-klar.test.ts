@@ -35,6 +35,8 @@ describe('Tag 4: „Was bauen wir?“ konkret', () => {
     expect(b).toContain(zeile);
     expect(b.trimEnd().endsWith(zeile)).toBe(true);
     expect(b.match(/data-schritt\b/g) ?? []).toHaveLength(1);
+    expect(NOTIZEN['/innolab/tag-4']['was-bauen-wir'].live).toContain('Letzte Zeile aufdecken, dann weiter zur Concept Story.');
+    expect(NOTIZEN['/innolab/tag-4']['was-bauen-wir'].ueberleitung).toBe('Zuerst: Warum ist euer Spitzenreiter besser als heute? Dafür die Concept Story.');
   });
 
   it('die Komponente zeigt die Texte aus den Props; der Arbeitsfluss behält die neutralen Vorgaben', () => {
