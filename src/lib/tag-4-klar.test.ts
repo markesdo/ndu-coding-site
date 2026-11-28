@@ -208,7 +208,7 @@ describe('So geht ihr vor: Frames, Anleitung und Werkstatt verlinkt', () => {
   const PS = ['vorgehen', 'schritt-papier', 'schritt-kriterien', 'schritt-karte', 'schritt-trockenlauf'];
   const FOLIEN: { p: string; id: string; produkt: string[]; frames: string[] }[] = [
     { p: M('value-map'), id: 'vorgehen', produkt: ['T3 · 4 · Canvas', 'T3 · 4 · Anleitung Value Map'], frames: ['T3 · 4 · Anleitung Value Map · Kaffeebar'] },
-    { p: M('value-map'), id: 'vorgehen-fit', produkt: ['T3 · 4 · Canvas', 'Baum'], frames: [] },
+    { p: M('value-map'), id: 'vorgehen-fit', produkt: ['T3 · 4 · Canvas', 'T3 · 4 · Anleitung Fit', 'Baum'], frames: ['T3 · 4 · Anleitung Fit · Kaffeebar'] },
     { p: M('concept-story'), id: 'vorgehen', produkt: ['T4 · 1 · Concept Story'], frames: ['T4 · 1 · Concept Story · Kaffeebar', 'T4 · 1 · Anleitung Concept Story'] },
     { p: M('geschaeftsmodell'), id: 'vorgehen', produkt: ['T4 · 2 · Geschäftsmodell'], frames: ['T4 · 2 · Geschäftsmodell · Kaffeebar', 'T4 · 2 · Anleitung Geschäftsmodell'] },
     { p: M('experiment'), id: 'vorgehen', produkt: [], frames: ['T4 · 3 · Annahmen der Idee', 'T4 · 3 · Anleitung Annahmen der Idee'] },

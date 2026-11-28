@@ -1200,11 +1200,34 @@ describe('Begleiter folgt auch außerhalb von Tag 1, wo es Notizen gibt', () => 
     // Seit 26.11.: Schritt 2 verweist nur noch auf die Anleitung; der Website-Check steht im Handout.
     expect(schritte).toContain('<strong>Euer Canvas – füllen:</strong> den Satz des Spitzenreiters mitnehmen, dann nach der Anleitung links neben eurem Canvas. <span class="links">Canvas <MiroLink name="T3 · 4 · Canvas · Produkt 1">');
     expect(vorgehen).toContain('Zum Schluss wiederholt ihr die Website-Frage als Check: Welcher gelbe Zettel ist die Website, und trifft sie allein noch P1?');
-    expect(vorgehen).toContain("auf den Karten „So geht's · Kundenprofil, Value Map, Fit“");
+    // Seit 28.11.: zwei Anleitungen statt der Karten „So geht's“ – links neben dem Canvas (füllen), rechts neben den Snapshots
+    // (ordnen und Fit, „Ordnen und Fit prüfen“; bei der Kaffeebar direkt rechts neben dem Canvas).
+    expect(vorgehen).not.toContain("So geht's");
+    expect(vorgehen).toContain('in zwei Anleitungen: links neben eurem Canvas, wie ihr die Zettel findet (Schritte 1–5,');
+    expect(vorgehen).toContain('und rechts neben euren Snapshots, wie ihr ordnet und den Fit prüft (Schritte 6–9, Anleitung „Ordnen und Fit prüfen“, bei der Kaffeebar direkt rechts neben dem Canvas, verlinkt bei <a href="#vorgehen-fit">');
     const handout = vorgehen.slice(vorgehen.indexOf('<p class="nur-handout">'));
     for (const id of neu) expect(handout, id).toContain(`<a href="#${id}">`);
     expect(handout).toContain('zwei Minuten für die drei Zettel aus dem Satz, zwei für Products &amp; Services, vier für Pain Relievers, zwei für Gain Creators, eine für die Gegenprobe.');
     for (const k of ['Kaffeebar', 'Produkt 1', 'Produkt 2', 'Produkt 3']) expect(handout, k).toContain(`<MiroLink name="T3 · 4 · Anleitung Value Map · ${k}">`);
+    // 28.11.: Anleitung „Ordnen und Fit prüfen“ (Miro, je Produkt und Kaffeebar) – Schritt 3 (ordnen) der Folie vorgehen-fit verlinkt
+    // alle vier, weil die Anleitung schon beim Ordnen gilt; das Handout von vorgehen-fit auch; der Begleiter nennt Frame und 3 + 3 + 2.
+    const fit = folie('vorgehen-fit');
+    const schritt = (label: string) => { const t = fit.slice(fit.indexOf(`<strong>${label}</strong>`)); return t.slice(0, t.indexOf('</li>')); };
+    expect(schritt('Skalen – Fit prüfen:')).not.toContain('Anleitung Fit');
+    expect(schritt('Skalen links – ordnen:')).toContain('<span class="links">Anleitung „Ordnen und Fit prüfen“: <MiroLink name="T3 · 4 · Anleitung Fit · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T3 · 4 · Anleitung Fit · Produkt 2">2</MiroLink> · <MiroLink name="T3 · 4 · Anleitung Fit · Produkt 3">3</MiroLink> · Beispiel <MiroLink name="T3 · 4 · Anleitung Fit · Kaffeebar">Kaffeebar</MiroLink></span>');
+    const fitHandout = fit.slice(fit.indexOf('<p class="nur-handout">'));
+    for (const k of ['Kaffeebar', 'Produkt 1', 'Produkt 2', 'Produkt 3']) {
+      expect(Object.hasOwn(MIRO_FRAMES, `T3 · 4 · Anleitung Fit · ${k}`), k).toBe(true);
+      expect(fitHandout, k).toContain(`<MiroLink name="T3 · 4 · Anleitung Fit · ${k}">`);
+    }
+    expect(fitHandout).toContain('<p class="nur-handout">Schritt für Schritt stehen Ordnen und Fit auf Miro in der Anleitung „Ordnen und Fit prüfen“, rechts neben euren Snapshots (Frame');
+    expect(fitHandout).toContain('am Beispiel, direkt rechts neben dem Canvas: <MiroLink name="T3 · 4 · Anleitung Fit · Kaffeebar">');
+    expect(fit).not.toContain('rechts neben eurem Canvas');
+    expect(n.vorgehen?.ablauf?.schritte?.[2]).toContain('Ordnen (4 min), nach der Miro-Anleitung „Ordnen und Fit prüfen“ rechts neben den Snapshots (Frame „T3 · 4 · Anleitung Fit · Produkt n“, dort Schritt 6; bei der Kaffeebar direkt rechts neben dem Canvas)');
+    expect(n['vorgehen-fit']?.live).toContain('Nach 14 min: ordnen nach Anleitung rechts der Snapshots – Timer 4 min.');
+    expect(n.vorgehen?.ablauf?.schritte?.[3]).toContain('Fit prüfen (8 min), Richtwert 3 + 3 + 2 (links · rechts · von oben lesen), Schritt für Schritt in derselben Anleitung „Ordnen und Fit prüfen“ (dort Schritte 7–9)');
+    expect(JSON.stringify(n)).not.toContain('rechts neben dem Canvas (Frame');
+    expect(n['vorgehen-fit']?.live).toContain('Nach 18 min: Fit nach derselben Anleitung – Timer 8 min.');
     expect(n.vorgehen?.ablauf?.schritte?.[1]).toContain('Füllen (11 min), Richtwert 2 + 2 + 4 + 2 + 1 (Satz · Products & Services · Pain Relievers · Gain Creators · Gegenprobe)');
     expect(JSON.stringify(n).match(/2 \+ 9\b/g) ?? []).toStrictEqual([]);
     expect(JSON.stringify(n).match(/Canvas:\S/g) ?? []).toStrictEqual([]);

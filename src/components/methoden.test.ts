@@ -175,7 +175,7 @@ describe('methoden', () => {
       'hmw-wie-koennten', 'hmw-loesung', 'hmw-reichweite', 'hmw-kundensicht', 'hmw-auswahl',
       'ideation-menge', 'ideation-aussortiert', 'ideation-drei', 'ideation-verschieden', 'ideation-claude',
       'kundenprofil-segment', 'kundenprofil-jobs', 'kundenprofil-sozial-emotional', 'kundenprofil-konkret', 'kundenprofil-produkt', 'kundenprofil-ziel-chance', 'kundenprofil-geordnet',
-      'value-map-lueckensatz', 'value-map-segment', 'value-map-fit-vergleich', 'value-map-wahl', 'value-map-wirkung', 'value-map-geordnet', 'value-map-adressiert', 'value-map-fragezeichen',
+      'value-map-lueckensatz', 'value-map-segment', 'value-map-fit-vergleich', 'value-map-wahl', 'value-map-wirkung', 'value-map-geordnet', 'value-map-adressiert', 'value-map-fit-zeichen', 'value-map-fragezeichen',
       'concept-story-stationen', 'concept-story-produkt', 'concept-story-krise', 'concept-story-hoehepunkt', 'concept-story-linie', 'concept-story-fallend', 'concept-story-ende',
       'geschaeftsmodell-verweise', 'geschaeftsmodell-wert', 'geschaeftsmodell-kosten', 'geschaeftsmodell-muster', 'geschaeftsmodell-annahme', 'geschaeftsmodell-widerspruch',
       'experiment-annahmen-arten', 'experiment-eine-annahme', 'experiment-wer-wo-was', 'experiment-schwelle', 'experiment-schnellster', 'experiment-danach', 'experiment-origin', 'experiment-lernkarte',

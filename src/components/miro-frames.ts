@@ -37,6 +37,11 @@ export const MIRO_FRAMES: Readonly<Record<string, string>> = {
   'T3 · 4 · Anleitung Value Map · Produkt 1': '3458764691611802580',
   'T3 · 4 · Anleitung Value Map · Produkt 2': '3458764691611859842',
   'T3 · 4 · Anleitung Value Map · Produkt 3': '3458764691611859843',
+  // Anleitung „Ordnen und Fit prüfen“ (seit 28.11.2026, Schritte 6–9), je ein Frame rechts der Value Map der Kaffeebar und jeder Person.
+  'T3 · 4 · Anleitung Fit · Kaffeebar': '3458764691814309492',
+  'T3 · 4 · Anleitung Fit · Produkt 1': '3458764691828841530',
+  'T3 · 4 · Anleitung Fit · Produkt 2': '3458764691828893228',
+  'T3 · 4 · Anleitung Fit · Produkt 3': '3458764691828893778',
   // Nummern seit 28.11.2026 in der Reihenfolge des Tages (scripts/t4-frames-umnummerieren.mjs); die IDs blieben gleich.
   // Concept Story auf Miro (seit 26.11.2026): sieben Stationen auf dem Bogen und das Feld „Flach-Probe (Kursregel)“, ein Frame
   // je Person; das ausgefüllte Beispiel der Kaffeebar daneben. Seit dem Nachtrag 26.11. abends bleibt sie auf Miro (keine Datei).
