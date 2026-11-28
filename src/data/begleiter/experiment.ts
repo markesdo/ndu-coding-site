@@ -146,7 +146,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       },
       {
         frage: 'Was passiert mit den anderen beiden Ideen?',
-        antwort: 'Sie bleiben offen: im Baum als Lösungen unter der Ziel-Chance, und auf der Karte E1 steht in der letzten Zeile „Falls E1 scheitert“ je ihre riskanteste Annahme – auf Miro im Frame „T4 · 0 · Annahmen der Idee“, Feld „Karte E1 für die oberste rechts“. Bei der Kaffeebar: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt es keine Schlange“).',
+        antwort: 'Sie bleiben offen: im Baum als Lösungen unter der Ziel-Chance, und auf der Karte E1 steht in der letzten Zeile „Falls E1 scheitert“ je ihre riskanteste Annahme – auf Miro im Frame „T4 · 3 · Annahmen der Idee“, Feld „Karte E1 für die oberste rechts“. Bei der Kaffeebar: Wartezeit-Anzeige (A6) · Kaffeewagen („Am Bahnsteig gibt es keine Schlange“).',
       },
       {
         frage: 'Und wenn der Spitzenreiter scheitert?',
@@ -171,7 +171,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Höchstens zehn Minuten: relativ zueinander, nicht genau.',
       'Wege nennen: Miro sortieren, Karte E1 auf Miro, Werkstatt am Abend.',
     ],
-    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Annahmen der Idee auf die Map: wichtig nach oben, wenig Beleg nach rechts.'] },
+    miro: { frame: 'T4 · 3 · Annahmen der Idee', schritte: ['Annahmen der Idee auf die Map: wichtig nach oben, wenig Beleg nach rechts.'] },
     kern: [
       {
         text: '„this exercise does not need to be precise. You are mapping assumptions relative to each other.“ Getestet werden die Annahmen oben rechts – „the assumptions that Bland calls your ‚leap of faith‘ assumptions“.',
@@ -652,14 +652,14 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
 
   vorgehen: {
     live: [
-      'Anleitung-Frame links neben „T4 · 0“ zeigen: Punkte 1 bis 3.',
+      'Anleitung-Frame links neben „T4 · 3“ zeigen: Punkte 1 bis 3.',
       'Nach 3 min: Schritte stehen? Dann fünf Fragen – Timer 5 min.',
       'Nach 8 min: Pre-Mortem gemacht? Dann Map – Timer 3 min.',
       'Nach 11 min: Liegt jeder Tag-1-Zettel in einem Feld? Werkstatt erst abends.',
       '„Stopp nach Schritt 3 – die Karte E1 schreibt ihr nach den nächsten Folien.“',
     ],
     uebung: { dauer: '11 min (3 + 5 + 3)', form: 'allein' },
-    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.', 'Stopp nach Punkt 3 der Anleitung und dem Pre-Mortem; das Feld „Karte E1“ bleibt noch leer.'] },
+    miro: { frame: 'T4 · 3 · Annahmen der Idee', schritte: ['Schritte, Annahmen mit Art, Map: wichtig nach oben, wenig Beleg nach rechts.', 'Stopp nach Punkt 3 der Anleitung und dem Pre-Mortem; das Feld „Karte E1“ bleibt noch leer.'] },
     ueberleitung: 'Stopp. Für die Annahme oben rechts schreibt ihr gleich eine Karte – so sieht sie aus.',
   },
 
@@ -671,7 +671,7 @@ export const NOTIZEN_EXPERIMENT: Record<string, Notiz> = {
       'Wenn hinten: Lernkarte und „Gegen den Beleg“ überspringen, weiter bei Übertrag.',
     ],
     uebung: { dauer: '7 min (5 + 2)', form: 'allein' },
-    miro: { frame: 'T4 · 0 · Annahmen der Idee', schritte: ['Karte E1 im Feld „Karte E1 für die oberste rechts“, mit Schwelle und „Wir entscheiden vorher“.', 'Riskanteste Annahme und E1 in „Baum · Produkt n“ unter den Spitzenreiter.'] },
+    miro: { frame: 'T4 · 3 · Annahmen der Idee', schritte: ['Karte E1 im Feld „Karte E1 für die oberste rechts“, mit Schwelle und „Wir entscheiden vorher“.', 'Riskanteste Annahme und E1 in „Baum · Produkt n“ unter den Spitzenreiter.'] },
     kern: [
       {
         text: 'Prüfpunkt experiment-schwelle: Die Schwelle steht als „x von y“ fest, bevor der Test läuft – und mit ihr, was ihr bei welchem Ergebnis tut. Grundlage: Thomkes Entscheidungsmatrix vor den Daten.',

@@ -75,7 +75,7 @@ describe('Tag 4: Ablauf-Texte und Namen (Durchsicht 26.11.)', () => {
     return a < 0 ? '' : q.slice(q.indexOf('>', a) + 1, q.indexOf('</Block>', a));
   };
   it('Concept Story: Theorie = alle Folien, dann 30 min auf Miro im eigenen Frame', () => {
-    expect(text('Story-Bogen + Concept Story')).toBe('Theorie, alle Folien (etwa 20 min): sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben, allein, auf Miro in „T4 · 0 · Concept Story · Produkt n“: sieben Stationen mit Flach-Probe als Check, festhalten.');
+    expect(text('Story-Bogen + Concept Story')).toBe('Theorie, alle Folien (etwa 20 min): sieben Stationen, A × B = C, flach oder hoch. Dann 30 min schreiben, allein, auf Miro in „T4 · 1 · Concept Story · Produkt n“: sieben Stationen mit Flach-Probe als Check, festhalten.');
   });
   it('Geschäftsmodell: Titel wie die Seite, Text mit Linie und Annahme', () => {
     expect(bloecke.map((b) => b.titel)).toContain('Geschäftsmodell');
@@ -130,7 +130,7 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
     expect(f).toContain('<Checklist id="il-tag4-hausaufgabe-5-v8" items={[');
     // 27.11. abends: die Werkstatt erst am Abend, in der Reihenfolge der Nummern (sie vergibt die IDs selbst).
     expect(f).toContain('die neuen Annahmen der Idee in der <a href="/innolab/mappe?bearbeiten=annahmen">Annahmen-Map der Werkstatt</a>, in der Reihenfolge der Nummern ab A5\'');
-    for (const w of ['„T4 · 0 · Concept Story · Produkt n“', '„T4 · 7 · Geschäftsmodell · Produkt n“', '„T4 · 1 · Story Map“', '„T4 · 4 · Usage Story · Produkt n“', '„T4 · 6 · Origin Story · Produkt n“', '„T4 · 6 · Lernkarten · Produkt n“', '„T4 · 5 · Prototyp · Produkt n“', 'Claude Code auf eurem Mac installiert']) expect(f, w).toContain(w);
+    for (const w of ['„T4 · 1 · Concept Story · Produkt n“', '„T4 · 2 · Geschäftsmodell · Produkt n“', '„T4 · 4 · Story Map“', '„T4 · 5 · Usage Story · Produkt n“', '„T4 · 8 · Origin Story · Produkt n“', '„T4 · 8 · Lernkarten · Produkt n“', '„T4 · 6 · Prototyp · Produkt n“', 'Claude Code auf eurem Mac installiert']) expect(f, w).toContain(w);
     expect(f.replace(/\{\/\*[\s\S]*?\*\/\}/g, '')).not.toMatch(/Spike/);
   });
 
@@ -148,19 +148,19 @@ describe('Tag 4 ohne docs-Dateien für Studierende', () => {
 
   it('der Wächter erkennt einen Frame, der weder bekannt noch offen ist, und einen ohne Anführungszeichen', () => {
     expect(frameCheck(['auf Miro in „T4 · 9 · Erfunden · Produkt n“.']).unbekannt).toStrictEqual(['T4 · 9 · Erfunden · Produkt n']);
-    expect(frameCheck(['auf Miro (T4 · 6 · Origin Story).']).unbekannt).toStrictEqual(['ohne „…“: T4 · 6 · Origin Story).']);
-    expect(frameCheck(['<Prompt label="Miro · T4 · 4 · Usage Story · Produkt n">', '<MiroLink name="T4 · 0 · Annahmen der Idee">T4 · 0 · Annahmen der Idee</MiroLink>']).unbekannt).toStrictEqual([]);
-    expect(frameCheck(['<Prompt label="Miro · T4 · 4 · Usage Storys · Produkt n">']).unbekannt).toStrictEqual(['T4 · 4 · Usage Storys · Produkt n']);
-    expect(frameCheck(['<MiroLink name="T4 · 0 · Concept Story · Produkt 1">', '„T4 · 6 · Origin Story · Produkt n“']).unbekannt).toStrictEqual([]);
-    // Der alte Name des Geschäftsmodells (T4 · 2 ist die Teamaufstellung) und der lange Prototyp-Name sind unbekannt.
-    expect(frameCheck(['„T4 · 2 · Geschäftsmodell · Produkt n“', '„T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n“']).unbekannt)
-      .toStrictEqual(['T4 · 2 · Geschäftsmodell · Produkt n', 'T4 · 5 · Prototyp · Karte E2 und Befunde · Produkt n']);
+    expect(frameCheck(['auf Miro (T4 · 8 · Origin Story).']).unbekannt).toStrictEqual(['ohne „…“: T4 · 8 · Origin Story).']);
+    expect(frameCheck(['<Prompt label="Miro · T4 · 5 · Usage Story · Produkt n">', '<MiroLink name="T4 · 3 · Annahmen der Idee">T4 · 3 · Annahmen der Idee</MiroLink>']).unbekannt).toStrictEqual([]);
+    expect(frameCheck(['<Prompt label="Miro · T4 · 5 · Usage Storys · Produkt n">']).unbekannt).toStrictEqual(['T4 · 5 · Usage Storys · Produkt n']);
+    expect(frameCheck(['<MiroLink name="T4 · 1 · Concept Story · Produkt 1">', '„T4 · 8 · Origin Story · Produkt n“']).unbekannt).toStrictEqual([]);
+    // Das Geschäftsmodell mit falscher Nummer und der lange Prototyp-Name sind unbekannt.
+    expect(frameCheck(['„T4 · 9 · Geschäftsmodell · Produkt n“', '„T4 · 6 · Prototyp · Karte E2 und Befunde · Produkt n“']).unbekannt)
+      .toStrictEqual(['T4 · 9 · Geschäftsmodell · Produkt n', 'T4 · 6 · Prototyp · Karte E2 und Befunde · Produkt n']);
   });
 
   it('wo die Seiten Produkt-Frames nennen, verlinken sie alle drei Produkte (keine TODO-Marken mehr)', () => {
     const alle = SEITEN_MIT_FRAMES.map(seite).join('\n');
     expect(alle).not.toMatch(/TODO Miro-ID/);
-    for (const f of ['T4 · 7 · Geschäftsmodell', 'T4 · 4 · Usage Story', 'T4 · 5 · Prototyp', 'T4 · 6 · Origin Story', 'T4 · 6 · Lernkarten']) {
+    for (const f of ['T4 · 2 · Geschäftsmodell', 'T4 · 5 · Usage Story', 'T4 · 6 · Prototyp', 'T4 · 8 · Origin Story', 'T4 · 8 · Lernkarten']) {
       for (const n of [1, 2, 3]) expect(alle, `${f} · Produkt ${n}`).toMatch(new RegExp(`<MiroLink name="${f} · Produkt ${n}">(Produkt )?${n}</MiroLink>`));
     }
   });
@@ -179,8 +179,8 @@ describe('Tag 5 liest Tag 4 von Miro', () => {
     }
   });
   it('Prompts bekommen Bilder der Frames; E2 und Befunde sind freiwillig; U1–U3 verlinkt auf die Befunde', () => {
-    expect(seite('/innolab/methoden/backlog')).toContain('Unter dieser Nachricht stehen Bilder aus Miro: meine Spalte im Frame „T4 · 1 · Story Map“ mit Slice 1 und, falls ich getestet habe, die Befunde aus meinem Frame „T4 · 5 · Prototyp · Produkt n“.');
-    expect(seite('/innolab/methoden/schneiden')).toContain('Unter dieser Nachricht steht ein Bild meiner Story Map von Miro (meine Spalte im Frame „T4 · 1 · Story Map“, Slice 1).');
+    expect(seite('/innolab/methoden/backlog')).toContain('Unter dieser Nachricht stehen Bilder aus Miro: meine Spalte im Frame „T4 · 4 · Story Map“ mit Slice 1 und, falls ich getestet habe, die Befunde aus meinem Frame „T4 · 6 · Prototyp · Produkt n“.');
+    expect(seite('/innolab/methoden/schneiden')).toContain('Unter dieser Nachricht steht ein Bild meiner Story Map von Miro (meine Spalte im Frame „T4 · 4 · Story Map“, Slice 1).');
     const t5 = seite('/innolab/tag-5');
     expect(t5).toContain('<strong>Je Product Ownerin:</strong> Karte E1 und die zwei Fragen, E2 (falls getestet), Empfehlung');
     expect(t5).toContain('E2 und U1–U3 stehen auf der Seite <a href="/innolab/methoden/prototyp-spike#beispiel-befunde">');
@@ -197,15 +197,15 @@ describe('So geht ihr vor: Frames, Anleitung und Werkstatt verlinkt', () => {
   const FOLIEN: { p: string; id: string; produkt: string[]; frames: string[] }[] = [
     { p: M('value-map'), id: 'vorgehen', produkt: ['T3 · 4 · Canvas', 'T3 · 4 · Anleitung Value Map'], frames: ['T3 · 4 · Anleitung Value Map · Kaffeebar'] },
     { p: M('value-map'), id: 'vorgehen-fit', produkt: ['T3 · 4 · Canvas', 'Baum'], frames: [] },
-    { p: M('concept-story'), id: 'vorgehen', produkt: ['T4 · 0 · Concept Story'], frames: ['T4 · 0 · Concept Story · Kaffeebar', 'T4 · 0 · Anleitung Concept Story'] },
-    { p: M('geschaeftsmodell'), id: 'vorgehen', produkt: ['T4 · 7 · Geschäftsmodell'], frames: ['T4 · 7 · Geschäftsmodell · Kaffeebar', 'T4 · 7 · Anleitung Geschäftsmodell'] },
-    { p: M('experiment'), id: 'vorgehen', produkt: [], frames: ['T4 · 0 · Annahmen der Idee', 'T4 · 0 · Anleitung Annahmen der Idee'] },
-    { p: M('experiment'), id: 'vorgehen-karte', produkt: ['Baum'], frames: ['T4 · 0 · Annahmen der Idee', 'T4 · 0 · Anleitung Annahmen der Idee'] },
-    { p: M('story-map'), id: 'warmup', produkt: ['T4 · 1 · Warm-up · euer Morgen'], frames: ['T4 · 1 · Anleitung Warm-up · euer Morgen'] },
-    { p: M('story-map'), id: 'vorgehen', produkt: [], frames: ['T4 · 1 · Story Map', 'T4 · 1 · Anleitung Story Map'] },
-    { p: M('usage-story'), id: 'vorgehen', produkt: ['T4 · 4 · Usage Story'], frames: ['T4 · 4 · Usage Story · Kaffeebar', 'T4 · 4 · Anleitung Usage Story'] },
-    ...PS.map((id) => ({ p: M('prototyp-spike'), id, produkt: ['T4 · 5 · Prototyp'], frames: id === 'vorgehen' ? ['T4 · 5 · Prototyp · Kaffeebar', 'T4 · 5 · Anleitung Prototyp'] : [] })),
-    { p: T4, id: 'hausaufgabe', produkt: ['T4 · 6 · Origin Story', 'T4 · 5 · Prototyp'], frames: ['T4 · 6 · Anleitung Origin Story', 'T4 · 0 · Annahmen der Idee'] },
+    { p: M('concept-story'), id: 'vorgehen', produkt: ['T4 · 1 · Concept Story'], frames: ['T4 · 1 · Concept Story · Kaffeebar', 'T4 · 1 · Anleitung Concept Story'] },
+    { p: M('geschaeftsmodell'), id: 'vorgehen', produkt: ['T4 · 2 · Geschäftsmodell'], frames: ['T4 · 2 · Geschäftsmodell · Kaffeebar', 'T4 · 2 · Anleitung Geschäftsmodell'] },
+    { p: M('experiment'), id: 'vorgehen', produkt: [], frames: ['T4 · 3 · Annahmen der Idee', 'T4 · 3 · Anleitung Annahmen der Idee'] },
+    { p: M('experiment'), id: 'vorgehen-karte', produkt: ['Baum'], frames: ['T4 · 3 · Annahmen der Idee', 'T4 · 3 · Anleitung Annahmen der Idee'] },
+    { p: M('story-map'), id: 'warmup', produkt: ['T4 · 4 · Warm-up · euer Morgen'], frames: ['T4 · 4 · Anleitung Warm-up · euer Morgen'] },
+    { p: M('story-map'), id: 'vorgehen', produkt: [], frames: ['T4 · 4 · Story Map', 'T4 · 4 · Anleitung Story Map'] },
+    { p: M('usage-story'), id: 'vorgehen', produkt: ['T4 · 5 · Usage Story'], frames: ['T4 · 5 · Usage Story · Kaffeebar', 'T4 · 5 · Anleitung Usage Story'] },
+    ...PS.map((id) => ({ p: M('prototyp-spike'), id, produkt: ['T4 · 6 · Prototyp'], frames: id === 'vorgehen' ? ['T4 · 6 · Prototyp · Kaffeebar', 'T4 · 6 · Anleitung Prototyp'] : [] })),
+    { p: T4, id: 'hausaufgabe', produkt: ['T4 · 8 · Origin Story', 'T4 · 6 · Prototyp'], frames: ['T4 · 8 · Anleitung Origin Story', 'T4 · 3 · Annahmen der Idee'] },
   ];
   const ohne = (f: string, klasse: string) => f
     .replace(new RegExp(`<div class="${klasse}">[\\s\\S]*$`), '')

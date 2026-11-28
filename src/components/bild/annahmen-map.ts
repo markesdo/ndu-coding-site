@@ -1,4 +1,4 @@
-// Annahmen-Map wie im Miro-Frame „T4 · 0 · Annahmen der Idee“: Feldnamen und Achsen (AnnahmenMap.astro, experiment.astro).
+// Annahmen-Map wie im Miro-Frame „T4 · 3 · Annahmen der Idee“: Feldnamen und Achsen (AnnahmenMap.astro, experiment.astro).
 export const FELDER = [
   { name: 'Beleg prüfen, darauf bauen', klasse: 'ol' },
   { name: 'Zuerst testen', klasse: 'or' },

@@ -57,15 +57,15 @@ export const ARTEFAKTE: Artefakt[] = [
   { id: 'valuemap', name: 'Spitzenreiter mit Value Map und Fit', lebtIn: ['miro'], miro: 'T3 · 4 · Canvas · Produkt n', miroAuch: { frame: 'T3 · 4 · Kundenprofil & Value Map', feld: 'Ideen vergleichen und wählen' } },
   // Tag 4 liegt seit dem Nachtrag 26.11.2026 abends ganz auf Miro (keine docs-Dateien mehr für Studierende): je Produkt ein
   // Frame; Karte E1 und Story Map in der eigenen Spalte eines gemeinsamen Frames. Geprüft wird an einem Bild (pruefungAufMiro).
-  // Die Lernkarten (T4 · 6 · Lernkarten · Produkt n) entstehen erst nach dem Test, zu Hause – kein eigenes Bild im Prüf-Prompt.
-  { id: 'concept', name: 'Concept Story', lebtIn: ['miro'], miro: 'T4 · 0 · Concept Story · Produkt n' },
-  { id: 'experimente', name: 'Experiment-Karte E1', lebtIn: ['miro'], miro: 'T4 · 0 · Annahmen der Idee', miroSpalte: true },
-  { id: 'origin', name: 'Origin Story als Text für Aufsteller oder Landingpage', lebtIn: ['miro'], miro: 'T4 · 6 · Origin Story · Produkt n' },
-  { id: 'geschaeftsmodell', name: 'Geschäftsmodell', lebtIn: ['miro'], miro: 'T4 · 7 · Geschäftsmodell · Produkt n' },
-  { id: 'storymap', name: 'Story Map mit Slice 1', lebtIn: ['miro'], miro: 'T4 · 1 · Story Map', miroSpalte: true },
-  { id: 'usage', name: 'Usage Story des Kernablaufs', lebtIn: ['miro'], miro: 'T4 · 4 · Usage Story · Produkt n' },
+  // Die Lernkarten (T4 · 8 · Lernkarten · Produkt n) entstehen erst nach dem Test, zu Hause – kein eigenes Bild im Prüf-Prompt.
+  { id: 'concept', name: 'Concept Story', lebtIn: ['miro'], miro: 'T4 · 1 · Concept Story · Produkt n' },
+  { id: 'experimente', name: 'Experiment-Karte E1', lebtIn: ['miro'], miro: 'T4 · 3 · Annahmen der Idee', miroSpalte: true },
+  { id: 'origin', name: 'Origin Story als Text für Aufsteller oder Landingpage', lebtIn: ['miro'], miro: 'T4 · 8 · Origin Story · Produkt n' },
+  { id: 'geschaeftsmodell', name: 'Geschäftsmodell', lebtIn: ['miro'], miro: 'T4 · 2 · Geschäftsmodell · Produkt n' },
+  { id: 'storymap', name: 'Story Map mit Slice 1', lebtIn: ['miro'], miro: 'T4 · 4 · Story Map', miroSpalte: true },
+  { id: 'usage', name: 'Usage Story des Kernablaufs', lebtIn: ['miro'], miro: 'T4 · 5 · Usage Story · Produkt n' },
   // Seit 26.11.2026 nachts Prototyp auf Papier (gebaut wird an Tag 5): Skizzen, Kriterien, Karte E2 und Befunde im Frame.
-  { id: 'spike', name: 'Prototyp auf Papier und Testbefunde', lebtIn: ['miro'], miro: 'T4 · 5 · Prototyp · Produkt n' },
+  { id: 'spike', name: 'Prototyp auf Papier und Testbefunde', lebtIn: ['miro'], miro: 'T4 · 6 · Prototyp · Produkt n' },
   { id: 'team', name: 'Team-Vereinbarung mit Definition of Done', lebtIn: ['repo'], pfad: 'docs/TEAM.md' },
   { id: 'issues', name: 'Backlog aus Issues', lebtIn: ['linear'] },
   { id: 'kriterien', name: 'Akzeptanzkriterien', lebtIn: ['linear'] },

@@ -8,7 +8,7 @@ import { quellenAusGlob } from './begleiter';
 
 // Story Map, Tag 4 (Entscheidung Markus 26.11.2026): Die Studierenden werden Schritt für Schritt geführt wie in seinem
 // Foliensatz 25/26 (Folien 105–112 Morgen, 124–140 Produkt). Warm-up: sechs Schritte, die jede*r selbst im eigenen Frame
-// „T4 · 1 · Warm-up · euer Morgen · Produkt n“ macht, mit Zielebenen nach Patton (Kap. 5); Übung: elf Schritt-Folien mit
+// „T4 · 4 · Warm-up · euer Morgen · Produkt n“ macht, mit Zielebenen nach Patton (Kap. 5); Übung: elf Schritt-Folien mit
 // Uhr, Kaffeebar-Beispiel und Prüffrage. Alles liegt auf Miro – keine docs-Datei (Nachtrag 26.11. abends).
 const quellen = quellenAusGlob(import.meta.glob('/src/pages/innolab/**/*.astro', { query: '?raw', import: 'default', eager: true }) as Record<string, string>);
 const seite = ohneAbgeschaltet(quellen['/innolab/methoden/story-map'] ?? '');
@@ -26,7 +26,7 @@ const SCHRITTE = [
   'schritt-rahmen', 'schritt-jetzt-map', 'schritt-tasks', 'schritt-aktivitaeten', 'schritt-reihen', 'schritt-erkunden',
   'schritt-loecher', 'schritt-outcome', 'schritt-schneiden', 'schritt-durchgehen', 'schritt-festhalten',
 ];
-const WARMUP_FRAMES = [1, 2, 3].map((n) => `T4 · 1 · Warm-up · euer Morgen · Produkt ${n}`);
+const WARMUP_FRAMES = [1, 2, 3].map((n) => `T4 · 4 · Warm-up · euer Morgen · Produkt ${n}`);
 
 describe('Story Map: geführt Schritt für Schritt', () => {
   it('Folien in dieser Reihenfolge: Warm-up, Begriffe, Theorie, Kaffeebar, Übersicht, elf Schritte, Übertrag', () => {
@@ -76,7 +76,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
   it('Übung: jede Schritt-Folie hat den Story-Map-Frame, genau eine Uhr, ein Kaffeebar-Beispiel (außer Festhalten) und eine Prüffrage; zusammen 42 min', () => {
     const summe = SCHRITTE.map((id) => {
       const s = sichtbar(folie(id));
-      expect(s, id).toContain('<MiroFrame name="T4 · 1 · Story Map" />');
+      expect(s, id).toContain('<MiroFrame name="T4 · 4 · Story Map" />');
       expect(timer(s), id).toHaveLength(1);
       // Festhalten braucht kein Beispiel: dort ist nur noch Claude dran.
       if (id !== 'schritt-festhalten') expect(s, id).toMatch(/<p class="(mini|paar)" data-schritt>/);
@@ -127,7 +127,7 @@ describe('Story Map: geführt Schritt für Schritt', () => {
     expect(sichtbar(folie('schritt-loecher'))).toContain('<strong>Prüft:</strong> Wo springt eure Geschichte zwischen zwei Stickies – und was ist, wenn …?');
     expect(handout(folie('sechs-schritte'))).toContain('Übungsschritt 10 und 11 – Durchgehen und Festhalten');
     const pruefen = seite.slice(seite.indexOf('<h2 id="pruefen">'), seite.indexOf('<Selbstpruefung'));
-    expect(pruefen).toContain('in eurer Spalte im Frame „T4 · 1 · Story Map“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
+    expect(pruefen).toContain('in eurer Spalte im Frame „T4 · 4 · Story Map“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.');
     const n = NOTIZEN['/innolab/methoden/story-map'];
     expect(n['schritt-durchgehen'].ueberleitung).toBe('Zum Schluss: fertig auf Miro.');
     expect(n['schritt-tasks'].live).toContain('Fragen: Hat jeder Pain am Rand einen Task, der ihn löst?');

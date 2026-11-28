@@ -14,7 +14,7 @@ import MiroLink from '../../../components/MiroLink.astro';
 
 const PATTON = 'Jeff Patton, „User Story Mapping“ (O’Reilly 2014)';
 // Das Warm-up zeigt Markus an seinem eigenen Morgen auf Miro (eigenes Board, nicht das Team-Board; der Link steht nicht
-// im öffentlichen Repo). Die Studierenden schreiben ihren Morgen in „T4 · 1 · Warm-up · euer Morgen · Produkt n“.
+// im öffentlichen Repo). Die Studierenden schreiben ihren Morgen in „T4 · 4 · Warm-up · euer Morgen · Produkt n“.
 const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
 ---
 <Layout title="Story Map">
@@ -28,8 +28,8 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="warmup">Warm-up: euer Morgen als Story Map</h2>
     <p class="folie-satz">E1 steht. Bevor ihr euer Produkt mappt, übt ihr an eurem Morgen heute.</p>
-    <MiroFrame name="T4 · 1 · Anleitung Warm-up · euer Morgen" />
-    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
+    <MiroFrame name="T4 · 4 · Anleitung Warm-up · euer Morgen" />
+    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
     <ol class="gross dicht">
       <li data-schritt><strong>Aufschreiben:</strong> ein Sticky pro Schritt, bis zur Tür.</li>
       <li data-schritt><strong>Ordnen:</strong> von links nach rechts.</li>
@@ -40,13 +40,13 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
     </ol>
     <p class="farben" data-schritt>Farben wie im Frame: <span class="farbe gelb">gelb: Tasks</span> <span class="farbe gruen">grün: Aktivitäten</span> <span class="farbe blau">blau: Details, Varianten</span></p>
     <p class="small">Jeder Schritt: eigene Folie, eigene Uhr, Karte im Frame. {BEISPIEL_MORGEN}</p>
-    <p class="nur-handout">Patton lehrt Story Mapping am liebsten mit dem eigenen Morgen: „It’s hands down my favorite way of teaching these basic mapping concepts“ ({PATTON}, Kap. 5, Do Try This at Home, or at Work). Ihr tut erst, die Namen kommen danach. Jede*r arbeitet allein im eigenen Frame „T4 · 1 · Warm-up · euer Morgen · Produkt n“ (n = eure Spalte auf dem Board von links); Markus zeigt dieselben Schritte an seinem eigenen Morgen. Die Farben sind die des Frames: gelb die Tasks, grün die Aktivitäten darüber, blau die Details und Varianten darunter. Oben im Frame stehen dieselben sechs Schritte als Karten, darunter die Arbeitsfläche mit der grünen Reihe „Aktivitäten (Backbone)“, dem Pfeil „Erzählfluss“ und Vorlage-Stickies zum Kopieren.</p>
+    <p class="nur-handout">Patton lehrt Story Mapping am liebsten mit dem eigenen Morgen: „It’s hands down my favorite way of teaching these basic mapping concepts“ ({PATTON}, Kap. 5, Do Try This at Home, or at Work). Ihr tut erst, die Namen kommen danach. Jede*r arbeitet allein im eigenen Frame „T4 · 4 · Warm-up · euer Morgen · Produkt n“ (n = eure Spalte auf dem Board von links); Markus zeigt dieselben Schritte an seinem eigenen Morgen. Die Farben sind die des Frames: gelb die Tasks, grün die Aktivitäten darüber, blau die Details und Varianten darunter. Oben im Frame stehen dieselben sechs Schritte als Karten, darunter die Arbeitsfläche mit der grünen Reihe „Aktivitäten (Backbone)“, dem Pfeil „Erzählfluss“ und Vorlage-Stickies zum Kopieren.</p>
   </Folie>
 
   <Folie>
     <h2 id="morgen-aufschreiben">1 · Aufschreiben: ein Sticky pro Schritt</h2>
     <p class="folie-satz">„Schließt die Augen und denkt an den Moment zurück, als ihr heute aufgewacht seid. Was ist das Erste, woran ihr euch erinnert? Öffnet die Augen und schreibt es auf ein Sticky.“</p>
-    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
+    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
     <BildText>
       <BuchAbbildung src="/quellen/patton/morgen-schreiben.jpg" alt="Hände schreiben gelbe Stickies: Hit snooze, Turn off alarm, Stumble to bathroom, Take a shower, Brush teeth, Get dressed, Make coffee und mehr" quelle={`Den Morgen aufschreiben. ${PATTON}, Kap. 5.`} schmal />
       <ul>
@@ -62,7 +62,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="erzaehlfluss">2 · Ordnen: von links nach rechts</h2>
     <p class="folie-satz">Was kam zuerst, was danach – und was fehlt noch?</p>
-    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
+    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
     <BildText>
       <BuchAbbildung src="/quellen/patton/erzaehlfluss.jpg" alt="Stickies in einer Reihe unter einem blauen Pfeil Narrative Flow; darunter gestapelt, was ungefähr gleichzeitig passiert" quelle={`Erzählfluss. ${PATTON}, Kap. 5.`} />
       <ul>
@@ -78,7 +78,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="varianten">3 · Andere Morgen: typisch, bester, schlechtester</h2>
     <p class="folie-satz">Drei Morgen: ein typischer Morgen – euer bester – euer schlechtester.</p>
-    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
+    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
     <BildText>
       <BuchAbbildung src="/quellen/patton/varianten.jpg" alt="Die Reihe der Morgen-Stickies; unter einzelnen Schritten weitere Stickies mit Varianten, Alternativen und Details, beschriftet Variations, Alternatives, Details" quelle={`Varianten und Details. ${PATTON}, Kap. 5.`} />
       <ul>
@@ -94,7 +94,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="backbone">4 · Gruppen benennen: der Backbone</h2>
     <p class="folie-satz">Welche Stickies gehören zusammen, weil sie einem größeren Ziel dienen?</p>
-    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
+    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
     <BildText>
       <BuchAbbildung src="/quellen/patton/backbone-morgen.jpg" alt="Die Morgen-Map mit grünen Stickies über den Gruppen, beschriftet Activities; die Reihe der grünen Stickies ist der Backbone" quelle={`Aktivitäten bilden den Backbone. ${PATTON}, Kap. 5.`} />
       <ul>
@@ -110,7 +110,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="verschlafen">5 · Ihr habt verschlafen</h2>
     <p class="folie-satz">Der Wecker hat nicht geklingelt – in ein paar Minuten müsst ihr aus der Tür.</p>
-    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
+    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
     <ol class="gross">
       <li data-schritt><strong>Das pinke Sticky links:</strong> „In ein paar Minuten aus der Tür.“ Das ist euer Ziel.</li>
       <li data-schritt><strong>Die gestrichelte Slice-Linie</strong> quer durch die Mitte der Map – wie ein Gürtel.</li>
@@ -123,7 +123,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="verschlafen-slice">5 · Ergänzen: der Slice</h2>
     <p class="folie-satz">Oben bleiben nur wenige Tasks. Was tut ihr nur, wenn ihr spät dran seid?</p>
-    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
+    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
     <BildText>
       <BuchAbbildung src="/quellen/patton/slice-morgen.jpg" alt="Die Morgen-Map mit zwei blauen Linien; links ein rotes Sticky Desired Outcome; zwischen den Linien die wenigen Tasks, mit denen das Ziel erreichbar ist" quelle={`Ein Slice für einen Outcome. ${PATTON}, Kap. 5.`} />
       <ul>
@@ -138,7 +138,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="zielebenen">6 · Ebenen: Wie groß ist ein Task?</h2>
     <p class="folie-satz">Meereshöhe: ein Task, den ihr ohne Pause zu Ende bringt.</p>
-    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 1 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
+    <p class="small miro-zeile">Miro: <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 2">2</MiroLink> · <MiroLink name="T4 · 4 · Warm-up · euer Morgen · Produkt 3">3</MiroLink></p>
     <BildText>
       <BuchAbbildung src="/quellen/patton/zielebenen.jpg" alt="Flipchart Goal Level: oben Summary mit grünem Sticky Getting cleaned up, darunter Functional mit gelbem Sticky Take a shower und einer Welle, darunter Sub-functional or sub-tasks mit einem Fisch und gelben Stickies Adjust water temperature, Wash hair, Wash body, Rinse, Turn off water; rechts weitere Tasks auf Meereshöhe: Brush teeth, Deodorant, Hair goo" quelle={`Zielebenen. ${PATTON}, Kap. 5.`} />
       <div>
@@ -333,9 +333,9 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="vorgehen">So geht ihr vor (42 min)</h2>
     <p class="folie-satz">Allein, auf Miro, für euren Spitzenreiter – elf Schritte mit Uhr und Prüffrage.</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
-      <li data-schritt><strong>Die Map (15 min,</strong> <MiroLink name="T4 · 1 · Anleitung Story Map">Anleitung</MiroLink> <strong>links neben dem Frame):</strong> 1 Rahmen · 2 Pains holen · 3 Tasks · 4 Aktivitäten · 5 Wer noch handelt</li>
+      <li data-schritt><strong>Die Map (15 min,</strong> <MiroLink name="T4 · 4 · Anleitung Story Map">Anleitung</MiroLink> <strong>links neben dem Frame):</strong> 1 Rahmen · 2 Pains holen · 3 Tasks · 4 Aktivitäten · 5 Wer noch handelt</li>
       <li data-schritt><strong>In die Tiefe (11 min):</strong> 6 Erkunden · 7 Löcher suchen</li>
       <li data-schritt><strong>Slice 1 (16 min):</strong> 8 Outcome und Lernfrage · 9 Schneiden · 10 Durchgehen · 11 Fertig auf Miro</li>
       <li data-schritt><strong>Allein:</strong> Jede*r mappt das eigene Produkt – ihr habt drei verschiedene.</li>
@@ -344,7 +344,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
     <div class="nur-handout">
       <p>Davor, zusammen 43 Minuten: Warm-up 26 – euren Morgen in sechs Schritten auf Miro, mit dem Rückblick „Das waren schon alle Begriffe“ –, Theorie 8, Kaffeebar gemeinsam 9.</p>
       <p>Ihr mappt euren Spitzenreiter (Value Map) als Später-Map: „Das Produkt ist live – ein Tag im Leben von …“. In Schritt 2 holt ihr aus eurem Kundenprofil die Pains, auf die ein Pain Reliever mit ✓ zeigt – jeder davon braucht später einen Task. Die Jetzt-Map im Sinne Pattons ist eure Experience Map von Tag 2.</p>
-      <p>Jede Schritt-Folie endet mit einer Prüffrage. Stellt sie euch, bevor ihr weitergeht. Die Paare „Nicht so / So“ zeigen am Beispiel der Kaffeebar die Fehler, die in Story Maps am häufigsten vorkommen. Die Farben sind dieselben wie in eurem Bereich im Frame „T4 · 1 · Story Map“; im Warm-up habt ihr Grün, Gelb, Blau und Pink schon benutzt. Neu ist Orange für ein „oder“: eine andere Art, denselben Task zu tun. Blau bleibt für Details, Rot für das, was schiefgeht.</p>
+      <p>Jede Schritt-Folie endet mit einer Prüffrage. Stellt sie euch, bevor ihr weitergeht. Die Paare „Nicht so / So“ zeigen am Beispiel der Kaffeebar die Fehler, die in Story Maps am häufigsten vorkommen. Die Farben sind dieselben wie in eurem Bereich im Frame „T4 · 4 · Story Map“; im Warm-up habt ihr Grün, Gelb, Blau und Pink schon benutzt. Neu ist Orange für ein „oder“: eine andere Art, denselben Task zu tun. Blau bleibt für Details, Rot für das, was schiefgeht.</p>
       <p>Euer Bereich sieht aus wie der Warm-up-Frame: eine offene Fläche, breit und mit Platz nach unten. Feste Reihen für Varianten oder Fehler gibt es nicht – was zu einem Task gehört, hängt darunter. Die Slice-Linie, Pink und Cyan warten im Streifen unter der Fläche bis Schritt 8 (Outcome) und 9 (Schneiden).</p>
     </div>
   </Folie>
@@ -352,7 +352,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-rahmen">1 · Rahmen: für wen, warum?</h2>
     <p class="folie-satz">Für wen baut ihr das? Was sollen sie danach anders tun? Warum würden sie es nutzen?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Kopfzeile:</strong> „Für: … | Outcome (Brief): … | Idee (Value Map): …“ <Timer minuten={3} /></li>
       <li data-schritt><strong>Violett „Wer handelt: …“:</strong> eure Hauptperson, klein in die Reihe „Wer handelt“ über dem Backbone.</li>
@@ -365,7 +365,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-jetzt-map">2 · Pains holen</h2>
     <p class="folie-satz">Welche Pains löst euer Spitzenreiter? Das zeigt euer Canvas.</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Holt die Pains aus eurem Kundenprofil, auf die ein Pain Reliever mit ✓ zeigt</strong> – mit ID (P1, P2 …) an den Rand eurer Story Map. Euer Canvas auf Miro: <MiroLink name="T3 · 4 · Canvas · Produkt 1">Produkt 1</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Produkt 2">Produkt 2</MiroLink> · <MiroLink name="T3 · 4 · Canvas · Produkt 3">Produkt 3</MiroLink>. <Timer minuten={2} /></li>
     </ul>
@@ -377,7 +377,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-tasks">3 · Später-Map: Tasks bis zum Ende</h2>
     <p class="folie-satz">Das Produkt ist live: Was tut eure Person?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Anfang und Ende:</strong> beim Anlass im Alltag der Person, bis der Outcome eingetreten ist – nicht von der Werbung bis zur Bestätigungsseite.</li>
       <li data-schritt><strong>Gelbe Stickies in eure Fläche:</strong> Verb-Sätze, erst bis zum Ende. Alles, was die Person tut – geschnitten wird in Schritt 9. <Timer minuten={6} /></li>
@@ -391,7 +391,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-aktivitaeten">4 · Aktivitäten: der Backbone</h2>
     <p class="folie-satz">Welche Tasks gehören zu einem größeren Ziel – und wie würde eure Person es nennen?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Tasks zu Gruppen schieben,</strong> ein grünes Sticky über jede Gruppe: ein Verb in der Sprache der Person. <Timer minuten={2} /></li>
       <li data-schritt><strong>Höchstens eine Aktivität</strong> für „davon erfahren“; die letzte heißt „… danach“.</li>
@@ -404,7 +404,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-reihen">5 · Wer noch handelt: über die Aktivität</h2>
     <p class="folie-satz">Wer muss außer eurer Person etwas tun, damit der Wert ankommt – Mensch oder System?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Kleines violettes Sticky „Wer noch: …“</strong> in die Reihe „Wer handelt“, über die Aktivität, bei der diese Person dazukommt. Ihre Tasks gelb unter die Tasks eurer Person – mit ihrem Namen vorn: „Barista: zubereiten“. <Timer minuten={2} /></li>
       <li data-schritt><strong>Grau, unter den Task, bei dem die Person wartet:</strong> nur, worauf sie wartet oder was sie sieht; aktiv: „System: zeigt …“.</li>
@@ -417,7 +417,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-erkunden">6 · Erkunden: vier Fragen an jeden Task</h2>
     <p class="folie-satz">Was genau? Welche Alternative? Was machte es richtig gut? Was, wenn es schiefgeht?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Unter den Task, zu dem es gehört:</strong> genauer (blau) · oder (orange) · richtig gut (blau) · geht schief (rot). <Timer minuten={6} /></li>
       <li data-schritt><strong>Mindestens ein rotes Sticky pro Aktivität.</strong> Auch unten Verb-Sätze: Ein Kanal oder Feature-Name allein ist kein Schritt.</li>
@@ -430,7 +430,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-loecher">7 · Löcher suchen: Was ist, wenn …?</h2>
     <p class="folie-satz">Was ist, wenn …? Und was passiert zwischen zwei Stickies, das noch fehlt?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Allein:</strong> Geht eure Map von links nach rechts durch und ergänzt, was fehlt; offene Fragen als Sprechblase. <Timer minuten={5} /></li>
     </ul>
@@ -442,7 +442,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-outcome">8 · Slice 1: Outcome und Lernfrage</h2>
     <p class="folie-satz">Wer tut danach was anders – und was wollt ihr dabei lernen?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Pink aus dem Streifen, links unter die Fragekarte:</strong> „Outcome: [Wer] tut [was] statt [was bisher].“ <Timer minuten={2} /></li>
       <li data-schritt><strong>Cyan daneben:</strong> „Wir lernen, ob … (A_)“ – mit der ID aus eurer Annahmen-Map.</li>
@@ -455,7 +455,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-schneiden">9 · Schneiden: schieben, nicht kopieren</h2>
     <p class="folie-satz">Was braucht Slice 1 mindestens, damit der Outcome eintritt und ihr die Lernfrage beantwortet?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Slice-Linie hochziehen,</strong> quer durch die Map; darunter schieben, was Slice 1 nicht braucht – nicht kopieren, jedes Sticky einmal. Aktivitäten bleiben oben. <Timer minuten={5} /></li>
       <li data-schritt><strong>Bei Orange (oder):</strong> Die Variante, die zum Lernen reicht, kommt über die Linie, die anderen darunter.</li>
@@ -469,7 +469,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-durchgehen">10 · Durchgehen mit „und dann“</h2>
     <p class="folie-satz">Erreicht Slice 1 den Outcome – von Anfang bis Ende?</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Erzählt Slice 1 allein</strong> mit „und dann“; ein ✓ auf jedes grüne Sticky mit Task über der Linie. <Timer minuten={5} /></li>
       <li data-schritt><strong>Kein ✓?</strong> Ergänzt einen Schritt – oder sagt laut, dass dieser Slice ihn nicht braucht. Rechts im Kasten: „Outcome erreicht? ja / nein, es fehlt: …“</li>
@@ -483,18 +483,18 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <Folie>
     <h2 id="schritt-festhalten">11 · Fertig auf Miro</h2>
     <p class="folie-satz">Eure Story Map bleibt auf Miro – an Tag 5 werden aus Slice 1 eure Issues.</p>
-    <MiroFrame name="T4 · 1 · Story Map" />
+    <MiroFrame name="T4 · 4 · Story Map" />
     <ul class="gross">
       <li data-schritt><strong>Auf Miro, fertig:</strong> In eurem Bereich (Produkt n) stehen Rahmen, Backbone, Slice 1 mit Outcome, Lernfrage und * – sonst nichts zu tun. <Timer minuten={4} /></li>
       <li data-schritt><strong>Für euch:</strong> Was hat euch an eurer Map überrascht?</li>
     </ul>
     <p class="pruefen" data-schritt><strong>Prüft:</strong> Steht jedes Sticky nur einmal auf der Map?</p>
-    <p class="nur-handout">Die Story Map liegt nur auf Miro, im Frame „T4 · 1 · Story Map“, in eurem Bereich – keine Datei im Repo. Neue Annahmen tragt ihr selbst in die Annahmen-Map der Werkstatt ein. Ein Screenshot dieses Bereichs ist an Tag 5 eine Eingabe für Claude Code, wenn es Slice 1 baut.</p>
+    <p class="nur-handout">Die Story Map liegt nur auf Miro, im Frame „T4 · 4 · Story Map“, in eurem Bereich – keine Datei im Repo. Neue Annahmen tragt ihr selbst in die Annahmen-Map der Werkstatt ein. Ein Screenshot dieses Bereichs ist an Tag 5 eine Eingabe für Claude Code, wenn es Slice 1 baut.</p>
   </Folie>
 
   <div class="nur-handout">
   <h2 id="vorlage">So sieht euer Bereich im Frame aus</h2>
-  <p>Im Frame „T4 · 1 · Story Map“ hat jede*r einen eigenen Bereich (Produkt n, eure Spalte von links). Von oben nach unten:</p>
+  <p>Im Frame „T4 · 4 · Story Map“ hat jede*r einen eigenen Bereich (Produkt n, eure Spalte von links). Von oben nach unten:</p>
   <ol>
     <li><strong>Kopfzeile:</strong> „Für: … | Outcome (Brief): … | Idee (Value Map): …“</li>
     <li><strong>Reihe „Wer handelt“</strong> über dem Backbone: kleine violette Stickies „Wer handelt: …“ (eure Hauptperson) und „Wer noch: …“, jedes über der Aktivität, bei der diese Person dazukommt.</li>
@@ -506,7 +506,7 @@ const BEISPIEL_MORGEN = 'Beispiel: Markus zeigt seinen Morgen auf Miro.';
   <p>Offene Fragen, die beim Mappen auftauchen, tragt ihr als neue Annahmen in die Annahmen-Map der Werkstatt ein.</p>
 
   <h2 id="pruefen">Prüfen</h2>
-  <p><strong>Eure Story Map liegt nur auf Miro,</strong> in eurer Spalte im Frame „T4 · 1 · Story Map“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>
+  <p><strong>Eure Story Map liegt nur auf Miro,</strong> in eurer Spalte im Frame „T4 · 4 · Story Map“. Prüft selbst mit der Liste unten und hakt ab, was erfüllt ist.</p>
   <Selbstpruefung slug="story-map" />
   </div>
 
