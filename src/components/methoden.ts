@@ -312,6 +312,7 @@ export const METHODEN: Methode[] = [
       },
       { id: 'value-map-geordnet', text: 'Products and Services, Pain Relievers und Gain Creators sind je für sich geordnet: das Unverzichtbare oben.' },
       { id: 'value-map-adressiert', text: 'Die obersten Einträge des Profils sind adressiert – oder es steht da, warum nicht; was offen bleibt, trägt im Fit ein ✗ oder ?.' },
+      { id: 'value-map-fit-zeichen', text: 'Im Fit trägt rechts jeder Eintrag genau ein Zeichen (✓, ✗ oder ?), und links steht jeder ✓ bei einem Zettel mit Pfeil und ID.' },
       { id: 'value-map-fragezeichen', text: 'Jedes „?“ aller drei Ideen steht mit Frage, wo es entstanden ist – am Satz im Feld „Ideen vergleichen und wählen“, am Zettel im Canvas; an Tag 4 werden sie Annahmen.' },
     ],
     ki: 'Markiert Pain Relievers, die zu keinem Pain passen, und fragt nach jedem ✓ im Ideen-Vergleich und im Fit der Value Map.',
